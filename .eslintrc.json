@@ -13,9 +13,10 @@
   },
   "plugins": ["react"],
   "rules": {
-    "semi": ["error", "0"],
-    "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
-    "import/extensions": ["error", "ignorePackages", { "ts": "never", "tsx": "never" }],
+    "semi": "off",
+    "@typescript-eslint/semi": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
     "import/order": [
       "error",
       {
