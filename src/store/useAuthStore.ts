@@ -10,12 +10,17 @@ export interface Store {
   setCurrentSession: (session: Session | null) => void;
 }
 
-export const useAuthStore = create<Store>(
-)(devtools(set => ({
-  stayLoggedInStatus: false,
-  setStayLoggedInStatus: () => { set(state => ({ stayLoggedInStatus: !state.stayLoggedInStatus })) },
-  currentSession: null,
-  setCurrentSession: session => { set(() => ({ currentSession: session })) }
-})))
+export const useAuthStore = create<Store>()(
+  devtools((set) => ({
+    stayLoggedInStatus: false,
+    setStayLoggedInStatus: () => {
+      set((state) => ({ stayLoggedInStatus: !state.stayLoggedInStatus }));
+    },
+    currentSession: null,
+    setCurrentSession: (session) => {
+      set(() => ({ currentSession: session }));
+    },
+  })),
+);
 
 // export const useAuthStore = create<Store>()(devtools(myAuthStore))

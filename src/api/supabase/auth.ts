@@ -18,7 +18,7 @@ const printErrorMessage = (message: string) => {
     case "To signup, please provide your email":
       return "이메일이 잘못되었습니다.";
     case "Invalid API key":
-      return "관리자 문의(API KEY)"
+      return "관리자 문의(API KEY)";
     default:
       return "회원가입이 실패하였습니다.";
   }
@@ -28,7 +28,9 @@ const printErrorMessage = (message: string) => {
 export const signup = async (inputValue: SignupInputs) => {
   const { email, password, nickname, phone } = inputValue;
   const { error } = await auth.signUp({
-    email, password, options: { data: { nickname, phone, } }
+    email,
+    password,
+    options: { data: { nickname, phone } },
   });
 
   if (error != null) {
@@ -40,7 +42,7 @@ export const signup = async (inputValue: SignupInputs) => {
 export const googleLogin = async () => {
   const { error } = await auth.signInWithOAuth({
     provider: "google",
-    options: { queryParams: { access_type: "offline", prompt: "consent" } }
+    options: { queryParams: { access_type: "offline", prompt: "consent" } },
   });
 
   if (error?.status != null) throw new Error("로그인 정보가 잘못되었습니다.");
@@ -55,7 +57,6 @@ export const logout = async () => {
 
 // 회원탈퇴 기능
 export const deleteUser = async (userUid: string) => {
-  console.log('userUid :', userUid);
-  await auth.admin.deleteUser(userUid)
-
-}
+  console.log("userUid :", userUid);
+  await auth.admin.deleteUser(userUid);
+};
