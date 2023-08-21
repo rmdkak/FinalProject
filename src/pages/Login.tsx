@@ -42,10 +42,10 @@ export const Login = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-3xl">로그인</h2>
+      <h2 className="text-[2rem] mt-[4.375rem] mb-10 font-bold">로그인</h2>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-2">
-        <label htmlFor="email" className="block mb-2 text-sm font-bold text-gray-700 ">
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-[30rem] w-2/3">
+        <label htmlFor="email" className="absolute top-[-9999px] left-[-9999px] ">
           email
         </label>
         <input
@@ -53,11 +53,11 @@ export const Login = () => {
             required: "이메일을 입력해주세요.",
             minLength: { value: 8, message: "이메일이 너무 짧습니다." },
           })}
-          placeholder="email"
-          className="px-3 py-2 border rounded-lg w-50 focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="이메일"
+          className="w-full px-6 py-3 border border-[#e5e5e5] box-border"
         />
         <p>{errors.email?.message}</p>
-        <label htmlFor="password" className="block mb-2 text-sm font-bold text-gray-700">
+        <label htmlFor="password" className="absolute top-[-9999px] left-[-9999px] ">
           password
         </label>
         <input
@@ -67,50 +67,70 @@ export const Login = () => {
           })}
           type="password"
           id="password"
-          className="px-3 py-2 border rounded-lg w-50 focus:outline-none focus:ring focus:border-blue-300"
-          placeholder="password"
+          className="w-full px-6 py-3 mt-4 border border-[#e5e5e5] box-border"
+          placeholder="비밀번호"
         />
+
         <p>{errors.password?.message}</p>
-        <div className="flex items-center gap-10">
-          <div>
-            <input type="checkbox" id="loginStatus" className="mr-2" onChange={setStayLoggedInStatus} />
-            <label htmlFor="loginStatus" className="m-3">
-              로그인 상태 유지
+        <div className="flex items-center justify-between h-12 mt-4 text-[#888] ">
+          <div className="flex items-center ">
+            <input
+              type="checkbox"
+              id="loginStatus"
+              className="min-w-[1.5rem] min-h-[1.5rem] mr-2 "
+              onChange={setStayLoggedInStatus}
+            />
+            <label htmlFor="loginStatus" className="">
+              아이디 저장
             </label>
           </div>
-          <button
-            type="button"
-            className="px-4 py-2 font-semibold text-white bg-green-600 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring focus:border-blue-300"
-          >
-            비밀번호 찾기
-          </button>
+          <div className="">
+            <button
+              type="button"
+              className="after:content-[''] after:w-[1px] after:h-[10px] after:inline-block after:bg-[#888] after:mx-[1.3125rem] "
+            >
+              이메일 찾기
+            </button>
+            <button type="button" className="">
+              비밀번호 찾기
+            </button>
+          </div>
         </div>
-        <div className="flex gap-10">
-          <button
-            type="button"
-            className="px-4 py-2 font-semibold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring focus:border-blue-300"
-          >
-            구글 로그인
-          </button>
-          <button
-            type="button"
-            className="px-4 py-2 font-semibold text-white bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600 focus:outline-none focus:ring focus:border-blue-300"
-          >
-            카카오로 로그인
-          </button>
+
+        <div className="mt-6 ">
+          <button className="w-full py-3.5 px-6 bg-[#888888] text-[#fff] mb-4 ">로그인</button>
         </div>
-        <button className="px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300">
-          로그인
-        </button>
-        <Link to={"/signup"}>
-          <button
-            type="button"
-            className="px-4 py-2 font-semibold text-white bg-indigo-500 rounded-lg shadow-md hover:bg-indigo-600 focus:outline-none focus:ring focus:border-blue-300"
+
+        <div className="mb-16 ">
+          <div className=" relative mb-4 text-center before:content-[''] before:absolute before:block  before:top-1/2 before:left-0 before:w-full before:h-px before:bg-[#888] ">
+            <h3 className="relative z-10 inline-block p-3 bg-[#fff] ;">SNS 계정으로 로그인하기</h3>
+          </div>
+          <div className="flex mx-auto relative justify-between w-[127px]  after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:w-px after:h-2.5 after:block after:bg-[#888] after:translate-y-[-50%]">
+            <button type="button" className="block w-10 h-10 bg-red-900 indent-[-9999px]">
+              구글 로그인
+            </button>
+            <button type="button" className="block w-10 h-10 bg-red-900 indent-[-9999px]">
+              카카오로 로그인
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center justify-center">
+          <p className="text-[#5f5f5f] text-[0.875rem] text-center  mb-4">
+            회원가입하고 더 많은 인터레어 조합을 확인해보세요!
+          </p>
+          <Link
+            to={"/signup"}
+            className="flex items-center justify-center bg-none border border-[#888]  w-full h-12 text-[0.875rem]"
           >
-            회원가입
-          </button>
-        </Link>
+            <button type="button" className="">
+              회원가입
+            </button>
+          </Link>
+        </div>
       </form>
     </div>
   );
 };
+
+// 109 번째, 111 번째 이미지 넣어야함.
