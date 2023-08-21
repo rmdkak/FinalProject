@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import App from './App';
 
-const queryclient = new QueryClient({
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
@@ -19,7 +19,7 @@ const queryclient = new QueryClient({
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <QueryClientProvider client={queryclient}>
+  <QueryClientProvider client={queryClient}>
     <React.StrictMode>
       <App />
     </React.StrictMode>
