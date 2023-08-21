@@ -1,0 +1,94 @@
+import { useState, type MouseEvent, type ChangeEvent, type Dispatch } from "react";
+
+import arrowIcon from "assets/arrowIcon.svg";
+
+type CSSUnit = `${number}${"px" | "em" | "rem" | "%"}`;
+
+interface Props {
+  option: string[];
+  selectedValue: string | undefined;
+  setSelectedValue: Dispatch<React.SetStateAction<string | undefined>>;
+  placeholder?: string;
+  selfEnterOption: boolean;
+  size: { width: CSSUnit; height: CSSUnit };
+}
+
+export const Select = (props: Props) => {
+  const { option, selectedValue, setSelectedValue, size, placeholder = "선택해주세요.", selfEnterOption } = props;
+
+  const [toggleIsOpen, setToggleIsOpen] = useState(false);
+  const [selfEnterIsOpen, setSelfEnterIsOpen] = useState(true);
+
+  const onChangeHandler = (event: MouseEvent<HTMLDivElement> | ChangeEvent<HTMLInputElement>) => {
+    if (event.target === null) return;
+    setSelectedValue(event.currentTarget.innerText);
+    setSelfEnterIsOpen(true);
+    setToggleIsOpen(false);
+  };
+
+  const changeToggleHandler = () => {
+    setToggleIsOpen(!toggleIsOpen);
+  };
+
+  // TODO 공용 input style 정해지면 변경 import
+  const commonStyle = "px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
+
+  return (
+    <>
+      <div className={`relative flex w-[${size.width}] h-[${size.height}]`}>
+        {selfEnterIsOpen ? (
+          <>
+            <button
+              className={`flex w-[${size.width}] h-[${size.height}] ${commonStyle}`}
+              type="button"
+              onClick={changeToggleHandler}
+            >
+              <p className="">{selectedValue !== undefined ? selectedValue : placeholder}</p>
+              <img className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer" src={arrowIcon} />
+            </button>
+          </>
+        ) : (
+          <>
+            <input
+              onChange={(event) => {
+                setSelectedValue(event?.target.value);
+              }}
+              value={selectedValue}
+              className={`w-[${size.width}] ${commonStyle}`}
+            />
+
+            <img
+              onClick={changeToggleHandler}
+              className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer"
+              src={arrowIcon}
+            />
+          </>
+        )}
+        <div className={`absolute w-[${size.width}] top-[${size.height}] bg-white z-50`}>
+          {toggleIsOpen &&
+            option.map((el) => (
+              <div
+                key={el}
+                onClick={onChangeHandler}
+                className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray-300`}
+              >
+                {el}
+              </div>
+            ))}
+          {toggleIsOpen && selfEnterOption && (
+            <div
+              onClick={() => {
+                setSelectedValue("");
+                setToggleIsOpen(false);
+                setSelfEnterIsOpen(false);
+              }}
+              className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray-300`}
+            >
+              직접 입력
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};

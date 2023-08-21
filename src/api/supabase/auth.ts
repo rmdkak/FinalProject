@@ -1,7 +1,8 @@
+import { type SignupInputs } from "components/signup";
+import { type LoginInputs } from "pages";
 
 import { auth } from "./supabaseClient";
 
-import type { LoginInputs, SignupInputs } from "pages";
 
 // 로그인 기능
 export const login = async (inputValue: LoginInputs) => {
