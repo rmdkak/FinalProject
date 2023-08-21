@@ -21,40 +21,21 @@ export const MyInfo = () => {
     // }
   };
 
+  const inputStyle =
+    "w-full px-[24px] py-[12px] border-[1px] border-[#E5E5E5] placeholder:text-[#888] disabled:bg-white";
+
   return (
     <>
-      <form className="flex flex-col">
-        <label htmlFor="email">내 이메일</label>
-        <input
-          id="email"
-          disabled={true}
-          defaultValue={currentUser?.email}
-          className="px-3 py-2 border rounded-lg w-50 focus:outline-none focus:ring focus:border-blue-300"
-        />
-        <label htmlFor="phone">휴대전화</label>
-        <input
-          id="phone"
-          defaultValue={currentUser?.user_metadata.phone}
-          className="px-3 py-2 border rounded-lg w-50 focus:outline-none focus:ring focus:border-blue-300"
-        />
-        <label htmlFor="password">비밀번호</label>
-        <input
-          id="password"
-          className="px-3 py-2 border rounded-lg w-50 focus:outline-none focus:ring focus:border-blue-300"
-        />
-        <label htmlFor="passwordConfirm">비밀번호 확인</label>
-        <input
-          id="passwordConfirm"
-          className="px-3 py-2 border rounded-lg w-50 focus:outline-none focus:ring focus:border-blue-300"
-        />
-        <button className="px-4 py-2 font-semibold text-white bg-blue-400 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300">
-          수정하기
-        </button>
+      <form className="flex flex-col w-full gap-[16px]">
+        {/* 파일 Input UI 구성예정 */}
+        <input type="file" />
+        <input id="email" disabled={true} defaultValue={currentUser?.email} className={inputStyle} />
+        <input id="phone" defaultValue={currentUser?.user_metadata.phone} className={inputStyle} />
+        <input id="password" type="password" placeholder="비밀번호" className={inputStyle} />
+        <input id="passwordConfirm" type="password" placeholder="비밀번호 확인" className={inputStyle} />
+        <button className="w-full h-[48px] text-white bg-[#888] mt-[24px]">수정하기</button>
       </form>
-      <button
-        className="px-4 py-2 font-semibold text-white bg-red-400 rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring focus:border-blue-300"
-        onClick={deleteUserHandler}
-      >
+      <button className="w-full h-[48px] text-white bg-[#888] mt-[12px]" type="button" onClick={deleteUserHandler}>
         임시_회원탈퇴_버튼
       </button>
     </>
