@@ -27,19 +27,10 @@
       "error",
       {
         "groups": ["builtin", "external", "internal", ["sibling", "parent", "index"], "type", "unknown"],
-        "pathGroups": [
-          {
-            "pattern": "{react*,react*/**}",
-            "group": "external",
-            "position": "before"
-          }
-        ],
+        "pathGroups": [{ "pattern": "{react*,react*/**}", "group": "external", "position": "before" }],
         "pathGroupsExcludedImportTypes": ["react", "unknown"],
         "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
       }
     ]
   }
