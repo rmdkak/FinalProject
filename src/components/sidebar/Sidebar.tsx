@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 
-import close from "images/header/close.svg";
+import close from "assets/close.svg";
 
 interface Props {
   isOpen: boolean;
