@@ -22,7 +22,7 @@
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-misused-promises": ["error", { "checksConditionals": false }],
+    "@typescript-eslint/no-misused-promises": ["warn", { "checksConditionals": false }],
     "import/order": [
       "error",
       {

@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
-import { auth } from 'api/supabase';
-import Router from 'shared/Router';
-import { useAuthStore } from 'store';
+import { auth } from "api/supabase";
+import Router from "shared/Router";
+import { useAuthStore } from "store";
 
 const App = () => {
   const { stayLoggedInStatus, setCurrentSession } = useAuthStore();
@@ -10,7 +10,7 @@ const App = () => {
   useEffect(() => {
     const getAuthSession = async () => {
       await auth.getSession().then(({ data }) => {
-        console.log('getSession 작동');
+        console.log("getSession 작동");
         setCurrentSession(data.session);
       });
     };
@@ -23,10 +23,10 @@ const App = () => {
 
     auth.onAuthStateChange((event, session) => {
       switch (event) {
-        case 'SIGNED_IN':
+        case "SIGNED_IN":
           setCurrentSession(session);
           break;
-        case 'SIGNED_OUT':
+        case "SIGNED_OUT":
           setCurrentSession(null);
           break;
         default:

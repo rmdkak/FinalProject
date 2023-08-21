@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { deleteUser } from 'api/supabase';
-import { useAuthStore } from 'store';
+import { deleteUser } from "api/supabase";
+import { useAuthStore } from "store";
 
 export const Mypage = () => {
   const navigate = useNavigate();
@@ -12,51 +12,49 @@ export const Mypage = () => {
   const currentUser = currentSession === null ? null : currentSession.user;
 
   if (currentUser === null) {
-    navigate('/');
-    alert('프로필은 로그인 후 이용가능합니다.');
+    navigate("/");
+    alert("프로필은 로그인 후 이용가능합니다.");
   }
 
   // 회원 탈퇴
   const deleteUserHandler = async () => {
-    try {
-      if (currentUser === null) return;
-      if (confirm('정말 삭제하시겠습니까?')) {
-        await deleteUser(currentUser.id);
-        navigate('/');
-      }
-    } catch (error) {
-      console.error(error);
-      // TODO 커스텀alert 로직
-    }
+    // try {
+    if (currentUser === null) return;
+    await deleteUser(currentUser.id);
+    navigate("/");
+    // } catch (error) {
+    //   console.error(error);
+    //   // TODO 커스텀alert 로직
+    // }
   };
 
   const menuArray = [
     {
-      name: '내가 쓴 글',
+      name: "내가 쓴 글",
       component: (
         <>
           <p className="text-red-500">내가 쓴 글</p>
         </>
-      )
+      ),
     },
     {
-      name: '내가 쓴 댓글',
+      name: "내가 쓴 댓글",
       component: (
         <>
           <p className="text-red-500">내가 쓴 댓글</p>
         </>
-      )
+      ),
     },
     {
-      name: '북마크',
+      name: "북마크",
       component: (
         <>
           <p className="text-red-500">북마크</p>
         </>
-      )
+      ),
     },
     {
-      name: '내 정보',
+      name: "내 정보",
       component: (
         <>
           <p className="text-red-500">내 정보</p>
@@ -95,8 +93,8 @@ export const Mypage = () => {
             임시_회원탈퇴_버튼
           </button>
         </>
-      )
-    }
+      ),
+    },
   ];
 
   const selectMenuHandler = (index: number) => {
@@ -106,7 +104,7 @@ export const Mypage = () => {
   const menuTab = menuArray.map((el, index) => (
     <li
       key={index}
-      className={index === currentTab ? '포커스 된 css' : 'css'}
+      className={index === currentTab ? "포커스 된 css" : "css"}
       onClick={() => {
         selectMenuHandler(index);
       }}
@@ -122,12 +120,12 @@ export const Mypage = () => {
       <p>{currentUser?.user_metadata.nickname}</p>
       <p>
         {currentUser?.created_at !== undefined
-          ? `${'계정 생성일 '.concat(currentUser?.created_at.slice(0, 10))}`
+          ? `${"계정 생성일 ".concat(currentUser?.created_at.slice(0, 10))}`
           : null}
       </p>
       <p>
         {currentUser?.last_sign_in_at !== undefined
-          ? `${'마지막 로그인 '.concat(currentUser?.last_sign_in_at.slice(0, 10))}`
+          ? `${"마지막 로그인 ".concat(currentUser?.last_sign_in_at.slice(0, 10))}`
           : null}
       </p>
       <ul>{menuTab}</ul>
