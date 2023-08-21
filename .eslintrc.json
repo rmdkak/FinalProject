@@ -22,24 +22,15 @@
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-misused-promises": ["warn", { "checksConditionals": false }],
+    "@typescript-eslint/no-misused-promises": ["error", { "checksConditionals": false, "checksVoidReturn": false }],
     "import/order": [
       "error",
       {
         "groups": ["builtin", "external", "internal", ["sibling", "parent", "index"], "type", "unknown"],
-        "pathGroups": [
-          {
-            "pattern": "{react*,react*/**}",
-            "group": "external",
-            "position": "before"
-          }
-        ],
+        "pathGroups": [{ "pattern": "{react*,react*/**}", "group": "external", "position": "before" }],
         "pathGroupsExcludedImportTypes": ["react", "unknown"],
         "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
       }
     ]
   }

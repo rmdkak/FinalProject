@@ -1,7 +1,7 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { Layout } from 'components';
-import { Home, Service, Post, Community, Detail, Mypage, Login, Signup } from 'pages';
+import { Layout } from "components";
+import { Home, Service, Post, Community, Detail, Mypage, Login, Signup } from "pages";
 
 const Router = () => {
   return (
