@@ -1,7 +1,10 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
-import { logout } from 'api/supabase';
-import { useAuthStore } from 'store';
+import { logout } from "api/supabase";
+import hambergerMenu from "images/header/hamburgerMenu.svg";
+import logOutIcon from "images/header/logout.svg";
+import userIcon from "images/header/user.svg";
+import { useAuthStore } from "store";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -28,41 +31,37 @@ export const Header = () => {
   };
 
   return (
-    <header>
-      <button
-        className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-        onClick={() => {
-          navigate('/');
-        }}
-      >
-        Header
-      </button>
+    <header className="flex justify-between items-center px-[2.75rem]">
+      <Link to="/" className="py-6 font-title">
+        STILE
+      </Link>
+
       {currentSession === null ? (
         <>
-          <button
-            onClick={() => {
-              navigate('/login');
-            }}
-            className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-          >
-            로그인
+          {/* 로그인 안되어있는 메뉴 */}
+          <button>
+            <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]"></span>
+            <img src={hambergerMenu} alt="햄버거메뉴 이미지" />
           </button>
         </>
       ) : (
         <>
-          <button
-            className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-            onClick={logoutHandler}
-          >
-            임시_로그아웃_버튼
-          </button>
+          {/* 로그인 되어있는 메뉴 */}
+          <div className="flex items-center justify-center">
+            <button className="mr-2" onClick={logoutHandler}>
+              <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
+              <img src={logOutIcon} alt="로그아웃" />
+            </button>
 
-          <button
-            className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-            onClick={goToMypage}
-          >
-            임시_마이페이지_버튼
-          </button>
+            <button className="mr-2" onClick={goToMypage}>
+              <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">마이페이지버튼</span>
+              <img src={userIcon} alt="마이 페이지" />
+            </button>
+            <button className="">
+              <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
+              <img src={hambergerMenu} alt="햄버거 메뉴" />
+            </button>
+          </div>
         </>
       )}
     </header>
