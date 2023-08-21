@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { logout } from "api/supabase";
+import hambergerMenu from "assets/hamburgerMenu.svg";
+import logOutIcon from "assets/logout.svg";
+import userIcon from "assets/user.svg";
 import Sidebar from "components/sidebar/Sidebar";
-import hambergerMenu from "images/header/hamburgerMenu.svg";
-import logOutIcon from "images/header/logout.svg";
-import userIcon from "images/header/user.svg";
 import { useAuthStore } from "store";
 
 export const Header = () => {
