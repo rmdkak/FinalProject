@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 
+import test from "assets/test.jpg";
+import { GetColor } from "components/colorExtraction";
+
 export const Service = () => {
   const [clickType, setClickType] = useState<"tile" | "wallpaper" | undefined>();
 
@@ -118,25 +121,7 @@ export const Service = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col w-full gap-20">
-            <div>
-              <h2 className="mb-8 text-3xl font-medium">현재 색상 코드</h2>
-              <ul className="flex flex-wrap gap-4">
-                <li className="w-32 h-32 bg-gray-200"></li>
-                <li className="w-32 h-32 bg-gray-200"></li>
-              </ul>
-            </div>
-            <div>
-              <h2 className="mb-8 text-3xl font-medium">현재 색상과 어울리는 추천 조합</h2>
-              <ul className="flex flex-wrap gap-4">
-                <li className="w-32 h-32 bg-gray-200"></li>
-                <li className="w-32 h-32 bg-gray-200"></li>
-                <li className="w-32 h-32 bg-gray-200"></li>
-                <li className="w-32 h-32 bg-gray-200"></li>
-                <li className="w-32 h-32 bg-gray-200"></li>
-              </ul>
-            </div>
-          </div>
+          <GetColor src={test} />
         </div>
       </div>
     </>
