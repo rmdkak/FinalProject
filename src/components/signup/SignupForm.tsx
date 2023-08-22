@@ -80,7 +80,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
         <div className="flex items-center w-full">
           <div className="w-[180px]">
-            {useFormInput("email", "이메일", "email", {
+            {useFormInput("email", "이메일", "text", {
               required: "이메일을 입력해주세요.",
               minLength: { value: 8, message: "이메일이 너무 짧습니다." },
             })}
