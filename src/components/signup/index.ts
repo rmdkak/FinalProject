@@ -1,3 +1,3 @@
-export * from './SignupComplete'
-export * from './SignupForm'
-export * from './TermsOfUse'
+export * from "./SignupComplete";
+export * from "./SignupForm";
+export * from "./TermsOfUse";
