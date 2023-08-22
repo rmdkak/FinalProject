@@ -1,4 +1,3 @@
-
 import { auth } from "./supabaseClient";
 
 import type { LoginInputs, SignupInputs } from "pages";

@@ -52,20 +52,20 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'COMMENTS_postId_fkey';
-            columns: ['postId'];
-            referencedRelation: 'POSTS';
-            referencedColumns: ['id'];
+            foreignKeyName: "COMMENTS_postId_fkey";
+            columns: ["postId"];
+            referencedRelation: "POSTS";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'COMMENTS_writtenId_fkey';
-            columns: ['writtenId'];
-            referencedRelation: 'USERS';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "COMMENTS_writtenId_fkey";
+            columns: ["writtenId"];
+            referencedRelation: "USERS";
+            referencedColumns: ["id"];
+          },
         ];
       };
-      'ITEM-BOOKMARK': {
+      "ITEM-BOOKMARK": {
         Row: {
           id: string;
           tileId: string;
@@ -86,26 +86,26 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'ITEM-BOOKMARK_tileId_fkey';
-            columns: ['tileId'];
-            referencedRelation: 'TILE';
-            referencedColumns: ['id'];
+            foreignKeyName: "ITEM-BOOKMARK_tileId_fkey";
+            columns: ["tileId"];
+            referencedRelation: "TILE";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'ITEM-BOOKMARK_userId_fkey';
-            columns: ['userId'];
-            referencedRelation: 'USERS';
-            referencedColumns: ['id'];
+            foreignKeyName: "ITEM-BOOKMARK_userId_fkey";
+            columns: ["userId"];
+            referencedRelation: "USERS";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'ITEM-BOOKMARK_wallpaperId_fkey';
-            columns: ['wallpaperId'];
-            referencedRelation: 'WALLPAPER';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "ITEM-BOOKMARK_wallpaperId_fkey";
+            columns: ["wallpaperId"];
+            referencedRelation: "WALLPAPER";
+            referencedColumns: ["id"];
+          },
         ];
       };
-      'POST-BOOKMARKS': {
+      "POST-BOOKMARKS": {
         Row: {
           postId: string;
           userId: string[];
@@ -120,11 +120,11 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'POST-BOOKMARKS_postId_fkey';
-            columns: ['postId'];
-            referencedRelation: 'POSTS';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "POST-BOOKMARKS_postId_fkey";
+            columns: ["postId"];
+            referencedRelation: "POSTS";
+            referencedColumns: ["id"];
+          },
         ];
       };
       POSTS: {
@@ -133,6 +133,7 @@ export interface Database {
           content: string;
           created_at: string;
           id: string;
+          nickname: string | null;
           tileId: string | null;
           title: string;
           wallpaperId: string | null;
@@ -142,6 +143,7 @@ export interface Database {
           content: string;
           created_at?: string;
           id?: string;
+          nickname?: string | null;
           tileId?: string | null;
           title: string;
           wallpaperId?: string | null;
@@ -151,26 +153,27 @@ export interface Database {
           content?: string;
           created_at?: string;
           id?: string;
+          nickname?: string | null;
           tileId?: string | null;
           title?: string;
           wallpaperId?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'POSTS_tileId_fkey';
-            columns: ['tileId'];
-            referencedRelation: 'TILE';
-            referencedColumns: ['id'];
+            foreignKeyName: "POSTS_tileId_fkey";
+            columns: ["tileId"];
+            referencedRelation: "TILE";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'POSTS_wallpaperId_fkey';
-            columns: ['wallpaperId'];
-            referencedRelation: 'WALLPAPER';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "POSTS_wallpaperId_fkey";
+            columns: ["wallpaperId"];
+            referencedRelation: "WALLPAPER";
+            referencedColumns: ["id"];
+          },
         ];
       };
-      'RE-COMMENTS': {
+      "RE-COMMENTS": {
         Row: {
           commentId: string;
           content: string;
@@ -194,17 +197,17 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'RE-COMMENTS_commentId_fkey';
-            columns: ['commentId'];
-            referencedRelation: 'COMMENTS';
-            referencedColumns: ['id'];
+            foreignKeyName: "RE-COMMENTS_commentId_fkey";
+            columns: ["commentId"];
+            referencedRelation: "COMMENTS";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'RE-COMMENTS_writtenId_fkey';
-            columns: ['writtenId'];
-            referencedRelation: 'USERS';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "RE-COMMENTS_writtenId_fkey";
+            columns: ["writtenId"];
+            referencedRelation: "USERS";
+            referencedColumns: ["id"];
+          },
         ];
       };
       TILE: {
@@ -391,11 +394,11 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'objects_bucketId_fkey';
-            columns: ['bucket_id'];
-            referencedRelation: 'buckets';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "objects_bucketId_fkey";
+            columns: ["bucket_id"];
+            referencedRelation: "buckets";
+            referencedColumns: ["id"];
+          },
         ];
       };
     };
@@ -467,4 +470,4 @@ export interface Database {
   };
 }
 
-export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row'];
+export type Tables<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"];
