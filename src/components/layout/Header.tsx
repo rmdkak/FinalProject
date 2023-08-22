@@ -1,9 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import { logout } from 'api/supabase';
-import { useAuthStore } from 'store';
+import { logout } from "api/supabase";
+import hambergerMenu from "assets/hamburgerMenu.svg";
+import logOutIcon from "assets/logout.svg";
+import userIcon from "assets/user.svg";
+import Sidebar from "components/sidebar/Sidebar";
+import { useAuthStore } from "store";
 
 export const Header = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const { currentSession } = useAuthStore();
@@ -27,44 +33,50 @@ export const Header = () => {
     navigate(`/mypage/${userUid}`);
   };
 
+  const openSideBarHandler = (): void => {
+    setIsOpen(true);
+  };
   return (
-    <header>
-      <button
-        className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-        onClick={() => {
-          navigate('/');
-        }}
-      >
-        Header
-      </button>
-      {currentSession === null ? (
-        <>
-          <button
-            onClick={() => {
-              navigate('/login');
-            }}
-            className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-          >
-            로그인
-          </button>
-        </>
-      ) : (
-        <>
-          <button
-            className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-            onClick={logoutHandler}
-          >
-            임시_로그아웃_버튼
-          </button>
+    <>
+      <header className="flex justify-between items-center px-[5rem]">
+        <Link to="/" className="py-6 font-title text-[2rem]">
+          STILE
+        </Link>
 
-          <button
-            className='px-4 py-2 font-semibold text-white bg-teal-400 rounded-lg shadow-md hover:bg-teal-600 focus:outline-none focus:ring focus:border-blue-300'
-            onClick={goToMypage}
-          >
-            임시_마이페이지_버튼
-          </button>
-        </>
-      )}
-    </header>
+        {currentSession === null ? (
+          <>
+            {/* 로그인 안되어있는 메뉴 */}
+            <button onClick={openSideBarHandler}>
+              <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]"></span>
+              <img src={hambergerMenu} alt="햄버거메뉴 이미지" />
+            </button>
+          </>
+        ) : (
+          <>
+            {/* 로그인 되어있는 메뉴 */}
+            {/* 로그아웃 */}
+            <div className="flex items-center justify-center">
+              <button className="mr-2" onClick={logoutHandler}>
+                <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
+                <img src={logOutIcon} alt="로그아웃" />
+              </button>
+
+              {/* 마이페이지 */}
+              <button className="mr-2" onClick={goToMypage}>
+                <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">마이페이지버튼</span>
+                <img src={userIcon} alt="마이 페이지" />
+              </button>
+
+              {/* 햄버거 */}
+              <button onClick={openSideBarHandler} className="">
+                <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
+                <img src={hambergerMenu} alt="햄버거 메뉴" />
+              </button>
+            </div>
+          </>
+        )}
+      </header>
+      <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+    </>
   );
 };
