@@ -133,6 +133,7 @@ export interface Database {
           content: string;
           created_at: string;
           id: string;
+          nickname: string | null;
           tileId: string | null;
           title: string;
           wallpaperId: string | null;
@@ -142,6 +143,7 @@ export interface Database {
           content: string;
           created_at?: string;
           id?: string;
+          nickname?: string | null;
           tileId?: string | null;
           title: string;
           wallpaperId?: string | null;
@@ -151,6 +153,7 @@ export interface Database {
           content?: string;
           created_at?: string;
           id?: string;
+          nickname?: string | null;
           tileId?: string | null;
           title?: string;
           wallpaperId?: string | null;
