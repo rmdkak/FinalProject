@@ -75,31 +75,7 @@ export const Service = () => {
                 )}
               </div>
               <div className="h-[392px] mb-10 overflow-auto">
-                <ul className="flex flex-wrap w-full gap-x-4 gap-y-4">
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                </ul>
+                <ul className="flex flex-wrap w-full gap-x-4 gap-y-4"></ul>
               </div>
 
               <div>
