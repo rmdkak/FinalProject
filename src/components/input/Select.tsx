@@ -2,15 +2,13 @@ import { useState, type MouseEvent, type ChangeEvent, type Dispatch } from "reac
 
 import arrowIcon from "assets/arrowIcon.svg";
 
-type CSSUnit = `${number}${"px" | "em" | "rem" | "%"}`;
-
 interface Props {
   option: string[];
   selectedValue: string | undefined;
   setSelectedValue: Dispatch<React.SetStateAction<string | undefined>>;
   placeholder?: string;
   selfEnterOption: boolean;
-  size: { width: CSSUnit; height: CSSUnit };
+  size: { width: string; height: string };
 }
 
 export const Select = (props: Props) => {
@@ -34,61 +32,58 @@ export const Select = (props: Props) => {
   const commonStyle = "px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
 
   return (
-    <>
-      <div className={`relative flex w-[${size.width}] h-[${size.height}]`}>
-        {selfEnterIsOpen ? (
-          <>
-            <button
-              className={`flex w-[${size.width}] h-[${size.height}] ${commonStyle}`}
-              type="button"
-              onClick={changeToggleHandler}
-            >
-              <p className="">{selectedValue !== undefined ? selectedValue : placeholder}</p>
-              <img className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer" src={arrowIcon} />
-            </button>
-          </>
-        ) : (
-          <>
-            <input
-              onChange={(event) => {
-                setSelectedValue(event?.target.value);
-              }}
-              value={selectedValue}
-              className={`w-[${size.width}] ${commonStyle}`}
-            />
-
-            <img
-              onClick={changeToggleHandler}
-              className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer"
-              src={arrowIcon}
-            />
-          </>
-        )}
-        <div className={`absolute w-[${size.width}] top-[${size.height}] bg-white z-50`}>
-          {toggleIsOpen &&
-            option.map((el) => (
-              <div
-                key={el}
-                onClick={onChangeHandler}
-                className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray-300`}
-              >
-                {el}
-              </div>
-            ))}
-          {toggleIsOpen && selfEnterOption && (
+    <div className={`relative flex w-[${size.width}] h-[${size.height}]`}>
+      {selfEnterIsOpen ? (
+        <>
+          <button
+            className={`flex w-full h-[${size.height}] ${commonStyle}`}
+            type="button"
+            onClick={changeToggleHandler}
+          >
+            <p className="whitespace-nowrap">{selectedValue !== undefined ? selectedValue : placeholder}</p>
+            <img className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer" src={arrowIcon} />
+          </button>
+        </>
+      ) : (
+        <>
+          <input
+            onChange={(event) => {
+              setSelectedValue(event?.target.value);
+            }}
+            value={selectedValue}
+            className={`w-[100%] ${commonStyle}`}
+          />
+          <img
+            onClick={changeToggleHandler}
+            className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer"
+            src={arrowIcon}
+          />
+        </>
+      )}
+      <div className={`absolute w-full top-[${size.height}] translate-y-[${size.height}] bg-white z-50`}>
+        {toggleIsOpen &&
+          option.map((el) => (
             <div
-              onClick={() => {
-                setSelectedValue("");
-                setToggleIsOpen(false);
-                setSelfEnterIsOpen(false);
-              }}
+              key={el}
+              onClick={onChangeHandler}
               className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray-300`}
             >
-              직접 입력
+              {el}
             </div>
-          )}
-        </div>
+          ))}
+        {toggleIsOpen && selfEnterOption && (
+          <div
+            onClick={() => {
+              setSelectedValue("");
+              setToggleIsOpen(false);
+              setSelfEnterIsOpen(false);
+            }}
+            className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray-300`}
+          >
+            직접 입력
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };

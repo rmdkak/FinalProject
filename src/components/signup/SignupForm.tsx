@@ -79,17 +79,19 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       <h2 className="text-[32px] font-[700] leading-[130%] mt-[40px]">회원가입</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
         <div className="flex items-center w-full">
-          {useFormInput("email", "이메일", "email", {
-            required: "이메일을 입력해주세요.",
-            minLength: { value: 8, message: "이메일이 너무 짧습니다." },
-          })}
+          <div className="w-[180px]">
+            {useFormInput("email", "이메일", "email", {
+              required: "이메일을 입력해주세요.",
+              minLength: { value: 8, message: "이메일이 너무 짧습니다." },
+            })}
+          </div>
           <span className="mx-[8px]">@</span>
           <Select
             option={emailOptions}
             selectedValue={selectEmail}
             setSelectedValue={setSelectEmail}
             selfEnterOption={true}
-            size={{ width: "200px", height: "50px" }}
+            size={{ width: "180px", height: "50px" }}
           />
           {/* <button className="w-[70px] bg">중복 체크</button> */}
           <button type="button" className="h-[50px] text-white bg-[#888] ml-[8px] px-[20px] whitespace-nowrap">
