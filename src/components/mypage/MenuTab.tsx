@@ -13,6 +13,7 @@ const getMyPosts: Array<Tables<"POSTS">> = [
     id: "uuid",
     tileId: "uuid",
     wallpaperId: "uuid",
+    nickname: "김진수",
   },
 ];
 

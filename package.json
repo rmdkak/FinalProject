@@ -12,12 +12,14 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "color-thief-react": "^2.1.0",
     "eslint": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
+    "tinycolor2": "^1.6.0",
     "typescript": "*",
     "web-vitals": "^2.1.0",
     "zustand": "^4.4.1"
@@ -42,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@types/tinycolor2": "^1.4.3",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "autoprefixer": "^10.4.15",
     "eslint-config-prettier": "^9.0.0",
