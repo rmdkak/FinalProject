@@ -61,7 +61,7 @@ export const Community = () => {
     <>
       <div className="text-center">
         <p className="font-bold text-[30px]">커뮤니티</p>
-      <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
+        <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
       </div>
       <select
         value={selectedOption}

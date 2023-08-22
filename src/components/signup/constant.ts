@@ -83,8 +83,8 @@ export const TERMS_2 = `개인정보 수집 및 이용동의 약관
   본 약관에 동의하시면 당사의 개인정보 처리에 동의하는 것으로 간주됩니다.
   본 약관에 동의합니다.
   - ${nowDate.getFullYear()}년 ${nowDate.getMonth() + 1}월 ${nowDate.getDate()}일
-`
+`;
 
-export const emailOptions = ["naver.com", "gmail.com", "kakao.com", "daum.net"]
+export const emailOptions = ["naver.com", "gmail.com", "kakao.com", "daum.net"];
 
-export const phoneOptions = ["010", "012", "013", "015"]
+export const phoneOptions = ["010", "012", "013", "015"];
