@@ -236,21 +236,21 @@ export interface Database {
           email: string;
           id: string;
           nickname: string;
-          phoneNum: number;
+          phoneNum: string;
           profileImg: string | null;
         };
         Insert: {
           email: string;
           id?: string;
           nickname: string;
-          phoneNum: number;
+          phoneNum: string;
           profileImg?: string | null;
         };
         Update: {
           email?: string;
           id?: string;
           nickname?: string;
-          phoneNum?: number;
+          phoneNum?: string;
           profileImg?: string | null;
         };
         Relationships: [];
@@ -470,4 +470,4 @@ export interface Database {
   };
 }
 
-export type Tables<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"];
+export type Tables<T extends keyof Database["public"]["Tables"], A extends keyof Database["public"]["Tables"][T]> = Database["public"]["Tables"][T][A];

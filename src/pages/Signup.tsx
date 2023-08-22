@@ -3,6 +3,9 @@ import { useState } from "react";
 import { SignupComplete, SignupForm, TermsOfUse } from "components/signup";
 
 export type Step = 0 | 1 | 2;
+
+export const BUTTON_COMMON_STYLE = "w-full h-[48px] text-white bg-[#888] mt-[24px] disabled:bg-[#bbb]";
+
 export const Signup = () => {
   const [step, setStep] = useState<Step>(0);
 

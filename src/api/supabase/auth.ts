@@ -1,9 +1,10 @@
 
-import { type SignupInputs } from "components/signup";
 import { type LoginInputs } from "pages";
+import { type Tables } from "types/supabase";
 
-import { auth } from "./supabaseClient";
+import { auth, supabase } from "./supabaseClient";
 
+const TABLE = "USERS"
 
 // 로그인 기능
 export const login = async (inputValue: LoginInputs) => {
@@ -25,18 +26,31 @@ const printErrorMessage = (message: string) => {
   }
 };
 
+interface SignupInputs {
+  email: string;
+  password: string;
+  phoneNum: string;
+  nickname?: string | null | undefined;
+}
+
 // 회원가입 기능
 export const signup = async (inputValue: SignupInputs) => {
-  const { email, password, nickname, phone } = inputValue;
+  const { email, password, nickname, phoneNum } = inputValue;
   const { error } = await auth.signUp({
     email,
     password,
-    options: { data: { nickname, phone } },
+    options: { data: { nickname, phoneNum } },
   });
 
   if (error != null) {
     throw new Error(printErrorMessage(error.message));
   }
+};
+
+// 회원 정보 저장
+export const postUser = async (inputValue: Tables<"USERS", "Insert">) => {
+  const { error } = await supabase.from(TABLE).insert([inputValue]).select();
+  console.error("Error", error);
 };
 
 // 구글 로그인 및 회원가입 기능

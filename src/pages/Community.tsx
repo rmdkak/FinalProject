@@ -11,7 +11,7 @@ export const storageUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
 export const Community = () => {
   const navigate = useNavigate();
-  const [postList, setPostList] = useState<Array<Tables<"POSTS">>>([]);
+  const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
 
@@ -29,7 +29,7 @@ export const Community = () => {
       console.error("Error fetching data:", error);
       return;
     }
-    setPostList(data as Array<Tables<"POSTS">>);
+    setPostList(data as Array<Tables<"POSTS", "Row">>);
   };
 
   const paginate = (pageNumber: number) => {
@@ -61,7 +61,7 @@ export const Community = () => {
     <>
       <div className="text-center">
         <p className="font-bold text-[30px]">커뮤니티</p>
-      <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
+        <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
       </div>
       <select
         value={selectedOption}

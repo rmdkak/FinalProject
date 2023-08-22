@@ -4,7 +4,7 @@ import { MyBookmarks, MyComments, MyInfo, MyPosts } from "components/mypage";
 import { type Tables } from "types/supabase";
 
 // 임시 데이터 length 작동 확인용
-const getMyPosts: Array<Tables<"POSTS">> = [
+const getMyPosts: Array<Tables<"POSTS", "Row">> = [
   {
     bookmark: 0,
     title: "Hi",
@@ -13,17 +13,18 @@ const getMyPosts: Array<Tables<"POSTS">> = [
     id: "uuid",
     tileId: "uuid",
     wallpaperId: "uuid",
+    nickname: "유준호",
   },
 ];
 
 // 임시 데이터 length 작동 확인용
-const getMyComments: Array<Tables<"COMMENTS">> = [
+const getMyComments: Array<Tables<"COMMENTS", "Row">> = [
   { content: "string", created_at: "string", id: "string", postId: "string", writtenId: "string" },
   { content: "string", created_at: "string", id: "string", postId: "string", writtenId: "string" },
 ];
 
 // 임시 데이터 length 작동 확인용
-const getMyBookmarks: Array<Tables<"ITEM-BOOKMARK">> = [
+const getMyBookmarks: Array<Tables<"ITEM-BOOKMARK", "Row">> = [
   { id: "string", tileId: "string", userId: "string", wallpaperId: "string" },
   { id: "string", tileId: "string", userId: "string", wallpaperId: "string" },
   { id: "string", tileId: "string", userId: "string", wallpaperId: "string" },
