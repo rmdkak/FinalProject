@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Arrow } from "@egjs/flicking-plugins";
+import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { supabase } from "api/supabase";
 import { DateConvertor } from "components/date/index";
-import { Pagination } from "components/pagination/index";
+import { PostPagination } from "components/pagination/index";
 import { type Tables } from "types/supabase";
+import "@egjs/flicking-plugins/dist/arrow.css";
+import "@egjs/react-flicking/dist/flicking.css";
 
-export const POSTS_PER_PAGE = 5;
+export const POSTS_PER_PAGE = 4;
 export const storageUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
+const plugins = [new Arrow()];
 
 export const Community = () => {
   const navigate = useNavigate();
@@ -17,6 +22,7 @@ export const Community = () => {
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -56,36 +62,78 @@ export const Community = () => {
   const indexOfLastPost = currentPage * POSTS_PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentFilteredPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-
   return (
     <>
-      <div className="text-center">
-        <p className="font-bold text-[30px]">커뮤니티</p>
-        <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
+      <div className="flex flex-col md:w-[1200px] mx-auto">
+        <div className="text-center">
+          <p className="font-bold text-[30px]">커뮤니티</p>
+          <p className="text-[#888888] mb-10">서브 텍스트입니다. 서브 텍스트입니다. 서브 텍스트입니다.</p>
+        </div>
+
+        <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5">1</div>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5">2</div>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5">3</div>
+          {postList
+            .filter((post) => post.tileId != null && post.wallpaperId)
+            .map((post) => (
+              <div key={post.id}>
+                <div className="flex">
+                  <img
+                    src={`${storageUrl}/wallpaper/${post.wallpaperId as string}`}
+                    alt="벽지"
+                    className="w-[150px] h-[150px]"
+                  />
+                  <img src={`${storageUrl}/tile/${post.tileId as string}`} alt="바닥" className="w-[150px] h-[150px]" />
+                </div>
+                <div className="flex flex-col">
+                  <p className="mt-8 text-lg font-medium truncate w-[300px]">{post.title}</p>
+                  <p className="mt-1 mb-10 text-[#888888] truncate line-clamp-2 w-[300px]">{post.content}</p>
+                  <div className="text-[#888888] flex gap-5">
+                    {post.nickname}
+                    <div>
+                      <DateConvertor datetime={post.created_at} type="dotDate" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          <ViewportSlot>
+            <span className="flicking-arrow-prev is-thin"></span>
+            <span className="flicking-arrow-next is-thin"></span>
+          </ViewportSlot>
+        </Flicking>
       </div>
       <select
         value={selectedOption}
         onChange={handleOptionChange}
-        className="relative p-1 border border-gray-300 rounded shadow left-[18%] focus:outline-none focus:border-blue-500"
+        className="md:relative p-1 border border-[#dddddd] rounded shadow left-[350px] top-[100px] focus:outline-none"
       >
         <option value="whole">전체 게시물</option>
         <option value="normal">일반 게시물</option>
         <option value="recommendation">추천 게시물</option>
       </select>
-      <div className="flex justify-center">
-        <div className="w-full md:w-[1300px] px-4">
+      <div className="flex justify-center ">
+        <div className="md:w-[1200px] border-t border-[#dddddd] pt-[100px]">
           {currentFilteredPosts.map((post) => {
             return (
               <div
                 key={post.id}
-                className="flex flex-col md:flex-row bg-[#c2c2c2] gap-5 p-5 m-5 rounded-lg cursor-pointer hover:bg-gray-200"
+                className="flex border-b border-[#dddddd] gap-5 py-5 my-5 cursor-pointer md:flex-row"
                 onClick={goDetailPage}
               >
                 <div className="md:w-3/4">
-                  <div className="text-lg font-semibold">{post.title}</div>
-                  <div className="mt-1 text-gray-600">{post.content}</div>
+                  <div className="text-lg font-medium truncate w-[600px] ">{post.title}</div>
+                  <div className="mt-1 mb-10 h-[4.5em] overflow-hidden">
+                    <div className="mt-1 mb-10 text-[#888888] line-clamp-2 w-[600px]">{post.content}</div>
+                  </div>
+                  <div className="text-[#888888] flex gap-5">
+                    {post.nickname}
+                    <div>
+                      <DateConvertor datetime={post.created_at} type="dotDate" />
+                    </div>
+                  </div>
                 </div>
-
                 {post.wallpaperId !== null && post.tileId !== null && (
                   <>
                     <span>벽지</span>
@@ -94,20 +142,13 @@ export const Community = () => {
                     <img src={`${storageUrl}/tile/${post.tileId}`} alt="바닥" className="w-[80px] h-[80px]" />
                   </>
                 )}
-
-                <div className="text-right md:w-1/4">
-                  <div className="text-gray-600">작성자:{post.nickname}</div>
-                  <div className="mt-2 text-gray-500">
-                    <DateConvertor datetime={post.created_at} />
-                  </div>
-                </div>
               </div>
             );
           })}
         </div>
       </div>
       <div className="flex justify-center">
-        <Pagination totalPosts={filteredPosts.length} paginate={paginate} />
+        <PostPagination totalPosts={filteredPosts.length} paginate={paginate} />
       </div>
     </>
   );
