@@ -52,9 +52,8 @@ export const MenuTab = () => {
     <>
       {/* 이미지 파일 변경 예정 */}
       {index !== 0 && <p className="w-[21px] self-center text-center">|</p>}
-
       <li
-        key={index}
+        key={el.name}
         className={index === currentTab ? `${liCommonStyle} ${liSelectStyle}` : liCommonStyle}
         onClick={() => {
           selectMenuHandler(index);
@@ -63,7 +62,11 @@ export const MenuTab = () => {
         {/* 아이콘 24px 정사각형 */}
         <img src={el.icon.svg} alt={el.icon.alt} />
         <p className="text-[18px] font-[400] leading-[130%]">{el.name}</p>
-        {el.name === "내 정보" ? <></> : <p className="text-[20px] font-[500] leading-[130%]">{el.data?.length}</p>}
+        {el.name === "내 정보" ? (
+          <p className="text-[20px] font-[500] leading-[130%]">수정</p>
+        ) : (
+          <p className="text-[20px] font-[500] leading-[130%]">{el.data?.length}</p>
+        )}
       </li>
     </>
   ));

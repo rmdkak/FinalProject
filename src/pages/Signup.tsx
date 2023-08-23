@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { SignupComplete, SignupForm, TermsOfUse } from "components/signup";
+import { SignupComplete, SignupForm, TermsOfUse } from "components";
 
 export type Step = 0 | 1 | 2;
 

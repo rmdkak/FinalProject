@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { type RegisterOptions, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { postUser, signup } from "api/supabase";
+import { signup } from "api/supabase";
 import { Select } from "components/input";
 import { BUTTON_COMMON_STYLE } from "pages";
 import { useAuthStore } from "store";
@@ -16,10 +16,9 @@ export interface SignupInputs {
   id: string;
   password: string;
   passwordCheck: string;
-  nickname: string;
+  name: string;
   phoneMiddleNum: string;
   phoneLastNum: string;
-  profileImg?: string | null | undefined;
 }
 
 type UseFormInput = (
@@ -44,16 +43,14 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const [selectPhoneFistNum, setSelectPhoneFistNum] = useState<string | undefined>();
 
   const [checkedEmail, setCheckedEmail] = useState(false);
+  const [checkedName, setCheckedName] = useState(false);
 
   const {
     register,
     handleSubmit,
     setError,
-    watch,
     formState: { errors },
   } = useForm<SignupInputs>({ mode: "all" });
-
-  console.log(selectPhoneFistNum, watch("phoneMiddleNum"), watch("phoneLastNum"));
 
   useEffect(() => {
     const getUsers = async () => {
@@ -65,24 +62,28 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   }, []);
 
   // 중복체크
-  const duplicateCheck = () => {
+  const emailDuplicateCheck = () => {
     setCheckedEmail(true);
+  };
+  const nameDuplicateCheck = () => {
+    setCheckedName(true);
   };
 
   const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
-    const { phoneMiddleNum, phoneLastNum, id, nickname, profileImg } = data;
+    const { phoneMiddleNum, phoneLastNum, id } = data;
 
     if (selectEmail === undefined) {
       setError("id", { message: "email을 선택해주세요." });
       return;
     }
-
     if (!checkedEmail) {
       setError("id", { message: "중복 체크를 해주세요." });
       return;
     }
-
-    console.log("phoneMiddleNum.length :", phoneMiddleNum.length);
+    if (!checkedName) {
+      setError("name", { message: "중복 체크를 해주세요." });
+      return;
+    }
     if (
       selectPhoneFistNum === undefined ||
       phoneMiddleNum.length < 3 ||
@@ -94,23 +95,12 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       return;
     }
 
-    // if (phoneMiddleNum === null || phoneLastNum === null) {
-    //   setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
-    //   return;
-    // }
-
-    // if (selectPhoneFistNum.length !== 3) {
-    //   setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
-    //   return;
-    // }
-
     const email = `${id}@${selectEmail}`;
 
-    const phoneNum = `${selectPhoneFistNum}-${phoneMiddleNum}-${phoneLastNum}`;
+    const phone = `${selectPhoneFistNum}-${phoneMiddleNum}-${phoneLastNum}`;
 
     try {
-      await signup({ ...data, email, phoneNum });
-      await postUser({ email, phoneNum, nickname, profileImg });
+      await signup({ ...data, email, phone });
       nextStep();
     } catch (error) {
       console.error("error:", error);
@@ -154,27 +144,21 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             selfEnterOption={true}
           />
           {/* <button className="w-[70px] bg">중복 체크</button> */}
-          <button
-            type="button"
-            className={DUPLICATE_CHECK_BUTTON}
-            onClick={() => {
-              duplicateCheck();
-            }}
-          >
+          <button type="button" className={DUPLICATE_CHECK_BUTTON} onClick={emailDuplicateCheck}>
             중복 체크
           </button>
         </div>
         <InvalidText errorsMessage={errors.id?.message} />
         <div className="flex items-center w-full">
-          {useFormInput("nickname", "닉네임", "text", {
+          {useFormInput("name", "닉네임", "text", {
             required: "닉네임을 입력해주세요.",
             minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
           })}
-          <button type="button" className={DUPLICATE_CHECK_BUTTON}>
+          <button type="button" className={DUPLICATE_CHECK_BUTTON} onClick={nameDuplicateCheck}>
             중복 체크
           </button>
         </div>
-        <InvalidText errorsMessage={errors.nickname?.message} />
+        <InvalidText errorsMessage={errors.name?.message} />
 
         {useFormInput("password", "비밀번호", "password", {
           required: "비밀번호를 입력해주세요.",

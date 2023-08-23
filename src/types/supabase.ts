@@ -235,23 +235,23 @@ export interface Database {
         Row: {
           email: string;
           id: string;
-          nickname: string;
-          phoneNum: string;
-          profileImg: string | null;
+          name: string;
+          phone: string;
+          avatar_url: string;
         };
         Insert: {
           email: string;
           id?: string;
-          nickname: string;
-          phoneNum: string;
-          profileImg?: string | null;
+          name: string;
+          phone: string;
+          avatar_url?: string;
         };
         Update: {
           email?: string;
           id?: string;
-          nickname?: string;
-          phoneNum?: string;
-          profileImg?: string | null;
+          name?: string;
+          phone?: string;
+          avatar_url?: string;
         };
         Relationships: [];
       };
