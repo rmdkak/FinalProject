@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RxBookmarkFilled, RxBookmark } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
 import { Arrow } from "@egjs/flicking-plugins";
@@ -16,7 +17,7 @@ const plugins = [new Arrow()];
 
 export const Community = () => {
   const navigate = useNavigate();
-  const [postList, setPostList] = useState<Array<Tables<"POSTS">>>([]);
+  const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
 
@@ -35,7 +36,7 @@ export const Community = () => {
       console.error("Error fetching data:", error);
       return;
     }
-    setPostList(data as Array<Tables<"POSTS">>);
+    setPostList(data as Array<Tables<"POSTS", "Row">>);
   };
 
   const paginate = (pageNumber: number) => {
@@ -117,13 +118,11 @@ export const Community = () => {
         <div className="md:w-[1200px] border-t border-[#dddddd] pt-[100px]">
           {currentFilteredPosts.map((post) => {
             return (
-              <div
-                key={post.id}
-                className="flex border-b border-[#dddddd] gap-5 py-5 my-5 cursor-pointer md:flex-row"
-                onClick={goDetailPage}
-              >
+              <div key={post.id} className="flex border-b border-[#dddddd] gap-5 py-5 my-5 md:flex-row">
                 <div className="md:w-3/4">
-                  <div className="text-lg font-medium truncate w-[600px] ">{post.title}</div>
+                  <div className="text-lg font-medium truncate w-[600px] cursor-pointer" onClick={goDetailPage}>
+                    {post.title}
+                  </div>
                   <div className="mt-1 mb-10 h-[4.5em] overflow-hidden">
                     <div className="mt-1 mb-10 text-[#888888] line-clamp-2 w-[600px]">{post.content}</div>
                   </div>
@@ -132,6 +131,8 @@ export const Community = () => {
                     <div>
                       <DateConvertor datetime={post.created_at} type="dotDate" />
                     </div>
+                    <RxBookmark className="text-[25px]" />
+                    <RxBookmarkFilled className="text-[25px]" />
                   </div>
                 </div>
                 {post.wallpaperId !== null && post.tileId !== null && (

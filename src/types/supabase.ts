@@ -470,4 +470,7 @@ export interface Database {
   };
 }
 
-export type Tables<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"];
+export type Tables<
+  T extends keyof Database["public"]["Tables"],
+  A extends keyof Database["public"]["Tables"][T],
+> = Database["public"]["Tables"][T][A];
