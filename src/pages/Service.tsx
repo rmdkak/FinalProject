@@ -12,8 +12,8 @@ export const Service = () => {
   //   const [clickType, setClickType] = useState<"tile" | "wallpaper" | undefined>();
 
   // 타일/ 벽지를 담는 겟터셋터함수
-  const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER">>>([]);
-  const [taleData, setTaleData] = useState<Array<Tables<"TILE">>>([]);
+  const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
+  const [taleData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
 
   const [wallPaperBg, setWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");
@@ -28,8 +28,8 @@ export const Service = () => {
     try {
       const { data: wallPaper } = await supabase.from("WALLPAPER").select("*");
       const { data: tale } = await supabase.from("TILE").select("*");
-      setWallData(wallPaper as Array<Tables<"WALLPAPER">>);
-      setTaleData(tale as Array<Tables<"TILE">>);
+      setWallData(wallPaper as Array<Tables<"WALLPAPER", "Row">>);
+      setTaleData(tale as Array<Tables<"TILE", "Row">>);
     } catch (error) {
       console.error(error);
     }
