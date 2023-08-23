@@ -16,7 +16,7 @@ const plugins = [new Arrow()];
 
 export const Community = () => {
   const navigate = useNavigate();
-  const [postList, setPostList] = useState<Array<Tables<"POSTS">>>([]);
+  const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
 
@@ -35,7 +35,7 @@ export const Community = () => {
       console.error("Error fetching data:", error);
       return;
     }
-    setPostList(data as Array<Tables<"POSTS">>);
+    setPostList(data as Array<Tables<"POSTS", "Row">>);
   };
 
   const paginate = (pageNumber: number) => {

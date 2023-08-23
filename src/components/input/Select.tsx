@@ -8,11 +8,10 @@ interface Props {
   setSelectedValue: Dispatch<React.SetStateAction<string | undefined>>;
   placeholder?: string;
   selfEnterOption: boolean;
-  size: { width: string; height: string };
 }
 
 export const Select = (props: Props) => {
-  const { option, selectedValue, setSelectedValue, size, placeholder = "선택해주세요.", selfEnterOption } = props;
+  const { option, selectedValue, setSelectedValue, placeholder = "선택해주세요.", selfEnterOption } = props;
 
   const [toggleIsOpen, setToggleIsOpen] = useState(false);
   const [selfEnterIsOpen, setSelfEnterIsOpen] = useState(true);
@@ -32,15 +31,11 @@ export const Select = (props: Props) => {
   const commonStyle = "px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
 
   return (
-    <div className={`relative flex w-[${size.width}] h-[${size.height}]`}>
+    <div className={`relative w-[100%] h-[50px]`}>
       {selfEnterIsOpen ? (
         <>
-          <button
-            className={`flex w-full h-[${size.height}] ${commonStyle}`}
-            type="button"
-            onClick={changeToggleHandler}
-          >
-            <p className="whitespace-nowrap">{selectedValue !== undefined ? selectedValue : placeholder}</p>
+          <button className={`flex w-full h-[50px] ${commonStyle}`} type="button" onClick={changeToggleHandler}>
+            <p className={`whitespace-nowrap`}>{selectedValue !== undefined ? selectedValue : placeholder}</p>
             <img className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer" src={arrowIcon} />
           </button>
         </>
@@ -60,7 +55,7 @@ export const Select = (props: Props) => {
           />
         </>
       )}
-      <div className={`absolute w-full top-[${size.height}] translate-y-[${size.height}] bg-white z-50`}>
+      <div className={`absolute w-full top-[50px] bg-white z-50`}>
         {toggleIsOpen &&
           option.map((el) => (
             <div

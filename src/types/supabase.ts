@@ -235,23 +235,23 @@ export interface Database {
         Row: {
           email: string;
           id: string;
-          nickname: string;
-          phoneNum: number;
-          profileImg: string | null;
+          name: string;
+          phone: string;
+          avatar_url: string;
         };
         Insert: {
           email: string;
           id?: string;
-          nickname: string;
-          phoneNum: number;
-          profileImg?: string | null;
+          name: string;
+          phone: string;
+          avatar_url?: string;
         };
         Update: {
           email?: string;
           id?: string;
-          nickname?: string;
-          phoneNum?: number;
-          profileImg?: string | null;
+          name?: string;
+          phone?: string;
+          avatar_url?: string;
         };
         Relationships: [];
       };
@@ -470,4 +470,4 @@ export interface Database {
   };
 }
 
-export type Tables<T extends keyof Database["public"]["Tables"]> = Database["public"]["Tables"][T]["Row"];
+export type Tables<T extends keyof Database["public"]["Tables"], A extends keyof Database["public"]["Tables"][T]> = Database["public"]["Tables"][T][A];

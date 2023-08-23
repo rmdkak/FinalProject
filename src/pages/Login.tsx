@@ -4,6 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "api/supabase";
+import { SocialLogin } from "components";
 import { useAuthStore } from "store";
 
 export interface LoginInputs {
@@ -100,21 +101,7 @@ export const Login = () => {
         <div className="mt-6 ">
           <button className="w-full py-3.5 px-6 bg-[#888888] text-[#fff] mb-4 ">로그인</button>
         </div>
-
-        <div className="mb-16 ">
-          <div className=" relative mb-4 text-center before:content-[''] before:absolute before:block  before:top-1/2 before:left-0 before:w-full before:h-px before:bg-[#888] ">
-            <h3 className="relative z-10 inline-block p-3 bg-[#fff] ;">SNS 계정으로 로그인하기</h3>
-          </div>
-          <div className="flex mx-auto relative justify-between w-[127px]  after:content-[''] after:absolute after:top-1/2 after:left-1/2 after:w-px after:h-2.5 after:block after:bg-[#888] after:translate-y-[-50%]">
-            <button type="button" className="block w-10 h-10 bg-red-900 indent-[-9999px]">
-              구글 로그인
-            </button>
-            <button type="button" className="block w-10 h-10 bg-red-900 indent-[-9999px]">
-              카카오로 로그인
-            </button>
-          </div>
-        </div>
-
+        <SocialLogin />
         <div className="flex flex-col items-center justify-center">
           <p className="text-[#5f5f5f] text-[0.875rem] text-center  mb-4">
             회원가입하고 더 많은 인터레어 조합을 확인해보세요!
