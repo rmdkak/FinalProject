@@ -20,14 +20,18 @@ export const ColorPallet = ({ color }: props) => {
   const deleteDuplicate = new Set(getcolors);
   const colors = [...deleteDuplicate];
 
-  return colors.map((color, idx) => {
-    return (
-      <li key={idx} className="flex">
-        <div className="w-32 h-32" style={{ backgroundColor: color }} />
-        <span className="mt-auto font-bold" style={{ color }}>
-          {color}
-        </span>
-      </li>
-    );
-  });
+  return (
+    <>
+      {colors.map((color, idx) => {
+        return (
+          <li key={idx} className="flex">
+            <div className="w-32 h-32" style={{ backgroundColor: color }} />
+            <span className="mt-auto font-bold" style={{ color }}>
+              {color}
+            </span>
+          </li>
+        );
+      })}
+    </>
+  );
 };

@@ -1,36 +1,101 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
+import { supabase } from "api/supabase";
 import test from "assets/test.jpg";
 import { GetColor } from "components/colorExtraction";
+import { ServiceItem, tailTextureList, wallPaperTextureList } from "components/service";
+import TextureTitle from "components/service/TextureTitle";
+import { useServiceStore } from "store";
+import { type Tables } from "types/supabase";
 
 export const Service = () => {
-  const [clickType, setClickType] = useState<"tile" | "wallpaper" | undefined>();
+  //   const [clickType, setClickType] = useState<"tile" | "wallpaper" | undefined>();
 
+  // 타일/ 벽지를 담는 겟터셋터함수
+  const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER">>>([]);
+  const [taleData, setTaleData] = useState<Array<Tables<"TILE">>>([]);
+
+  const [wallPaperBg, setWallPaperBg] = useState<string>("");
+  const [tileBg, setTileBg] = useState<string>("");
+
+  const { wallPaper, tile, checkType, setTypeCheck } = useServiceStore((state) => state);
+  //  타일 사이즈 컨트롤
+  //   const [wallPaperSize, setWallPaperSize] = useState<number>(70);
+  //   const [tileSize, setTileSize] = useState<number>(70);
+  const imgUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
+
+  const fetchData = useCallback(async () => {
+    try {
+      const { data: wallPaper } = await supabase.from("WALLPAPER").select("*");
+      const { data: tale } = await supabase.from("TILE").select("*");
+      setWallData(wallPaper as Array<Tables<"WALLPAPER">>);
+      setTaleData(tale as Array<Tables<"TILE">>);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  //   supabase에서 data정보 가져오기
+  useEffect(() => {
+    fetchData().catch((error) => error(error));
+  }, []);
+
+  useEffect(() => {
+    setWallPaperBg(imgUrl + wallPaper);
+    setTileBg(imgUrl + tile);
+  }, [wallPaper, tile]);
+  //   console.log("wallPaper", wallPaper);
+  //   console.log("tile", tile);
+
+  //   사이즈 컨트롤세터함수
+
+  const onClickTypeSwitch = (type: "tile" | "wallPaper") => {
+    // console.log(type);
+    setTypeCheck(type);
+  };
+
+  console.log(wallPaperBg);
+  console.log(tileBg);
   return (
     <>
       <div className="flex flex-col m-20">
         <h1 className="mb-10 text-3xl font-bold">Interior Design</h1>
         <div className="flex flex-col gap-40">
+          {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-10">
-            <div className="flex flex-col items-center justify-center h-[603px] bg-[#8A8A8A] w-[860px]">
+            {/* 왼쪽 인터렉션 박스 */}
+            <div className=" flex flex-col items-center justify-center h-[603px] bg-[#8A8A8A] w-[860px]">
               <div className="p-10 perspective-750">
-                <div className="w-[500px] h-[200px] translate-x-[25px] translate-y-[6px] bg-white border-b-2 border-[1px] border-black" />
-                <div className="w-[550px] h-[200px] bg-white rotate-x-[50deg] -translate-y-[30px] transform-style-3d text-5xl border-[1px] border-black">
-                  {" "}
-                  text
+                {/* 벽지 */}
+                <div
+                  style={{
+                    backgroundImage: `url(${wallPaperBg})`,
+                    backgroundSize: `${70}px, ${70}px`,
+                  }}
+                  className={`w-[500px] h-[200px] translate-x-[25px] translate-y-[6px] border-b-2 border-[1px] border-black`}
+                >
+                  벽지벽지
+                </div>
+                {/* 타일 */}
+                <div
+                  style={{ backgroundImage: `url(${tileBg})`, backgroundSize: `${70}px, ${70}px` }}
+                  className={`w-[550px] h-[200px]  rotate-x-[50deg] -translate-y-[30px] transform-style-3d border-[1px] border-black`}
+                >
+                  타일타일
                 </div>
               </div>
             </div>
             <div className="h-[603px] w-[860px]">
+              {/* 타일 헤더 */}
               <div className="flex mb-6 h-[35px] text-gray-300 gap-3">
                 <span
                   className={
-                    clickType === "tile"
+                    checkType === "wallPaper"
                       ? "border-b-2 border-black hover:cursor-pointer text-black"
                       : "hover:cursor-pointer"
                   }
                   onClick={() => {
-                    setClickType("tile");
+                    onClickTypeSwitch("wallPaper");
                   }}
                 >
                   벽지
@@ -38,67 +103,40 @@ export const Service = () => {
                 |
                 <span
                   className={
-                    clickType === "wallpaper"
+                    checkType === "tile"
                       ? "border-b-2 border-black hover:cursor-pointer text-black"
                       : "hover:cursor-pointer"
                   }
                   onClick={() => {
-                    setClickType("wallpaper");
+                    onClickTypeSwitch("tile");
                   }}
                 >
                   바닥재
                 </span>
-                {clickType === "wallpaper" ? (
+                {checkType === "wallPaper" ? (
                   <>
-                    <span className="hover:cursor-pointer">합판마루</span>
-                    <span className="hover:cursor-pointer">강화마루</span>
-                    <span className="hover:cursor-pointer">강마루</span>
-                    <span className="hover:cursor-pointer">원목마루</span>
-                    <span className="hover:cursor-pointer">하이브리드마루</span>
-                    <span className="hover:cursor-pointer">시트</span>
-                    <span className="hover:cursor-pointer">타일</span>
-                    <span className="hover:cursor-pointer">데코타일</span>
-                    <span className="hover:cursor-pointer">LVT</span>
-                    <span className="hover:cursor-pointer">마모륨</span>
+                    {/* 벽지 종류 목록 */}
+                    <TextureTitle data={tailTextureList} />
                   </>
-                ) : clickType === "tile" ? (
+                ) : checkType === "tile" ? (
                   <>
-                    <span className="hover:cursor-pointer">합지</span>
-                    <span className="hover:cursor-pointer">실크</span>
-                    <span className="hover:cursor-pointer">발포</span>
-                    <span className="hover:cursor-pointer">뮤럴</span>
-                    <span className="hover:cursor-pointer">페브릭</span>
-                    <span className="hover:cursor-pointer">방염</span>
+                    {/* 타일 종류 목록 */}
+                    <TextureTitle data={wallPaperTextureList} />
                   </>
                 ) : (
                   <></>
                 )}
               </div>
+
               <div className="h-[392px] mb-10 overflow-auto">
                 <ul className="flex flex-wrap w-full gap-x-4 gap-y-4">
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
-                  <li className="bg-gray-200 w-[120px] h-[120px]"></li>
+                  {checkType === "wallPaper" ? (
+                    <ServiceItem type={checkType} data={wallData} />
+                  ) : (
+                    <ServiceItem type={checkType} data={taleData} />
+                  )}
+
+                  {/* <li className="bg-gray-200 w-[120px] h-[120px]"></li> */}
                 </ul>
               </div>
 

@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
 
-export const DateConvertor = ({ datetime }: { datetime: string }) => {
+interface DateConvertorProps {
+  datetime: string;
+  type: string;
+}
+export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) => {
   const [timeAgo, setTimeAgo] = useState("");
+  const [dotDate, setDotDate] = useState("");
+  let date;
   useEffect(() => {
     const currentTime = new Date();
-    const pastTime = new Date(datetime);
-    const timeDifference: number = currentTime.getTime() - pastTime.getTime();
+    const date = new Date(datetime);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDate();
+    const dotDate = `${year}.${month}.${day}`;
+    setDotDate(dotDate);
 
+    const timeDifference: number = currentTime.getTime() - date.getTime();
     if (timeDifference < 1000) {
       setTimeAgo("방금 전");
     } else if (timeDifference < 60 * 1000) {
@@ -30,5 +41,12 @@ export const DateConvertor = ({ datetime }: { datetime: string }) => {
     }
   }, [datetime]);
 
-  return <div>{timeAgo}</div>;
+  if (type === "timeAgo") {
+    date = timeAgo;
+  } else if (type === "dotDate") {
+    date = dotDate;
+  } else {
+    date = dotDate;
+  }
+  return date;
 };

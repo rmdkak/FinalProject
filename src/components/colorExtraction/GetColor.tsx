@@ -47,8 +47,10 @@ export const GetColor = ({ src }: props) => {
           <h2 className="mb-8 text-3xl font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
             <li className="flex">
-              <div className={`w-32 h-32 bg-[${data as string}]`} />
-              <span className={`text-[${data as string}] mt-auto font-bold`}>{data}</span>
+              <div className="w-32 h-32" style={{ backgroundColor: data as string }} />
+              <span className="mt-auto font-bold" style={{ color: data as string }}>
+                {data}
+              </span>
             </li>
           </ul>
         </div>
