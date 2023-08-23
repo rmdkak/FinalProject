@@ -20,7 +20,6 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
     }
   };
   useEffect(() => {
-    console.log("1",1)
     setCurrentPage(1);
   }, [totalPosts]);
   const showPrevPage = () => {
