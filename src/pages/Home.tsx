@@ -1,8 +1,14 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
+
+import { Arrow } from "@egjs/flicking-plugins";
+import Flicking, { ViewportSlot } from "@egjs/react-flicking";
+import "@egjs/react-flicking/dist/flicking.css";
+import "@egjs/flicking-plugins/dist/arrow.css";
 
 export const Home = () => {
   const navigate = useNavigate();
+  const plugins = [new Arrow()];
+
   return (
     <>
       <div className="w-full h-[800px] bg-gray-400 mb-40"></div>
@@ -78,11 +84,17 @@ export const Home = () => {
             VIEW MORE {`>`}
           </button>
         </div>
-        <div className="flex items-center justify-between">
-          <div className="w-[520px] h-[254px] bg-gray-200"></div>
-          <div className="w-[640px] h-[340px] bg-gray-400"></div>
-          <div className="w-[520px] h-[254px] bg-gray-200"></div>
-        </div>
+        <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
+          <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
+          <ViewportSlot>
+            <span className="flicking-arrow-prev is-thin"></span>
+            <span className="flicking-arrow-next is-thin"></span>
+          </ViewportSlot>
+        </Flicking>
       </div>
     </>
   );

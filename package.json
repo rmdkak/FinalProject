@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@egjs/flicking-plugins": "^4.7.1",
+    "@egjs/react-flicking": "^4.11.0",
     "@supabase/supabase-js": "^2.32.0",
     "@tanstack/react-query": "^4.32.6",
     "@testing-library/jest-dom": "^5.14.1",

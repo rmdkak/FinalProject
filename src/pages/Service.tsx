@@ -18,8 +18,8 @@ export const Service = () => {
   const [wallPaperBg, setWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");
 
-  //  타일 사이즈 컨트롤
   const { wallPaper, tile, checkType, setTypeCheck } = useServiceStore((state) => state);
+  //  타일 사이즈 컨트롤
   //   const [wallPaperSize, setWallPaperSize] = useState<number>(70);
   //   const [tileSize, setTileSize] = useState<number>(70);
   const imgUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
@@ -44,16 +44,18 @@ export const Service = () => {
     setWallPaperBg(imgUrl + wallPaper);
     setTileBg(imgUrl + tile);
   }, [wallPaper, tile]);
-  console.log("wallPaper", wallPaper);
-  console.log("tile", tile);
+  //   console.log("wallPaper", wallPaper);
+  //   console.log("tile", tile);
 
   //   사이즈 컨트롤세터함수
 
   const onClickTypeSwitch = (type: "tile" | "wallPaper") => {
-    console.log(type);
+    // console.log(type);
     setTypeCheck(type);
   };
 
+  console.log(wallPaperBg);
+  console.log(tileBg);
   return (
     <>
       <div className="flex flex-col m-20">
@@ -71,12 +73,16 @@ export const Service = () => {
                     backgroundSize: `${70}px, ${70}px`,
                   }}
                   className={`w-[500px] h-[200px] translate-x-[25px] translate-y-[6px] border-b-2 border-[1px] border-black`}
-                ></div>
+                >
+                  벽지벽지
+                </div>
                 {/* 타일 */}
                 <div
                   style={{ backgroundImage: `url(${tileBg})`, backgroundSize: `${70}px, ${70}px` }}
-                  className={`w-[550px] h-[200px]  rotate-x-[50deg] -translate-y-[30px] transform-style-3d text-5xl border-[1px] border-black`}
-                ></div>
+                  className={`w-[550px] h-[200px]  rotate-x-[50deg] -translate-y-[30px] transform-style-3d border-[1px] border-black`}
+                >
+                  타일타일
+                </div>
               </div>
             </div>
             <div className="h-[603px] w-[860px]">
@@ -110,12 +116,12 @@ export const Service = () => {
                 {checkType === "wallPaper" ? (
                   <>
                     {/* 벽지 종류 목록 */}
-                    <TextureTitle data={wallPaperTextureList} />
+                    <TextureTitle data={tailTextureList} />
                   </>
                 ) : checkType === "tile" ? (
                   <>
                     {/* 타일 종류 목록 */}
-                    <TextureTitle data={tailTextureList} />
+                    <TextureTitle data={wallPaperTextureList} />
                   </>
                 ) : (
                   <></>
