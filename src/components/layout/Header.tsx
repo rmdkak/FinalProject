@@ -5,7 +5,7 @@ import { logout } from "api/supabase";
 import hambergerMenu from "assets/hamburgerMenu.svg";
 import logOutIcon from "assets/logout.svg";
 import userIcon from "assets/user.svg";
-import Sidebar from "components/sidebar/Sidebar";
+import { Sidebar } from "components/sidebar";
 import { useAuthStore } from "store";
 
 export const Header = () => {
@@ -36,9 +36,10 @@ export const Header = () => {
   const openSideBarHandler = (): void => {
     setIsOpen(true);
   };
+
   return (
     <>
-      <header className="flex justify-between items-center px-[5rem]">
+      <header className="sticky z-[5] box-border border-b border-b-[#E5E5E5] top-0 left-0 w-full bg-white flex justify-between items-center px-[5rem]">
         <Link to="/" className="py-6 font-title text-[2rem]">
           STILE
         </Link>
