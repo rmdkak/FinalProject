@@ -73,7 +73,7 @@ export interface Database {
           wallpaperId: string;
         };
         Insert: {
-          id: string;
+          id?: string;
           tileId: string;
           userId: string;
           wallpaperId: string;

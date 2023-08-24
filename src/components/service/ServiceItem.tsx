@@ -16,14 +16,12 @@ interface Props {
 export const ServiceItem = ({ data, type }: Props): JSX.Element => {
   const { setTile, setWallPaper } = useServiceStore((state) => state);
   const imgUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
-  const getItemData = (image: "tile" | "wallPaper"): void => {
-    // console.log(type);
-
+  const getItemData = (selectItem: { id: string; image: string }): void => {
     if (type === "wallPaper") {
-      setWallPaper(image as "wallPaper");
+      setWallPaper(selectItem);
     }
     if (type === "tile") {
-      setTile(image as "tile");
+      setTile(selectItem);
     }
   };
 
@@ -34,7 +32,7 @@ export const ServiceItem = ({ data, type }: Props): JSX.Element => {
         return (
           <li
             onClick={() => {
-              getItemData(image as "tile" | "wallPaper");
+              getItemData({ id, image });
             }}
             key={id}
             className="bg-gray-200 w-[120px] h-[120px] cursor-pointer"
