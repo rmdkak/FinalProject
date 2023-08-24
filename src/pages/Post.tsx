@@ -51,9 +51,9 @@ export const Post = () => {
   return (
     <div className="w-[1280px] mx-auto mt-[40px]">
       <div className="flex flex-col items-center">
-        <p className="font-bold text-[30px]">커뮤니티</p>
+        <p className="font-bold text-[30px] mt-[30px]">커뮤니티</p>
         <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
-        <div className="w-full border-b-2 border-[#1A1A1A]"></div>
+        <div className="w-full border-b-2 border-[#1A1A1A] mt-[70px]"></div>
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b-2 border-[#E5E5E5] h-[72px] justify-center items-center">

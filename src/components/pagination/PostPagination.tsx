@@ -17,6 +17,7 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
       paginate(pageNumber);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
   useEffect(() => {
