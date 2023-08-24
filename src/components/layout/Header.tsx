@@ -39,7 +39,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="sticky z-[5] box-border border-b border-b-[#E5E5E5] top-0 left-0 w-full bg-white flex justify-between items-center px-[5rem]">
+      <header className="sticky z-[9100] box-border border-b border-b-[#E5E5E5] top-0 left-0 w-full bg-white flex justify-between items-center px-[5rem]">
         <Link to="/" className="py-6 font-title text-[2rem]">
           STILE
         </Link>
