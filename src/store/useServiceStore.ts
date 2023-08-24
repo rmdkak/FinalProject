@@ -12,6 +12,9 @@ interface Tile {
 interface Store {
   checkType: "tile" | "wallPaper";
   setTypeCheck: (type: "tile" | "wallPaper") => void;
+  // 인테리어 헤더
+  interiorSelecteIndex: number;
+  setInteriorSelecteIndex: (index: number) => void;
   // 벽지
   wallPaper: Wallpaper
   setWallPaper: (selectWallpaper: Wallpaper) => void;
@@ -27,6 +30,11 @@ export const useServiceStore = create<Store>()((set) => ({
   checkType: "wallPaper",
   setTypeCheck: (type) => {
     set((state) => ({ checkType: (state.checkType = type) }));
+  },
+  // 인테리어 헤더
+  interiorSelecteIndex: -1,
+  setInteriorSelecteIndex: (index) => {
+    set((state) => ({ interiorSelecteIndex: (state.interiorSelecteIndex = index) }));
   },
   //  벽지
   wallPaper: { image: null, id: null },
@@ -44,6 +52,6 @@ export const useServiceStore = create<Store>()((set) => ({
     set(() => ({ tile: { image: selectTile.image, id: selectTile.id } }));
   },
   resetTile: () => {
-    set(() => ({ wallPaper: { image: null, id: null } }));
+    set(() => ({ tile: { image: null, id: null } }));
   },
 }));
