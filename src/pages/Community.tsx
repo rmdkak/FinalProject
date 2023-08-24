@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { RxBookmarkFilled, RxBookmark } from "react-icons/rx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Arrow } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
@@ -116,6 +116,12 @@ export const Community = () => {
       </select>
       <div className="flex justify-center ">
         <div className="md:w-[1200px] border-t border-[#dddddd] pt-[100px]">
+          <Link
+            to="/post"
+            className="px-4 py-2 font-semibold text-white bg-gray-400 rounded hover:bg-gray-500 md:relative left-[1100px] bottom-[20px]"
+          >
+            게시물 작성
+          </Link>
           {currentFilteredPosts.map((post) => {
             return (
               <div key={post.id} className="flex border-b border-[#dddddd] gap-5 py-5 my-5 md:flex-row">

@@ -4,7 +4,7 @@ import { MyBookmarks, MyComments, MyInfo, MyPosts } from "components/mypage";
 import { type Tables } from "types/supabase";
 
 // 임시 데이터 length 작동 확인용
-const getMyPosts: Array<Tables<"POSTS">> = [
+const getMyPosts: Array<Tables<"POSTS", "Row">> = [
   {
     bookmark: 0,
     title: "Hi",
@@ -18,13 +18,13 @@ const getMyPosts: Array<Tables<"POSTS">> = [
 ];
 
 // 임시 데이터 length 작동 확인용
-const getMyComments: Array<Tables<"COMMENTS">> = [
+const getMyComments: Array<Tables<"COMMENTS", "Row">> = [
   { content: "string", created_at: "string", id: "string", postId: "string", writtenId: "string" },
   { content: "string", created_at: "string", id: "string", postId: "string", writtenId: "string" },
 ];
 
 // 임시 데이터 length 작동 확인용
-const getMyBookmarks: Array<Tables<"ITEM-BOOKMARK">> = [
+const getMyBookmarks: Array<Tables<"ITEM-BOOKMARK", "Row">> = [
   { id: "string", tileId: "string", userId: "string", wallpaperId: "string" },
   { id: "string", tileId: "string", userId: "string", wallpaperId: "string" },
   { id: "string", tileId: "string", userId: "string", wallpaperId: "string" },
@@ -52,9 +52,8 @@ export const MenuTab = () => {
     <>
       {/* 이미지 파일 변경 예정 */}
       {index !== 0 && <p className="w-[21px] self-center text-center">|</p>}
-
       <li
-        key={index}
+        key={el.name}
         className={index === currentTab ? `${liCommonStyle} ${liSelectStyle}` : liCommonStyle}
         onClick={() => {
           selectMenuHandler(index);
@@ -63,7 +62,11 @@ export const MenuTab = () => {
         {/* 아이콘 24px 정사각형 */}
         <img src={el.icon.svg} alt={el.icon.alt} />
         <p className="text-[18px] font-[400] leading-[130%]">{el.name}</p>
-        {el.name === "내 정보" ? <></> : <p className="text-[20px] font-[500] leading-[130%]">{el.data?.length}</p>}
+        {el.name === "내 정보" ? (
+          <p className="text-[20px] font-[500] leading-[130%]">수정</p>
+        ) : (
+          <p className="text-[20px] font-[500] leading-[130%]">{el.data?.length}</p>
+        )}
       </li>
     </>
   ));
