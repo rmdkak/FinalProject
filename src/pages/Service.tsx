@@ -9,7 +9,7 @@ import { useAuthStore, useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
-interface FetchBookmark {
+interface FetchItemBookmark {
   id: string;
   userId: string;
   tileId: string;
@@ -27,7 +27,7 @@ export const Service = () => {
   const [tileBg, setTileBg] = useState<string>("");
 
   const { wallPaper, tile, checkType, setTypeCheck } = useServiceStore((state) => state);
-  const [isBookmarkedData, setIsBookmarkedData] = useState<FetchBookmark>();
+  const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
   //  타일 사이즈 컨트롤
   //   const [wallPaperSize, setWallPaperSize] = useState<number>(70);
@@ -61,7 +61,7 @@ export const Service = () => {
   };
 
   // 현재 선택한 아이템 북마크 되었다면 가져오기
-  const fetchBookmark = async () => {
+  const fetchItemBookmark = async () => {
     if (currentSession === null) return;
     const { data } = await supabase
       .from("ITEM-BOOKMARK")
@@ -71,18 +71,16 @@ export const Service = () => {
       .eq("userId", currentSession.user.id);
 
     if (data !== null) {
-      setIsBookmarkedData(data[0]);
+      setIsItemBookmarkedData(data[0]);
     }
   };
 
   useEffect(() => {
-    void fetchBookmark();
+    void fetchItemBookmark();
   }, [currentSession?.user.id, tile.id, wallPaper.id]);
 
   // 현재 선택된 아이템을 북마크하기
-  const onBookmarkPostHandler = async () => {
-    console.log("bookmark post");
-    // post
+  const onItemBookmarkPostHandler = async () => {
     if (currentSession == null) return;
     if (tile.id == null) {
       // TODO Custom alert
@@ -100,8 +98,7 @@ export const Service = () => {
   };
 
   // TODO Optimistic Updates 적용하기
-  const onBookmarkDeleteHandler = async (id: string) => {
-    console.log("bookmark delete");
+  const onItemBookmarkDeleteHandler = async (id: string) => {
     await supabase.from("ITEM-BOOKMARK").delete().eq("id", id);
   };
 
@@ -202,25 +199,13 @@ export const Service = () => {
                   {`>`}
                 </button>
                 <div className="flex gap-4 mt-6">
-                  {/* 현재 로그인 user.id */}
-                  {/* === */}
-                  {/* 북마크 데이터 테이블에서 가져온 userId 를 조건으로 데이터 GET */}
-
-                  {/* 데이터에서 tileId Find */}
-                  {/* === */}
-                  {/* 현재 선택한 tileId */}
-
-                  {/* 데이터에서 wallpaperId Find */}
-                  {/* === */}
-                  {/* 현재 선택한 wallpaperId */}
-
-                  {isBookmarkedData != null ? (
+                  {isItemBookmarkedData != null ? (
                     <button
                       onClick={async () => {
                         if (currentSession === null) {
                           alert("북마크 기능은 로그인 후 이용가능합니다.");
                         }
-                        await onBookmarkDeleteHandler(isBookmarkedData.id);
+                        await onItemBookmarkDeleteHandler(isItemBookmarkedData.id);
                       }}
                       // className="bg-[#8A8A8A] w-[382px] h-16 border-[1px] border-black"
                     >
@@ -232,7 +217,7 @@ export const Service = () => {
                         if (currentSession === null) {
                           alert("북마크 기능은 로그인 후 이용가능합니다.");
                         }
-                        await onBookmarkPostHandler();
+                        await onItemBookmarkPostHandler();
                       }}
                       // className="bg-[#8A8A8A] w-[382px] h-16 border-[1px] border-black"
                     >
