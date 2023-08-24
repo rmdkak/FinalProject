@@ -45,7 +45,7 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
         >
           {/* 모달 헤더 */}
           <div className={`flex items-center justify-between pb-3 mb-8 ${titleBorder}`}>
-            <h2>{title}</h2>
+            <h2 className="font-semibold">{title}</h2>
 
             <button className="" onClick={onCloseModal}>
               <img src={closeBtn} alt="닫기 버튼" />

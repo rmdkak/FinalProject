@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { RxBookmarkFilled, RxBookmark } from "react-icons/rx";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Arrow } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
@@ -115,15 +116,19 @@ export const Community = () => {
       </select>
       <div className="flex justify-center ">
         <div className="md:w-[1200px] border-t border-[#dddddd] pt-[100px]">
+          <Link
+            to="/post"
+            className="px-4 py-2 font-semibold text-white bg-gray-400 rounded hover:bg-gray-500 md:relative left-[1100px] bottom-[20px]"
+          >
+            게시물 작성
+          </Link>
           {currentFilteredPosts.map((post) => {
             return (
-              <div
-                key={post.id}
-                className="flex border-b border-[#dddddd] gap-5 py-5 my-5 cursor-pointer md:flex-row"
-                onClick={goDetailPage}
-              >
+              <div key={post.id} className="flex border-b border-[#dddddd] gap-5 py-5 my-5 md:flex-row">
                 <div className="md:w-3/4">
-                  <div className="text-lg font-medium truncate w-[600px] ">{post.title}</div>
+                  <div className="text-lg font-medium truncate w-[600px] cursor-pointer" onClick={goDetailPage}>
+                    {post.title}
+                  </div>
                   <div className="mt-1 mb-10 h-[4.5em] overflow-hidden">
                     <div className="mt-1 mb-10 text-[#888888] line-clamp-2 w-[600px]">{post.content}</div>
                   </div>
@@ -132,6 +137,8 @@ export const Community = () => {
                     <div>
                       <DateConvertor datetime={post.created_at} type="dotDate" />
                     </div>
+                    <RxBookmark className="text-[25px]" />
+                    <RxBookmarkFilled className="text-[25px]" />
                   </div>
                 </div>
                 {post.wallpaperId !== null && post.tileId !== null && (

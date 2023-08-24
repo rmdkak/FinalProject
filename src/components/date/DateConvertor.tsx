@@ -12,7 +12,7 @@ export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) 
     const currentTime = new Date();
     const date = new Date(datetime);
     const year = date.getFullYear();
-    const month = date.getMonth();
+    const month = date.getMonth() + 1;
     const day = date.getDate();
     const dotDate = `${year}.${month}.${day}`;
     setDotDate(dotDate);

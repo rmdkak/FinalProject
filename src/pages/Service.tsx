@@ -51,6 +51,8 @@ export const Service = () => {
     setTypeCheck(type);
   };
 
+  console.log(wallPaperBg);
+  console.log(tileBg);
   return (
     <>
       <div className="flex flex-col m-20">
