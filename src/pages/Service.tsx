@@ -5,6 +5,7 @@ import { supabase } from "api/supabase";
 import { GetColor } from "components/colorExtraction";
 import { ServiceItem, tailTextureList, wallPaperTextureList } from "components/service";
 import TextureTitle from "components/service/TextureTitle";
+import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
@@ -60,47 +61,15 @@ export const Service = () => {
     setTypeCheck(type);
   };
 
-  // 현재 선택한 아이템 북마크 되었다면 가져오기
-  const fetchItemBookmark = async () => {
-    if (currentSession === null) return;
-    const { data } = await supabase
-      .from("ITEM-BOOKMARK")
-      .select()
-      .eq("tileId", tile.id)
-      .eq("wallpaperId", wallPaper.id)
-      .eq("userId", currentSession.user.id);
-
-    if (data !== null) {
-      setIsItemBookmarkedData(data[0]);
-    }
-  };
+  const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
+    useInteriorBookmark();
+  // TODO IsLoading, IsError 구현하기
+  const { data: currentBookmarkData } = interiorBookmarkResponse;
 
   useEffect(() => {
-    void fetchItemBookmark();
-  }, [currentSession?.user.id, tile.id, wallPaper.id]);
-
-  // 현재 선택된 아이템을 북마크하기
-  const onItemBookmarkPostHandler = async () => {
-    if (currentSession == null) return;
-    if (tile.id == null) {
-      // TODO Custom alert
-      alert("타일을 선택해주세요");
-      return;
-    }
-    if (wallPaper.id == null) {
-      alert("벽지를 선택해주세요");
-      return;
-    }
-
-    const selectedItem = { userId: currentSession.user.id, tileId: tile.id, wallpaperId: wallPaper.id };
-
-    await supabase.from("ITEM-BOOKMARK").insert(selectedItem).select();
-  };
-
-  // TODO Optimistic Updates 적용하기
-  const onItemBookmarkDeleteHandler = async (id: string) => {
-    await supabase.from("ITEM-BOOKMARK").delete().eq("id", id);
-  };
+    if (currentBookmarkData == null) return;
+    setIsItemBookmarkedData(currentBookmarkData[0]);
+  }, [currentBookmarkData, wallPaper.id, tile.id]);
 
   return (
     <>
@@ -200,29 +169,29 @@ export const Service = () => {
                 </button>
                 <div className="flex gap-4 mt-6">
                   {isItemBookmarkedData != null ? (
-                    <button
+                    <BsBookmarkFill
+                      className="text-[50px] cursor-pointer"
                       onClick={async () => {
-                        if (currentSession === null) {
-                          alert("북마크 기능은 로그인 후 이용가능합니다.");
-                        }
-                        await onItemBookmarkDeleteHandler(isItemBookmarkedData.id);
+                        if (currentSession === null || tile.id == null || wallPaper.id == null) return;
+                        deleteInteriorBookmarkMutation.mutate({
+                          userId: currentSession.user.id,
+                          tileId: tile.id,
+                          wallpaperId: wallPaper.id,
+                        });
                       }}
-                      // className="bg-[#8A8A8A] w-[382px] h-16 border-[1px] border-black"
-                    >
-                      <BsBookmarkFill className="text-[50px]" />
-                    </button>
+                    />
                   ) : (
-                    <button
+                    <BsBookmark
+                      className="text-[50px] cursor-pointer"
                       onClick={async () => {
-                        if (currentSession === null) {
-                          alert("북마크 기능은 로그인 후 이용가능합니다.");
-                        }
-                        await onItemBookmarkPostHandler();
+                        if (currentSession === null || tile.id == null || wallPaper.id == null) return;
+                        addInteriorBookmarkMutation.mutate({
+                          userId: currentSession.user.id,
+                          tileId: tile.id,
+                          wallpaperId: wallPaper.id,
+                        });
                       }}
-                      // className="bg-[#8A8A8A] w-[382px] h-16 border-[1px] border-black"
-                    >
-                      <BsBookmark className="text-[50px]" />
-                    </button>
+                    />
                   )}
 
                   <button className=" w-[382px] h-16 border-[1px] border-black">추천하기</button>

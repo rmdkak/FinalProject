@@ -7,6 +7,7 @@ import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { supabase } from "api/supabase";
 import { DateConvertor } from "components/date/index";
 import { PostPagination } from "components/pagination/index";
+import { usePostsBookmark } from "hooks";
 import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 import "@egjs/flicking-plugins/dist/arrow.css";
@@ -73,31 +74,14 @@ export const Community = () => {
 
   const { currentSession } = useAuthStore();
 
-  const fetchPostBookmark = async () => {
-    if (currentSession === null) return;
-    const { data } = await supabase.from("POST-BOOKMARKS").select().eq("userId", currentSession.user.id);
-
-    if (data !== null) {
-      setIsPostBookmarkedData(data);
-    }
-  };
+  const { postBookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = usePostsBookmark();
+  const { data: currentBookmarkData } = postBookmarkResponse;
 
   useEffect(() => {
-    void fetchPostBookmark();
-  }, [currentSession?.user.id]);
+    if (currentBookmarkData == null) return;
+    setIsPostBookmarkedData(currentBookmarkData);
+  }, [currentBookmarkData, currentSession]);
 
-  const onBookmarkPostHandler = async (postId: string) => {
-    // post
-    if (currentSession == null) return;
-
-    const selectedItem = { postId, userId: currentSession.user.id };
-
-    await supabase.from("POST-BOOKMARKS").insert(selectedItem).select();
-  };
-  const onBookmarkDeleteHandler = async (id: string) => {
-    if (currentSession == null) return;
-    await supabase.from("POST-BOOKMARKS").delete().eq("postId", id).eq("userId", currentSession.user.id);
-  };
   return (
     <>
       <div className="flex flex-col md:w-[1200px] mx-auto">
@@ -169,33 +153,31 @@ export const Community = () => {
                     <p>{post.nickname}</p>
                     <DateConvertor datetime={post.created_at} type="dotDate" />
                     {isPostBookmark !== undefined ? (
-                      <button
+                      <BsBookmarkFill
+                        className="text-[20px] cursor-pointer"
                         onClick={async () => {
                           if (currentSession === null) {
                             alert("북마크 기능은 로그인 후 이용가능합니다.");
+                            return;
                           }
                           if (isPostBookmark == null) return;
-
-                          await onBookmarkDeleteHandler(isPostBookmark.postId);
+                          deleteBookmarkMutation.mutate({
+                            postId: isPostBookmark.postId,
+                            userId: currentSession.user.id,
+                          });
                         }}
-                        // className="bg-[#8A8A8A] w-[382px] h-16 border-[1px] border-black"
-                      >
-                        <BsBookmarkFill className="text-[20px]" />
-                      </button>
+                      />
                     ) : (
-                      <button
+                      <BsBookmark
+                        className="text-[20px] cursor-pointer"
                         onClick={async () => {
                           if (currentSession === null) {
                             alert("북마크 기능은 로그인 후 이용가능합니다.");
+                            return;
                           }
-                          if (isPostBookmark == null) return;
-
-                          await onBookmarkPostHandler(isPostBookmark.postId);
+                          addBookmarkMutation.mutate({ postId: post.id, userId: currentSession.user.id });
                         }}
-                        // className="bg-[#8A8A8A] w-[382px] h-16 border-[1px] border-black"
-                      >
-                        <BsBookmark className="text-[20px]" />
-                      </button>
+                      />
                     )}
                   </div>
                 </div>
