@@ -13,7 +13,7 @@ export const Mypage = () => {
 
   if (currentUser === undefined) {
     navigate("/");
-    return;
+    return <p>에러페이지</p>;
   }
 
   const { name, avatar_url: profileImg } = currentUser;
