@@ -5,8 +5,7 @@ import Router from "shared/Router";
 import { useAuthStore } from "store";
 
 const App = () => {
-  const { stayLoggedInStatus, setCurrentSession } = useAuthStore();
-  console.log("stayLoggedInStatus :", stayLoggedInStatus);
+  const { setCurrentSession } = useAuthStore();
 
   useEffect(() => {
     const getAuthSession = async () => {
@@ -16,11 +15,11 @@ const App = () => {
       });
     };
 
-    // if (stayLoggedInStatus) {
+
     getAuthSession().catch((error) => {
       console.log(error);
     });
-    // }
+
 
     auth.onAuthStateChange((event, session) => {
       switch (event) {
