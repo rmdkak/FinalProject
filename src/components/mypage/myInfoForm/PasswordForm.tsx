@@ -1,6 +1,7 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 import { changePassword } from "api/supabase";
+import { InvalidText } from "components/signup/InvalidText";
 
 import { INPUT_STYLE, type ICommonProps, BUTTON_STYLE } from "../MyInfo";
 
@@ -10,7 +11,12 @@ interface PasswordInput {
 }
 
 export const PasswordForm = ({ initialState, patchIsOpen, setPatchIsOpen, provider }: ICommonProps) => {
-  const { register, handleSubmit, getValues } = useForm<PasswordInput>();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<PasswordInput>({ mode: "all" });
 
   const onSubmit: SubmitHandler<PasswordInput> = async (data) => {
     const { password } = data;
@@ -34,6 +40,7 @@ export const PasswordForm = ({ initialState, patchIsOpen, setPatchIsOpen, provid
             minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
           })}
         />
+        <InvalidText errorsMessage={errors.password?.message} />
         <input
           placeholder={"비밀번호 확인"}
           type="password"
@@ -48,6 +55,7 @@ export const PasswordForm = ({ initialState, patchIsOpen, setPatchIsOpen, provid
             },
           })}
         />
+        <InvalidText errorsMessage={errors.passwordConfirm?.message} />
       </div>
       {patchIsOpen.password ? (
         <div className="flex w-[70px]">

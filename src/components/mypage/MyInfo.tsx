@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { deleteUser } from "api/supabase";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
+import { type Tables } from "types/supabase";
 
-import { EmailForm, MetaDataForm, PasswordForm } from "./myInfoForm";
+import { MetaDataForm, PasswordForm } from "./myInfoForm";
 
 export const INPUT_STYLE =
   "w-full px-[24px] py-[12px] border-[1px] border-[#E5E5E5] placeholder:text-[#888] disabled:bg-[#d7d7d7]";
@@ -23,15 +24,7 @@ export interface ICommonProps {
   patchIsOpen: PatchIsOpen;
   setPatchIsOpen: React.Dispatch<React.SetStateAction<PatchIsOpen>>;
   provider?: string;
-  currentUser?:
-    | {
-        email: string;
-        id: string;
-        name: string;
-        phone: string;
-        avatar_url: string;
-      }
-    | undefined;
+  currentUser?: Tables<"USERS", "Row">;
 }
 
 const initialState = { metaData: false, email: false, password: false };
@@ -66,12 +59,12 @@ export const MyInfo = () => {
           setPatchIsOpen={setPatchIsOpen}
           currentUser={currentUser}
         />
-        <EmailForm
+        {/* <EmailForm
           initialState={initialState}
           patchIsOpen={patchIsOpen}
           setPatchIsOpen={setPatchIsOpen}
           currentUser={currentUser}
-        />
+        /> */}
         <PasswordForm
           initialState={initialState}
           patchIsOpen={patchIsOpen}

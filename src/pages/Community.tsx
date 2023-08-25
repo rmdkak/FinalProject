@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Arrow } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
-import { supabase , storageUrl } from "api/supabase";
+import { supabase, storageUrl } from "api/supabase";
 import { DateConvertor } from "components/date";
 import { PostPagination } from "components/pagination";
 import { PostBookmark } from "components/postBookmark";
