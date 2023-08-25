@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { type HTMLInputTypeAttribute, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { type RegisterOptions, type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { signup } from "api/supabase";
@@ -21,18 +20,12 @@ export interface SignupInputs {
   phoneLastNum: string;
 }
 
-type UseFormInput = (
-  content: keyof SignupInputs,
-  placeholder: string,
-  type: HTMLInputTypeAttribute,
-  validation?: RegisterOptions<SignupInputs, keyof SignupInputs>,
-) => ReactNode;
-
 interface Props {
   prevStep: () => void;
   nextStep: () => void;
 }
 
+const INPUT_STYLE = "w-full px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
 const DUPLICATE_CHECK_BUTTON = "h-[50px] text-white bg-[#888] ml-[8px] px-[20px] whitespace-nowrap";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
@@ -49,6 +42,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     register,
     handleSubmit,
     setError,
+    getValues,
     formState: { errors },
   } = useForm<SignupInputs>({ mode: "all" });
 
@@ -84,19 +78,18 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       setError("name", { message: "중복 체크를 해주세요." });
       return;
     }
-    if (
-      selectPhoneFistNum === undefined ||
-      phoneMiddleNum.length < 3 ||
-      phoneMiddleNum.length > 4 ||
-      phoneLastNum.length !== 4 ||
-      selectPhoneFistNum.length !== 3
-    ) {
+    if (selectPhoneFistNum === undefined || selectPhoneFistNum.length !== 3) {
       setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
       return;
     }
 
+    const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const email = `${id}@${selectEmail}`;
 
+    if (!emailPattern.test(email)) {
+      setError("id", { message: "이메일 형식이 올바르지 않습니다." });
+      return;
+    }
     const phone = `${selectPhoneFistNum}-${phoneMiddleNum}-${phoneLastNum}`;
 
     try {
@@ -105,19 +98,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     } catch (error) {
       console.error("error:", error);
     }
-  };
-
-  const useFormInput: UseFormInput = (content, placeholder, type, validation) => {
-    return (
-      <>
-        <input
-          {...register(content, validation)}
-          type={type}
-          placeholder={placeholder}
-          className="w-full px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none"
-        />
-      </>
-    );
   };
 
   useEffect(() => {
@@ -132,9 +112,19 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     <div className="flex flex-col items-center">
       <h2 className="text-[32px] font-[700] leading-[130%] mt-[40px]">회원가입</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
+        {/* 이메일 */}
         <div className="flex items-center w-full">
-          <div className="max-w-[180px]">
-            {useFormInput("id", "이메일", "id", { required: "이메일을 입력해주세요." })}
+          <div className="w-[600px]">
+            <input
+              {...register("id", {
+                required: "이메일을 입력해주세요.",
+                minLength: { value: 4, message: "id가 너무 짧습니다." },
+                maxLength: { value: 20, message: "id가 너무 깁니다." },
+              })}
+              type="id"
+              placeholder="이메일"
+              className={INPUT_STYLE}
+            />
           </div>
           <span className="mx-[8px]">@</span>
           <Select
@@ -150,23 +140,51 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         </div>
         <InvalidText errorsMessage={errors.id?.message} />
         <div className="flex items-center w-full">
-          {useFormInput("name", "닉네임", "text", {
-            required: "닉네임을 입력해주세요.",
-            minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
-          })}
+          <input
+            {...register("name", {
+              required: "닉네임을 입력해주세요.",
+              minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
+              maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
+            })}
+            type="text"
+            placeholder="닉네임"
+            className={INPUT_STYLE}
+          />
           <button type="button" className={DUPLICATE_CHECK_BUTTON} onClick={nameDuplicateCheck}>
             중복 체크
           </button>
         </div>
         <InvalidText errorsMessage={errors.name?.message} />
 
-        {useFormInput("password", "비밀번호", "password", {
-          required: "비밀번호를 입력해주세요.",
-          minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-        })}
+        <input
+          {...register("password", {
+            required: "비밀번호를 입력해주세요.",
+            pattern: {
+              value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+              message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
+            },
+            minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
+          })}
+          type="password"
+          placeholder="비밀번호"
+          className={INPUT_STYLE}
+        />
         <InvalidText errorsMessage={errors.password?.message} />
 
-        {useFormInput("passwordCheck", "비밀번호", "password", { required: true })}
+        <input
+          {...register("passwordCheck", {
+            required: "비밀번호를 입력해주세요.",
+            validate: {
+              matchesPreviousPassword: (value) => {
+                const prevPassword = getValues("password");
+                return prevPassword === value || "비밀번호가 일치하지 않습니다.";
+              },
+            },
+          })}
+          type="password"
+          placeholder="비밀번호"
+          className={INPUT_STYLE}
+        />
         <InvalidText errorsMessage={errors.passwordCheck?.message} />
 
         <div className="flex items-center w-full">
@@ -177,16 +195,26 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             selfEnterOption={true}
             placeholder="phone"
           />
-          <span className="mx-[8px]">-</span>
-          {useFormInput("phoneMiddleNum", "휴대전화", "text", {
-            minLength: { value: 3, message: "휴대전화 형식이 올바르지 않습니다." },
-            maxLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
-          })}
-          <span className="mx-[8px]">-</span>
-          {useFormInput("phoneLastNum", "휴대전화", "text", {
-            minLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
-            maxLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
-          })}
+          <span className="mx-[12px]">-</span>
+          <input
+            {...register("phoneMiddleNum", {
+              minLength: { value: 3, message: "휴대전화 형식이 올바르지 않습니다." },
+              maxLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
+            })}
+            type="text"
+            placeholder="휴대전화"
+            className={`${INPUT_STYLE} text-center`}
+          />
+          <span className="mx-[12px]">-</span>
+          <input
+            {...register("phoneLastNum", {
+              minLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
+              maxLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
+            })}
+            type="text"
+            placeholder="휴대전화"
+            className={`${INPUT_STYLE} text-center`}
+          />
         </div>
         <InvalidText errorsMessage={errors.phoneMiddleNum?.message} />
         <InvalidText errorsMessage={errors.phoneLastNum?.message} />

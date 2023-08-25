@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { type SubmitHandler } from "react-hook-form";
+import { FaGripLinesVertical } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "api/supabase";
@@ -44,7 +45,6 @@ export const Login = () => {
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-[2rem] mt-[4.375rem] mb-10 font-bold">로그인</h2>
-      {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-[30rem] w-2/3">
         <label htmlFor="email" className="absolute top-[-9999px] left-[-9999px] ">
           email
@@ -85,34 +85,26 @@ export const Login = () => {
               아이디 저장
             </label>
           </div>
-          <div className="">
-            <button
-              type="button"
-              className="after:content-[''] after:w-[1px] after:h-[10px] after:inline-block after:bg-[#888] after:mx-[1.3125rem] "
-            >
+          <div className="flex">
+            <button type="button" className="">
               이메일 찾기
             </button>
-            <button type="button" className="">
-              비밀번호 찾기
-            </button>
+            <FaGripLinesVertical className="w-[24px] self-center text-center" />
+            <Link to="/find-password">비밀번호 찾기</Link>
           </div>
         </div>
 
-        <div className="mt-6 ">
-          <button className="w-full py-3.5 px-6 bg-[#888888] text-[#fff] mb-4 ">로그인</button>
-        </div>
+        <button className="w-full py-3.5 px-6 mt-6 mb-4 bg-[#888888] text-[#fff]  ">로그인</button>
         <SocialLogin />
         <div className="flex flex-col items-center justify-center">
-          <p className="text-[#5f5f5f] text-[0.875rem] text-center  mb-4">
+          <p className="text-[#5f5f5f] text-[0.875rem] text-center mb-4">
             회원가입하고 더 많은 인터레어 조합을 확인해보세요!
           </p>
           <Link
             to={"/signup"}
             className="flex items-center justify-center bg-none border border-[#888]  w-full h-12 text-[0.875rem]"
           >
-            <button type="button" className="">
-              회원가입
-            </button>
+            회원가입
           </Link>
         </div>
       </form>

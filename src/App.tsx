@@ -15,11 +15,11 @@ const App = () => {
       });
     };
 
-    // if (stayLoggedInStatus) {
-      getAuthSession().catch((error) => {
-        console.log(error);
-      });
-    // }
+
+    getAuthSession().catch((error) => {
+      console.log(error);
+    });
+
 
     auth.onAuthStateChange((event, session) => {
       switch (event) {
