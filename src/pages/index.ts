@@ -6,3 +6,4 @@ export * from "./Login";
 export * from "./Mypage";
 export * from "./Post";
 export * from "./Service";
+export * from "./FindPassword";

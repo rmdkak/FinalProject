@@ -1,5 +1,7 @@
 import React from "react";
 
+import { ScrollToTop } from "components/sidebar";
+
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
@@ -13,6 +15,7 @@ export const Layout = ({ children }: Props) => {
       <Header />
       {children}
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };
