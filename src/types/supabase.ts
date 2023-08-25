@@ -73,7 +73,7 @@ export interface Database {
           wallpaperId: string;
         };
         Insert: {
-          id: string;
+          id?: string;
           tileId: string;
           userId: string;
           wallpaperId: string;
@@ -108,15 +108,15 @@ export interface Database {
       "POST-BOOKMARKS": {
         Row: {
           postId: string;
-          userId: string[];
+          userId: string;
         };
         Insert: {
-          postId: string;
-          userId: string[];
+          postId?: string;
+          userId: string;
         };
         Update: {
           postId?: string;
-          userId?: string[];
+          userId?: string;
         };
         Relationships: [
           {

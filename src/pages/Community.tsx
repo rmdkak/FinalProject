@@ -7,6 +7,8 @@ import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { supabase } from "api/supabase";
 import { DateConvertor } from "components/date";
 import { PostPagination } from "components/pagination";
+import { usePostsBookmark } from "hooks";
+import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 import "@egjs/flicking-plugins/dist/arrow.css";
 import "@egjs/react-flicking/dist/flicking.css";
@@ -15,11 +17,17 @@ export const POSTS_PER_PAGE = 4;
 export const storageUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 const plugins = [new Arrow()];
 
+interface FetchPostBookmark {
+  postId: string;
+  userId: string;
+}
+
 export const Community = () => {
   const navigate = useNavigate();
   const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const [isPostBookmarkedData, setIsPostBookmarkedData] = useState<FetchPostBookmark[]>();
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
@@ -63,6 +71,17 @@ export const Community = () => {
   const indexOfLastPost = currentPage * POSTS_PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentFilteredPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+
+  const { currentSession } = useAuthStore();
+
+  const { postBookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = usePostsBookmark();
+  const { data: currentBookmarkData } = postBookmarkResponse;
+
+  useEffect(() => {
+    if (currentBookmarkData == null) return;
+    setIsPostBookmarkedData(currentBookmarkData);
+  }, [currentBookmarkData, currentSession]);
+
   return (
     <div className="w-[1200px] mx-auto">
       <div className="text-center">
@@ -121,6 +140,10 @@ export const Community = () => {
             게시물 작성
           </Link>
           {currentFilteredPosts.map((post) => {
+            let isPostBookmark: FetchPostBookmark | null | undefined = null;
+            if (isPostBookmarkedData !== undefined) {
+              isPostBookmark = isPostBookmarkedData.find((bookmarkItem) => bookmarkItem.postId === post.id);
+            }
             return (
               <div key={post.id} className="border-b border-[#dddddd] py-5 my-5">
                 <div onClick={goDetailPage} className="flex justify-between gap-5 cursor-pointer">
@@ -142,12 +165,37 @@ export const Community = () => {
                   )}
                 </div>
                 <div className="text-[#888888] flex gap-5">
-                  {post.nickname}
+                  <p>{post.nickname}</p>
                   <p>
                     <DateConvertor datetime={post.created_at} type="dotDate" />
                   </p>
-                  <RxBookmark className="text-[25px]" />
-                  <RxBookmarkFilled className="text-[25px]" />
+                  {isPostBookmark !== undefined ? (
+                    <RxBookmark
+                      className="text-[25px] cursor-pointer"
+                      onClick={async () => {
+                        if (currentSession === null) {
+                          alert("북마크 기능은 로그인 후 이용가능합니다.");
+                          return;
+                        }
+                        if (isPostBookmark == null) return;
+                        deleteBookmarkMutation.mutate({
+                          postId: isPostBookmark.postId,
+                          userId: currentSession.user.id,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <RxBookmarkFilled
+                      className="text-[25px] cursor-pointer"
+                      onClick={async () => {
+                        if (currentSession === null) {
+                          alert("북마크 기능은 로그인 후 이용가능합니다.");
+                          return;
+                        }
+                        addBookmarkMutation.mutate({ postId: post.id, userId: currentSession.user.id });
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             );

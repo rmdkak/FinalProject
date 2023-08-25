@@ -1,19 +1,30 @@
 import { create } from "zustand";
 
+interface Wallpaper {
+  image: string | null;
+  id: string | null;
+}
+
+interface Tile {
+  image: string | null;
+  id: string | null;
+}
 interface Store {
   checkType: "tile" | "wallPaper";
   setTypeCheck: (type: "tile" | "wallPaper") => void;
+
   // 인테리어 헤더
   interiorSelecteIndex: number;
   setInteriorSelecteIndex: (index: number) => void;
+
   // 벽지
-  wallPaper: string;
-  setWallPaper: (img: string) => void;
+  wallPaper: Wallpaper
+  setWallPaper: (selectWallpaper: Wallpaper) => void;
   resetWallPaper: () => void;
 
   // 타일
-  tile: string;
-  setTile: (img: string) => void;
+  tile: Tile;
+  setTile: (selectWallpaper: Tile) => void;
   resetTile: () => void;
 }
 
@@ -22,25 +33,28 @@ export const useServiceStore = create<Store>()((set) => ({
   setTypeCheck: (type) => {
     set((state) => ({ checkType: (state.checkType = type) }));
   },
+
   // 인테리어 헤더
   interiorSelecteIndex: -1,
   setInteriorSelecteIndex: (index) => {
     set((state) => ({ interiorSelecteIndex: (state.interiorSelecteIndex = index) }));
   },
+
   //  벽지
-  wallPaper: "",
-  setWallPaper: (img) => {
-    set((state) => ({ wallPaper: (state.wallPaper = img) }));
+  wallPaper: { image: null, id: null },
+  setWallPaper: (selectWallpaper) => {
+    set(() => ({ wallPaper: { image: selectWallpaper.image, id: selectWallpaper.id } }));
   },
   resetWallPaper: () => {
-    set(() => ({ wallPaper: "" }));
+    set(() => ({ wallPaper: { image: null, id: null } }));
   },
+
   // 타일
-  tile: "",
-  setTile: (img) => {
-    set((state) => ({ tile: (state.tile = img) }));
+  tile: { image: null, id: null },
+  setTile: (selectTile) => {
+    set(() => ({ tile: { image: selectTile.image, id: selectTile.id } }));
   },
   resetTile: () => {
-    set(() => ({ tile: "" }));
+    set(() => ({ tile: { image: null, id: null } }));
   },
 }));
