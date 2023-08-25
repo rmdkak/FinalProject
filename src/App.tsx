@@ -6,6 +6,7 @@ import { useAuthStore } from "store";
 
 const App = () => {
   const { stayLoggedInStatus, setCurrentSession } = useAuthStore();
+  console.log("stayLoggedInStatus :", stayLoggedInStatus);
 
   useEffect(() => {
     const getAuthSession = async () => {
@@ -15,11 +16,11 @@ const App = () => {
       });
     };
 
-    if (stayLoggedInStatus) {
-      getAuthSession().catch((error) => {
-        console.log(error);
-      });
-    }
+    // if (stayLoggedInStatus) {
+    getAuthSession().catch((error) => {
+      console.log(error);
+    });
+    // }
 
     auth.onAuthStateChange((event, session) => {
       switch (event) {
