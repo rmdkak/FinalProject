@@ -3,20 +3,24 @@ import { useEffect } from "react";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
-import { tailTextureList, wallPaperTextureList } from "./data";
+import { tileTextureList, wallPaperTextureList } from "./data";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
-
 interface Props {
   data: Array<Tables<"WALLPAPER", "Row">>;
   type: "tile" | "wallPaper";
 }
 
+/**
+ *
+ * @param data
+ * @param type
+ * @returns
+ */
 export const ServiceItem = ({ data, type }: Props): JSX.Element => {
   const { resetWallPaper, resetTile, setTile, setWallPaper, interiorSelecteIndex } = useServiceStore((state) => state);
 
-  // 페이지 마운트 되었을때, 언마운트 되었을때
-  // 인테리어 비쥬얼에 타일, 벽지 적용한걸 초기화하는 useEffect 입니다.
+  // 페이지 마운트, 언마운트시 전역데이터 초기화
   useEffect(() => {
     // console.log("페이지 마운트됨");
     resetWallPaper();
@@ -28,9 +32,11 @@ export const ServiceItem = ({ data, type }: Props): JSX.Element => {
     };
   }, []);
 
+  /**
+   *
+   * @param image "매개변수 'image'는 클릭한 이미지의 경로 또는 식별자를 나타냅니다. 이 함수는 전역 상태 관리를 위해 'zustand'를 사용하여 이미지 값을 저장합니다. 저장된 이미지 값은 왼쪽의 인테리어 비주얼 요소에 표시되도록 설정됩니다."
+   */
   const getItemData = (selectItem: { id: string; image: string }): void => {
-    // 클릭한 이미지를 zustand로 전역 관리합니다.
-    // 저장된 이미지는 왼쪽 인테리어 비쥬얼에 뿌려주게 됩니다.
     if (type === "wallPaper") {
       setWallPaper(selectItem);
     }
@@ -41,7 +47,7 @@ export const ServiceItem = ({ data, type }: Props): JSX.Element => {
 
   // type 에 따라 CHECK_DATA의 값이 바뀝니다.
   // 이 값은 벽지 타이틀이름 배열과, 바닥재 타이틀이름 배열입니다.
-  const CHECK_DATA = type === "wallPaper" ? tailTextureList : wallPaperTextureList;
+  const CHECK_DATA = type === "wallPaper" ? tileTextureList : wallPaperTextureList;
 
   // 클릭시 스위치에서 보내준 값으로 필터를 돌리는 함수입니다.
   // 그 함수는 변수에 저장됩니다. (useState를 사용하면 무한 렌더링에 걸립니다.)
