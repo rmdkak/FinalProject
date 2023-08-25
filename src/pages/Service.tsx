@@ -1,13 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
 
-import { supabase } from "api/supabase";
 import { GetColor } from "components/colorExtraction";
-import { ServiceItem, tileTextureList, wallPaperTextureList } from "components/service";
-import TextureTitle from "components/service/TextureTitle";
+import { InteriorSection } from "components/service";
 import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useServiceStore } from "store";
-import { type Tables } from "types/supabase";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 interface FetchItemBookmark {
@@ -18,34 +15,15 @@ interface FetchItemBookmark {
 }
 
 export const Service = () => {
-  //   const [clickType, setClickType] = useState<"tile" | "wallpaper" | undefined>();
-
-  // 타일/ 벽지를 담는 겟터셋터함수
-  const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
-  const [tileData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
-
   const [wallPaperBg, setWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");
 
-  const { wallPaper, tile, checkType, setTypeCheck } = useServiceStore((state) => state);
+  const { wallPaper, tile } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
-  //  타일 사이즈 컨트롤
-  //   const [wallPaperSize, setWallPaperSize] = useState<number>(70);
-  //   const [tileSize, setTileSize] = useState<number>(70);
 
-  const fetchData = useCallback(async () => {
-    try {
-      const { data: wallPaper } = await supabase.from("WALLPAPER").select("*");
-      const { data: tale } = await supabase.from("TILE").select("*");
-      setWallData(wallPaper as Array<Tables<"WALLPAPER", "Row">>);
-      setTaleData(tale as Array<Tables<"TILE", "Row">>);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  const fetchData = useCallback(async () => {}, []);
 
-  //   supabase에서 data정보 가져오기
   useEffect(() => {
     fetchData().catch((error) => error(error));
   }, []);
@@ -55,15 +33,8 @@ export const Service = () => {
     if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);
   }, [wallPaper, tile]);
 
-  //   사이즈 컨트롤세터함수
-
-  const onClickTypeSwitch = (type: "tile" | "wallPaper") => {
-    setTypeCheck(type);
-  };
-
   const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
     useInteriorBookmark();
-  // TODO IsLoading, IsError 구현하기
   const { data: currentBookmarkData } = interiorBookmarkResponse;
 
   useEffect(() => {
@@ -71,15 +42,22 @@ export const Service = () => {
     setIsItemBookmarkedData(currentBookmarkData[0]);
   }, [currentBookmarkData, wallPaper.id, tile.id]);
 
+  /**
+   * TODO:
+   * sticky의 필요한 높이값을 저장한 변수입니다.
+   * 높이값은 임시로 200vh로 해놨습니다.
+   */
+  const STICKYHEIGHT: string = "h-[200vh]";
+
   return (
     <>
-      <div className="flex flex-col m-20">
+      <div className="flex flex-col h-auto m-20">
         <h1 className="mb-10 text-3xl font-bold">Interior Design</h1>
-        <div className="flex flex-col gap-40">
+        <div className={`first-line:flex flex-col gap-40`}>
           {/* 벽지/ 타일 비교 박스 */}
-          <div className="flex w-full gap-10">
+          <div className={`flex w-full gap-10 ${STICKYHEIGHT}`}>
             {/* 왼쪽 인터렉션 박스 */}
-            <div className=" flex flex-col items-center justify-center h-[603px] bg-[#8A8A8A] w-[860px]">
+            <div className="sticky top-[20%] flex flex-col items-center justify-center h-[603px] bg-[#8A8A8A] w-[860px]">
               <div className="p-10 perspective-750">
                 {/* 벽지 */}
                 <div
@@ -102,61 +80,10 @@ export const Service = () => {
             </div>
 
             <div className="h-[603px] w-[860px]">
-              {/* 인테리어 헤더 */}
-              <div className="flex mb-6 h-[35px] text-gray-300 gap-3">
-                <span
-                  className={
-                    checkType === "wallPaper"
-                      ? "border-b-2 border-black hover:cursor-pointer text-black"
-                      : "hover:cursor-pointer"
-                  }
-                  onClick={() => {
-                    onClickTypeSwitch("wallPaper");
-                  }}
-                >
-                  벽지
-                </span>
-                |
-                <span
-                  className={
-                    checkType === "tile"
-                      ? "border-b-2 border-black hover:cursor-pointer text-black"
-                      : "hover:cursor-pointer"
-                  }
-                  onClick={() => {
-                    onClickTypeSwitch("tile");
-                  }}
-                >
-                  바닥재
-                </span>
-                {checkType === "wallPaper" ? (
-                  <>
-                    {/* 벽지 종류 목록 */}
-                    <TextureTitle data={wallPaperTextureList} />
-                  </>
-                ) : checkType === "tile" ? (
-                  <>
-                    {/* 타일 종류 목록 */}
-                    <TextureTitle data={tileTextureList} />
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
+              {/* 인테리어 섹션 */}
+              <InteriorSection />
 
-              {/* 인테리어 바디 */}
-              <div className="h-[392px] mb-10 overflow-auto">
-                <ul className="flex flex-wrap w-full gap-x-4 gap-y-4">
-                  {checkType === "wallPaper" ? (
-                    <ServiceItem type={checkType} data={wallData} />
-                  ) : (
-                    <ServiceItem type={checkType} data={tileData} />
-                  )}
-
-                  {/* <li className="bg-gray-200 w-[120px] h-[120px]"></li> */}
-                </ul>
-              </div>
-
+              {/* 자재 소모량 계산기 */}
               <div>
                 <label htmlFor="calc">자재 소모량 계산기</label>
                 <button
@@ -199,9 +126,9 @@ export const Service = () => {
                   <button className="w-16 h-16 bg-gray-200"></button>
                 </div>
               </div>
+              <GetColor src={tile.image === null ? null : `${STORAGE_URL}${tile.image}`} />
             </div>
           </div>
-          <GetColor src={tile.image === null ? null : `${STORAGE_URL}${tile.image}`} />
         </div>
       </div>
     </>
