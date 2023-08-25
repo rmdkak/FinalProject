@@ -165,12 +165,12 @@ export const Community = () => {
                   )}
                 </div>
                 <div className="text-[#888888] flex gap-5">
-                  {post.nickname}
+                  <p>{post.nickname}</p>
                   <p>
                     <DateConvertor datetime={post.created_at} type="dotDate" />
                   </p>
                   {isPostBookmark !== undefined ? (
-                    <RxBookmarkFilled
+                    <RxBookmark
                       className="text-[25px] cursor-pointer"
                       onClick={async () => {
                         if (currentSession === null) {
@@ -185,7 +185,7 @@ export const Community = () => {
                       }}
                     />
                   ) : (
-                    <RxBookmark
+                    <RxBookmarkFilled
                       className="text-[25px] cursor-pointer"
                       onClick={async () => {
                         if (currentSession === null) {
