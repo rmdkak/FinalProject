@@ -43,7 +43,6 @@ export const Service = () => {
   }, [currentBookmarkData, wallPaper.id, tile.id]);
 
   /**
-   * TODO:
    * sticky의 필요한 높이값을 저장한 변수입니다.
    * 높이값은 임시로 200vh로 해놨습니다.
    */
