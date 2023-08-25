@@ -1,17 +1,24 @@
 import { RxChevronRight } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
-import { Arrow } from "@egjs/flicking-plugins";
+import { Arrow, AutoPlay } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
+import img01 from "assets/img01.png";
+import img02 from "assets/img02.png";
+import img03 from "assets/img03.png";
+import img04 from "assets/img04.png";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const plugins = [new Arrow()];
+  const arrowPlugins = [new Arrow()];
+  const autoplayPlugins = [
+    new AutoPlay({ duration: 2000, animationDuration: 3000, direction: "NEXT", stopOnHover: false }),
+  ];
 
   return (
     <>
       <div className="w-full h-[968px] mb-40">
-        <div className="flex justify-between mx-20 mb-20">
+        <div className="flex justify-between mx-20 mb-20 mt-[100px]">
           <div className="ml-20">
             <h1 className="text-[80px]">
               내 스타일 그대로,
@@ -27,12 +34,11 @@ export const Home = () => {
             <span className="h-20 border-r-[1px] border-[#9A9A9A] -translate-x-[18px]" />
           </div>
         </div>
-        <Flicking align={"prev"} circular={true} autoResize={false}>
-          <div className="w-[800px] h-[450px] bg-slate-600 rounded-xl mx-5"></div>
-          <div className="w-[800px] h-[450px] bg-slate-600 rounded-xl mx-5"></div>
-          <div className="w-[800px] h-[450px] bg-slate-600 rounded-xl mx-5"></div>
-          <div className="w-[800px] h-[450px] bg-slate-600 rounded-xl mx-5"></div>
-          <div className="w-[800px] h-[450px] bg-slate-600 rounded-xl mx-5"></div>
+        <Flicking align={"prev"} circular={true} autoResize={false} plugins={autoplayPlugins}>
+          <img src={img01} className="w-[800px] h-[450px] rounded-xl mx-5"></img>
+          <img src={img02} className="w-[800px] h-[450px] rounded-xl mx-5"></img>
+          <img src={img03} className="w-[800px] h-[450px] rounded-xl mx-5 "></img>
+          <img src={img04} className="w-[800px] h-[450px] rounded-xl mx-5"></img>
         </Flicking>
       </div>
       <div className="flex flex-col gap-10 mx-20 mb-40">
@@ -149,6 +155,17 @@ export const Home = () => {
           </div>
         </div>
       </div>
+      <div className="flex flex-col items-center justify-center h-[180px] bg-[#F3F3F3] mb-40">
+        <h1 className="text-2xl">얼마나 필요한지 모르시나요? 스타일의 편리한 기능을 이용해보세요!</h1>
+        <div className="text-[#888888]">
+          <label htmlFor="moveToEvent" className="hover:cursor-pointer">
+            VIEW MORE
+          </label>
+          <button id="moveToEvent">
+            <RxChevronRight className="text-xl translate-y-1" />
+          </button>
+        </div>
+      </div>
       <div className="flex flex-col gap-8 mx-20 mb-40">
         <div className="flex justify-between">
           <h1 className="text-3xl font-semibold">COMMUNTY</h1>
@@ -166,15 +183,15 @@ export const Home = () => {
             </button>
           </div>
         </div>
-        <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
+        <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={arrowPlugins}>
           <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
           <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
           <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
           <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
           <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
           <ViewportSlot>
-            <span className="flicking-arrow-prev is-circle"></span>
-            <span className="flicking-arrow-next is-circle"></span>
+            <span className="flicking-arrow-prev circle"></span>
+            <span className="flicking-arrow-next circle"></span>
           </ViewportSlot>
         </Flicking>
       </div>

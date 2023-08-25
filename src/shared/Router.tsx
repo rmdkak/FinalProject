@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { Layout } from "components";
-import { Home, Service, Post, Community, Detail, Mypage, Login, Signup } from "pages";
+import { Home, Service, Post, Community, Detail, Mypage, Login, Signup, FindPassword } from "pages";
 
 const Router = () => {
   return (
@@ -15,6 +15,7 @@ const Router = () => {
           <Route path="/community" element={<Community />} />
           <Route path="/mypage/:uid" element={<Mypage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/findpassword" element={<FindPassword />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </Layout>

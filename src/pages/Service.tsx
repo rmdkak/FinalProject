@@ -1,28 +1,38 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
 
 import { supabase } from "api/supabase";
-import test from "assets/test.jpg";
 import { GetColor } from "components/colorExtraction";
-import { ServiceItem, tailTextureList, wallPaperTextureList } from "components/service";
+import { ServiceItem, tileTextureList, wallPaperTextureList } from "components/service";
 import TextureTitle from "components/service/TextureTitle";
-import { useServiceStore } from "store";
+import { useInteriorBookmark } from "hooks";
+import { useAuthStore, useServiceStore } from "store";
 import { type Tables } from "types/supabase";
+
+const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
+interface FetchItemBookmark {
+  id: string;
+  userId: string;
+  tileId: string;
+  wallpaperId: string;
+}
 
 export const Service = () => {
   //   const [clickType, setClickType] = useState<"tile" | "wallpaper" | undefined>();
 
   // 타일/ 벽지를 담는 겟터셋터함수
   const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
-  const [taleData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
+  const [tileData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
 
   const [wallPaperBg, setWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");
 
   const { wallPaper, tile, checkType, setTypeCheck } = useServiceStore((state) => state);
+  const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
+  const { currentSession } = useAuthStore();
   //  타일 사이즈 컨트롤
   //   const [wallPaperSize, setWallPaperSize] = useState<number>(70);
   //   const [tileSize, setTileSize] = useState<number>(70);
-  const imgUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
   const fetchData = useCallback(async () => {
     try {
@@ -41,8 +51,8 @@ export const Service = () => {
   }, []);
 
   useEffect(() => {
-    setWallPaperBg(imgUrl + wallPaper);
-    setTileBg(imgUrl + tile);
+    if (wallPaper.image !== null) setWallPaperBg(`${STORAGE_URL}${wallPaper.image}`);
+    if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);
   }, [wallPaper, tile]);
 
   //   사이즈 컨트롤세터함수
@@ -51,8 +61,16 @@ export const Service = () => {
     setTypeCheck(type);
   };
 
-  console.log(wallPaperBg);
-  console.log(tileBg);
+  const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
+    useInteriorBookmark();
+  // TODO IsLoading, IsError 구현하기
+  const { data: currentBookmarkData } = interiorBookmarkResponse;
+
+  useEffect(() => {
+    if (currentBookmarkData == null) return;
+    setIsItemBookmarkedData(currentBookmarkData[0]);
+  }, [currentBookmarkData, wallPaper.id, tile.id]);
+
   return (
     <>
       <div className="flex flex-col m-20">
@@ -82,6 +100,7 @@ export const Service = () => {
                 </div>
               </div>
             </div>
+
             <div className="h-[603px] w-[860px]">
               {/* 인테리어 헤더 */}
               <div className="flex mb-6 h-[35px] text-gray-300 gap-3">
@@ -118,7 +137,7 @@ export const Service = () => {
                 ) : checkType === "tile" ? (
                   <>
                     {/* 타일 종류 목록 */}
-                    <TextureTitle data={tailTextureList} />
+                    <TextureTitle data={tileTextureList} />
                   </>
                 ) : (
                   <></>
@@ -131,8 +150,7 @@ export const Service = () => {
                   {checkType === "wallPaper" ? (
                     <ServiceItem type={checkType} data={wallData} />
                   ) : (
-                    // sift
-                    <ServiceItem type={checkType} data={taleData} />
+                    <ServiceItem type={checkType} data={tileData} />
                   )}
 
                   {/* <li className="bg-gray-200 w-[120px] h-[120px]"></li> */}
@@ -151,14 +169,39 @@ export const Service = () => {
                   {`>`}
                 </button>
                 <div className="flex gap-4 mt-6">
-                  <button className="bg-[#8A8A8A] w-[382px] h-16 border-[1px] border-black">저장하기</button>
+                  {isItemBookmarkedData != null ? (
+                    <BsBookmarkFill
+                      className="text-[50px] cursor-pointer"
+                      onClick={async () => {
+                        if (currentSession === null || tile.id == null || wallPaper.id == null) return;
+                        deleteInteriorBookmarkMutation.mutate({
+                          userId: currentSession.user.id,
+                          tileId: tile.id,
+                          wallpaperId: wallPaper.id,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <BsBookmark
+                      className="text-[50px] cursor-pointer"
+                      onClick={async () => {
+                        if (currentSession === null || tile.id == null || wallPaper.id == null) return;
+                        addInteriorBookmarkMutation.mutate({
+                          userId: currentSession.user.id,
+                          tileId: tile.id,
+                          wallpaperId: wallPaper.id,
+                        });
+                      }}
+                    />
+                  )}
+
                   <button className=" w-[382px] h-16 border-[1px] border-black">추천하기</button>
                   <button className="w-16 h-16 bg-gray-200"></button>
                 </div>
               </div>
             </div>
           </div>
-          <GetColor src={test} />
+          <GetColor src={tile.image === null ? null : `${STORAGE_URL}${tile.image}`} />
         </div>
       </div>
     </>

@@ -82,11 +82,11 @@ export interface Database {
           wallpaperId: string
         }
         Insert: {
-          id?: string
-          tileId: string
-          userId: string
-          wallpaperId: string
-        }
+          id?: string;
+          tileId: string;
+          userId: string;
+          wallpaperId: string;
+        };
         Update: {
           id?: string
           tileId?: string
