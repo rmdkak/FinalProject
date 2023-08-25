@@ -32,6 +32,7 @@ export const Post = () => {
     const postImg = data.file[0];
 
     try {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImg, {
         cacheControl: "3600",
         upsert: false,

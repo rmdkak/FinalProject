@@ -190,8 +190,8 @@ export const Home = () => {
           <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
           <div className="w-[520px] h-[254px] bg-gray-200 mx-5"></div>
           <ViewportSlot>
-            <span className="flicking-arrow-prev circle"></span>
-            <span className="flicking-arrow-next circle"></span>
+            <span className="flicking-arrow-prev is-circle"></span>
+            <span className="flicking-arrow-next is-circle"></span>
           </ViewportSlot>
         </Flicking>
       </div>
