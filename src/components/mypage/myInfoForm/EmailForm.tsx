@@ -15,6 +15,7 @@ export const EmailForm = ({ initialState, patchIsOpen, setPatchIsOpen, provider,
   const onSubmit: SubmitHandler<EmailInput> = async (data) => {
     const { email } = data;
     await changeEmail(email);
+    setPatchIsOpen({ ...initialState, email: false });
   };
 
   return (
@@ -34,8 +35,11 @@ export const EmailForm = ({ initialState, patchIsOpen, setPatchIsOpen, provider,
       />
       {patchIsOpen.email ? (
         <div className="relative flex w-[70px]">
-          <button className={BUTTON_STYLE}>수정</button>
+          <button type="button" className={BUTTON_STYLE}>
+            수정
+          </button>
           <button
+            type="button"
             onClick={() => {
               setPatchIsOpen({ ...initialState, email: false });
             }}
@@ -47,6 +51,7 @@ export const EmailForm = ({ initialState, patchIsOpen, setPatchIsOpen, provider,
       ) : (
         <div className="flex w-[70px]">
           <button
+            type="button"
             onClick={() => {
               setPatchIsOpen({ ...initialState, email: true });
             }}

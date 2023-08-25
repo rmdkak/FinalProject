@@ -83,8 +83,13 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       return;
     }
 
+    const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const email = `${id}@${selectEmail}`;
 
+    if (!emailPattern.test(email)) {
+      setError("id", { message: "이메일 형식이 올바르지 않습니다." });
+      return;
+    }
     const phone = `${selectPhoneFistNum}-${phoneMiddleNum}-${phoneLastNum}`;
 
     try {
@@ -113,10 +118,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             <input
               {...register("id", {
                 required: "이메일을 입력해주세요.",
-                pattern: {
-                  value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                  message: "이메일 형식이 올바르지 않습니다.",
-                },
                 minLength: { value: 4, message: "id가 너무 짧습니다." },
                 maxLength: { value: 20, message: "id가 너무 깁니다." },
               })}

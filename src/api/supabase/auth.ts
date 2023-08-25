@@ -53,6 +53,16 @@ export const signup = async (inputValue: SignupInputs) => {
   if (error != null) throw new Error(printErrorMessage(error.message));
 };
 
+export const findPassword = async (email: string) => {
+  const { error } = await auth.resetPasswordForEmail(email, {
+    // FIXME 배포되면 변경되어야 함
+    redirectTo: "http://localhost:3000/update-password"
+  })
+
+  if (error != null) throw new Error(error.message);
+}
+
+
 /**
  * @Authentication updateUser
  */
