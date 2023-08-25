@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 import { changeMetaData, uploadImage } from "api/supabase";
+import { InvalidText } from "components/signup/InvalidText";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
 
@@ -18,7 +19,11 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
   const [imgFile, setImgFile] = useState<File>();
   const { setPreviewProfileUrl } = useAuthStore();
   const { patchUserMutation } = useAuth();
-  const { register, handleSubmit } = useForm<MetaDataInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<MetaDataInput>({ mode: "all" });
 
   // 유저 업로드 파일 미리보기
   useEffect(() => {
@@ -72,6 +77,7 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
             maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
           })}
         />
+        <InvalidText errorsMessage={errors.name?.message} />
         <input
           id={"phone"}
           placeholder={"휴대전화"}
@@ -84,6 +90,7 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
             maxLength: { value: 11, message: "휴대전화 형식이 올바르지 않습니다." },
           })}
         />
+        <InvalidText errorsMessage={errors.phone?.message} />
       </div>
       {patchIsOpen.metaData ? (
         <div className="relative flex w-[70px]">
