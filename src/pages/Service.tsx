@@ -3,7 +3,7 @@ import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
 
 import { supabase } from "api/supabase";
 import { GetColor } from "components/colorExtraction";
-import { ServiceItem, tailTextureList, wallPaperTextureList } from "components/service";
+import { ServiceItem, tileTextureList, wallPaperTextureList } from "components/service";
 import TextureTitle from "components/service/TextureTitle";
 import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useServiceStore } from "store";
@@ -100,6 +100,7 @@ export const Service = () => {
                 </div>
               </div>
             </div>
+
             <div className="h-[603px] w-[860px]">
               {/* 인테리어 헤더 */}
               <div className="flex mb-6 h-[35px] text-gray-300 gap-3">
@@ -136,7 +137,7 @@ export const Service = () => {
                 ) : checkType === "tile" ? (
                   <>
                     {/* 타일 종류 목록 */}
-                    <TextureTitle data={tailTextureList} />
+                    <TextureTitle data={tileTextureList} />
                   </>
                 ) : (
                   <></>
