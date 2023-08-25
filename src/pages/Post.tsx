@@ -4,7 +4,7 @@ import uuid from "react-uuid";
 
 import { supabase } from "api/supabase";
 import { Modal } from "components/modals";
-import { useModalStore } from "store";
+import { useAuthStore, useModalStore } from "store";
 
 interface Inputs {
   title: string;
@@ -12,6 +12,9 @@ interface Inputs {
   file: FileList;
 }
 export const Post = () => {
+  const { currentSession } = useAuthStore();
+  const nickname = currentSession?.user.user_metadata.name;
+
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
   const {
@@ -29,23 +32,31 @@ export const Post = () => {
     const UUID = uuid();
     const title = data.title;
     const content = data.textarea;
-    const postImg = data.file[0];
-
+    const postImage = data.file[0];
+    const hasPostImgStatus = postImage == null ? null : `/postImg/${UUID}`;
     try {
-      await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImg, {
+      await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImage, {
         cacheControl: "3600",
         upsert: false,
       });
-      await supabase.from("POSTS").insert({ id: UUID, title, content, bookmark: 0, nickname: "김진수" });
+      await supabase
+        .from("POSTS")
+        .insert({ id: UUID, title, content, bookmark: 0, nickname, postImage: hasPostImgStatus });
     } catch (error) {
       console.log("error", error);
     }
-
-    navigate("/post");
+    navigate("/community");
   };
 
-  const goBackHandler = () => {
-    navigate(-1);
+  const movePageHandler = (moveEvent: string) => {
+    switch (moveEvent) {
+      case "back":
+        navigate(-1);
+        break;
+      case "community":
+        navigate("/community");
+        break;
+    }
   };
 
   return (
@@ -73,16 +84,15 @@ export const Post = () => {
           )}
           <p className={title.length > 50 ? "text-red-600" : "text-gray-400"}>제목 글자 수: {title.length} / 50</p>
         </div>
-        <button className="mt-3 ml-auto text-end" onClick={onOpenModal}>
+        <button className="my-3 ml-auto text-end" onClick={onOpenModal}>
           조합 추가하기+
         </button>
         <Modal title="인테리어 조합">
           <p className="w-[300px]">테스트</p>
         </Modal>
-        <div className="w-[1280px]  h-[49px] mt-[24px] bg-[#a7a7a7] border-[2px] border-[#000]"></div>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="w-[1280px] h-[449px] border-[2px] border-[#000] focus:outline-none p-[20px] text-[25px]"
+          className="w-[1280px] h-[449px] border-[1px] border-[#a7a7a7] focus:outline-none p-[20px] text-[25px]"
           {...register("textarea", { required: true, maxLength: 1000 })}
         />
         <div className="flex justify-between mt-2">
@@ -95,19 +105,32 @@ export const Post = () => {
           <label htmlFor="img" className="w-[128px] text-[18px] font-[400]">
             파일첨부
           </label>
-          <input
-            type="file"
-            className="w-full text-[24px] px-[24px] py-[12px] focus:outline-none"
-            {...register("file")}
-          />
+          <input type="file" className="w-full text-[20px] focus:outline-none" {...register("file")} />
         </div>
-        <div className="flex self-end gap-[24px] mt-[40px]">
-          <button type="button" className="bg-[#888888] w-[112px] h-[48px] px-[24px]" onClick={goBackHandler}>
-            이전으로
+        <div className="flex justify-between mt-[40px]">
+          <button
+            type="button"
+            className="bg-[#DDDDDD] h-[48px] px-[24px] text-[#7c7c7c]"
+            onClick={() => {
+              movePageHandler("community");
+            }}
+          >
+            커뮤니티 이동
           </button>
-          <button type="submit" className="bg-[#5D5D5D] w-[112px] h-[48px] px-[24px]">
-            글쓰기
-          </button>
+          <div>
+            <button
+              type="button"
+              className="bg-[#DDDDDD] h-[48px] px-[24px] text-[#7c7c7c] mr-5"
+              onClick={() => {
+                movePageHandler("back");
+              }}
+            >
+              이전으로
+            </button>
+            <button type="submit" className="bg-[#5D5D5D] h-[48px] px-[24px] text-[#fff]">
+              글쓰기
+            </button>
+          </div>
         </div>
       </form>
     </div>
