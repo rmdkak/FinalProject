@@ -101,7 +101,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       setError("id", { message: "이메일 형식이 올바르지 않습니다." });
       return;
     }
-    const phone = `${selectPhoneFistNum}-${phoneMiddleNum}-${phoneLastNum}`;
+    const phone = `${selectPhoneFistNum}${phoneMiddleNum}${phoneLastNum}`;
 
     try {
       await signup({ ...data, email, phone });
