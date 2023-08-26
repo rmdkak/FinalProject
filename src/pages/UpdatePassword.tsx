@@ -2,6 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { changePassword } from "api/supabase";
+import { InvalidText } from "components/signup/InvalidText";
 
 interface UpdatePasswordInput {
   newPassword: string;
@@ -10,7 +11,12 @@ interface UpdatePasswordInput {
 
 export const UpdatePassword = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, getValues } = useForm<UpdatePasswordInput>();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<UpdatePasswordInput>();
 
   const onSubmit: SubmitHandler<UpdatePasswordInput> = async (data) => {
     const { newPassword } = data;
@@ -53,6 +59,7 @@ export const UpdatePassword = () => {
               })}
               className="w-[325px] h-full"
             />
+            <InvalidText errorsMessage={errors.newPassword?.message} />
           </div>
           <div className="flex items-center gap-[16px] px-[24px] w-full h-[48px] justify-between border border-[#888] ">
             <label className="w-[100px] text-left text-[#888]" htmlFor="newPasswordConfirm">
@@ -73,6 +80,7 @@ export const UpdatePassword = () => {
               })}
               className="w-[325px] h-full"
             />
+            <InvalidText errorsMessage={errors.newPasswordConfirm?.message} />
           </div>
           <button className="w-full text-[#fff] py-3 bg-[#888]">변경하기</button>
         </form>

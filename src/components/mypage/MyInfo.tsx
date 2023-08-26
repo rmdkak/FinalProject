@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { deleteUser } from "api/supabase";
+import { deleteUser, deleteUserData } from "api/supabase";
 import { useAuth } from "hooks";
-import { useAuthStore } from "store";
+import { useAuthStore, useLoggingStore } from "store";
 import { type Tables } from "types/supabase";
 
 import { MetaDataForm, PasswordForm } from "./myInfoForm";
@@ -33,10 +33,11 @@ export const MyInfo = () => {
   const [patchIsOpen, setPatchIsOpen] = useState<PatchIsOpen>(initialState);
 
   const { currentSession } = useAuthStore();
+  const { setStayLoggedInStatus } = useLoggingStore();
   const provider = currentSession?.user.app_metadata.provider;
 
-  const { userResponse } = useAuth();
-  const { data: currentUser } = userResponse;
+  const { currentUserResponse } = useAuth();
+  const { data: currentUser } = currentUserResponse;
 
   // 회원 탈퇴
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ export const MyInfo = () => {
     try {
       if (currentUser === undefined) return;
       await deleteUser(currentUser.id);
+      await deleteUserData(currentUser.id);
+      setStayLoggedInStatus(false);
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -52,7 +55,7 @@ export const MyInfo = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-[16px]">
+      <div className="flex flex-col gap-[16px] mt-10">
         <MetaDataForm
           initialState={initialState}
           patchIsOpen={patchIsOpen}

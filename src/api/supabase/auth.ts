@@ -1,3 +1,4 @@
+import defaultImg from "assets/defaultImg.png"
 import { type LoginInputs } from "pages";
 import { type Tables } from "types/supabase";
 
@@ -47,9 +48,10 @@ export const logout = async () => {
 export const signup = async (inputValue: SignupInputs) => {
   const { email, password, name, phone } = inputValue;
   const { data, error } = await auth.signUp({ email, password, options: { data: { name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL } } });
-
-  await addUser({ id: data.user?.id, email, name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL })
-
+  if (data.user != null) {
+    await addUser({ id: data.user.id, email, name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL })
+    await uploadImage({ file: defaultImg, userId: data.user.id })
+  }
   if (error != null) throw new Error(printErrorMessage(error.message));
 };
 
@@ -97,12 +99,32 @@ export const deleteUser = async (userUid: string) => {
 
 /**
  * @table "USERS"
+ * @method delete
+ */
+export const deleteUserData = async (userId: string) => {
+  if (userId == null) return;
+  await supabase.from(TABLE).delete().eq("userId", userId)
+};
+
+/**
+ * @table "USERS"
  * @method get
  */
 export const fetchUser = async (userUuid: string) => {
   const { data, error } = await supabase.from(TABLE).select().eq("id", userUuid);
   if (error != null) throw new Error(error.message);
   return data[0]
+};
+
+/**
+ * @table "USERS"
+ * @method get
+ * @description 중복체크용 데이터
+ */
+export const fetchUserCheckData = async () => {
+  const { data, error } = await supabase.from(TABLE).select("email,name");
+  if (error != null) throw new Error(error.message);
+  return data
 };
 
 /**
@@ -129,9 +151,19 @@ export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"US
  * @storagePath "Images/profileImg"
  * @method upload
  */
-export const uploadImage = async (file: Blob, userId: string) => {
+const uploadImage = async ({ file, userId }: { file: Blob, userId: string }) => {
   // await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: false })
   const { error } = await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: true })
+  if (error != null) throw new Error(error.message);
+}
+
+/**
+ * @storagePath "Images/profileImg"
+ * @method update
+ */
+export const updateImage = async ({ file, userId }: { file: Blob, userId: string }) => {
+  // await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: false })
+  const { error } = await supabase.storage.from(STORAGE).update(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: true })
   if (error != null) throw new Error(error.message);
 }
 

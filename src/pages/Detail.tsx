@@ -186,7 +186,9 @@ export const Detail = () => {
                       )}
                     </div>
                     <p>{comment.content}</p>
-                    {comment.commentImg != null&&<img src={`${storageUrl}${comment.commentImg}`} className="my-[20px]"/>}
+                    {comment.commentImg != null && (
+                      <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px]" />
+                    )}
                     <div className="flex gap-2 text-[#888888]">
                       <a>
                         <DateConvertor datetime={comment.created_at} type="timeAgo" />

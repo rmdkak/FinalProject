@@ -8,8 +8,8 @@ export const Mypage = () => {
   const navigate = useNavigate();
 
   const { previewProfileUrl } = useAuthStore();
-  const { userResponse } = useAuth();
-  const { data: currentUser } = userResponse;
+  const { currentUserResponse } = useAuth();
+  const { data: currentUser } = currentUserResponse;
 
   if (currentUser === undefined) {
     navigate("/");

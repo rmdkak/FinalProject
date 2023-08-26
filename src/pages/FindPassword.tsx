@@ -2,6 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { findPassword } from "api/supabase";
+import { InvalidText } from "components/signup/InvalidText";
 
 interface FindPasswordInput {
   email: string;
@@ -10,7 +11,11 @@ interface FindPasswordInput {
 export const FindPassword = () => {
   const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm<FindPasswordInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FindPasswordInput>();
 
   const onSubmit: SubmitHandler<FindPasswordInput> = async (data) => {
     const { email } = data;
@@ -44,6 +49,7 @@ export const FindPassword = () => {
                 })}
                 className="w-[325px] h-full"
               />
+              <InvalidText errorsMessage={errors.email?.message} />
             </div>
             <button className="mt-6 w-full text-[#fff] py-3 bg-[#888]">이메일 전송</button>
           </form>

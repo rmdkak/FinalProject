@@ -19,6 +19,7 @@ export const PasswordForm = ({ initialState, patchIsOpen, setPatchIsOpen, provid
   } = useForm<PasswordInput>({ mode: "all" });
 
   const onSubmit: SubmitHandler<PasswordInput> = async (data) => {
+    console.log("패스워드 수정 동작");
     const { password } = data;
     await changePassword(password);
   };
