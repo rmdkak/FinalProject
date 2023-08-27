@@ -1,6 +1,7 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 import { changeEmail } from "api/supabase";
+import { InvalidText } from "components/signup/InvalidText";
 
 import { INPUT_STYLE, type ICommonProps, BUTTON_STYLE } from "../MyInfo";
 
@@ -10,7 +11,11 @@ interface EmailInput {
 
 // TODO 이메일 변경
 export const EmailForm = ({ initialState, patchIsOpen, setPatchIsOpen, provider, currentUser }: ICommonProps) => {
-  const { register, handleSubmit } = useForm<EmailInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<EmailInput>();
 
   const onSubmit: SubmitHandler<EmailInput> = async (data) => {
     const { email } = data;
@@ -33,6 +38,7 @@ export const EmailForm = ({ initialState, patchIsOpen, setPatchIsOpen, provider,
           },
         })}
       />
+      <InvalidText errorsMessage={errors.email?.message} />
       {patchIsOpen.email ? (
         <div className="relative flex w-[70px]">
           <button type="button" className={BUTTON_STYLE}>

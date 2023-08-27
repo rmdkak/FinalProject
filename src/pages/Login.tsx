@@ -1,12 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type SubmitHandler } from "react-hook-form";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaGripLinesVertical } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "api/supabase";
-import { SocialLogin } from "components";
-import { useAuthStore } from "store";
+import { INPUT_STYLE, SocialLogin } from "components";
+import { InvalidText } from "components/signup/InvalidText";
+import { useAuthStore, useLoggingStore } from "store";
 
 export interface LoginInputs {
   email: string;
@@ -16,7 +18,9 @@ export interface LoginInputs {
 export const Login = () => {
   const navigate = useNavigate();
 
-  const { currentSession, setStayLoggedInStatus } = useAuthStore();
+  const { currentSession } = useAuthStore();
+  const { stayLoggedInStatus, setStayLoggedInStatus } = useLoggingStore();
+  const [showPassword, setShowPassword] = useState({ password: false });
 
   const {
     register,
@@ -55,22 +59,41 @@ export const Login = () => {
             minLength: { value: 8, message: "이메일이 너무 짧습니다." },
           })}
           placeholder="이메일"
-          className="w-full px-6 py-3 border border-[#e5e5e5] box-border"
+          className={INPUT_STYLE}
         />
-        <p>{errors.email?.message}</p>
+        <InvalidText errorsMessage={errors.email?.message} />
+
         <label htmlFor="password" className="absolute top-[-9999px] left-[-9999px] ">
           password
         </label>
-        <input
-          {...register("password", {
-            required: "비밀번호를 입력해주세요.",
-            minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-          })}
-          type="password"
-          id="password"
-          className="w-full px-6 py-3 mt-4 border border-[#e5e5e5] box-border"
-          placeholder="비밀번호"
-        />
+        <div className="relative flex w-full">
+          <input
+            {...register("password", {
+              required: "비밀번호를 입력해주세요.",
+              minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
+            })}
+            type={showPassword.password ? "text" : "password"}
+            id="password"
+            className={INPUT_STYLE}
+            placeholder="비밀번호"
+          />
+          {showPassword.password ? (
+            <AiOutlineEyeInvisible
+              className="h-[50px] absolute right-2 top-[50%] translate-y-[-50%] text-[25px] cursor-pointer"
+              onClick={() => {
+                setShowPassword({ ...showPassword, password: false });
+              }}
+            />
+          ) : (
+            <AiOutlineEye
+              className="h-[50px] absolute right-2 top-[50%] translate-y-[-50%] text-[25px] cursor-pointer"
+              onClick={() => {
+                setShowPassword({ ...showPassword, password: true });
+              }}
+            />
+          )}
+        </div>
+        <InvalidText errorsMessage={errors.password?.message} />
 
         <p>{errors.password?.message}</p>
         <div className="flex items-center justify-between h-12 mt-4 text-[#888] ">
@@ -79,7 +102,9 @@ export const Login = () => {
               type="checkbox"
               id="loginStatus"
               className="min-w-[1.5rem] min-h-[1.5rem] mr-2 "
-              onChange={setStayLoggedInStatus}
+              onChange={() => {
+                setStayLoggedInStatus(!stayLoggedInStatus);
+              }}
             />
             <label htmlFor="loginStatus" className="">
               아이디 저장

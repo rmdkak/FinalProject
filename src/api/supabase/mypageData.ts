@@ -13,7 +13,6 @@ export const fetchMyPostsData = async (id: string) => {
 // MyComments Get
 export const fetchMyCommentsData = async (id: string) => {
   const { data, error } = await supabase.from("COMMENTS").select("*").eq("writtenId", id);
-  console.log('data :', data);
   if (error != null) {
     console.error(error.message);
     return;

@@ -7,7 +7,7 @@ const queryKey = ["auth"];
 export const useAuth = () => {
   const queryClient = useQueryClient();
   const { currentSession } = useAuthStore()
-  const userResponse = useQuery({
+  const currentUserResponse = useQuery({
     queryKey: [queryKey[0]],
     queryFn: async () => {
       if (currentSession === null) return
@@ -32,5 +32,5 @@ export const useAuth = () => {
     onSettled: async () => { await queryClient.invalidateQueries({ queryKey }) },
   });
 
-  return { userResponse, patchUserMutation }
+  return { currentUserResponse, patchUserMutation }
 }

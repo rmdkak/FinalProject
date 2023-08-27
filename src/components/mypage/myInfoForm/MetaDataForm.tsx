@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent, useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import { changeMetaData, uploadImage } from "api/supabase";
+import { changeMetaData, updateImage } from "api/supabase";
 import { InvalidText } from "components/signup/InvalidText";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
@@ -11,7 +11,7 @@ import { BUTTON_STYLE, type ICommonProps, INPUT_STYLE } from "../MyInfo";
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
 interface MetaDataInput {
-  name: string;
+  mypageName: string;
   phone: string;
 }
 
@@ -23,7 +23,7 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<MetaDataInput>({ mode: "all" });
+  } = useForm<MetaDataInput>();
 
   // 유저 업로드 파일 미리보기
   useEffect(() => {
@@ -39,20 +39,23 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
   };
 
   const onsubmit: SubmitHandler<MetaDataInput> = async (data) => {
+    console.log("data :", data);
     if (currentUser === undefined) return;
     const { id: userId } = currentUser;
     const profileImg = `${STORAGE_URL}/profileImg/${userId}`;
     if (imgFile !== undefined) {
       try {
-        await uploadImage(imgFile, userId);
+        await updateImage({ file: imgFile, userId });
       } catch (error) {
         console.error(error);
       }
     }
 
-    const { phone, name } = data;
-    await changeMetaData({ phone, avatar_url: profileImg, name });
-    patchUserMutation.mutate({ inputValue: { name, phone, avatar_url: profileImg }, userId });
+    const { phone, mypageName } = data;
+    await changeMetaData({ phone, avatar_url: profileImg, name: mypageName });
+    patchUserMutation.mutate({ inputValue: { name: mypageName, phone, avatar_url: profileImg }, userId });
+    setPatchIsOpen({ ...initialState, metaData: false });
+    setPreviewProfileUrl("");
   };
 
   return (
@@ -71,13 +74,13 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
           disabled={!patchIsOpen.metaData}
           defaultValue={currentUser?.name}
           className={INPUT_STYLE}
-          {...register("name", {
+          {...register("mypageName", {
             required: "닉네임은 필수 입력 사항입니다.",
             minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
             maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
           })}
         />
-        <InvalidText errorsMessage={errors.name?.message} />
+        <InvalidText errorsMessage={errors.mypageName?.message} />
         <input
           id={"phone"}
           placeholder={"휴대전화"}
@@ -94,14 +97,7 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
       </div>
       {patchIsOpen.metaData ? (
         <div className="relative flex w-[70px]">
-          <button
-            type="button"
-            className={BUTTON_STYLE}
-            onClick={async () => {
-              setPatchIsOpen({ ...initialState, metaData: false });
-              setPreviewProfileUrl("");
-            }}
-          >
+          <button type="button" className={BUTTON_STYLE} onClick={handleSubmit(onsubmit)}>
             수정
           </button>
           <button
