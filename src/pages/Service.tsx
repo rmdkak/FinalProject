@@ -79,25 +79,28 @@ export const Service = () => {
           {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
-            <div className=" flex flex-col items-center justify-center h-[603px] bg-[#8A8A8A] w-[860px]">
-              <div className="p-10 perspective-750">
+            <div className="flex flex-col items-center justify-center h-[603px] bg-[#8A8A8A] w-[860px] overflow-hidden">
+              <div className="cube">
                 {/* 벽지 */}
                 <div
                   style={{
                     backgroundImage: `url(${wallPaperBg})`,
                     backgroundSize: `${70}px, ${70}px`,
                   }}
-                  className={`w-[500px] h-[200px] bg-white translate-x-[25px] translate-y-[6px] border-b-2 border-[1px] border-black`}
-                >
-                  벽지벽지
-                </div>
+                  className="left-wall"
+                ></div>
+                <div
+                  style={{
+                    backgroundImage: `url(${wallPaperBg})`,
+                    backgroundSize: `${70}px, ${70}px`,
+                  }}
+                  className="right-wall"
+                ></div>
                 {/* 타일 */}
                 <div
                   style={{ backgroundImage: `url(${tileBg})`, backgroundSize: `${70}px, ${70}px` }}
-                  className={`w-[550px] h-[200px] bg-white rotate-x-[50deg] -translate-y-[30px] transform-style-3d border-[1px] border-black`}
-                >
-                  타일타일
-                </div>
+                  className="floor"
+                ></div>
               </div>
             </div>
 
