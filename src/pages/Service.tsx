@@ -2,9 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
 
 import { GetColor } from "components/colorExtraction";
-import { InteriorSection } from "components/service";
+import { Modal } from "components/modals";
+import { InteriorSection, ResouresCalculator } from "components/service";
 import { useInteriorBookmark } from "hooks";
-import { useAuthStore, useServiceStore } from "store";
+import { useAuthStore, useModalStore, useServiceStore } from "store";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 interface FetchItemBookmark {
@@ -18,6 +19,7 @@ export const Service = () => {
   const [wallPaperBg, setWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");
 
+  const { onOpenModal } = useModalStore((state) => state);
   const { wallPaper, tile } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
@@ -85,15 +87,15 @@ export const Service = () => {
               {/* 자재 소모량 계산기 */}
               <div>
                 <label htmlFor="calc">자재 소모량 계산기</label>
-                <button
-                  className="h-6"
-                  id="calc"
-                  onClick={() => {
-                    alert("테스트");
-                  }}
-                >
+                <button className="h-6" id="calc" onClick={onOpenModal}>
                   {`>`}
                 </button>
+
+                {/* 자재량 소모 계산기 모달 */}
+                <Modal title="자재 소모량 계산기">
+                  <ResouresCalculator />
+                </Modal>
+
                 <div className="flex gap-4 mt-6">
                   {isItemBookmarkedData != null ? (
                     <BsBookmarkFill
