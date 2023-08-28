@@ -9,6 +9,7 @@ const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 interface Props {
   data: Array<Tables<"WALLPAPER", "Row">>;
   type: "tile" | "wallPaper";
+  wallCheck?: true | false;
 }
 
 /**
@@ -17,7 +18,7 @@ interface Props {
  * @param type
  * @returns
  */
-export const ServiceItem = ({ data, type }: Props): JSX.Element => {
+export const ServiceItem = ({ data, type, wallCheck }: Props): JSX.Element => {
   const { resetWallPaper, resetTile, setTile, setWallPaper, interiorSelecteIndex } = useServiceStore((state) => state);
 
   // 페이지 마운트, 언마운트시 전역데이터 초기화
@@ -38,7 +39,7 @@ export const ServiceItem = ({ data, type }: Props): JSX.Element => {
    */
   const getItemData = (selectItem: { id: string; image: string }): void => {
     if (type === "wallPaper") {
-      setWallPaper(selectItem);
+      wallCheck === true ? setWallPaper(selectItem, "left") : setWallPaper(selectItem, "right");
     }
     if (type === "tile") {
       setTile(selectItem);
@@ -96,9 +97,9 @@ export const ServiceItem = ({ data, type }: Props): JSX.Element => {
               getItemData({ id, image });
             }}
             key={id}
-            className="bg-gray-200 w-[120px] h-[120px] cursor-pointer"
+            className="bg-gray-200 cursor-pointer interior-item"
           >
-            <img src={`${STORAGE_URL}${image}`} className="w-[120px] h-[120px]" alt={` ${type} 미리보기 이미지`} />
+            <img src={`${STORAGE_URL}${image}`} className="interior-item" alt={` ${type} 미리보기 이미지`} />
           </li>
         );
       })}

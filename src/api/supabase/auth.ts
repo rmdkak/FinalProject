@@ -1,11 +1,12 @@
+import defaultImg from "assets/defaultImg.png";
 import { type LoginInputs } from "pages";
 import { type Tables } from "types/supabase";
 
 import { auth, supabase } from "./supabaseClient";
 
-const TABLE = "USERS"
-const STORAGE = "Images"
-const PATH = "profileImg/"
+const TABLE = "USERS";
+const STORAGE = "Images";
+const PATH = "profileImg/";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 const DEFAULT_PROFILE_IMG_URL = `${STORAGE_URL}/profileImg/defaultImg`;
@@ -23,11 +24,194 @@ interface MetaData {
   name: string | null;
 }
 
-// 로그인 기능
+/**
+ * @Authentication signIn
+ */
 export const login = async (inputValue: LoginInputs) => {
   const { error } = await auth.signInWithPassword(inputValue);
 
   if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @Authentication signOut
+ */
+export const logout = async () => {
+  const { error } = await auth.signOut();
+
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @Authentication signUp
+ */
+export const signup = async (inputValue: SignupInputs) => {
+  const { email, password, name, phone } = inputValue;
+  const { data, error } = await auth.signUp({
+    email,
+    password,
+    options: { data: { name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL } },
+  });
+  if (data.user != null) {
+    await addUser({ id: data.user.id, email, name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL });
+    await uploadImage({ file: defaultImg, userId: data.user.id });
+  }
+  if (error != null) throw new Error(printErrorMessage(error.message));
+};
+
+export const findPassword = async (email: string) => {
+  const { error } = await auth.resetPasswordForEmail(email, {
+    // FIXME 배포되면 변경되어야 함
+    redirectTo: "http://localhost:3000/update-password",
+  });
+
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @Authentication updateUser
+ */
+export const changeEmail = async (email: string) => {
+  const { error } = await auth.updateUser({ email });
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @Authentication updateUser
+ */
+export const changePassword = async (password: string) => {
+  const { error } = await auth.updateUser({ password });
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @Authentication updateUser
+ */
+export const changeMetaData = async ({ phone, avatar_url: profileImg, name }: MetaData) => {
+  const { error } = await auth.updateUser({ data: { phone, avatar_url: profileImg, name } });
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @Authentication deleteUser
+ */
+export const deleteUser = async (userUid: string) => {
+  await deleteImage(userUid);
+  await auth.admin.deleteUser(userUid);
+};
+
+/**
+ * @table "USERS"
+ * @method delete
+ */
+export const deleteUserData = async (userId: string) => {
+  if (userId == null) return;
+  await supabase.from(TABLE).delete().eq("userId", userId);
+};
+
+/**
+ * @table "USERS"
+ * @method get
+ */
+export const fetchUser = async (userUuid: string) => {
+  const { data, error } = await supabase.from(TABLE).select().eq("id", userUuid);
+  if (error != null) throw new Error(error.message);
+  return data[0];
+};
+
+/**
+ * @table "USERS"
+ * @method get
+ * @description 중복체크용 데이터
+ */
+export const fetchUserCheckData = async () => {
+  const { data, error } = await supabase.from(TABLE).select("email,name");
+  if (error != null) throw new Error(error.message);
+  return data;
+};
+
+/**
+ * @table "USERS"
+ * @method post
+ */
+export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
+  const { error } = await supabase.from(TABLE).insert([inputValue]).select();
+
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @table "USERS"
+ * @method patch
+ */
+export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"USERS", "Update">; userId: string }) => {
+  const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select();
+
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @storagePath "Images/profileImg"
+ * @method upload
+ */
+const uploadImage = async ({ file, userId }: { file: Blob; userId: string }) => {
+  // await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: false })
+  const { error } = await supabase.storage
+    .from(STORAGE)
+    .upload(`${PATH}${userId}`, file, { cacheControl: "3600", upsert: true });
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @storagePath "Images/profileImg"
+ * @method update
+ */
+export const updateImage = async ({ file, userId }: { file: Blob; userId: string }) => {
+  // await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: false })
+  const { error } = await supabase.storage
+    .from(STORAGE)
+    .update(`${PATH}${userId}`, file, { cacheControl: "3600", upsert: true });
+  if (error != null) throw new Error(error.message);
+};
+
+/**
+ * @storagePath "Images/profileImg"
+ * @method remove
+ */
+export const deleteImage = async (userId: string) => {
+  const { error } = await supabase.storage.from(STORAGE).remove([`${PATH}${userId}`]);
+  if (error != null) throw new Error(error.message);
+};
+
+const OAUTH_OPTIONS = { queryParams: { access_type: "offline", prompt: "consent" } };
+/**
+ * @Authentication signInWithOAuth
+ * @provider google
+ */
+export const googleLogin = async () => {
+  const { error } = await auth.signInWithOAuth({ provider: "google", options: OAUTH_OPTIONS });
+
+  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
+};
+
+/**
+ * @Authentication signInWithOAuth
+ * @provider github
+ */
+export const githubLogin = async () => {
+  const { error } = await auth.signInWithOAuth({ provider: "github", options: OAUTH_OPTIONS });
+
+  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
+};
+
+/**
+ * @Authentication signInWithOAuth
+ * @provider kakao
+ */
+export const kakaoLogin = async () => {
+  const { error } = await auth.signInWithOAuth({ provider: "kakao", options: OAUTH_OPTIONS });
+
+  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
 };
 
 const printErrorMessage = (message: string) => {
@@ -41,91 +225,4 @@ const printErrorMessage = (message: string) => {
     default:
       return message;
   }
-};
-
-// 회원가입 기능
-export const signup = async (inputValue: SignupInputs) => {
-  const { email, password, name, phone } = inputValue;
-  const { data: authData, error } = await auth.signUp({ email, password, options: { data: { name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL } } });
-  await postUser({ id: authData.user?.id, email, name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL })
-
-  if (error != null) throw new Error(printErrorMessage(error.message));
-};
-
-// 회원 정보 데이터 테이블 포스트
-const postUser = async (inputValue: Tables<"USERS", "Insert">) => {
-  const { error } = await supabase.from(TABLE).insert([inputValue]).select();
-
-  if (error != null) throw new Error(error.message);
-};
-
-// 회원 정보 데이터 테이블 수정
-// TODO 적용안됨
-export const patchUser = async (inputValue: Tables<"USERS", "Update">, userId: string) => {
-  const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select();
-
-  if (error != null) throw new Error(error.message);
-};
-
-// 프로필 이미지 스토리지 저장
-export const uploadImage = async (file: Blob, userId: string) => {
-  // await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: false })
-  const { error } = await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: true })
-  if (error != null) throw new Error(error.message);
-}
-
-// 프로필 이미지 스토리지에서 삭제하기
-// 회원 탈퇴 로직 사용
-// TODO 되는지 확인
-export const deleteImage = async (userId: string) => {
-  const { error } = await supabase.storage.from(STORAGE).remove([`${PATH}${userId}`])
-  if (error != null) throw new Error(error.message);
-}
-
-// 비밀번호 변경
-export const changePassword = async (password: string) => {
-  const { error } = await auth.updateUser({ password })
-  if (error != null) throw new Error(error.message);
-}
-
-// 메타데이터 변경
-export const changeMetaData = async ({ phone, avatar_url: profileImg, name }: MetaData) => {
-  const { error } = await auth.updateUser({ data: { phone, avatar_url: profileImg, name } })
-  if (error != null) throw new Error(error.message);
-}
-
-// 로그아웃 기능
-export const logout = async () => {
-  const { error } = await auth.signOut();
-
-  if (error?.status != null) throw new Error("로그아웃에 실패하였습니다.");
-};
-
-// 회원탈퇴 기능
-export const deleteUser = async (userUid: string) => {
-  await deleteImage(userUid)
-  await auth.admin.deleteUser(userUid);
-};
-
-// 소셜 로그인
-const OAUTH_OPTIONS = { queryParams: { access_type: "offline", prompt: "consent" } }
-// 구글 로그인
-export const googleLogin = async () => {
-  const { error } = await auth.signInWithOAuth({ provider: "google", options: OAUTH_OPTIONS });
-
-  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
-};
-
-// 깃 로그인
-export const githubLogin = async () => {
-  const { error } = await auth.signInWithOAuth({ provider: "github", options: OAUTH_OPTIONS });
-
-  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
-};
-
-// 카카오 로그인
-export const kakaoLogin = async () => {
-  const { error } = await auth.signInWithOAuth({ provider: "kakao", options: OAUTH_OPTIONS });
-
-  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
 };

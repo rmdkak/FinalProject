@@ -6,19 +6,22 @@ import hambergerMenu from "assets/hamburgerMenu.svg";
 import logOutIcon from "assets/logout.svg";
 import userIcon from "assets/user.svg";
 import { Sidebar } from "components/sidebar";
-import { useAuthStore } from "store";
+import { useAuthStore, useLoggingStore } from "store";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const { currentSession } = useAuthStore();
-  const userUid = currentSession === null ? null : currentSession.user.id;
+  const { setStayLoggedInStatus } = useLoggingStore();
+  const userUid = currentSession?.user.id;
 
   // 로그아웃
   const logoutHandler = async () => {
+    navigate("/");
     try {
       await logout();
+      setStayLoggedInStatus(false);
       alert(`임시
       로그아웃 완료`);
     } catch (error) {

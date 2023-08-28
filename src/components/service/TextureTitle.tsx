@@ -21,19 +21,19 @@ const TextureTitle = ({ data }: Props): JSX.Element => {
   };
   // console.log(interiorSelecteIndex);
   return (
-    <>
+    <div className="flex gap-3 mt-10">
       {data.map((item, index) => (
         <span
           onClick={() => {
             onTextureTitleHandler(index);
           }}
           key={item}
-          className={`hover:cursor-pointer ${interiorSelecteIndex === index ? "text-[#222]" : ""} `}
+          className={` hover:cursor-pointer ${interiorSelecteIndex === index ? "text-[#222]" : ""} `}
         >
           {item}
         </span>
       ))}
-    </>
+    </div>
   );
 };
 

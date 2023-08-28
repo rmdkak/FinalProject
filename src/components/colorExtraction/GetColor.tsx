@@ -1,31 +1,41 @@
+import { useState, useEffect } from "react";
+
 import { useColor } from "color-thief-react";
 import { type ReducerState, type ColorFormats, type ArrayRGB } from "color-thief-react/lib/types";
 
 import { ColorPallet } from "./ColorPallet";
 
 interface props {
-  src: string | null;
+  leftWall: string | null;
+  rightWall: string | null;
 }
 
-export const GetColor = ({ src }: props) => {
-  if (src === null) {
+export const GetColor = ({ leftWall, rightWall }: props) => {
+  const [color, setColor] = useState<string | null>(leftWall);
+  const [colorSide, setColorSide] = useState<boolean>(false);
+
+  useEffect(() => {
+    colorSide ? setColor(rightWall) : setColor(leftWall);
+  }, [colorSide, leftWall, rightWall]);
+
+  if (color === null) {
     return (
       <div className="flex flex-col w-full gap-20">
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상 코드</h2>
+          <h2 className="mb-8 text-[30px] font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
-            <li className="text-3xl font-bold">타일을 선택해주세요.</li>
+            <li className="text-[30px] font-bold">타일을 선택해주세요.</li>
           </ul>
         </div>
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상과 어울리는 추천 조합</h2>
+          <h2 className="mb-8 text-[30px] font-medium">현재 색상과 어울리는 추천 조합</h2>
           <ul className="flex flex-wrap gap-4"></ul>
         </div>
       </div>
     );
   }
 
-  const { data, loading, error } = useColor<ColorFormats, ReducerState<string | ArrayRGB>>(src, "hex", {
+  const { data, loading, error } = useColor<ColorFormats, ReducerState<string | ArrayRGB>>(color, "hex", {
     crossOrigin: "anonymous",
   });
   /**
@@ -91,7 +101,34 @@ export const GetColor = ({ src }: props) => {
     return (
       <div className="flex flex-col w-full gap-20">
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상 코드</h2>
+          <div className="flex items-center gap-3 mb-8">
+            <h2 className="text-lg font-medium">현재 색상 코드</h2>
+            <span
+              className={
+                colorSide
+                  ? "text-gray-300 hover:cursor-pointer"
+                  : "text-black border-b-2 border-black hover:cursor-pointer"
+              }
+              onClick={() => {
+                setColorSide(false);
+              }}
+            >
+              왼쪽 벽
+            </span>
+            <span
+              className={
+                colorSide
+                  ? "text-black border-b-2 border-black hover:cursor-pointer"
+                  : "text-gray-300 hover:cursor-pointer"
+              }
+              onClick={() => {
+                setColorSide(true);
+              }}
+            >
+              오른쪽 벽
+            </span>
+          </div>
+
           <ul className="flex flex-wrap gap-4">
             <li
               onClick={() => {
@@ -99,18 +136,13 @@ export const GetColor = ({ src }: props) => {
               }}
               className="flex"
             >
-              <div className="w-32 h-32" style={{ backgroundColor: data as string }} />
-              <span className="mt-auto font-bold" style={{ color: data as string }}>
-                {data}
-              </span>
+              <div className="w-32 h-32 rounded-xl" style={{ backgroundColor: data as string }} />
             </li>
           </ul>
         </div>
-        <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상과 어울리는 추천 조합</h2>
-          <ul className="flex flex-wrap gap-4">
-            <ColorPallet color={data} />
-          </ul>
+        <div className="flex-column gap-y-8">
+          <h2 className="text-lg font-medium ">현재 색상과 어울리는 추천 조합</h2>
+          <ColorPallet color={data} />
         </div>
       </div>
     );

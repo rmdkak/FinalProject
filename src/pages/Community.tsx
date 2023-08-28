@@ -1,38 +1,24 @@
 import { useEffect, useState } from "react";
-import { RxBookmarkFilled, RxBookmark } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Arrow } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
-import { supabase } from "api/supabase";
+import { supabase, storageUrl } from "api/supabase";
 import { DateConvertor } from "components/date";
 import { PostPagination } from "components/pagination";
-import { usePostsBookmark } from "hooks";
-import { useAuthStore } from "store";
+import { PostBookmark } from "components/postBookmark";
 import { type Tables } from "types/supabase";
 import "@egjs/flicking-plugins/dist/arrow.css";
 import "@egjs/react-flicking/dist/flicking.css";
 
-export const POSTS_PER_PAGE = 4;
-export const storageUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
+export const POSTS_PER_PAGE = 8;
 const plugins = [new Arrow()];
-
-interface FetchPostBookmark {
-  postId: string;
-  userId: string;
-}
 
 export const Community = () => {
   const navigate = useNavigate();
   const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [isPostBookmarkedData, setIsPostBookmarkedData] = useState<FetchPostBookmark[]>();
-
-  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-    setCurrentPage(1);
-  };
 
   useEffect(() => {
     fetchData().catch((error) => error);
@@ -51,17 +37,22 @@ export const Community = () => {
     setCurrentPage(pageNumber);
   };
 
-  const goDetailPage = () => {
-    navigate("/detail");
+  const goDetailPage = (postId: string) => {
+    navigate(`/detail/${postId}`);
+  };
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+    setCurrentPage(1);
   };
 
   let filteredPosts;
   switch (selectedOption) {
     case "normal":
-      filteredPosts = postList.filter((e) => e.tileId === null && e.wallpaperId === null);
+      filteredPosts = postList.filter((e) => e.tileId === null && e.leftWallpaperId === null);
       break;
     case "recommendation":
-      filteredPosts = postList.filter((e) => e.tileId !== null && e.wallpaperId !== null);
+      filteredPosts = postList.filter((e) => e.tileId !== null && e.leftWallpaperId !== null);
       break;
     default:
       filteredPosts = postList;
@@ -71,16 +62,6 @@ export const Community = () => {
   const indexOfLastPost = currentPage * POSTS_PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentFilteredPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-
-  const { currentSession } = useAuthStore();
-
-  const { postBookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = usePostsBookmark();
-  const { data: currentBookmarkData } = postBookmarkResponse;
-
-  useEffect(() => {
-    if (currentBookmarkData == null) return;
-    setIsPostBookmarkedData(currentBookmarkData);
-  }, [currentBookmarkData, currentSession]);
 
   return (
     <div className="w-[1200px] mx-auto">
@@ -94,12 +75,12 @@ export const Community = () => {
         <div className="w-[520px] h-[254px] bg-gray-200 mx-5">2</div>
         <div className="w-[520px] h-[254px] bg-gray-200 mx-5">3</div>
         {postList
-          .filter((post) => post.tileId != null && post.wallpaperId)
+          .filter((post) => post.tileId != null && post.leftWallpaperId)
           .map((post) => (
             <div key={post.id}>
               <div className="flex">
                 <img
-                  src={`${storageUrl}/wallpaper/${post.wallpaperId as string}`}
+                  src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
                   alt="벽지"
                   className="w-[150px] h-[150px]"
                 />
@@ -131,6 +112,7 @@ export const Community = () => {
         <option value="normal">일반 게시물</option>
         <option value="recommendation">추천 게시물</option>
       </select>
+      <p>총 게시물 개수: {filteredPosts.length}</p>
       <div className="flex justify-center">
         <div className="w-[1200px] border-t border-[#dddddd] pt-[100px]">
           <Link
@@ -140,62 +122,42 @@ export const Community = () => {
             게시물 작성
           </Link>
           {currentFilteredPosts.map((post) => {
-            let isPostBookmark: FetchPostBookmark | null | undefined = null;
-            if (isPostBookmarkedData !== undefined) {
-              isPostBookmark = isPostBookmarkedData.find((bookmarkItem) => bookmarkItem.postId === post.id);
-            }
             return (
               <div key={post.id} className="border-b border-[#dddddd] py-5 my-5">
-                <div onClick={goDetailPage} className="flex justify-between gap-5 cursor-pointer">
-                  <div>
-                    <p className="text-lg font-medium truncate w-[500px]">{post.title}</p>
-                    <p className="mt-1 h-[50px] w-[800px] overflow-hidden">{post.content}</p>
+                <div
+                  onClick={() => {
+                    goDetailPage(post.id);
+                  }}
+                  className="flex gap-5 cursor-pointer"
+                >
+                  <div className="flex">
+                    {post.postImage != null && (
+                      <img src={`${storageUrl}${post.postImage}`} className="mt-1 h-[100px] w-[100px] mr-5" />
+                    )}
+                    <div>
+                      <p className="text-lg font-medium truncate w-[500px]">{post.title}</p>
+                      <p className="mt-1 h-[50px] w-[800px] overflow-hidden">{post.content}</p>
+                    </div>
                   </div>
-                  {post.wallpaperId !== null && post.tileId !== null && (
+                  {post.leftWallpaperId !== null && post.tileId !== null && (
                     <>
                       <span>벽지</span>
                       <img
-                        src={`${storageUrl}/wallpaper/${post.wallpaperId}`}
+                        src={`${storageUrl}/wallpaper/${post.leftWallpaperId}`}
                         alt="벽지"
-                        className="w-[80px] h-[80px]"
+                        className="w-[100px] h-[100px]"
                       />
                       <span>바닥</span>
-                      <img src={`${storageUrl}/tile/${post.tileId}`} alt="바닥" className="w-[80px] h-[80px]" />
+                      <img src={`${storageUrl}/tile/${post.tileId}`} alt="바닥" className="w-[100px] h-[100px]" />
                     </>
                   )}
                 </div>
-                <div className="text-[#888888] flex gap-5">
-                  <p>{post.nickname}</p>
+                <div className="text-[#888888] flex gap-5 mt-5">
+                  {post.nickname}
                   <p>
                     <DateConvertor datetime={post.created_at} type="dotDate" />
                   </p>
-                  {isPostBookmark !== undefined ? (
-                    <RxBookmark
-                      className="text-[25px] cursor-pointer"
-                      onClick={async () => {
-                        if (currentSession === null) {
-                          alert("북마크 기능은 로그인 후 이용가능합니다.");
-                          return;
-                        }
-                        if (isPostBookmark == null) return;
-                        deleteBookmarkMutation.mutate({
-                          postId: isPostBookmark.postId,
-                          userId: currentSession.user.id,
-                        });
-                      }}
-                    />
-                  ) : (
-                    <RxBookmarkFilled
-                      className="text-[25px] cursor-pointer"
-                      onClick={async () => {
-                        if (currentSession === null) {
-                          alert("북마크 기능은 로그인 후 이용가능합니다.");
-                          return;
-                        }
-                        addBookmarkMutation.mutate({ postId: post.id, userId: currentSession.user.id });
-                      }}
-                    />
-                  )}
+                  <PostBookmark postId={post.id} />
                 </div>
               </div>
             );

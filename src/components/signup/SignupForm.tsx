@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { type HTMLInputTypeAttribute, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { type RegisterOptions, type SubmitHandler } from "react-hook-form";
+import { type SubmitHandler } from "react-hook-form";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
-import { signup } from "api/supabase";
+import { fetchUserCheckData, signup } from "api/supabase";
 import { Select } from "components/input";
 import { BUTTON_COMMON_STYLE } from "pages";
 import { useAuthStore } from "store";
@@ -21,18 +21,12 @@ export interface SignupInputs {
   phoneLastNum: string;
 }
 
-type UseFormInput = (
-  content: keyof SignupInputs,
-  placeholder: string,
-  type: HTMLInputTypeAttribute,
-  validation?: RegisterOptions<SignupInputs, keyof SignupInputs>,
-) => ReactNode;
-
 interface Props {
   prevStep: () => void;
   nextStep: () => void;
 }
 
+const INPUT_STYLE = "w-full px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
 const DUPLICATE_CHECK_BUTTON = "h-[50px] text-white bg-[#888] ml-[8px] px-[20px] whitespace-nowrap";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
@@ -42,31 +36,42 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const [selectEmail, setSelectEmail] = useState<string | undefined>();
   const [selectPhoneFistNum, setSelectPhoneFistNum] = useState<string | undefined>();
 
-  const [checkedEmail, setCheckedEmail] = useState(false);
-  const [checkedName, setCheckedName] = useState(false);
+  const [checkedDuplicate, setCheckedDuplicate] = useState({ email: false, name: false });
+  const [fetchUserData, setFetchUserData] = useState([{ email: "", name: "" }]);
+  const [showPassword, setShowPassword] = useState({ password: false, passwordConfirm: false });
 
   const {
     register,
     handleSubmit,
     setError,
+    getValues,
     formState: { errors },
   } = useForm<SignupInputs>({ mode: "all" });
 
   useEffect(() => {
     const getUsers = async () => {
-      // const { data, error } = await auth.admin.listUsers();
-      // console.log("users :", data);
-      // console.log("error :", error);
+      const getUserData = await fetchUserCheckData();
+      setFetchUserData(getUserData);
     };
     void getUsers();
   }, []);
 
   // 중복체크
-  const emailDuplicateCheck = () => {
-    setCheckedEmail(true);
-  };
-  const nameDuplicateCheck = () => {
-    setCheckedName(true);
+  const duplicateCheck = (target: "email" | "name") => {
+    if (selectEmail === undefined) {
+      setError("id", { message: "email을 선택해주세요." });
+      return;
+    }
+    const matchUser = fetchUserData.filter((user) => {
+      return target === "name" ? user.name === getValues("name") : user.email === `${getValues("id")}@${selectEmail}`;
+    });
+    if (matchUser === null || matchUser.length === 0) {
+      setCheckedDuplicate({ ...checkedDuplicate, [target]: true });
+    } else {
+      target === "name"
+        ? setError("name", { message: "이미 존재하는 닉네임입니다.." })
+        : setError("id", { message: "이미 존재하는 이메일입니다." });
+    }
   };
 
   const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
@@ -76,28 +81,27 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       setError("id", { message: "email을 선택해주세요." });
       return;
     }
-    if (!checkedEmail) {
+    if (!checkedDuplicate.email) {
       setError("id", { message: "중복 체크를 해주세요." });
       return;
     }
-    if (!checkedName) {
+    if (!checkedDuplicate.name) {
       setError("name", { message: "중복 체크를 해주세요." });
       return;
     }
-    if (
-      selectPhoneFistNum === undefined ||
-      phoneMiddleNum.length < 3 ||
-      phoneMiddleNum.length > 4 ||
-      phoneLastNum.length !== 4 ||
-      selectPhoneFistNum.length !== 3
-    ) {
+    if (selectPhoneFistNum === undefined || !/^[0-9]{3}$/.test(selectPhoneFistNum)) {
       setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
       return;
     }
 
+    const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const email = `${id}@${selectEmail}`;
 
-    const phone = `${selectPhoneFistNum}-${phoneMiddleNum}-${phoneLastNum}`;
+    if (!emailPattern.test(email)) {
+      setError("id", { message: "이메일 형식이 올바르지 않습니다." });
+      return;
+    }
+    const phone = `${selectPhoneFistNum}${phoneMiddleNum}${phoneLastNum}`;
 
     try {
       await signup({ ...data, email, phone });
@@ -105,19 +109,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     } catch (error) {
       console.error("error:", error);
     }
-  };
-
-  const useFormInput: UseFormInput = (content, placeholder, type, validation) => {
-    return (
-      <>
-        <input
-          {...register(content, validation)}
-          type={type}
-          placeholder={placeholder}
-          className="w-full px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none"
-        />
-      </>
-    );
   };
 
   useEffect(() => {
@@ -132,9 +123,19 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     <div className="flex flex-col items-center">
       <h2 className="text-[32px] font-[700] leading-[130%] mt-[40px]">회원가입</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
+        {/* 이메일 */}
         <div className="flex items-center w-full">
-          <div className="max-w-[180px]">
-            {useFormInput("id", "이메일", "id", { required: "이메일을 입력해주세요." })}
+          <div className="w-[600px]">
+            <input
+              {...register("id", {
+                required: "이메일을 입력해주세요.",
+                minLength: { value: 4, message: "id가 너무 짧습니다." },
+                maxLength: { value: 20, message: "id가 너무 깁니다." },
+              })}
+              type="id"
+              placeholder="이메일"
+              className={INPUT_STYLE}
+            />
           </div>
           <span className="mx-[8px]">@</span>
           <Select
@@ -144,29 +145,103 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             selfEnterOption={true}
           />
           {/* <button className="w-[70px] bg">중복 체크</button> */}
-          <button type="button" className={DUPLICATE_CHECK_BUTTON} onClick={emailDuplicateCheck}>
+          <button
+            type="button"
+            className={DUPLICATE_CHECK_BUTTON}
+            onClick={() => {
+              duplicateCheck("email");
+            }}
+          >
             중복 체크
           </button>
         </div>
         <InvalidText errorsMessage={errors.id?.message} />
         <div className="flex items-center w-full">
-          {useFormInput("name", "닉네임", "text", {
-            required: "닉네임을 입력해주세요.",
-            minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
-          })}
-          <button type="button" className={DUPLICATE_CHECK_BUTTON} onClick={nameDuplicateCheck}>
+          <input
+            {...register("name", {
+              required: "닉네임을 입력해주세요.",
+              minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
+              maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
+            })}
+            type="text"
+            placeholder="닉네임"
+            className={INPUT_STYLE}
+          />
+          <button
+            type="button"
+            className={DUPLICATE_CHECK_BUTTON}
+            onClick={() => {
+              duplicateCheck("name");
+            }}
+          >
             중복 체크
           </button>
         </div>
         <InvalidText errorsMessage={errors.name?.message} />
 
-        {useFormInput("password", "비밀번호", "password", {
-          required: "비밀번호를 입력해주세요.",
-          minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-        })}
+        <div className="relative flex w-full">
+          <input
+            {...register("password", {
+              required: "비밀번호를 입력해주세요.",
+              pattern: {
+                value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
+              },
+              minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
+            })}
+            type={showPassword.password ? "text" : "password"}
+            placeholder="비밀번호"
+            className={INPUT_STYLE}
+          />
+          {showPassword.password ? (
+            <AiOutlineEyeInvisible
+              className="h-[50px] absolute right-2 top-[50%] translate-y-[-50%] text-[25px] cursor-pointer"
+              onClick={() => {
+                setShowPassword({ ...showPassword, password: false });
+              }}
+            />
+          ) : (
+            <AiOutlineEye
+              className="h-[50px] absolute right-2 top-[50%] translate-y-[-50%] text-[25px] cursor-pointer"
+              onClick={() => {
+                setShowPassword({ ...showPassword, password: true });
+              }}
+            />
+          )}
+        </div>
         <InvalidText errorsMessage={errors.password?.message} />
 
-        {useFormInput("passwordCheck", "비밀번호", "password", { required: true })}
+        <div className="relative flex w-full">
+          <input
+            {...register("passwordCheck", {
+              required: "비밀번호를 입력해주세요.",
+              validate: {
+                matchesPreviousPassword: (value) => {
+                  const prevPassword = getValues("password");
+                  return prevPassword === value || "비밀번호가 일치하지 않습니다.";
+                },
+              },
+            })}
+            type={showPassword.passwordConfirm ? "text" : "password"}
+            placeholder="비밀번호"
+            className={INPUT_STYLE}
+          />
+          {showPassword.passwordConfirm ? (
+            <AiOutlineEyeInvisible
+              className="h-[50px] absolute right-2 text-[25px] cursor-pointer"
+              onClick={() => {
+                setShowPassword({ ...showPassword, passwordConfirm: false });
+              }}
+            />
+          ) : (
+            <AiOutlineEye
+              className="h-[50px] absolute right-2 text-[25px] cursor-pointer"
+              onClick={() => {
+                setShowPassword({ ...showPassword, passwordConfirm: true });
+              }}
+            />
+          )}
+        </div>
         <InvalidText errorsMessage={errors.passwordCheck?.message} />
 
         <div className="flex items-center w-full">
@@ -177,16 +252,24 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             selfEnterOption={true}
             placeholder="phone"
           />
-          <span className="mx-[8px]">-</span>
-          {useFormInput("phoneMiddleNum", "휴대전화", "text", {
-            minLength: { value: 3, message: "휴대전화 형식이 올바르지 않습니다." },
-            maxLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
-          })}
-          <span className="mx-[8px]">-</span>
-          {useFormInput("phoneLastNum", "휴대전화", "text", {
-            minLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
-            maxLength: { value: 4, message: "휴대전화 형식이 올바르지 않습니다." },
-          })}
+          <span className="mx-[12px]">-</span>
+          <input
+            {...register("phoneMiddleNum", {
+              pattern: { value: /^[0-9]{3,4}$/, message: "휴대전화 형식이 올바르지 않습니다." },
+            })}
+            type="text"
+            placeholder="휴대전화"
+            className={`${INPUT_STYLE} text-center`}
+          />
+          <span className="mx-[12px]">-</span>
+          <input
+            {...register("phoneLastNum", {
+              pattern: { value: /^[0-9]{4}$/, message: "휴대전화 형식이 올바르지 않습니다." },
+            })}
+            type="text"
+            placeholder="휴대전화"
+            className={`${INPUT_STYLE} text-center`}
+          />
         </div>
         <InvalidText errorsMessage={errors.phoneMiddleNum?.message} />
         <InvalidText errorsMessage={errors.phoneLastNum?.message} />
