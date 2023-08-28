@@ -1,6 +1,4 @@
-// TODO: 자재 소모량 계산기
-
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 
 import CloseBtn from "assets/close.svg";
 import tileIMG from "assets/tileCalculator.svg";
@@ -27,7 +25,6 @@ export const ResouresCalculator = (): JSX.Element => {
     resultArea: "",
     result_consumption: "",
   });
-
   const [selectItem, setSelectItem] = useState<number>(0);
 
   /**
@@ -45,26 +42,35 @@ export const ResouresCalculator = (): JSX.Element => {
   /**
    * 자재 사이즈와 작업 면적을 계산하는 함수입니다.
    */
-  const handleCalculrator = () => {
+  const handleCalculrator = useCallback(() => {
     const RESULT_AREA: number = +((+workingArea.width / 100) * (+workingArea.height / 100));
-    const RESULT_CONSUMPTION: number = Math.ceil(
-      +(RESULT_AREA * 10000) / (+resoures.width * +resoures.height) +
-        +(RESULT_AREA * 10000) / (+resoures.width * +resoures.height) / 10,
-    );
+    let RESULT_CONSUMPTION: number = 0;
+    if (selectItem === 0)
+      RESULT_CONSUMPTION = Math.ceil(
+        +RESULT_AREA / (+resoures.width * +resoures.height) + +RESULT_AREA / (+resoures.width * +resoures.height) / 10,
+      );
+
+    if (selectItem === 1)
+      RESULT_CONSUMPTION = Math.ceil(
+        (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) +
+          (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) / 10,
+      );
+
+    console.log(RESULT_CONSUMPTION);
     setResult({
       resultArea: `${RESULT_AREA}`,
       result_consumption: `${RESULT_CONSUMPTION}`,
     });
-  };
+  }, [workingArea, resoures]);
 
   /**
    * 예산 소모량 섹션을 보이게할지 보이지 않게끔할지 컨트롤합니다.
    */
-  const onVisibleBtn = () => {
+  const onVisibleBtn = useCallback(() => {
     setVisible(false);
-  };
+  }, []);
 
-  const onSelectItem = (index: number) => {
+  const onSelectItem = useCallback((index: number) => {
     setSelectItem(index);
     setResoures({
       width: "",
@@ -75,7 +81,7 @@ export const ResouresCalculator = (): JSX.Element => {
       height: "",
     });
     setVisible(false);
-  };
+  }, []);
 
   return (
     <>
@@ -99,14 +105,6 @@ export const ResouresCalculator = (): JSX.Element => {
                 </li>
               );
             })}
-            {/* <li className="flex items-center justify-center w-full px-6 py-3 mr-4 border rounded-lg text-gray01 border-gray05 ">
-              <img className="mr-1" src={wallPaperIMG} alt="벽지 모양 이모티콘" />
-              벽지
-            </li>
-            <li className="flex items-center justify-center w-full px-6 py-3 border rounded-lg text-gray01 border-gray05 ">
-              <img className="mr-1" src={tileIMG} alt="타일 모양 이모티콘" />
-              타일
-            </li> */}
           </ul>
         </div>
 
@@ -119,6 +117,7 @@ export const ResouresCalculator = (): JSX.Element => {
             label="자재 사이즈"
             firstPlaceholder="폭"
             secondPlaceholder="길이"
+            selectItem={selectItem}
           />
           <CalculatorArticle
             state={workingArea}
