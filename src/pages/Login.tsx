@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { login, githubLogin, googleLogin, kakaoLogin } from "api/supabase";
 import githubLogo from "assets/githubLogo.svg";
-import googleLogo from "assets/googleLogo.jpg";
+import googleLogo from "assets/googleLogo.svg";
 import kakaoLogo from "assets/kakaoLogo.svg";
 import { CheckBoxIcon, INPUT_STYLE, PasswordVisibleButton } from "components";
 import { InvalidText } from "components/signup/InvalidText";
