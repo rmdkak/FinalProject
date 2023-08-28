@@ -89,10 +89,20 @@ export const Comments = () => {
       setOpenReply(commentId);
     }
   };
-  const deleteCommentHandler = async (id: string) => {
+  
+  const deleteCommentHandler = async (commentId: string) => {
     try {
       const checkDelete = window.confirm("정말로 삭제하시겠습니까?");
-      if (checkDelete) await supabase.from("COMMENTS").delete().eq("id", id);
+      if (checkDelete) await supabase.from("COMMENTS").delete().eq("id", commentId);
+    } catch (error) {
+      console.log("error :", error);
+    }
+  };
+
+  const deleteReplyHandler = async (replyId: string) => {
+    try {
+      const checkDelete = window.confirm("정말로 삭제하시겠습니까?");
+      if (checkDelete) await supabase.from("RE-COMMENTS").delete().eq("id", replyId);
     } catch (error) {
       console.log("error :", error);
     }
@@ -159,6 +169,18 @@ export const Comments = () => {
                             {postData?.userId === comment.writtenId && (
                               <div className="text-[14px] pl-[6px] text-red-500 border border-red-500 rounded-xl w-[50px]">
                                 작성자
+                              </div>
+                            )}
+                            {sessionId === reply.writtenId && (
+                              <div className="text-red-500">
+                                <button className="mr-2">수정</button>
+                                <button
+                                  onClick={() => {
+                                    void deleteReplyHandler(reply.id);
+                                  }}
+                                >
+                                  삭제
+                                </button>
                               </div>
                             )}
                           </div>
