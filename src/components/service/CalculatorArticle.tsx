@@ -1,12 +1,32 @@
-import React from "react";
+import React, { type Dispatch, type SetStateAction } from "react";
+
+import { type WidthHeight } from "types/calculator";
 interface Props {
   label: string;
   firstPlaceholder: string;
   secondPlaceholder: string;
   propId: string;
+  state: WidthHeight;
+  setState: Dispatch<SetStateAction<WidthHeight>>;
 }
 
-const CalculatorArticle = ({ propId, label, firstPlaceholder, secondPlaceholder }: Props): JSX.Element => {
+const CalculatorArticle = ({
+  propId,
+  label,
+  firstPlaceholder,
+  secondPlaceholder,
+  state,
+  setState,
+}: Props): JSX.Element => {
+  //   const { width, height } = state;
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setState({
+      ...state,
+      [name]: value,
+    });
+  };
+  console.log(state);
   return (
     <>
       <article>
@@ -16,21 +36,29 @@ const CalculatorArticle = ({ propId, label, firstPlaceholder, secondPlaceholder 
         <h3 className="mb-4">{label}</h3>
 
         <div className="flex items-center mb-6">
-          <div className="w-full relative before:content-['mm'] before:absolute before:top-[50%] before:translate-y-[-50%] before:text-gray04 before:z-[0] before:right-4">
+          <div className="relative flex items-center  justify-center w-full after:content-['mm'] after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]">
             <input
-              className="rounded-lg max-w-[187px] flex h-10 px-4 border border-gray05 text-gray04 appearance-none inputNumberArrow"
+              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-gray04 appearance-none inputNumberArrow"
               id={propId}
+              value={state.width}
+              name="width"
               type="number"
               placeholder={firstPlaceholder}
+              //   value={width}
+              onChange={onChangeInput}
             />
           </div>
           <span className="mx-2">X</span>
-          <div className="w-full relative before:content-['mm'] before:absolute before:top-[50%] before:translate-y-[-50%] before:text-gray04 before:z-[0] before:right-4">
+          <div className="relative flex items-cente  justify-center w-full after:content-['mm'] after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]">
             <input
-              className="rounded-lg max-w-[187px] flex h-10 px-4 border border-gray05 text-gray04 appearance-none inputNumberArrow"
+              className="box-border rounded-l pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-gray04 appearance-none inputNumberArrow"
               id={propId}
+              value={state.height}
+              name="height"
               type="number"
               placeholder={secondPlaceholder}
+              //   value={height}
+              onChange={onChangeInput}
             />
           </div>
         </div>
