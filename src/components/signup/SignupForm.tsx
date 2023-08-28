@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type SubmitHandler } from "react-hook-form";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
+import { type PasswordVisible, PasswordVisibleButton } from "components/button";
 import { Select } from "components/input";
 import { BUTTON_COMMON_STYLE } from "pages";
 import { useAuthStore } from "store";
@@ -38,7 +38,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   const [checkedDuplicate, setCheckedDuplicate] = useState({ email: false, name: false });
   const [fetchUserData, setFetchUserData] = useState([{ email: "", name: "" }]);
-  const [showPassword, setShowPassword] = useState({ password: false, passwordConfirm: false });
+  const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
 
   const {
     register,
@@ -144,7 +144,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             setSelectedValue={setSelectEmail}
             selfEnterOption={true}
           />
-          {/* <button className="w-[70px] bg">중복 체크</button> */}
           <button
             type="button"
             className={DUPLICATE_CHECK_BUTTON}
@@ -193,21 +192,11 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             placeholder="비밀번호"
             className={INPUT_STYLE}
           />
-          {showPassword.password ? (
-            <AiOutlineEyeInvisible
-              className="h-[50px] absolute right-2 top-[50%] translate-y-[-50%] text-[25px] cursor-pointer"
-              onClick={() => {
-                setShowPassword({ ...showPassword, password: false });
-              }}
-            />
-          ) : (
-            <AiOutlineEye
-              className="h-[50px] absolute right-2 top-[50%] translate-y-[-50%] text-[25px] cursor-pointer"
-              onClick={() => {
-                setShowPassword({ ...showPassword, password: true });
-              }}
-            />
-          )}
+          <PasswordVisibleButton
+            passwordType={"password"}
+            isVisibleState={showPassword}
+            setIsVisibleState={setShowPassword}
+          />
         </div>
         <InvalidText errorsMessage={errors.password?.message} />
 
@@ -222,25 +211,15 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
                 },
               },
             })}
-            type={showPassword.passwordConfirm ? "text" : "password"}
+            type={showPassword.passwordConfirm ?? false ? "text" : "password"}
             placeholder="비밀번호"
             className={INPUT_STYLE}
           />
-          {showPassword.passwordConfirm ? (
-            <AiOutlineEyeInvisible
-              className="h-[50px] absolute right-2 text-[25px] cursor-pointer"
-              onClick={() => {
-                setShowPassword({ ...showPassword, passwordConfirm: false });
-              }}
-            />
-          ) : (
-            <AiOutlineEye
-              className="h-[50px] absolute right-2 text-[25px] cursor-pointer"
-              onClick={() => {
-                setShowPassword({ ...showPassword, passwordConfirm: true });
-              }}
-            />
-          )}
+          <PasswordVisibleButton
+            passwordType={"passwordConfirm"}
+            isVisibleState={showPassword}
+            setIsVisibleState={setShowPassword}
+          />
         </div>
         <InvalidText errorsMessage={errors.passwordCheck?.message} />
 

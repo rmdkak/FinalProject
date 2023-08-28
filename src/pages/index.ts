@@ -1,5 +1,6 @@
 export * from "./Community";
 export * from "./Detail";
+export * from "./FindAuth";
 export * from "./FindPassword";
 export * from "./Home";
 export * from "./Login";
