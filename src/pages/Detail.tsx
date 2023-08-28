@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-
 import { supabase, storageUrl } from "api/supabase";
 import { Comments } from "components/comment";
 import { DateConvertor } from "components/date";
@@ -36,19 +35,19 @@ export const Detail = () => {
 
   return (
     // 상위 배너 영역
-    <div className="w-[1200px] mx-auto mt-[30px]">
+    <div className="w-[1280px] mx-auto mt-[30px]">
       <div className="flex flex-col items-center">
         <p className="font-bold text-[30px]">커뮤니티</p>
         <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
         <div className="w-full border-b-2 border-[#1A1A1A] mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
-      <div className="flex justify-between border-b-2 border-[#E5E5E5] mt-5 p-2">
+      <div className="flex justify-between border-b-2 border-[#E5E5E5] my-[10px] p-[10px]">
         <div className="w-[1000px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
             {postData?.title}
           </label>
-          <div className="flex my-2 gap-2 text-[#888888]">
+          <div className="flex my-[15px] gap-[10px] text-[#888888]">
             <a>{postData?.nickname}</a>
             <DateConvertor datetime={postData?.created_at as string} type="dotDate" />
             <DateConvertor datetime={postData?.created_at as string} type="hourMinute" />
@@ -70,7 +69,7 @@ export const Detail = () => {
         )}
         <p>{postData?.content}</p>
       </div>
-      
+
       <Comments />
 
       <div className="flex justify-between mt-[40px]">

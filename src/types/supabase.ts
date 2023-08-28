@@ -260,21 +260,21 @@ export interface Database {
       }
       USERS: {
         Row: {
-          avatar_url: string | null
+          avatar_url: string
           email: string
           id: string
           name: string
           phone: string
         }
         Insert: {
-          avatar_url?: string | null
+          avatar_url?: string
           email: string
           id?: string
           name: string
           phone: string
         }
         Update: {
-          avatar_url?: string | null
+          avatar_url?: string
           email?: string
           id?: string
           name?: string

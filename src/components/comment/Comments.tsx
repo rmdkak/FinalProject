@@ -111,8 +111,20 @@ export const Comments = () => {
                   <div className="flex gap-2">
                     <p className="font-semibold">{comment.user.name}</p>
                     {postData?.userId === comment.writtenId && (
-                      <div className="text-[14px] px-[5px] text-red-500 border border-red-500 rounded-xl w-[50px]">
+                      <div className="text-[14px] pl-[6px] text-red-500 border border-red-500 rounded-xl w-[50px]">
                         작성자
+                      </div>
+                    )}
+                    {sessionId === comment.writtenId && (
+                      <div className="text-red-500">
+                        <button className="mr-2">수정</button>
+                        <button
+                          onClick={() => {
+                            void deleteCommentHandler(comment.id);
+                          }}
+                        >
+                          삭제
+                        </button>
                       </div>
                     )}
                   </div>
@@ -130,18 +142,6 @@ export const Comments = () => {
                     >
                       {openReply === comment.id ? "닫기" : "답글 쓰기"}
                     </button>
-                    {sessionId === comment.writtenId && (
-                      <div className="text-red-500">
-                        <button className="mr-2">수정</button>
-                        <button
-                          onClick={() => {
-                            void deleteCommentHandler(comment.id);
-                          }}
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
@@ -157,7 +157,7 @@ export const Comments = () => {
                           <div className="flex gap-2">
                             <p className="font-semibold">{reply.user.name}</p>
                             {postData?.userId === comment.writtenId && (
-                              <div className="text-[14px] px-[5px] text-red-500 border border-red-500 rounded-xl w-[50px]">
+                              <div className="text-[14px] pl-[6px] text-red-500 border border-red-500 rounded-xl w-[50px]">
                                 작성자
                               </div>
                             )}

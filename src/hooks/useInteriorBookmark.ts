@@ -36,7 +36,7 @@ export const useInteriorBookmark = () => {
     },
     // 실패 했을 경우
     // onMutate에서 백업했던 값 복원하기
-    onError: (err, newBookmark, context) => {
+    onError: (err, _, context) => {
       if (context === undefined) return
       if (err !== null) {
         return queryClient.setQueryData(queryKey, context.previousBookmark)
