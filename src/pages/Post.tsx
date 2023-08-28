@@ -13,6 +13,7 @@ interface Inputs {
 }
 export const Post = () => {
   const { currentSession } = useAuthStore();
+  const userId = currentSession?.user.id;
   const nickname = currentSession?.user.user_metadata.name;
 
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export const Post = () => {
       });
       await supabase
         .from("POSTS")
-        .insert({ id: UUID, title, content, bookmark: 0, nickname, postImage: hasPostImgStatus });
+        .insert({ id: UUID, title, content, bookmark: 0, nickname, postImage: hasPostImgStatus, userId });
     } catch (error) {
       console.log("error", error);
     }
@@ -62,12 +63,12 @@ export const Post = () => {
   return (
     <div className="w-[1280px] mx-auto mt-[40px]">
       <div className="flex flex-col items-center">
-        <p className="font-bold text-[30px] mt-[30px]">커뮤니티</p>
-        <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
+        <p className="font-bold text-[30px]">커뮤니티</p>
+        <p className="text-gray-400">서브 텍스트입니다. 서브 텍스트입니다.</p>
         <div className="w-full border-b-2 border-[#1A1A1A] mt-[70px]"></div>
       </div>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex w-full border-b-2 border-[#E5E5E5] h-[72px] justify-center items-center">
+        <div className="flex w-full border-b-2 border-gray-300 h-[72px] justify-center items-center">
           <label htmlFor="title" className="w-[40px] text-[18px] font-[400]">
             제목
           </label>
@@ -84,7 +85,7 @@ export const Post = () => {
           )}
           <p className={title.length > 50 ? "text-red-600" : "text-gray-400"}>제목 글자 수: {title.length} / 50</p>
         </div>
-        <button className="my-3 ml-auto text-end" onClick={onOpenModal}>
+        <button type="button" className="my-3 ml-auto text-end" onClick={onOpenModal}>
           조합 추가하기+
         </button>
         <Modal title="인테리어 조합">
@@ -110,7 +111,7 @@ export const Post = () => {
         <div className="flex justify-between mt-[40px]">
           <button
             type="button"
-            className="bg-[#DDDDDD] h-[48px] px-[24px] text-[#7c7c7c]"
+            className="bg-[#DDDDDD] h-[48px] px-[24px] text-gray-500"
             onClick={() => {
               movePageHandler("community");
             }}
@@ -120,7 +121,7 @@ export const Post = () => {
           <div>
             <button
               type="button"
-              className="bg-[#DDDDDD] h-[48px] px-[24px] text-[#7c7c7c] mr-5"
+              className="bg-[#DDDDDD] h-[48px] px-[24px] text-gray-500 mr-5"
               onClick={() => {
                 movePageHandler("back");
               }}

@@ -50,11 +50,15 @@ export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) 
       case "hourMinute":
         const hours = date.getHours();
         const minutes = date.getMinutes();
+        let formattedhours = hours.toString();
         let formattedMinutes = minutes.toString();
+        if (hours < 10) {
+          formattedhours = hours.toString().padStart(2, "0");
+        }
         if (minutes < 10) {
           formattedMinutes = minutes.toString().padStart(2, "0");
         }
-        setFormattedDate(`${hours}:${formattedMinutes}`);
+        setFormattedDate(`${formattedhours}:${formattedMinutes}`);
         break;
 
       default:
@@ -62,5 +66,5 @@ export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) 
     }
   }, [datetime, type]);
 
-  return formattedDate;
+  return <a>{formattedDate}</a>;
 };
