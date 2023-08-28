@@ -1,6 +1,7 @@
 import { useState, type MouseEvent, type ChangeEvent, type Dispatch } from "react";
+import { FaAngleDown } from "react-icons/fa";
 
-import arrowIcon from "assets/arrowIcon.svg";
+import { INPUT_STYLE } from "components/mypage";
 
 interface Props {
   option: string[];
@@ -28,15 +29,15 @@ export const Select = (props: Props) => {
   };
 
   // TODO 공용 input style 정해지면 변경 import
-  const commonStyle = "px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
+  const commonStyle = "px-[24px] py-[12px] border-[1px] border-gray02 focus:outline-none";
 
   return (
     <div className={`relative w-[100%] h-[50px]`}>
       {selfEnterIsOpen ? (
         <>
-          <button className={`flex w-full h-[50px] ${commonStyle}`} type="button" onClick={changeToggleHandler}>
+          <button className={`flex w-full h-[50px] ${INPUT_STYLE}`} type="button" onClick={changeToggleHandler}>
             <p className={`whitespace-nowrap`}>{selectedValue !== undefined ? selectedValue : placeholder}</p>
-            <img className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer" src={arrowIcon} />
+            <FaAngleDown className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer" />
           </button>
         </>
       ) : (
@@ -46,12 +47,11 @@ export const Select = (props: Props) => {
               setSelectedValue(event?.target.value);
             }}
             value={selectedValue}
-            className={`w-[100%] ${commonStyle}`}
+            className={`w-[100%] ${INPUT_STYLE}`}
           />
-          <img
+          <FaAngleDown
             onClick={changeToggleHandler}
-            className="absolute right-2 top-1/2 translate-y-[-50%] cursor-pointer"
-            src={arrowIcon}
+            className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer"
           />
         </>
       )}
@@ -61,7 +61,8 @@ export const Select = (props: Props) => {
             <div
               key={el}
               onClick={onChangeHandler}
-              className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray-300`}
+              // 호버 색상 결정 안됨
+              className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray05`}
             >
               {el}
             </div>
@@ -73,7 +74,7 @@ export const Select = (props: Props) => {
               setToggleIsOpen(false);
               setSelfEnterIsOpen(false);
             }}
-            className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray-300`}
+            className={`w-full ${commonStyle}] cursor-pointer hover:bg-gray05`}
           >
             직접 입력
           </div>

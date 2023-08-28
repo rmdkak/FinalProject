@@ -17,6 +17,7 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
       paginate(pageNumber);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
   useEffect(() => {
@@ -44,13 +45,12 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
     if (number === currentPage) {
       return "text-[#000000]";
     } else {
-      return "text-[#e6e6e6]";
+      return "text-[#e6e6e689]";
     }
   };
   return (
     <ul className="relative flex gap-3">
       <IoIosArrowBack className="text-[20px] cursor-pointer" onClick={showPrevPage} />
-
       {getPageNumbers().map((number) => (
         <li key={number}>
           <button
