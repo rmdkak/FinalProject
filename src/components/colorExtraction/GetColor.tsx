@@ -20,15 +20,15 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
 
   if (color === null) {
     return (
-      <div className="flex flex-col w-full gap-20">
+      <div className="flex flex-col w-full gap-6">
         <div>
-          <h2 className="mb-8 text-[30px] font-medium">현재 색상 코드</h2>
+          <h2 className="mb-6 text-[30px] font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
             <li className="text-[30px] font-bold">타일을 선택해주세요.</li>
           </ul>
         </div>
         <div>
-          <h2 className="mb-8 text-[30px] font-medium">현재 색상과 어울리는 추천 조합</h2>
+          <h2 className="mb-6 text-[30px] font-medium">현재 색상과 어울리는 추천 조합</h2>
           <ul className="flex flex-wrap gap-4"></ul>
         </div>
       </div>
@@ -54,54 +54,54 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
 
   if (loading) {
     return (
-      <div className="flex flex-col w-full gap-20">
+      <div className="flex flex-col w-full gap-6">
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상 코드</h2>
+          <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
-            <li className="text-3xl font-bold">색을 추출 중입니다.</li>
+            <li className="text-xl font-bold">색을 추출 중입니다.</li>
           </ul>
         </div>
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상과 어울리는 추천 조합</h2>
+          <h2 className="mb-8 text-lg font-medium">현재 색상과 어울리는 추천 조합</h2>
           <ul className="flex flex-wrap gap-4"></ul>
         </div>
       </div>
     );
   } else if (data === undefined) {
     return (
-      <div className="flex flex-col w-full gap-20">
+      <div className="flex flex-col w-full gap-6">
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상 코드</h2>
+          <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
-            <li className="text-3xl font-bold">색을 선택해주세요.</li>
+            <li className="text-xl font-bold text-gray01">색을 선택해주세요.</li>
           </ul>
         </div>
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상과 어울리는 추천 조합</h2>
+          <h2 className="mb-6 text-lg font-medium">현재 색상과 어울리는 추천 조합</h2>
           <ul className="flex flex-wrap gap-4"></ul>
         </div>
       </div>
     );
   } else if (error !== undefined) {
     return (
-      <div className="flex flex-col w-full gap-20">
+      <div className="flex flex-col w-full gap-6">
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상 코드</h2>
+          <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
-            <li className="text-3xl font-bold">색을 추출하는데 실패했습니다.</li>
+            <li className="text-xl font-bold">색을 추출하는데 실패했습니다.</li>
           </ul>
         </div>
         <div>
-          <h2 className="mb-8 text-3xl font-medium">현재 색상과 어울리는 추천 조합</h2>
+          <h2 className="mb-6 font-medium ttext-lg">현재 색상과 어울리는 추천 조합</h2>
           <ul className="flex flex-wrap gap-4"></ul>
         </div>
       </div>
     );
   } else {
     return (
-      <div className="flex flex-col w-full gap-20">
+      <div className="flex flex-col w-full gap-6 border-y-[1px] border-gray05">
         <div>
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 my-6">
             <h2 className="text-lg font-medium">현재 색상 코드</h2>
             <span
               className={
@@ -136,12 +136,12 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
               }}
               className="flex"
             >
-              <div className="w-32 h-32 rounded-xl" style={{ backgroundColor: data as string }} />
+              <div className="interior-item" style={{ backgroundColor: data as string }} />
             </li>
           </ul>
         </div>
-        <div className="flex-column gap-y-8">
-          <h2 className="text-lg font-medium ">현재 색상과 어울리는 추천 조합</h2>
+        <div className="gap-6 mb-6 flex-column">
+          <h2 className="text-lg font-medium pt-6 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
           <ColorPallet color={data} />
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
+import { BsBookmarkFill, BsCalculator, BsShare } from "react-icons/bs";
 
+import calcArrow from "assets/calcArrow.svg";
 import { GetColor } from "components/colorExtraction";
 import { InteriorSection } from "components/service";
 import { useInteriorBookmark } from "hooks";
@@ -52,7 +53,7 @@ export const Service = () => {
           {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
-            <div className="flex-column contents-center h-[603px] bg-gray03 w-[860px] overflow-hidden">
+            <div className="flex-column contents-center bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
               <div className="cube">
                 {/* 벽지 */}
                 <div
@@ -77,21 +78,27 @@ export const Service = () => {
               </div>
             </div>
 
-            <div className="flex-column h-[603px] w-[860px] gap-y-40">
+            <div className="flex-column w-[860px] gap-10">
               {/* 인테리어 섹션 */}
               <InteriorSection />
+              <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
               <div>
-                <label htmlFor="calc">자재 소모량 계산기</label>
-                <button
-                  className="h-[24px]"
-                  id="calc"
-                  onClick={() => {
-                    alert("테스트");
-                  }}
-                >
-                  {`>`}
-                </button>
-                <div className="flex gap-[16px] mt-[24px]">
+                <div className="flex mb-6">
+                  <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
+                  <label className="hover:cursor-pointer text-gray02" htmlFor="calc">
+                    자재 소모량 계산기
+                  </label>
+                  <button
+                    className="h-[24px] ml-2"
+                    id="calc"
+                    onClick={() => {
+                      alert("테스트");
+                    }}
+                  >
+                    <img src={calcArrow} alt="" />
+                  </button>
+                </div>
+                <div className="flex gap-4">
                   {isItemBookmarkedData != null ? (
                     <BsBookmarkFill
                       className="text-[50px] cursor-pointer"
@@ -112,8 +119,8 @@ export const Service = () => {
                       }}
                     />
                   ) : (
-                    <BsBookmark
-                      className="text-[50px] cursor-pointer"
+                    <button
+                      className="w-[350px] h-[64px] rounded-xl bg-point"
                       onClick={async () => {
                         if (
                           currentSession === null ||
@@ -129,16 +136,18 @@ export const Service = () => {
                           rightWallpaperId: wallPaper.right.id,
                         });
                       }}
-                    />
+                    >
+                      저장하기
+                    </button>
                   )}
-                  <button className="w-[382px] h-[64px] border-[1px] border-black">추천하기</button>
-                  <button className="w-[64px] h-[64px] bg-gray-200"></button>
+                  <button className="w-[350px] h-[64px] border-[1px] rounded-xl border-gray05">추천하기</button>
+                  <button className="w-[64px] h-[64px] rounded-xl border-[1px] border-gray05">
+                    <BsShare className="mx-auto w-7 h-7 fill-black" />
+                  </button>
                 </div>
               </div>
             </div>
           </div>
-          {/* <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} /> */}
-          <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
         </div>
       </div>
     </>

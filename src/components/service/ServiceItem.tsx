@@ -97,7 +97,7 @@ export const ServiceItem = ({ data, type, wallCheck }: Props): JSX.Element => {
               getItemData({ id, image });
             }}
             key={id}
-            className="bg-gray-200 cursor-pointer interior-item"
+            className="cursor-pointer interior-item"
           >
             <img src={`${STORAGE_URL}${image}`} className="interior-item" alt={` ${type} 미리보기 이미지`} />
           </li>

@@ -21,7 +21,7 @@ const TextureTitle = ({ data }: Props): JSX.Element => {
   };
   // console.log(interiorSelecteIndex);
   return (
-    <div className="flex gap-3 mt-10">
+    <div className="flex gap-4">
       {data.map((item, index) => (
         <span
           onClick={() => {

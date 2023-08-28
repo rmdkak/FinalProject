@@ -7,6 +7,7 @@ import { supabase, storageUrl } from "api/supabase";
 import { DateConvertor } from "components/date";
 import { PostPagination } from "components/pagination";
 import { PostBookmark } from "components/postBookmark";
+import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 import "@egjs/flicking-plugins/dist/arrow.css";
 import "@egjs/react-flicking/dist/flicking.css";
@@ -16,6 +17,7 @@ const plugins = [new Arrow()];
 
 export const Community = () => {
   const navigate = useNavigate();
+  const { currentSession } = useAuthStore();
   const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
@@ -25,7 +27,7 @@ export const Community = () => {
   }, []);
 
   const fetchData = async () => {
-    const { data, error } = await supabase.from("POSTS").select("*");
+    const { data, error } = await supabase.from("POSTS").select("*").order("created_at", { ascending: false });
     if (error != null) {
       console.error("Error fetching data:", error);
       return;
@@ -63,64 +65,72 @@ export const Community = () => {
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
   const currentFilteredPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
+  const deletePostHandler = async (id: string) => {
+    try {
+      const checkDelete = window.confirm("정말로 삭제하시겠습니까?");
+      if (checkDelete) await supabase.from("POSTS").delete().eq("id", id);
+    } catch (error) {
+      console.log("error :", error);
+    }
+  };
+
   return (
-    <div className="w-[1200px] mx-auto">
+    <div className="w-[1280px] mx-auto mt-[40px]">
       <div className="text-center">
-        <p className="font-bold text-[30px] mt-[70px]">커뮤니티</p>
+        <p className="font-bold text-[30px]">커뮤니티</p>
         <p className="text-[#888888] mb-10">서브 텍스트입니다. 서브 텍스트입니다. 서브 텍스트입니다.</p>
       </div>
-
-      <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
-        <div className="w-[520px] h-[254px] bg-gray-200 mx-5">1</div>
-        <div className="w-[520px] h-[254px] bg-gray-200 mx-5">2</div>
-        <div className="w-[520px] h-[254px] bg-gray-200 mx-5">3</div>
-        {postList
-          .filter((post) => post.tileId != null && post.leftWallpaperId)
-          .map((post) => (
-            <div key={post.id}>
-              <div className="flex">
-                <img
-                  src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
-                  alt="벽지"
-                  className="w-[150px] h-[150px]"
-                />
-                <img src={`${storageUrl}/tile/${post.tileId as string}`} alt="바닥" className="w-[150px] h-[150px]" />
-              </div>
-              <div className="flex flex-col w-[300px]">
-                <p className="mt-8 text-lg font-medium truncate">{post.title}</p>
-                <p className="mt-1 text-[#888888] line-clamp-2 h-[50px]">{post.content}</p>
-                <div className="text-[#888888] flex gap-5">
-                  {post.nickname}
-                  <p>
-                    <DateConvertor datetime={post.created_at} type="dotDate" />
-                  </p>
+      <div className="mb-[20px]">
+        <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
+          {postList
+            .filter((post) => post.tileId != null && post.leftWallpaperId)
+            .map((post) => (
+              <div key={post.id} className="flex flex-col items-center">
+                <div className="flex">
+                  <img
+                    src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
+                    alt="벽지"
+                    className="w-[150px] h-[150px]"
+                  />
+                  <img src={`${storageUrl}/tile/${post.tileId as string}`} alt="바닥" className="w-[150px] h-[150px]" />
+                </div>
+                <div className="w-[300px]">
+                  <p className="mt-8 text-lg font-medium truncate">{post.title}</p>
+                  <p className="mt-1 text-[#888888] line-clamp-2 h-[50px]">{post.content}</p>
+                  <div className="text-[#888888] flex gap-5">
+                    {post.nickname}
+                    <p>
+                      <DateConvertor datetime={post.created_at} type="dotDate" />
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        <ViewportSlot>
-          <span className="flicking-arrow-prev is-thin"></span>
-          <span className="flicking-arrow-next is-thin"></span>
-        </ViewportSlot>
-      </Flicking>
-      <select
-        value={selectedOption}
-        onChange={handleOptionChange}
-        className="relative p-1 border border-[#dddddd] rounded shadow top-[100px] focus:outline-none"
-      >
-        <option value="whole">전체 게시물</option>
-        <option value="normal">일반 게시물</option>
-        <option value="recommendation">추천 게시물</option>
-      </select>
-      <p>총 게시물 개수: {filteredPosts.length}</p>
+            ))}
+          <ViewportSlot>
+            <span className="flicking-arrow-prev is-thin"></span>
+            <span className="flicking-arrow-next is-thin"></span>
+          </ViewportSlot>
+        </Flicking>
+      </div>
       <div className="flex justify-center">
-        <div className="w-[1200px] border-t border-[#dddddd] pt-[100px]">
-          <Link
-            to="/post"
-            className="px-4 py-2 font-semibold text-white bg-gray-400 rounded hover:bg-gray-500 md:relative left-[1100px] bottom-[20px]"
-          >
-            게시물 작성
-          </Link>
+        <div className="w-[1280px] border-t border-[#dddddd]">
+          <div className="flex justify-between mt-[30px]">
+            <div className="flex gap-3">
+              <select
+                value={selectedOption}
+                onChange={handleOptionChange}
+                className="p-1 border border-[#dddddd] rounded shadow focus:outline-none"
+              >
+                <option value="whole">전체 게시물</option>
+                <option value="normal">일반 게시물</option>
+                <option value="recommendation">추천 게시물</option>
+              </select>
+              <p className="mt-[8px]">총 게시물 개수: {filteredPosts.length}</p>
+            </div>
+            <Link to="/post" className="px-4 py-2 font-semibold text-white bg-gray-400 rounded hover:bg-gray-500">
+              게시물 작성
+            </Link>
+          </div>
           {currentFilteredPosts.map((post) => {
             return (
               <div key={post.id} className="border-b border-[#dddddd] py-5 my-5">
@@ -157,6 +167,18 @@ export const Community = () => {
                   <p>
                     <DateConvertor datetime={post.created_at} type="dotDate" />
                   </p>
+                  {currentSession?.user.id === post.userId && (
+                    <div className="text-red-500">
+                      <button className="mr-2">수정</button>
+                      <button
+                        onClick={() => {
+                          void deletePostHandler(post.id);
+                        }}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
                   <PostBookmark postId={post.id} />
                 </div>
               </div>

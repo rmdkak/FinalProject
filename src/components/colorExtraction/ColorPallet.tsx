@@ -53,7 +53,7 @@ export const ColorPallet = ({ color }: props) => {
               key={idx}
               className="flex"
             >
-              <div className="w-32 h-32 rounded-xl" style={{ backgroundColor: color }} />
+              <div className="interior-item" style={{ backgroundColor: color }} />
             </li>
           );
         })}
@@ -69,7 +69,7 @@ export const ColorPallet = ({ color }: props) => {
               key={idx}
               className="flex"
             >
-              <div className="w-32 h-32 rounded-xl" style={{ backgroundColor: color }} />
+              <div className="interior-item" style={{ backgroundColor: color }} />
             </li>
           );
         })}

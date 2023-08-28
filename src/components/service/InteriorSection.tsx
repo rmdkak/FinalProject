@@ -46,8 +46,8 @@ export const InteriorSection = (): JSX.Element => {
   return (
     <>
       {/* 인테리어 헤더 */}
-      <div className="flex-column h-[35px] text-gray-300">
-        <div className="flex gap-3">
+      <div className="gap-8 text-gray-300 flex-column">
+        <div className="flex gap-6">
           <span
             className={
               checkType === "wallPaper"
@@ -60,7 +60,6 @@ export const InteriorSection = (): JSX.Element => {
           >
             벽지
           </span>
-          |
           <span
             className={
               checkType === "tile" ? "border-b-2 border-black hover:cursor-pointer text-black" : "hover:cursor-pointer"
@@ -73,10 +72,10 @@ export const InteriorSection = (): JSX.Element => {
           </span>
         </div>
         {checkType === "wallPaper" ? (
-          <div className="flex-column">
+          <div className="gap-8 flex-column">
             {/* 벽지 종류 목록 */}
             <TextureTitle data={wallPaperTextureList} />
-            <div className="flex gap-3 mt-10">
+            <div className="flex gap-4">
               <span
                 className={
                   clickLeftWall ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
@@ -112,7 +111,7 @@ export const InteriorSection = (): JSX.Element => {
       </div>
 
       {/* 인테리어 바디 */}
-      <div className="h-[392px] mb-10">
+      <div className="h-[392px]">
         <ul className="flex flex-wrap w-full gap-x-4 gap-y-4">
           {checkType === "wallPaper" ? (
             <ServiceItem type={checkType} data={wallData} wallCheck={clickLeftWall} />
