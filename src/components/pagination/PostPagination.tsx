@@ -20,9 +20,11 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+  
   useEffect(() => {
     setCurrentPage(1);
   }, [totalPosts]);
+  
   const showPrevPage = () => {
     showPage(currentPage - 1);
   };
@@ -41,6 +43,7 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
 
     return pageNumbers;
   };
+
   const selectedPageColor = (number: number) => {
     if (number === currentPage) {
       return "text-black";
@@ -48,6 +51,7 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
       return "text-[#e6e6e689]";
     }
   };
+
   return (
     <ul className="relative flex gap-3">
       <IoIosArrowBack className="text-[20px] cursor-pointer" onClick={showPrevPage} />

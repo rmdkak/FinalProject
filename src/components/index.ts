@@ -6,6 +6,7 @@ export * from "./date";
 export * from "./input";
 export * from "./layout";
 export * from './modals';
+export * from "./mypage";
 export * from "./postBookmark";
 export * from "./service";
 export * from "./sidebar";

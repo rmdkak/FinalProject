@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { AiOutlineCamera, AiFillCloseCircle } from "react-icons/ai";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import uuid from "react-uuid";
 
 import { supabase } from "api/supabase";
+import { useDialog } from "components/overlay/dialog/Dialog.hooks";
+import { useComments } from "hooks/useComments";
 import { useAuthStore } from "store";
 
 const textAreaMaxLength = 500;
@@ -14,24 +16,32 @@ interface CommentFormProps {
 }
 
 export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps) => {
+  // const {register,handleSubmit,reset,formState:{errors}} = useForm({mode:"all"})
+  const navigate = useNavigate();
   const { currentSession } = useAuthStore();
-  const [comment, setComment] = useState<string>("");
+  const { createCommentMutation, createReplyMutation } = useComments();
+  const [content, setContent] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const { id: paramsId } = useParams();
+  const { id: postId } = useParams();
   const commentStatus = kind === "comment";
   const replyStatus = kind === "reply";
   const placeHolder = commentStatus ? "댓글을 남겨보세요." : "답글을 남겨보세요.";
+  const { Confirm, Alert } = useDialog();
 
-  const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value;
+  const loginValidHandler = async () => {
     if (currentSession == null) {
-      alert("로그인 후 이용해주세요.");
-      return;
+      const confirmCheck = await Confirm("댓글 기능은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (confirmCheck) navigate("/login");
     }
+  };
+
+  const handleTextAreaChange = async (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
+
     if (value.length <= textAreaMaxLength) {
-      setComment(value);
+      setContent(value);
     } else {
-      alert(`글자 수 제한(${textAreaMaxLength}자)을 초과했습니다.`);
+      await Alert(`글자 수 제한(${textAreaMaxLength}자)을 초과했습니다.`);
     }
   };
 
@@ -48,43 +58,33 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
 
   const autoResizeTextArea = (element: HTMLTextAreaElement) => {
     element.style.height = "auto";
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    element.style.height = element.scrollHeight + "px";
+    element.style.height = `${element.scrollHeight}px`;
   };
 
   const createCommentHandler = async (event: React.FormEvent) => {
     event.preventDefault();
-    const userId = currentSession?.user.id;
-    const UUID = uuid();
-    const shortCommentImgUrl = `/commentImg/${UUID}`;
-    const hasCommentImgStatus = selectedImage == null ? null : shortCommentImgUrl;
+
+    const writtenId = currentSession?.user.id;
+    const id = uuid();
+    const commentImg = selectedImage == null ? null : `/commentImg/${id}`;
+
+    if (postId == null) return;
+    if (writtenId == null) return;
+
     try {
       if (selectedImage != null) {
-        await supabase.storage.from("Images").upload(shortCommentImgUrl, selectedImage, {
+        await supabase.storage.from("Images").upload(`/commentImg/${id}`, selectedImage, {
           cacheControl: "3600",
           upsert: false,
         });
       }
-      if (paramsId == null) return;
-      if (userId == null) return;
 
-      const commentData = {
-        id: UUID,
-        writtenId: userId,
-        content: comment,
-        postId: paramsId,
-        commentImg: hasCommentImgStatus,
-      };
-      const replyData = {
-        writtenId: userId,
-        content: comment,
-        commentId,
-      };
-      if (commentStatus) await supabase.from("COMMENTS").insert([commentData]);
-      if (replyStatus) await supabase.from("RE-COMMENTS").insert([replyData]);
+      if (commentStatus) createCommentMutation.mutate({ id, writtenId, content, postId, commentImg });
+      if (replyStatus) createReplyMutation.mutate({ writtenId, content, commentId });
     } catch (error) {
       console.log("error", error);
     }
+    setContent("");
   };
 
   return (
@@ -96,14 +96,15 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
             : "댓글 기능을 이용하시려면 로그인 해주세요."}
         </p>
         <div className="flex justify-end text-gray-400">
-          {comment.length}/{textAreaMaxLength}자
+          {content.length}/{textAreaMaxLength}자
         </div>
       </div>
       <form onSubmit={createCommentHandler}>
         <textarea
-          value={comment}
-          onChange={(e) => {
-            handleTextAreaChange(e);
+          value={content}
+          onClick={loginValidHandler}
+          onChange={async (e) => {
+            await handleTextAreaChange(e);
             autoResizeTextArea(e.target);
           }}
           placeholder={placeHolder}

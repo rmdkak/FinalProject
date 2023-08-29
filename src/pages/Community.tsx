@@ -12,6 +12,7 @@ import "@egjs/flicking-plugins/dist/arrow.css";
 import "@egjs/react-flicking/dist/flicking.css";
 
 export const POSTS_PER_PAGE = 8;
+
 const plugins = [new Arrow()];
 
 export const Community = () => {
