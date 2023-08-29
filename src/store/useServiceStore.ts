@@ -22,6 +22,11 @@ interface Store {
   setWallPaper: (selectWallpaper: Wallpaper, type: string) => void;
   resetWallPaper: () => void;
 
+  // 벽지 페인트
+  wallpaperPaint: { left: string; right: string };
+  setWallpaperPaint: (selectedPaint: string, type: string) => void;
+  resetWallpaperPaint: () => void;
+
   // 타일
   tile: Tile;
   setTile: (selectWallpaper: Tile) => void;
@@ -55,6 +60,23 @@ export const useServiceStore = create<Store>()((set) => ({
   },
   resetWallPaper: () => {
     set(() => ({ wallPaper: { left: { image: null, id: null }, right: { image: null, id: null } } }));
+  },
+
+  // 벽지 페인트
+  wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" },
+  setWallpaperPaint: (selectedPaint, type) => {
+    if (type === "left") {
+      set((state) => ({
+        wallpaperPaint: { ...state.wallpaperPaint, left: selectedPaint },
+      }));
+    } else if (type === "right") {
+      set((state) => ({
+        wallpaperPaint: { ...state.wallpaperPaint, right: selectedPaint },
+      }));
+    }
+  },
+  resetWallpaperPaint: () => {
+    set(() => ({ wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" } }));
   },
 
   // 타일
