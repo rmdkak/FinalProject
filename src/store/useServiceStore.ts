@@ -18,8 +18,8 @@ interface Store {
   setInteriorSelecteIndex: (index: number) => void;
 
   // 벽지
-  wallPaper: Wallpaper
-  setWallPaper: (selectWallpaper: Wallpaper) => void;
+  wallPaper: { left: Wallpaper; right: Wallpaper };
+  setWallPaper: (selectWallpaper: Wallpaper, type: string) => void;
   resetWallPaper: () => void;
 
   // 타일
@@ -41,12 +41,20 @@ export const useServiceStore = create<Store>()((set) => ({
   },
 
   //  벽지
-  wallPaper: { image: null, id: null },
-  setWallPaper: (selectWallpaper) => {
-    set(() => ({ wallPaper: { image: selectWallpaper.image, id: selectWallpaper.id } }));
+  wallPaper: { left: { image: null, id: null }, right: { image: null, id: null } },
+  setWallPaper: (selectWallpaper, type) => {
+    if (type === "left") {
+      set((state) => ({
+        wallPaper: { ...state.wallPaper, left: { image: selectWallpaper.image, id: selectWallpaper.id } },
+      }));
+    } else if (type === "right") {
+      set((state) => ({
+        wallPaper: { ...state.wallPaper, right: { image: selectWallpaper.image, id: selectWallpaper.id } },
+      }));
+    }
   },
   resetWallPaper: () => {
-    set(() => ({ wallPaper: { image: null, id: null } }));
+    set(() => ({ wallPaper: { left: { image: null, id: null }, right: { image: null, id: null } } }));
   },
 
   // 타일

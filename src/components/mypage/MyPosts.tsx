@@ -41,10 +41,14 @@ export const MyPosts = ({ userMyPostsData }: Props) => {
                 <p className="text-lg font-medium truncate w-[500px]">{post.title}</p>
                 <p className="mt-1 h-[50px] w-[800px] overflow-hidden">{post.content}</p>
               </div>
-              {post.wallpaperId !== null && post.tileId !== null && (
+              {post.leftWallpaperId !== null && post.tileId !== null && (
                 <>
                   <span>벽지</span>
-                  <img src={`${STORAGE_URL}/wallpaper/${post.wallpaperId}`} alt="벽지" className="w-[80px] h-[80px]" />
+                  <img
+                    src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId}`}
+                    alt="벽지"
+                    className="w-[80px] h-[80px]"
+                  />
                   <span>바닥</span>
                   <img src={`${STORAGE_URL}/tile/${post.tileId}`} alt="바닥" className="w-[80px] h-[80px]" />
                 </>
