@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { AiOutlineCamera, AiFillCloseCircle } from "react-icons/ai";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import uuid from "react-uuid";
 
 import { supabase } from "api/supabase";
+import { useDialog } from "components/overlay/dialog/Dialog.hooks";
+import { useComments } from "hooks/useComments";
 import { useAuthStore } from "store";
 
 const textAreaMaxLength = 500;
@@ -14,6 +16,8 @@ interface CommentFormProps {
 }
 
 export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps) => {
+  const { createCommentMutation } = useComments();
+  const navigate = useNavigate();
   const { currentSession } = useAuthStore();
   const [comment, setComment] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -21,13 +25,18 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
   const commentStatus = kind === "comment";
   const replyStatus = kind === "reply";
   const placeHolder = commentStatus ? "댓글을 남겨보세요." : "답글을 남겨보세요.";
+  const { Confirm } = useDialog();
+
+  const loginValidHandler = async () => {
+    if (currentSession == null) {
+      const confirmCheck = await Confirm("댓글 기능은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (confirmCheck) navigate("/login");
+    }
+  };
 
   const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
-    if (currentSession == null) {
-      alert("로그인 후 이용해주세요.");
-      return;
-    }
+
     if (value.length <= textAreaMaxLength) {
       setComment(value);
     } else {
@@ -48,16 +57,20 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
 
   const autoResizeTextArea = (element: HTMLTextAreaElement) => {
     element.style.height = "auto";
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-    element.style.height = element.scrollHeight + "px";
+    element.style.height = `${element.scrollHeight}px`;
   };
 
   const createCommentHandler = async (event: React.FormEvent) => {
     event.preventDefault();
+
     const userId = currentSession?.user.id;
     const UUID = uuid();
     const shortCommentImgUrl = `/commentImg/${UUID}`;
     const hasCommentImgStatus = selectedImage == null ? null : shortCommentImgUrl;
+
+    if (paramsId == null) return;
+    if (userId == null) return;
+
     try {
       if (selectedImage != null) {
         await supabase.storage.from("Images").upload(shortCommentImgUrl, selectedImage, {
@@ -65,9 +78,6 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
           upsert: false,
         });
       }
-      if (paramsId == null) return;
-      if (userId == null) return;
-
       const commentData = {
         id: UUID,
         writtenId: userId,
@@ -80,7 +90,8 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
         content: comment,
         commentId,
       };
-      if (commentStatus) await supabase.from("COMMENTS").insert([commentData]);
+      // if (commentStatus) await supabase.from("COMMENTS").insert(commentData);
+      if (commentStatus) createCommentMutation.mutate(commentData);
       if (replyStatus) await supabase.from("RE-COMMENTS").insert([replyData]);
     } catch (error) {
       console.log("error", error);
@@ -102,6 +113,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
       <form onSubmit={createCommentHandler}>
         <textarea
           value={comment}
+          onClick={loginValidHandler}
           onChange={(e) => {
             handleTextAreaChange(e);
             autoResizeTextArea(e.target);

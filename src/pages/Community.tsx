@@ -13,6 +13,7 @@ import "@egjs/flicking-plugins/dist/arrow.css";
 import "@egjs/react-flicking/dist/flicking.css";
 
 export const POSTS_PER_PAGE = 8;
+
 const plugins = [new Arrow()];
 
 export const Community = () => {
@@ -51,10 +52,10 @@ export const Community = () => {
   let filteredPosts;
   switch (selectedOption) {
     case "normal":
-      filteredPosts = postList.filter((e) => e.tileId === null && e.wallpaperId === null);
+      filteredPosts = postList.filter((e) => e.tileId === null && e.leftWallpaperId === null);
       break;
     case "recommendation":
-      filteredPosts = postList.filter((e) => e.tileId !== null && e.wallpaperId !== null);
+      filteredPosts = postList.filter((e) => e.tileId !== null && e.leftWallpaperId !== null);
       break;
     default:
       filteredPosts = postList;
@@ -83,12 +84,12 @@ export const Community = () => {
       <div className="mb-[20px]">
         <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
           {postList
-            .filter((post) => post.tileId != null && post.wallpaperId)
+            .filter((post) => post.tileId != null)
             .map((post) => (
               <div key={post.id} className="flex flex-col items-center">
                 <div className="flex">
                   <img
-                    src={`${storageUrl}/wallpaper/${post.wallpaperId as string}`}
+                    src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
                     alt="벽지"
                     className="w-[150px] h-[150px]"
                   />
@@ -149,11 +150,11 @@ export const Community = () => {
                       <p className="mt-1 h-[50px] w-[800px] overflow-hidden">{post.content}</p>
                     </div>
                   </div>
-                  {post.wallpaperId !== null && post.tileId !== null && (
+                  {post.leftWallpaperId !== null && post.tileId !== null && (
                     <>
                       <span>벽지</span>
                       <img
-                        src={`${storageUrl}/wallpaper/${post.wallpaperId}`}
+                        src={`${storageUrl}/wallpaper/${post.leftWallpaperId}`}
                         alt="벽지"
                         className="w-[100px] h-[100px]"
                       />

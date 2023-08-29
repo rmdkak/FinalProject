@@ -11,7 +11,7 @@ export const Detail = () => {
   const { id: paramsId } = useParams();
   const navigate = useNavigate();
   const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
-
+  
   useEffect(() => {
     const fetchData = async () => {
       const { data: postData } = await supabase.from("POSTS").select("*").eq("id", paramsId).single();
@@ -72,6 +72,7 @@ export const Detail = () => {
 
       <Comments />
 
+          
       <div className="flex justify-between mt-[40px]">
         <button
           type="button"
