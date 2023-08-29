@@ -96,7 +96,7 @@ export const ResouresCalculator = (): JSX.Element => {
                     onSelectItem(index);
                   }}
                   key={item}
-                  className={`flex items-center justify-center w-full px-6 py-3 mr-4 border rounded-lg cursor-pointer ${
+                  className={`flex contents-center w-full px-6 py-3 mr-4 border rounded-lg cursor-pointer ${
                     selectItem === index ? "bg-red-400" : "bg-red-700"
                   } `}
                 >
@@ -134,7 +134,7 @@ export const ResouresCalculator = (): JSX.Element => {
         {visible && (
           <section>
             {/* 결과값 헤더 */}
-            <div className="flex items-center justify-between pb-6 mb-10 border border-b-[#000]">
+            <div className="flex items-center justify-between pb-6 mb-10 border border-b-black">
               <h2 className="text-[18px]">예상 소모량</h2>
               <button className="w-[18px] h-[18px]" onClick={onVisibleBtn}>
                 <img className="block w-[18px] h-[18px]" src={CloseBtn} alt="엑스모양 사진" />

@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { supabase, storageUrl } from "api/supabase";
-import { Comments } from "components/comment";
-import { DateConvertor } from "components/date";
+import { Comments, DateConvertor } from "components";
 import { type Tables } from "types/supabase";
 
 export const Detail = () => {
@@ -36,28 +35,28 @@ export const Detail = () => {
   return (
     // 상위 배너 영역
     <div className="w-[1280px] mx-auto mt-[30px]">
-      <div className="flex flex-col items-center">
+      <div className="items-center flex-column">
         <p className="font-bold text-[30px]">커뮤니티</p>
-        <p className="text-[#888888]">서브 텍스트입니다. 서브 텍스트입니다.</p>
+        <p className="text-gray02">서브 텍스트입니다. 서브 텍스트입니다.</p>
         <div className="w-full border-b-2 border-[#1A1A1A] mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
-      <div className="flex justify-between border-b-2 border-[#E5E5E5] my-[10px] p-[10px]">
+      <div className="contents-between border-b-2 border-gray06 my-[10px] p-[10px]">
         <div className="w-[1000px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
             {postData?.title}
           </label>
-          <div className="flex my-[15px] gap-[10px] text-[#888888]">
+          <div className="flex my-[15px] gap-[10px] text-gray02">
             <a>{postData?.nickname}</a>
             <DateConvertor datetime={postData?.created_at as string} type="dotDate" />
             <DateConvertor datetime={postData?.created_at as string} type="hourMinute" />
             <p>북마크: {postData?.bookmark}</p>
           </div>
         </div>
-        <button className="bg-[#5D5D5D] h-[48px] px-[24px] text-[#fff]">북마크 버튼</button>
+        <button className="bg-[#5D5D5D] h-[48px] px-[24px] text-white">북마크 버튼</button>
       </div>
       {/* 컨텐츠 영역 */}
-      <div className="flex flex-col gap-5 my-[60px]">
+      <div className="flex-column gap-5 my-[60px]">
         {postData?.postImage !== null && (
           <img src={`${storageUrl}${postData?.postImage}`} alt="postImg" className="w-full" />
         )}
@@ -76,8 +75,8 @@ export const Detail = () => {
 
       <Comments />
 
-          
-      <div className="flex justify-between mt-[40px]">
+      <div className="contents-between mt-[40px]">
+
         <button
           type="button"
           className="bg-[#DDDDDD] h-[48px] px-[24px] text-gray-500 mr-5"
@@ -88,7 +87,7 @@ export const Detail = () => {
           이전으로
         </button>
         <button
-          className="bg-[#5D5D5D] h-[48px] px-[24px] text-[#fff]"
+          className="bg-[#5D5D5D] h-[48px] px-[24px] text-white"
           onClick={() => {
             movePageHandler("community");
           }}

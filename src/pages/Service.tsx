@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { BsBookmarkFill, BsShare } from "react-icons/bs";
 
-import { GetColor } from "components/colorExtraction";
-import { Modal } from "components/modals";
-import { InteriorSection, ResouresCalculator } from "components/service";
+
+import { GetColor, InteriorSection, ResouresCalculator, Modal } from "components";
 import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 

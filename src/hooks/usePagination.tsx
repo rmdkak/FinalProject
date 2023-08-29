@@ -1,33 +1,38 @@
 import { useState, useEffect } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-import { POSTS_PER_PAGE } from "pages";
-
 interface PaginationProps {
-  totalPosts: number;
-  paginate: (pageNumber: number) => void;
+  data: any[];
+  dataLength: number;
+  postPerPage: number;
 }
 
-export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
+export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  const totalPages = Math.ceil(dataLength / postPerPage);
   const pagesToShow = 3;
 
   const showPage = (pageNumber: number) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
-      paginate(pageNumber);
+
+      setCurrentPage(pageNumber);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-  
+
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const pageData = data.slice(indexOfFirstPost, indexOfLastPost);
+
   useEffect(() => {
     setCurrentPage(1);
-  }, [totalPosts]);
-  
+  }, [dataLength]);
+
   const showPrevPage = () => {
     showPage(currentPage - 1);
   };
+
   const showNextPage = () => {
     showPage(currentPage + 1);
   };
@@ -52,16 +57,16 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
     }
   };
 
-  return (
+  const showPageComponent = (
     <ul className="relative flex gap-3">
       <IoIosArrowBack className="text-[20px] cursor-pointer" onClick={showPrevPage} />
       {getPageNumbers().map((number) => (
         <li key={number}>
           <button
+            className={`w-[25px] font-bold ${selectedPageColor(number)}`}
             onClick={() => {
               showPage(number);
             }}
-            className={`w-[25px] font-bold ${selectedPageColor(number)}`}
           >
             {number}
           </button>
@@ -70,4 +75,6 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
       <IoIosArrowForward className="text-[20px] cursor-pointer" onClick={showNextPage} />
     </ul>
   );
+
+  return { showPageComponent, pageData };
 };

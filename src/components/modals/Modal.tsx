@@ -35,7 +35,7 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
   // 타입가드 type이 string 이거나 빈문자열이 아니라면?
   let titleBorder: string = "";
   const checkTypeGuard = typeof title === "string" && title !== "";
-  if (checkTypeGuard) titleBorder = " border-b border-[#000]";
+  if (checkTypeGuard) titleBorder = " border-b border-black";
 
   // 이벤트버블링 문제 해결 함수
   const stopEventBubbleing = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {

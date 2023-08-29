@@ -64,6 +64,7 @@ export const Home = () => {
             </button>
           </div>
         </div>
+
         <div className="flex h-[740px] gap-20">
           <div className="w-[1280px] bg-gray-400"></div>
           <Flicking align={"prev"} horizontal={false} circular={true} plugins={serviceAutoplayPlugins}>
@@ -125,9 +126,9 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      <div className="flex-column contents-center h-[180px] bg-[#F3F3F3] mb-40">
+      <div className="flex-column contents-center h-[180px] bg-gray07 mb-40">
         <h1 className="text-2xl">얼마나 필요한지 모르시나요? 스타일의 편리한 기능을 이용해보세요!</h1>
-        <div className="text-[#888888]">
+        <div className="text-gray02">
           <label htmlFor="moveToEvent" className="hover:cursor-pointer">
             VIEW MORE
           </label>

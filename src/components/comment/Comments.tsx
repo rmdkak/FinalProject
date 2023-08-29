@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 import { storageUrl } from "api/supabase";
 import { DateConvertor } from "components/date";
 import { useDialog } from "components/overlay/dialog/Dialog.hooks";
@@ -41,9 +42,9 @@ export const Comments = () => {
   };
 
   return (
-    <div className="border-t-2 border-[#E5E5E5]">
+    <div className="border-t-2 border-gray06">
       <p className="font-semibold text-[20px] my-5">댓글</p>
-      <div className="flex flex-col gap-5">
+      <div className="gap-5 flex-column">
         {commentsData?.map((comment) => {
           return (
             <div key={comment.id}>
@@ -74,7 +75,7 @@ export const Comments = () => {
                   {comment.commentImg != null && (
                     <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px] w-[500px]" />
                   )}
-                  <div className="flex gap-2 text-[#888888]">
+                  <div className="flex gap-2 text-gray02">
                     <DateConvertor datetime={comment.created_at} type="dotDate" />
                     <DateConvertor datetime={comment.created_at} type="timeAgo" />
                     <button

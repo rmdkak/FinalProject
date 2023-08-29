@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 
 interface DateConvertorProps {
   datetime: string;
-  type: string;
+  type: "timeAgo" | "dotDate" | "hourMinute";
+  className?: string;
 }
 
-export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) => {
+export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type, className }) => {
   const [formattedDate, setFormattedDate] = useState<string>("");
 
   const currentTime = new Date();
@@ -51,25 +52,25 @@ export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) 
       case "hourMinute":
         const hours = date.getHours();
         const minutes = date.getMinutes();
-        let formattedhours = hours.toString();
+        let formattedHours = hours.toString();
         let formattedMinutes = minutes.toString();
         if (hours < 10) {
-          formattedhours = hours.toString().padStart(2, "0");
+          formattedHours = hours.toString().padStart(2, "0");
         }
         if (minutes < 10) {
           formattedMinutes = minutes.toString().padStart(2, "0");
         }
-        setFormattedDate(`${formattedhours}:${formattedMinutes}`);
+        setFormattedDate(`${formattedHours}:${formattedMinutes}`);
         break;
 
       default:
         break;
     }
   }, [datetime, type]);
-
+  
   if (formattedDate.includes("NaN")) {
     setFormattedDate("");
   }
   
-  return <a>{formattedDate}</a>;
+  return <p className={className}>{formattedDate}</p>;
 };

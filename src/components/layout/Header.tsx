@@ -5,7 +5,7 @@ import { logout } from "api/supabase";
 import hambergerMenu from "assets/hamburgerMenu.svg";
 import logOutIcon from "assets/logout.svg";
 import userIcon from "assets/user.svg";
-import { Sidebar } from "components/sidebar";
+import { Sidebar } from "components";
 import { useAuthStore, useLoggingStore } from "store";
 
 export const Header = () => {
@@ -33,7 +33,7 @@ export const Header = () => {
   // 마이페이지 이동
   const goToMypage = () => {
     if (userUid == null) return;
-    navigate(`/mypage/${userUid}`);
+    navigate("/mypage");
   };
 
   const openSideBarHandler = (): void => {
@@ -42,7 +42,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="sticky z-[9100] box-border border-b border-b-[#E5E5E5] top-0 left-0 w-full bg-white flex justify-between items-center px-[5rem]">
+      <header className="sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white contents-between items-center px-[5rem]">
         <Link to="/" className="py-6 font-title text-[2rem]">
           STILE
         </Link>
@@ -59,7 +59,7 @@ export const Header = () => {
           <>
             {/* 로그인 되어있는 메뉴 */}
             {/* 로그아웃 */}
-            <div className="flex items-center justify-center">
+            <div className="flex contents-center">
               <button className="mr-2" onClick={logoutHandler}>
                 <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
                 <img src={logOutIcon} alt="로그아웃" />

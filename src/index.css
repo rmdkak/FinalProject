@@ -27,16 +27,6 @@ body {
   }
 }
 
-/* tailwind로 appearance 속성이 먹지 않아 css로 넣었습니다. */
-.inputNumberArrow {
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-
-    margin: 0;
-  }
-}
-
 .flicking-arrow-prev,
 .flicking-arrow-next {
   position: absolute;
@@ -211,7 +201,7 @@ body {
     @apply flex justify-between;
   }
   .home-section {
-    @apply flex-column gap-10 mx-20 mb-40;
+    @apply gap-10 mx-20 mb-40 flex-column;
   }
   .vanner-preview {
     @apply w-[800px] h-[450px] rounded-xl mx-5;
@@ -261,7 +251,7 @@ body {
     @apply text-[12px] content-text;
   }
   .auth-input {
-    @apply w-full px-[24px] py-[12px] border-[1px] border-[#D5D5D5] rounded-[8px] disabled:bg-gray05 text-[14px] content-text placeholder:text-gray02;
+    @apply w-full px-[24px] py-[12px] border border-gray05 rounded-[8px] disabled:bg-gray05 auth-tab-title placeholder:text-gray02;
   }
   .auth-button {
     @apply w-full h-[48px] px-[24px] py-[12px] bg-point text-black;
