@@ -4,13 +4,15 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { POSTS_PER_PAGE } from "pages";
 
 interface PaginationProps {
-  totalPosts: number;
+  totalPosts: number | undefined;
   paginate: (pageNumber: number) => void;
 }
 
 export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  let totalPages: number;
+  if (totalPosts != null) totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+  
   const pagesToShow = 3;
 
   const showPage = (pageNumber: number) => {
@@ -20,11 +22,11 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
-  
+
   useEffect(() => {
     setCurrentPage(1);
   }, [totalPosts]);
-  
+
   const showPrevPage = () => {
     showPage(currentPage - 1);
   };

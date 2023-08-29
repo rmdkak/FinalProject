@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable no-case-declarations */
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { Arrow } from "@egjs/flicking-plugins";
@@ -7,34 +8,27 @@ import { supabase, storageUrl } from "api/supabase";
 import { DateConvertor } from "components/date";
 import { PostPagination } from "components/pagination";
 import { PostBookmark } from "components/postBookmark";
+import { usePosts } from "hooks";
 import { useAuthStore } from "store";
-import { type Tables } from "types/supabase";
 import "@egjs/flicking-plugins/dist/arrow.css";
 import "@egjs/react-flicking/dist/flicking.css";
+// import { type Tables } from "types/supabase";
 
 export const POSTS_PER_PAGE = 8;
 
 const plugins = [new Arrow()];
 
+// type PostType = Tables<"POSTS", "Row">;
+
 export const Community = () => {
   const navigate = useNavigate();
   const { currentSession } = useAuthStore();
-  const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
-
-  useEffect(() => {
-    fetchData().catch((error) => error);
-  }, []);
-
-  const fetchData = async () => {
-    const { data, error } = await supabase.from("POSTS").select("*").order("created_at", { ascending: false });
-    if (error != null) {
-      console.error("Error fetching data:", error);
-      return;
-    }
-    setPostList(data as Array<Tables<"POSTS", "Row">>);
-  };
+  const { fetchPostsMutation } = usePosts();
+  const { data: postList } = fetchPostsMutation;
+  const [seletedPostList, setSeletedPostList] = useState(postList);
+  console.log("postList :", postList);
 
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -49,22 +43,29 @@ export const Community = () => {
     setCurrentPage(1);
   };
 
-  let filteredPosts;
-  switch (selectedOption) {
-    case "normal":
-      filteredPosts = postList.filter((e) => e.tileId === null && e.leftWallpaperId === null);
-      break;
-    case "recommendation":
-      filteredPosts = postList.filter((e) => e.tileId !== null && e.leftWallpaperId !== null);
-      break;
-    default:
-      filteredPosts = postList;
-      break;
-  }
+  useEffect(() => {
+    switch (selectedOption) {
+      case "normal":
+        console.log("normal", selectedOption);
+        const normalData = postList?.filter((e) => e.tileId === null && e.leftWallpaperId === null);
+        console.log("filterData :", normalData);
+        if (normalData != null) setSeletedPostList(normalData);
+        break;
+      case "recommendation":
+        const recommendData = postList?.filter((e) => e.tileId !== null && e.leftWallpaperId !== null);
+        if (recommendData != null) setSeletedPostList(recommendData);
+        break;
+      default:
+        console.log("default", selectedOption);
+        const wholeData = postList;
+        if (wholeData != null) setSeletedPostList(wholeData);
+        break;
+    }
+  }, [selectedOption]);
 
   const indexOfLastPost = currentPage * POSTS_PER_PAGE;
   const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
-  const currentFilteredPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentFilteredPosts = seletedPostList?.slice(indexOfFirstPost, indexOfLastPost);
 
   const deletePostHandler = async (id: string) => {
     try {
@@ -84,7 +85,7 @@ export const Community = () => {
       <div className="mb-[20px]">
         <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
           {postList
-            .filter((post) => post.tileId != null && post.leftWallpaperId)
+            ?.filter((post) => post.tileId != null && post.leftWallpaperId)
             .map((post) => (
               <div key={post.id} className="flex flex-col items-center">
                 <div className="flex">
@@ -126,13 +127,13 @@ export const Community = () => {
                 <option value="normal">일반 게시물</option>
                 <option value="recommendation">추천 게시물</option>
               </select>
-              <p className="mt-[8px]">총 게시물 개수: {filteredPosts.length}</p>
+              <p className="mt-[8px]">총 게시물 개수: {seletedPostList?.length}</p>
             </div>
             <Link to="/post" className="px-4 py-2 font-semibold text-white bg-gray-400 rounded hover:bg-gray-500">
               게시물 작성
             </Link>
           </div>
-          {currentFilteredPosts.map((post) => {
+          {currentFilteredPosts?.map((post) => {
             return (
               <div key={post.id} className="border-b border-[#dddddd] py-5 my-5">
                 <div
@@ -188,7 +189,7 @@ export const Community = () => {
         </div>
       </div>
       <div className="flex justify-center">
-        <PostPagination totalPosts={filteredPosts.length} paginate={paginate} />
+        <PostPagination totalPosts={seletedPostList?.length} paginate={paginate} />
       </div>
     </div>
   );
