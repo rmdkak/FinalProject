@@ -62,7 +62,6 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
               <img src={closeBtn} alt="닫기 버튼" />
             </button>
           </div>
-
           {children}
         </div>
       </div>

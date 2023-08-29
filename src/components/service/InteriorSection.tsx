@@ -12,6 +12,8 @@ export const InteriorSection = (): JSX.Element => {
   const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
   const [taleData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
   const { checkType, setTypeCheck } = useServiceStore((state) => state);
+  const [clickLeftWall, setClickLeftWall] = useState<boolean>(false);
+  const [clickRightWall, setClickRightWall] = useState<boolean>(true);
 
   /**
    *  서버에서 타일 리스트 데이터, 벽지 리스트 데이터를 가져오는 함수입니다.
@@ -44,35 +46,60 @@ export const InteriorSection = (): JSX.Element => {
   return (
     <>
       {/* 인테리어 헤더 */}
-      <div className="flex mb-6 h-[35px] text-gray-300 gap-3">
-        <span
-          className={
-            checkType === "wallPaper"
-              ? "border-b-2 border-black hover:cursor-pointer text-black"
-              : "hover:cursor-pointer"
-          }
-          onClick={() => {
-            onClickTypeSwitch("wallPaper");
-          }}
-        >
-          벽지
-        </span>
-        |
-        <span
-          className={
-            checkType === "tile" ? "border-b-2 border-black hover:cursor-pointer text-black" : "hover:cursor-pointer"
-          }
-          onClick={() => {
-            onClickTypeSwitch("tile");
-          }}
-        >
-          바닥재
-        </span>
+      <div className="gap-8 text-gray-300 flex-column">
+        <div className="flex gap-6">
+          <span
+            className={
+              checkType === "wallPaper"
+                ? "border-b-2 border-black hover:cursor-pointer text-black"
+                : "hover:cursor-pointer"
+            }
+            onClick={() => {
+              onClickTypeSwitch("wallPaper");
+            }}
+          >
+            벽지
+          </span>
+          <span
+            className={
+              checkType === "tile" ? "border-b-2 border-black hover:cursor-pointer text-black" : "hover:cursor-pointer"
+            }
+            onClick={() => {
+              onClickTypeSwitch("tile");
+            }}
+          >
+            바닥재
+          </span>
+        </div>
         {checkType === "wallPaper" ? (
-          <>
+          <div className="gap-8 flex-column">
             {/* 벽지 종류 목록 */}
             <TextureTitle data={wallPaperTextureList} />
-          </>
+            <div className="flex gap-4">
+              <span
+                className={
+                  clickLeftWall ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
+                }
+                onClick={() => {
+                  setClickRightWall(false);
+                  setClickLeftWall(true);
+                }}
+              >
+                왼쪽 벽
+              </span>
+              <span
+                className={
+                  clickRightWall ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
+                }
+                onClick={() => {
+                  setClickLeftWall(false);
+                  setClickRightWall(true);
+                }}
+              >
+                오른쪽 벽
+              </span>
+            </div>
+          </div>
         ) : checkType === "tile" ? (
           <>
             {/* 타일 종류 목록 */}
@@ -84,16 +111,14 @@ export const InteriorSection = (): JSX.Element => {
       </div>
 
       {/* 인테리어 바디 */}
-      <div className="h-[392px] mb-10 overflow-auto">
-        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4">
+      <div className="h-[272px] flex overflow-x-auto">
+        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 ">
           {checkType === "wallPaper" ? (
-            <ServiceItem type={checkType} data={wallData} />
+            <ServiceItem type={checkType} data={wallData} wallCheck={clickLeftWall} />
           ) : (
             // sift
             <ServiceItem type={checkType} data={taleData} />
           )}
-
-          {/* <li className="bg-gray-200 w-[120px] h-[120px]"></li> */}
         </ul>
       </div>
     </>
