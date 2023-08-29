@@ -38,85 +38,85 @@ export interface Database {
           writtenId: string;
         };
         Insert: {
-          commentImg?: string | null;
-          content: string;
-          created_at?: string;
-          id: string;
-          postId: string;
-          writtenId: string;
-        };
+          commentImg?: string | null
+          content: string
+          created_at?: string
+          id: string
+          postId: string
+          writtenId: string
+        }
         Update: {
-          commentImg?: string | null;
-          content?: string;
-          created_at?: string;
-          id?: string;
-          postId?: string;
-          writtenId?: string;
-        };
+          commentImg?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          postId?: string
+          writtenId?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "COMMENTS_postId_fkey";
-            columns: ["postId"];
-            referencedRelation: "POSTS";
-            referencedColumns: ["id"];
+            foreignKeyName: "COMMENTS_postId_fkey"
+            columns: ["postId"]
+            referencedRelation: "POSTS"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "COMMENTS_writtenId_fkey";
-            columns: ["writtenId"];
-            referencedRelation: "USERS";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+            foreignKeyName: "COMMENTS_writtenId_fkey"
+            columns: ["writtenId"]
+            referencedRelation: "USERS"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       "ITEM-BOOKMARK": {
         Row: {
-          id: string;
-          leftWallpaperId: string;
-          rightWallpaperId: string;
-          tileId: string;
-          userId: string;
-        };
+          id: string
+          leftWallpaperId: string
+          rightWallpaperId: string
+          tileId: string
+          userId: string
+        }
         Insert: {
-          id?: string;
-          leftWallpaperId: string;
-          rightWallpaperId: string;
-          tileId: string;
-          userId: string;
-        };
+          id?: string
+          leftWallpaperId: string
+          rightWallpaperId: string
+          tileId: string
+          userId: string
+        }
         Update: {
-          id?: string;
-          leftWallpaperId?: string;
-          rightWallpaperId?: string;
-          tileId?: string;
-          userId?: string;
-        };
+          id?: string
+          leftWallpaperId?: string
+          rightWallpaperId?: string
+          tileId?: string
+          userId?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "ITEM-BOOKMARK_leftWallpaperId_fkey";
-            columns: ["leftWallpaperId"];
-            referencedRelation: "WALLPAPER";
-            referencedColumns: ["id"];
+            foreignKeyName: "ITEM-BOOKMARK_leftWallpaperId_fkey"
+            columns: ["leftWallpaperId"]
+            referencedRelation: "WALLPAPER"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "ITEM-BOOKMARK_rightWallpaperId_fkey";
-            columns: ["rightWallpaperId"];
-            referencedRelation: "WALLPAPER";
-            referencedColumns: ["id"];
+            foreignKeyName: "ITEM-BOOKMARK_rightWallpaperId_fkey"
+            columns: ["rightWallpaperId"]
+            referencedRelation: "WALLPAPER"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "ITEM-BOOKMARK_tileId_fkey";
-            columns: ["tileId"];
-            referencedRelation: "TILE";
-            referencedColumns: ["id"];
+            foreignKeyName: "ITEM-BOOKMARK_tileId_fkey"
+            columns: ["tileId"]
+            referencedRelation: "TILE"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "ITEM-BOOKMARK_userId_fkey";
-            columns: ["userId"];
-            referencedRelation: "USERS";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+            foreignKeyName: "ITEM-BOOKMARK_userId_fkey"
+            columns: ["userId"]
+            referencedRelation: "USERS"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       "POST-BOOKMARKS": {
         Row: {
           postId: string;
@@ -147,72 +147,72 @@ export interface Database {
       };
       POSTS: {
         Row: {
-          bookmark: number;
-          content: string;
-          created_at: string;
-          id: string;
-          leftWallpaperId: string | null;
-          nickname: string | null;
-          postImage: string | null;
-          rightWallpaperId: string | null;
-          tileId: string | null;
-          title: string;
-          userId: string | null;
-        };
+          bookmark: number
+          content: string
+          created_at: string
+          id: string
+          leftWallpaperId: string | null
+          nickname: string | null
+          postImage: string | null
+          rightWallpaperId: string | null
+          tileId: string | null
+          title: string
+          userId: string | null
+        }
         Insert: {
-          bookmark: number;
-          content: string;
-          created_at?: string;
-          id?: string;
-          leftWallpaperId?: string | null;
-          nickname?: string | null;
-          postImage?: string | null;
-          rightWallpaperId?: string | null;
-          tileId?: string | null;
-          title: string;
-          userId?: string | null;
-        };
+          bookmark: number
+          content: string
+          created_at?: string
+          id?: string
+          leftWallpaperId?: string | null
+          nickname?: string | null
+          postImage?: string | null
+          rightWallpaperId?: string | null
+          tileId?: string | null
+          title: string
+          userId?: string | null
+        }
         Update: {
-          bookmark?: number;
-          content?: string;
-          created_at?: string;
-          id?: string;
-          leftWallpaperId?: string | null;
-          nickname?: string | null;
-          postImage?: string | null;
-          rightWallpaperId?: string | null;
-          tileId?: string | null;
-          title?: string;
-          userId?: string | null;
-        };
+          bookmark?: number
+          content?: string
+          created_at?: string
+          id?: string
+          leftWallpaperId?: string | null
+          nickname?: string | null
+          postImage?: string | null
+          rightWallpaperId?: string | null
+          tileId?: string | null
+          title?: string
+          userId?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "POSTS_leftWallpaperId_fkey";
-            columns: ["leftWallpaperId"];
-            referencedRelation: "WALLPAPER";
-            referencedColumns: ["id"];
+            foreignKeyName: "POSTS_leftWallpaperId_fkey"
+            columns: ["leftWallpaperId"]
+            referencedRelation: "WALLPAPER"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "POSTS_rightWallpaperId_fkey";
-            columns: ["rightWallpaperId"];
-            referencedRelation: "WALLPAPER";
-            referencedColumns: ["id"];
+            foreignKeyName: "POSTS_rightWallpaperId_fkey"
+            columns: ["rightWallpaperId"]
+            referencedRelation: "WALLPAPER"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "POSTS_tileId_fkey";
-            columns: ["tileId"];
-            referencedRelation: "TILE";
-            referencedColumns: ["id"];
+            foreignKeyName: "POSTS_tileId_fkey"
+            columns: ["tileId"]
+            referencedRelation: "TILE"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "POSTS_userId_fkey";
-            columns: ["userId"];
-            referencedRelation: "USERS";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      "RE-COMMENTS": {
+            foreignKeyName: "POSTS_userId_fkey"
+            columns: ["userId"]
+            referencedRelation: "USERS"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      RECOMMENTS: {
         Row: {
           commentId: string;
           content: string;
@@ -236,19 +236,19 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "RE-COMMENTS_commentId_fkey";
-            columns: ["commentId"];
-            referencedRelation: "COMMENTS";
-            referencedColumns: ["id"];
+            foreignKeyName: "RECOMMENTS_commentId_fkey"
+            columns: ["commentId"]
+            referencedRelation: "COMMENTS"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "RE-COMMENTS_writtenId_fkey";
-            columns: ["writtenId"];
-            referencedRelation: "USERS";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+            foreignKeyName: "RECOMMENTS_writtenId_fkey"
+            columns: ["writtenId"]
+            referencedRelation: "USERS"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       TILE: {
         Row: {
           category: string[];
@@ -279,12 +279,12 @@ export interface Database {
           phone: string;
         };
         Insert: {
-          avatar_url: string;
-          email: string;
-          id?: string;
-          name: string;
-          phone: string;
-        };
+          avatar_url: string
+          email: string
+          id?: string
+          name: string
+          phone: string
+        }
         Update: {
           avatar_url?: string;
           email?: string;

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { BsBookmarkFill, BsCalculator, BsShare } from "react-icons/bs";
+import { BsBookmarkFill, BsShare } from "react-icons/bs";
 
-import calcArrow from "assets/calcArrow.svg";
 import { GetColor } from "components/colorExtraction";
 import { Modal } from "components/modals";
 import { InteriorSection, ResouresCalculator } from "components/service";
@@ -32,8 +31,8 @@ export const Service = () => {
   // const [tileSize, setTileSize] = useState<number>(70);
 
   useEffect(() => {
-    if (wallPaper.right.image !== null) setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image ?? ""}`);
-    if (wallPaper.left.image !== null) setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image ?? ""}`);
+    if (wallPaper.right.image !== null) setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`);
+    if (wallPaper.left.image !== null) setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image}`);
     if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);
   }, [wallPaper, tile]);
 

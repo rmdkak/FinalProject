@@ -9,6 +9,7 @@ interface DateConvertorProps {
 
 export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) => {
   const [formattedDate, setFormattedDate] = useState<string>("");
+
   const currentTime = new Date();
   const date = new Date(datetime);
   const timeDifference: number = currentTime.getTime() - date.getTime();
@@ -66,5 +67,9 @@ export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type }) 
     }
   }, [datetime, type]);
 
+  if (formattedDate.includes("NaN")) {
+    setFormattedDate("");
+  }
+  
   return <a>{formattedDate}</a>;
 };
