@@ -5,7 +5,7 @@ import { logout } from "api/supabase";
 import hambergerMenu from "assets/hamburgerMenu.svg";
 import logOutIcon from "assets/logout.svg";
 import userIcon from "assets/user.svg";
-import { Sidebar } from "components/sidebar";
+import { Sidebar } from "components";
 import { useAuthStore, useLoggingStore } from "store";
 
 export const Header = () => {
@@ -33,7 +33,7 @@ export const Header = () => {
   // 마이페이지 이동
   const goToMypage = () => {
     if (userUid == null) return;
-    navigate(`/mypage/${userUid}`);
+    navigate("/mypage");
   };
 
   const openSideBarHandler = (): void => {

@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { supabase, storageUrl } from "api/supabase";
-import { Comments } from "components/comment";
-import { DateConvertor } from "components/date";
+import { Comments, DateConvertor } from "components";
 import { type Tables } from "types/supabase";
 
 export const Detail = () => {

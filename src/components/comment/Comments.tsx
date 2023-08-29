@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { supabase, storageUrl } from "api/supabase";
-import { DateConvertor } from "components/date";
+import { DateConvertor } from "components";
 import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 
@@ -89,7 +89,7 @@ export const Comments = () => {
       setOpenReply(commentId);
     }
   };
-  
+
   const deleteCommentHandler = async (commentId: string) => {
     try {
       const checkDelete = window.confirm("정말로 삭제하시겠습니까?");

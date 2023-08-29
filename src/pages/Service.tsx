@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
 
-import { GetColor } from "components/colorExtraction";
-import { InteriorSection } from "components/service";
+import { GetColor, InteriorSection } from "components";
 import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useServiceStore } from "store";
 

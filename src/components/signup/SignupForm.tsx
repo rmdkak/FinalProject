@@ -4,8 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
-import { type PasswordVisible, PasswordVisibleButton } from "components/button";
-import { Select } from "components/input";
+import { type PasswordVisible, PasswordVisibleButton, Select } from "components";
 import { BUTTON_COMMON_STYLE } from "pages";
 import { useAuthStore } from "store";
 

@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { changePassword } from "api/supabase";
-import { InvalidText } from "components/signup/InvalidText";
+import { InvalidText } from "components";
 
 interface UpdatePasswordInput {
   newPassword: string;

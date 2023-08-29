@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 import { changeMetaData, updateImage } from "api/supabase";
-import { InvalidText } from "components/signup/InvalidText";
+import { InvalidText } from "components";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
 

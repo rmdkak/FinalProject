@@ -45,7 +45,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
             ) : (
               <>
                 <li className="cursor-pointer text-[#1a1a1a]">
-                  <Link onClick={closeSideBarHandler} to={`/mypage/${currentSession.user.id}`}>
+                  <Link onClick={closeSideBarHandler} to={"/mypage"}>
                     마이페이지
                   </Link>
                 </li>

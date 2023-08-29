@@ -4,9 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Arrow } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { supabase, storageUrl } from "api/supabase";
-import { DateConvertor } from "components/date";
-import { PostPagination } from "components/pagination";
-import { PostBookmark } from "components/postBookmark";
+import { DateConvertor, PostBookmark } from "components";
+import { usePagination } from "hooks";
 import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 import "@egjs/flicking-plugins/dist/arrow.css";
@@ -19,7 +18,6 @@ export const Community = () => {
   const navigate = useNavigate();
   const { currentSession } = useAuthStore();
   const [postList, setPostList] = useState<Array<Tables<"POSTS", "Row">>>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   useEffect(() => {
@@ -35,17 +33,12 @@ export const Community = () => {
     setPostList(data as Array<Tables<"POSTS", "Row">>);
   };
 
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
   const goDetailPage = (postId: string) => {
     navigate(`/detail/${postId}`);
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
-    setCurrentPage(1);
   };
 
   let filteredPosts;
@@ -61,9 +54,11 @@ export const Community = () => {
       break;
   }
 
-  const indexOfLastPost = currentPage * POSTS_PER_PAGE;
-  const indexOfFirstPost = indexOfLastPost - POSTS_PER_PAGE;
-  const currentFilteredPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const { pageData, showPageComponent } = usePagination({
+    data: filteredPosts,
+    dataLength: filteredPosts.length,
+    postPerPage: 8,
+  });
 
   const deletePostHandler = async (id: string) => {
     try {
@@ -131,7 +126,7 @@ export const Community = () => {
               게시물 작성
             </Link>
           </div>
-          {currentFilteredPosts.map((post) => {
+          {pageData.map((post) => {
             return (
               <div key={post.id} className="border-b border-[#dddddd] py-5 my-5">
                 <div
@@ -142,7 +137,7 @@ export const Community = () => {
                 >
                   <div className="flex">
                     {post.postImage != null && (
-                      <img src={`${storageUrl}${post.postImage}`} className="mt-1 h-[100px] w-[100px] mr-5" />
+                      <img src={`${storageUrl}${post.postImage as string}`} className="mt-1 h-[100px] w-[100px] mr-5" />
                     )}
                     <div>
                       <p className="text-lg font-medium truncate w-[500px]">{post.title}</p>
@@ -153,12 +148,16 @@ export const Community = () => {
                     <>
                       <span>벽지</span>
                       <img
-                        src={`${storageUrl}/wallpaper/${post.wallpaperId}`}
+                        src={`${storageUrl}/wallpaper/${post.wallpaperId as string}`}
                         alt="벽지"
                         className="w-[100px] h-[100px]"
                       />
                       <span>바닥</span>
-                      <img src={`${storageUrl}/tile/${post.tileId}`} alt="바닥" className="w-[100px] h-[100px]" />
+                      <img
+                        src={`${storageUrl}/tile/${post.tileId as string}`}
+                        alt="바닥"
+                        className="w-[100px] h-[100px]"
+                      />
                     </>
                   )}
                 </div>
@@ -186,9 +185,7 @@ export const Community = () => {
           })}
         </div>
       </div>
-      <div className="flex justify-center">
-        <PostPagination totalPosts={filteredPosts.length} paginate={paginate} />
-      </div>
+      <div className="flex justify-center">{showPageComponent}</div>
     </div>
   );
 };

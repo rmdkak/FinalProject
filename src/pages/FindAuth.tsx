@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { INPUT_STYLE, Select } from "components";
-import { phoneOptions } from "components/signup/constant";
+import { findPassword } from "api/supabase";
+import { INPUT_STYLE, Select, phoneOptions } from "components";
 
 const TAB_STYLE = "w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center";
 const TAB_FOCUSED_STYLE = `${TAB_STYLE} text-black border-b-[1px] border-black`;
@@ -25,10 +25,10 @@ interface FindPasswordInput {
   phoneMidNumForPassword: string;
   phoneLastNumForPassword: string;
 }
-// type FindAuthInput = FindEmailInput | FindPasswordInput;
 
 export const FindAuth = () => {
   const param = useParams();
+  const navigate = useNavigate();
   const initialFocus =
     param.focus === "email" ? { focusEmail: true, focusPassword: false } : { focusEmail: false, focusPassword: true };
   const [focusTab, setFocusTab] = useState<FocusTab>(initialFocus);
@@ -62,13 +62,18 @@ export const FindAuth = () => {
     setIsDoneFind(true);
   };
 
-  const findPasswordHandler: SubmitHandler<FindPasswordInput> = (data) => {
-    console.log("findPasswordHandler :", data);
+  const findPasswordHandler: SubmitHandler<FindPasswordInput> = async (data) => {
+    const { emailForPassword } = data;
     // TODO
     // 휴대폰 번호 가공하기
+
     // data table에서 이메일과 닉네임과 휴대폰 번호로 유저 찾기
+
     // 찾은 데이터의 유저에게 reset password 이메일 보내기
-    // 성공 실패 여부 알려주기
+    await findPassword(emailForPassword);
+    // dialog 변경
+    alert("이메일이 전송되었습니다.");
+    navigate("/");
   };
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { FaGripLinesVertical } from "react-icons/fa";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
 
-import { MyInfo } from "components/mypage";
+import { MyInfo } from "components";
 
 import { FirstTab } from "./FirstTab";
 import { SecondTab } from "./SecondTab";

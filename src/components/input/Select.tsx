@@ -1,7 +1,7 @@
 import { useState, type MouseEvent, type ChangeEvent, type Dispatch } from "react";
 import { FaAngleDown } from "react-icons/fa";
 
-import { INPUT_STYLE } from "components/mypage";
+import { INPUT_STYLE } from "components";
 
 interface Props {
   option: string[];

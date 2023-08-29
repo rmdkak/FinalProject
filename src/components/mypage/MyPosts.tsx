@@ -1,8 +1,7 @@
 import { RxPencil2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
-import { DateConvertor } from "components/date";
-import { PostBookmark } from "components/postBookmark";
+import { DateConvertor, PostBookmark } from "components";
 import { type Tables } from "types/supabase";
 
 import { BUTTON_STYLE } from "./MyInfo";

@@ -1,7 +1,7 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 import { changeEmail } from "api/supabase";
-import { InvalidText } from "components/signup/InvalidText";
+import { InvalidText } from "components";
 
 import { INPUT_STYLE, type ICommonProps, BUTTON_STYLE } from "../MyInfo";
 
