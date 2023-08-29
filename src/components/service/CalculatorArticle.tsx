@@ -43,7 +43,7 @@ const CalculatorArticle = ({
             } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
           >
             <input
-              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-gray04 appearance-none inputNumberArrow"
+              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
               id={propId}
               value={state.width}
               name="width"
@@ -60,7 +60,7 @@ const CalculatorArticle = ({
             } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
           >
             <input
-              className="box-border rounded-l pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-gray04 appearance-none inputNumberArrow"
+              className="box-border rounded-l pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
               id={propId}
               value={state.height}
               name="height"
