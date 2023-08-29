@@ -111,16 +111,14 @@ export const InteriorSection = (): JSX.Element => {
       </div>
 
       {/* 인테리어 바디 */}
-      <div className="h-[392px]">
-        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4">
+      <div className="h-[272px] flex overflow-x-auto">
+        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 ">
           {checkType === "wallPaper" ? (
             <ServiceItem type={checkType} data={wallData} wallCheck={clickLeftWall} />
           ) : (
             // sift
             <ServiceItem type={checkType} data={taleData} />
           )}
-
-          {/* <li className="bg-gray-200 w-[120px] h-[120px]"></li> */}
         </ul>
       </div>
     </>
