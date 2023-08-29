@@ -84,7 +84,7 @@ export const Community = () => {
       <div className="mb-[20px]">
         <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
           {postList
-            .filter((post) => post.tileId != null)
+            .filter((post) => post.tileId != null && post.leftWallpaperId)
             .map((post) => (
               <div key={post.id} className="flex flex-col items-center">
                 <div className="flex">

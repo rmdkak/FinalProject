@@ -3,12 +3,8 @@ import { type Tables } from "types/supabase";
 import { supabase } from "./supabaseClient";
 
 // get(comments)
-export const fetchComments = async (paramsId: string) => {
-  const { data } = await supabase.from("COMMENTS").select(`*,USERS (*),RECOMMENTS (*)`).eq("postId",paramsId);
-  console.log('data :', data);
-  // const { data:data2 } = await supabase.from("COMMENTS").select(`*,RECOMMENTS (*)`).eq("id","4a34f31a-68ab-9750-e895-296ab68d353f");
-  // console.log('data2 :', data2);
-  // console.log('data3 :', {...data2,...data});
+export const fetchComments = async (postId: string) => {
+  const { data } = await supabase.from("COMMENTS").select(`*,USERS (*),RECOMMENTS (*,USERS(*))`).eq("postId", postId);
   return data;
 };
 
@@ -17,14 +13,29 @@ export const createCommentsHandler = async (commentData: Tables<"COMMENTS", "Ins
   await supabase.from("COMMENTS").insert(commentData).select();
 };
 
-// get(reply)
-export const fetchReplyData = async (commentId: string) => {
-  const { data } = await supabase.from("RECOMMENTS").select(`*,USERS (*)`).eq("commentId",commentId);
-  console.log('data :', data);
-  return data;
+// patch(comments)
+export const patchCommentsHandler = async (commentData: Tables<"COMMENTS", "Update">) => {
+  // 수정 로직 추가
+  console.log(commentData);
+};
+
+// delete(comments)
+export const deleteCommentHandler = async (commentId: string) => {
+  await supabase.from("COMMENTS").delete().eq("id", commentId);
 };
 
 // post(reply)
 export const createReplyHandler = async (replyData: Tables<"RECOMMENTS", "Insert">) => {
   await supabase.from("RECOMMENTS").insert(replyData).select();
+};
+
+// patch(reply)
+export const patchReplyHandler = async (replyData: Tables<"RECOMMENTS", "Update">) => {
+  // 수정 로직 추가
+  console.log(replyData)
+}
+
+// delete(reply)
+export const deleteReplyHandler = async (replyId: string) => {
+  await supabase.from("RECOMMENTS").delete().eq("id", replyId);
 };
