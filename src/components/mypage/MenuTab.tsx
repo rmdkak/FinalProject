@@ -8,7 +8,7 @@ import { MyInfo } from "components";
 import { FirstTab } from "./FirstTab";
 import { SecondTab } from "./SecondTab";
 
-export const LI_COMMON_STYLE = "flex flex-col items-center gap-[16px] w-[146px] cursor-pointer";
+export const LI_COMMON_STYLE = "flex-column items-center gap-[16px] w-[146px] cursor-pointer";
 export const LI_SELECT_STYLE = "text-gray-400";
 
 export const MenuTab = () => {
@@ -35,13 +35,13 @@ export const MenuTab = () => {
         }}
       >
         {el.icon}
-        <p className="text-[18px] font-[400] leading-[130%]">{el.name}</p>
+        <p className="text-[18px] font-normal leading-[130%]">{el.name}</p>
       </li>
     </Fragment>
   ));
 
   return (
-    <div className="flex flex-col items-center m-5 w-[647px]">
+    <div className="flex-column items-center m-5 w-[647px]">
       <ul className="flex px-6">{menuTab}</ul>
       <div className="w-full">{menuArray[currentTab].component}</div>
     </div>

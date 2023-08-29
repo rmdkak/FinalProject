@@ -9,7 +9,7 @@ import { type Tables } from "types/supabase";
 import { MetaDataForm, PasswordForm } from "./myInfoForm";
 
 export const INPUT_STYLE =
-  "w-full px-[24px] py-[12px] border-[1px] border-gary05 rounded-[8px] placeholder:text-gray02 text-[14px] leading0-[110%] font-[400] disabled:bg-[#d7d7d7]";
+  "w-full px-[24px] py-[12px] border-[1px] border-gary05 rounded-[8px] placeholder:text-gray02 text-[14px] leading0-[110%] font-normal disabled:bg-[#d7d7d7]";
 
 export const BUTTON_STYLE = "w-[70px] text-white bg-gray02 disabled:bg-[#bbb]";
 
@@ -55,7 +55,7 @@ export const MyInfo = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-[16px] mt-10">
+      <div className="flex-column gap-[16px] mt-10">
         <MetaDataForm
           initialState={initialState}
           patchIsOpen={patchIsOpen}

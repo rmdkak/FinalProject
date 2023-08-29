@@ -49,12 +49,12 @@ export const Login = () => {
   }, []);
 
   return (
-    <div className="w-[560px] flex flex-col items-center mx-auto">
-      <h2 className="w-full text-center text-[32px] mt-[80px] pb-[24px] border-b-[1px] border-black font-[400] leading-[130%]">
+    <div className="w-[560px] flex-column items-center mx-auto">
+      <h2 className="w-full text-center text-[32px] mt-[80px] pb-[24px] border-b-[1px] border-black font-normal leading-[130%]">
         로그인
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-[40px]">
-        <label htmlFor="email" className="text-[12px] font-[400] leading-[110%] text-gray01">
+        <label htmlFor="email" className="text-[12px] font-normal leading-[110%] text-gray01">
           이메일
         </label>
         <div className="relative flex w-full">
@@ -75,7 +75,7 @@ export const Login = () => {
         </div>
         <InvalidText errorsMessage={errors.email?.message} />
 
-        <label htmlFor="password" className="text-[12px] font-[400] leading-[110%] text-gray01">
+        <label htmlFor="password" className="text-[12px] font-normal leading-[110%] text-gray01">
           password
         </label>
         <div className="relative flex w-full">
@@ -98,33 +98,33 @@ export const Login = () => {
         <InvalidText errorsMessage={errors.password?.message} />
 
         <p>{errors.password?.message}</p>
-        <div className="flex items-center justify-between h-[20px] mt-[24px] text-[#888888] ">
+        <div className="flex items-center justify-between h-[20px] mt-[24px] text-gray02 ">
           <div className="flex items-center gap-[8px] h-full">
             <CheckBoxIcon checkState={stayLoggedInStatus} changeCheckState={setStayLoggedInStatus} size={20} />
             <p className="text-[12px] leading-[110%] self-center">로그인 유지</p>
           </div>
 
           <div className="flex gap-[8px] items-center">
-            <Link to="/find-auth/email" className="text-[12px] leading-[110%] font-[400]">
+            <Link to="/find-auth/email" className="text-[12px] leading-[110%] font-normal">
               이메일 찾기
             </Link>
 
-            <div className="w-[1px] h-[8px] bg-[#E5E5E5]"></div>
+            <div className="w-[1px] h-[8px] bg-gray06"></div>
 
-            <Link to="/find-auth/password" className="text-[12px] leading-[110%] font-[400]">
+            <Link to="/find-auth/password" className="text-[12px] leading-[110%] font-normal">
               비밀번호 찾기
             </Link>
           </div>
         </div>
 
-        <button className="w-full px-[24px] py-[12px] mt-[24px] bg-point rounded-[8px] text-[#1A1A1A] text-[14px] font-[500] leading-[130%]">
+        <button className="w-full px-[24px] py-[12px] mt-[24px] bg-point rounded-[8px] text-[#1A1A1A] text-[14px] font-semibold leading-[130%]">
           로그인
         </button>
 
         <div className="w-full mt-[40px] h-[120px]">
-          <div className="relative flex items-center justify-center h-[48px]">
+          <div className="relative flex contents-center h-[48px]">
             <div className="absolute w-full h-[1px] bg-[#D9D9D9] z-0" />
-            <h3 className="w-[413] p-[12px] text-[14px] font-[400] leading-[24px] z-10 bg-[#FFFFFF]">
+            <h3 className="w-[413] p-[12px] text-[14px] font-normal leading-[24px] z-10 bg-white">
               SNS 계정으로 로그인하기
             </h3>
           </div>
@@ -132,7 +132,7 @@ export const Login = () => {
             <button
               onClick={kakaoLogin}
               type="button"
-              className="flex w-full items-center justify-center gap-[8px] border-[1px] rounded-[8px] text-[#666666] h-[48px] px-[24px] py-[12px]"
+              className="flex w-full contents-center gap-[8px] border-[1px] rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
             >
               <img src={kakaoLogo} />
               <p>Kakao</p>
@@ -140,7 +140,7 @@ export const Login = () => {
             <button
               onClick={googleLogin}
               type="button"
-              className="flex w-full items-center justify-center gap-[8px] border-[1px] rounded-[8px] text-[#666666] h-[48px] px-[24px] py-[12px]"
+              className="flex w-full contents-center gap-[8px] border-[1px] rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
             >
               <img src={googleLogo} />
               Google
@@ -148,7 +148,7 @@ export const Login = () => {
             <button
               onClick={githubLogin}
               type="button"
-              className="flex w-full items-center justify-center gap-[8px] border-[1px] rounded-[8px] text-[#666666] h-[48px] px-[24px] py-[12px]"
+              className="flex w-full contents-center gap-[8px] border-[1px] rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
             >
               <img src={githubLogo} />
               Github
@@ -156,13 +156,13 @@ export const Login = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-[24px] mt-[64px]">
+        <div className="flex-column contents-center gap-[24px] mt-[64px]">
           <p className="text-gray03 text-[14px] text-center mb-[16px]">
             회원가입하고 더 많은 인터레어 조합을 확인해보세요!
           </p>
           <Link
             to={"/signup"}
-            className="flex items-center justify-center w-full h-[48px] rounded-[8px] bg-white border border-black text-[14px] font-medium leading-[130%]"
+            className="flex contents-center w-full h-[48px] rounded-[8px] bg-white border border-black text-[14px] font-medium leading-[130%]"
           >
             회원가입
           </Link>

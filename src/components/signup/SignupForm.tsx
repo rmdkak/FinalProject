@@ -25,7 +25,7 @@ interface Props {
   nextStep: () => void;
 }
 
-const INPUT_STYLE = "w-full px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
+const INPUT_STYLE = "w-full px-[24px] py-[12px] border-[1px] border-gray02 focus:outline-none";
 const DUPLICATE_CHECK_BUTTON = "h-[50px] text-white bg-[#888] ml-[8px] px-[20px] whitespace-nowrap";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
@@ -119,8 +119,8 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-[32px] font-[700] leading-[130%] mt-[40px]">회원가입</h2>
+    <div className="items-center flex-column">
+      <h2 className="text-[32px] font-bold leading-[130%] mt-[40px]">회원가입</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
         {/* 이메일 */}
         <div className="flex items-center w-full">

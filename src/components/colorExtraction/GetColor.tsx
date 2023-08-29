@@ -20,7 +20,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
 
   if (color === null) {
     return (
-      <div className="flex flex-col w-full gap-6">
+      <div className="w-full gap-6 flex-column">
         <div>
           <h2 className="mb-6 text-[30px] font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
@@ -54,7 +54,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
 
   if (loading) {
     return (
-      <div className="flex flex-col w-full gap-6">
+      <div className="w-full gap-6 flex-column">
         <div>
           <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
@@ -69,7 +69,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
     );
   } else if (data === undefined) {
     return (
-      <div className="flex flex-col w-full gap-6">
+      <div className="w-full gap-6 flex-column">
         <div>
           <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
@@ -84,7 +84,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
     );
   } else if (error !== undefined) {
     return (
-      <div className="flex flex-col w-full gap-6">
+      <div className="w-full gap-6 flex-column">
         <div>
           <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
@@ -99,7 +99,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
     );
   } else {
     return (
-      <div className="flex flex-col w-full gap-6 border-y-[1px] border-gray05">
+      <div className="flex-column w-full gap-6 border-y-[1px] border-gray05">
         <div>
           <div className="flex items-center gap-3 my-6">
             <h2 className="text-lg font-medium">현재 색상 코드</h2>

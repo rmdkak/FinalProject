@@ -21,13 +21,13 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
       <dialog className=" fixed z-[9110] top-0 box-border py-8 px-20 right-0 mr-0  h-full w-[25rem]" open={isOpen}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-title text-[1.25em]">STILE</h2>
-          <button onClick={closeSideBarHandler} className="flex items-center justify-center">
+          <button onClick={closeSideBarHandler} className="flex contents-center">
             <img src={close} alt="닫기버튼" className="w-full h-full" />
           </button>
         </div>
 
         {/* 로그인 토글 */}
-        <div className="pb-3 border-b border-[#000] mb-8">
+        <div className="pb-3 mb-8 border-b border-black">
           <ul className="flex text-[0.75rem] font-[#1a1a1a] ">
             {currentSession === null ? (
               <>

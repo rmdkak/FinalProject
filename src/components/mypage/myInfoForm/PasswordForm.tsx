@@ -25,7 +25,7 @@ export const PasswordForm = ({ initialState, patchIsOpen, setPatchIsOpen, provid
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
-      <div className="flex flex-col w-full gap-4">
+      <div className="w-full gap-4 flex-column">
         <input
           placeholder="비밀번호"
           type="password"

@@ -60,7 +60,7 @@ export const MetaDataForm = ({ initialState, patchIsOpen, setPatchIsOpen, curren
 
   return (
     <form onSubmit={handleSubmit(onsubmit)} className="flex gap-4">
-      <div className="flex flex-col w-full gap-4">
+      <div className="w-full gap-4 flex-column">
         <input
           type="file"
           accept="image/*"

@@ -85,9 +85,9 @@ export const FindAuth = () => {
 
   return (
     <>
-      <div className="w-[560px] flex flex-col items-center gap-[40px] mx-auto text-[12px] font-normal leading-[110%]">
-        <h2 className="w-full text-center text-[32px] mt-[80px] pb-[24px] font-[400] leading-[130%]">회원정보 찾기</h2>
-        <div className="flex items-center justify-center">
+      <div className="w-[560px] flex-column items-center gap-[40px] mx-auto text-[12px] font-normal leading-[110%]">
+        <h2 className="w-full text-center text-[32px] mt-[80px] pb-[24px] font-normal leading-[130%]">회원정보 찾기</h2>
+        <div className="flex contents-center">
           <div
             className={focusTab.focusEmail ? TAB_FOCUSED_STYLE : TAB_UNFOCUSED_STYLE}
             onClick={() => {
@@ -110,8 +110,8 @@ export const FindAuth = () => {
           </div>
         </div>
         {focusTab.focusEmail && !isDoneFind && (
-          <form onSubmit={emailHandleSubmit(findEmailHandler)} className="flex flex-col gap-[24px]">
-            <div className="flex flex-col gap-[8px]">
+          <form onSubmit={emailHandleSubmit(findEmailHandler)} className="flex-column gap-[24px]">
+            <div className="flex-column gap-[8px]">
               <label htmlFor="nicknameForEmail">닉네임</label>
               <input
                 id="nicknameForEmail"
@@ -120,7 +120,7 @@ export const FindAuth = () => {
                 className={INPUT_STYLE}
               />
             </div>
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex-column gap-[8px]">
               <label>휴대 전화</label>
               <div className="flex items-center w-full">
                 <Select
@@ -157,7 +157,7 @@ export const FindAuth = () => {
         )}
         {focusTab.focusEmail && isDoneFind && (
           <>
-            <div className="flex flex-col w-full pb-[24px] border-b-[1px] border-b-black">
+            <div className="flex-column w-full pb-[24px] border-b-[1px] border-b-black">
               <div className="flex h-[48px] items-center px-[24px] gap-[16px] text-[14px] font-normal leading-[110%]">
                 <p className="text-gray03 min-w-[100px]">닉네임</p>
                 <p className="w-full text-black">홍길동(로직 구현중)</p>
@@ -181,8 +181,8 @@ export const FindAuth = () => {
           </>
         )}
         {focusTab.focusPassword && !isDoneFind && (
-          <form onSubmit={passwordHandleSubmit(findPasswordHandler)} className="flex flex-col gap-[24px]">
-            <div className="flex flex-col gap-[8px]">
+          <form onSubmit={passwordHandleSubmit(findPasswordHandler)} className="flex-column gap-[24px]">
+            <div className="flex-column gap-[8px]">
               <label>이메일</label>
               <input
                 {...passwordRegister("emailForPassword")}
@@ -190,7 +190,7 @@ export const FindAuth = () => {
                 className={INPUT_STYLE}
               />
             </div>
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex-column gap-[8px]">
               <label>닉네임</label>
               <input
                 {...passwordRegister("nicknameForPassword")}
@@ -198,7 +198,7 @@ export const FindAuth = () => {
                 className={INPUT_STYLE}
               />
             </div>
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex-column gap-[8px]">
               <label>휴대 전화</label>
               <div className="flex items-center w-full">
                 <Select

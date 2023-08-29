@@ -51,7 +51,7 @@ export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps
 
   const selectedPageColor = (number: number) => {
     if (number === currentPage) {
-      return "text-[#000000]";
+      return "text-black";
     } else {
       return "text-[#e6e6e689]";
     }

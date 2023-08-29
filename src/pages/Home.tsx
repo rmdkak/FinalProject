@@ -30,8 +30,8 @@ export const Home = () => {
             </p>
           </div>
           <div className="mt-auto flex-column">
-            <span className="-rotate-90 text-[#9A9A9A] -translate-y-3">scroll</span>
-            <span className="h-20 border-r-[1px] border-[#9A9A9A] -translate-x-[18px]" />
+            <span className="-rotate-90 -translate-y-3 text-gray03">scroll</span>
+            <span className="h-20 border-r-[1px] border-gray03 -translate-x-[18px]" />
           </div>
         </div>
         <Flicking align={"prev"} circular={true} autoResize={false} plugins={autoplayPlugins}>
@@ -71,10 +71,10 @@ export const Home = () => {
             </div>
             <div className="gap-6 flex-column">
               <div className="flex gap-6 text-gray-400">
-                <button className="w-28 h-12 border-[1px] border-[#d5d5d5] rounded-full hover:bg-[#FFDF7C] hover:text-black">
+                <button className="w-28 h-12 border-[1px] border-gray05 rounded-full hover:bg-[#FFDF7C] hover:text-black">
                   벽지
                 </button>
-                <button className="w-28 h-12 border-[1px] border-[#d5d5d5] rounded-full hover:bg-[#FFDF7C] hover:text-black">
+                <button className="w-28 h-12 border-[1px] border-gray05 rounded-full hover:bg-[#FFDF7C] hover:text-black">
                   바닥재
                 </button>
               </div>
@@ -154,9 +154,9 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      <div className="flex-column contents-center h-[180px] bg-[#F3F3F3] mb-40">
+      <div className="flex-column contents-center h-[180px] bg-gray07 mb-40">
         <h1 className="text-2xl">얼마나 필요한지 모르시나요? 스타일의 편리한 기능을 이용해보세요!</h1>
-        <div className="text-[#888888]">
+        <div className="text-gray02">
           <label htmlFor="moveToEvent" className="hover:cursor-pointer">
             VIEW MORE
           </label>

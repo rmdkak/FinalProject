@@ -35,7 +35,7 @@ export const MyPosts = ({ userMyPostsData }: Props) => {
       {userMyPostsData.map((post) => {
         return (
           <div key={post.id} className="border-b border-[#dddddd] py-5 my-5">
-            <Link to={`detail/${post.id}`} className="flex justify-between gap-5 cursor-pointer">
+            <Link to={`detail/${post.id}`} className="gap-5 cursor-pointer contents-between">
               <div>
                 <p className="text-lg font-medium truncate w-[500px]">{post.title}</p>
                 <p className="mt-1 h-[50px] w-[800px] overflow-hidden">{post.content}</p>
@@ -53,7 +53,7 @@ export const MyPosts = ({ userMyPostsData }: Props) => {
                 </>
               )}
             </Link>
-            <div className="text-[#888888] flex gap-5">
+            <div className="flex gap-5 text-gray02">
               <p>{post.nickname}</p>
               <p>
                 <DateConvertor datetime={post.created_at} type="dotDate" />

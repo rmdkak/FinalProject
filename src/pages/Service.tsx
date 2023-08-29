@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { BsBookmarkFill, BsShare } from "react-icons/bs";
 
-import { GetColor, InteriorSection, ResouresCalculator } from "components";
-import { Modal } from "components/modals";
+import { GetColor, InteriorSection, ResouresCalculator, Modal } from "components";
 import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -30,8 +29,8 @@ export const Service = () => {
   // const [tileSize, setTileSize] = useState<number>(70);
 
   useEffect(() => {
-    if (wallPaper.right.image !== null) setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image ?? ""}`);
-    if (wallPaper.left.image !== null) setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image ?? ""}`);
+    if (wallPaper.right.image !== null) setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`);
+    if (wallPaper.left.image !== null) setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image}`);
     if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);
   }, [wallPaper, tile]);
 

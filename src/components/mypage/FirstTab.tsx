@@ -45,18 +45,18 @@ export const FirstTab = () => {
         }}
       >
         {el.icon}
-        <p className="text-[18px] font-[400] leading-[130%]">{el.name}</p>
+        <p className="text-[18px] font-normal leading-[130%]">{el.name}</p>
         {el.name === "내 정보" ? (
-          <p className="text-[20px] font-[500] leading-[130%]">수정</p>
+          <p className="text-[20px] font-semibold leading-[130%]">수정</p>
         ) : (
-          <p className="text-[20px] font-[500] leading-[130%]">{el.data?.length}</p>
+          <p className="text-[20px] font-semibold leading-[130%]">{el.data?.length}</p>
         )}
       </li>
     </Fragment>
   ));
 
   return (
-    <div className="flex flex-col items-center mt-8 w-[647px]">
+    <div className="flex-column items-center mt-8 w-[647px]">
       <ul className="flex px-6">{firstMenuTab}</ul>
       <div className="w-full">{firstTabArray[currentTab].component}</div>
     </div>

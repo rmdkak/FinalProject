@@ -73,14 +73,14 @@ export const Community = () => {
     <div className="w-[1280px] mx-auto mt-[40px]">
       <div className="text-center">
         <p className="font-bold text-[30px]">커뮤니티</p>
-        <p className="text-[#888888] mb-10">서브 텍스트입니다. 서브 텍스트입니다. 서브 텍스트입니다.</p>
+        <p className="mb-10 text-gray02">서브 텍스트입니다. 서브 텍스트입니다. 서브 텍스트입니다.</p>
       </div>
       <div className="mb-[20px]">
         <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
           {postList
             .filter((post) => post.tileId != null && post.leftWallpaperId)
             .map((post) => (
-              <div key={post.id} className="flex flex-col items-center">
+              <div key={post.id} className="items-center flex-column">
                 <div className="flex">
                   <img
                     src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
@@ -91,8 +91,8 @@ export const Community = () => {
                 </div>
                 <div className="w-[300px]">
                   <p className="mt-8 text-lg font-medium truncate">{post.title}</p>
-                  <p className="mt-1 text-[#888888] line-clamp-2 h-[50px]">{post.content}</p>
-                  <div className="text-[#888888] flex gap-5">
+                  <p className="mt-1 text-gray02 line-clamp-2 h-[50px]">{post.content}</p>
+                  <div className="flex gap-5 text-gray02">
                     {post.nickname}
                     <p>
                       <DateConvertor datetime={post.created_at} type="dotDate" />
@@ -109,7 +109,7 @@ export const Community = () => {
       </div>
       <div className="flex justify-center">
         <div className="w-[1280px] border-t border-[#dddddd]">
-          <div className="flex justify-between mt-[30px]">
+          <div className="contents-between mt-[30px]">
             <div className="flex gap-3">
               <select
                 value={selectedOption}
@@ -161,7 +161,7 @@ export const Community = () => {
                     </>
                   )}
                 </div>
-                <div className="text-[#888888] flex gap-5 mt-5">
+                <div className="flex gap-5 mt-5 text-gray02">
                   {post.nickname}
                   <p>
                     <DateConvertor datetime={post.created_at} type="dotDate" />
