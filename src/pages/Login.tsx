@@ -8,7 +8,7 @@ import { login, githubLogin, googleLogin, kakaoLogin } from "api/supabase";
 import githubLogo from "assets/githubLogo.svg";
 import googleLogo from "assets/googleLogo.svg";
 import kakaoLogo from "assets/kakaoLogo.svg";
-import { CheckBoxIcon, INPUT_STYLE, PasswordVisibleButton, InvalidText } from "components";
+import { CheckBoxIcon, PasswordVisibleButton, InvalidText } from "components";
 import { useAuthStore, useLoggingStore } from "store";
 
 export interface LoginInputs {
@@ -64,7 +64,7 @@ export const Login = () => {
               minLength: { value: 8, message: "이메일이 너무 짧습니다." },
             })}
             placeholder="이메일을 입력해주세요."
-            className={INPUT_STYLE}
+            className="auth-input"
           />
           <IoMdCloseCircle
             className="h-[16px] absolute right-[24px] top-[50%] translate-y-[-50%] text-[25px] text-gray04 cursor-pointer"
@@ -86,7 +86,7 @@ export const Login = () => {
             })}
             type={showPassword.password ? "text" : "password"}
             id="password"
-            className={INPUT_STYLE}
+            className="auth-input"
             placeholder="비밀번호"
           />
           <PasswordVisibleButton

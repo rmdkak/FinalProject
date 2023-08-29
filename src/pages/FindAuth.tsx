@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { findPassword } from "api/supabase";
-import { INPUT_STYLE, Select, phoneOptions } from "components";
+import { Select, phoneOptions } from "components";
 
 const TAB_STYLE = "w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center";
 const TAB_FOCUSED_STYLE = `${TAB_STYLE} text-black border-b-[1px] border-black`;
@@ -117,7 +117,7 @@ export const FindAuth = () => {
                 id="nicknameForEmail"
                 {...emailRegister("nicknameForEmail")}
                 placeholder="닉네임을 입력해주세요."
-                className={INPUT_STYLE}
+                className="auth-input"
               />
             </div>
             <div className="flex-column gap-[8px]">
@@ -137,7 +137,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
                 <span className="mx-[12px]">-</span>
                 <input
@@ -146,7 +146,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
               </div>
             </div>
@@ -187,7 +187,7 @@ export const FindAuth = () => {
               <input
                 {...passwordRegister("emailForPassword")}
                 placeholder="이메일을 입력해주세요."
-                className={INPUT_STYLE}
+                className="auth-input"
               />
             </div>
             <div className="flex-column gap-[8px]">
@@ -195,7 +195,7 @@ export const FindAuth = () => {
               <input
                 {...passwordRegister("nicknameForPassword")}
                 placeholder="닉네임을 입력해주세요."
-                className={INPUT_STYLE}
+                className="auth-input"
               />
             </div>
             <div className="flex-column gap-[8px]">
@@ -215,7 +215,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
                 <span className="mx-[12px]">-</span>
                 <input
@@ -224,7 +224,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
               </div>
             </div>

@@ -25,7 +25,6 @@ interface Props {
   nextStep: () => void;
 }
 
-const INPUT_STYLE = "w-full px-[24px] py-[12px] border-[1px] border-gray02 focus:outline-none";
 const DUPLICATE_CHECK_BUTTON = "h-[50px] text-white bg-[#888] ml-[8px] px-[20px] whitespace-nowrap";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
@@ -133,7 +132,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
               })}
               type="id"
               placeholder="이메일"
-              className={INPUT_STYLE}
+              className="auth-input"
             />
           </div>
           <span className="mx-[8px]">@</span>
@@ -163,7 +162,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type="text"
             placeholder="닉네임"
-            className={INPUT_STYLE}
+            className="auth-input"
           />
           <button
             type="button"
@@ -189,7 +188,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type={showPassword.password ? "text" : "password"}
             placeholder="비밀번호"
-            className={INPUT_STYLE}
+            className="auth-input"
           />
           <PasswordVisibleButton
             passwordType={"password"}
@@ -212,7 +211,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type={showPassword.passwordConfirm ?? false ? "text" : "password"}
             placeholder="비밀번호"
-            className={INPUT_STYLE}
+            className="auth-input"
           />
           <PasswordVisibleButton
             passwordType={"passwordConfirm"}
@@ -237,7 +236,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type="text"
             placeholder="휴대전화"
-            className={`${INPUT_STYLE} text-center`}
+            className={`$"auth-input" text-center`}
           />
           <span className="mx-[12px]">-</span>
           <input
@@ -246,7 +245,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type="text"
             placeholder="휴대전화"
-            className={`${INPUT_STYLE} text-center`}
+            className={`$"auth-input" text-center`}
           />
         </div>
         <InvalidText errorsMessage={errors.phoneMiddleNum?.message} />

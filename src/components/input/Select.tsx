@@ -1,8 +1,6 @@
 import { useState, type MouseEvent, type ChangeEvent, type Dispatch } from "react";
 import { FaAngleDown } from "react-icons/fa";
 
-import { INPUT_STYLE } from "components";
-
 interface Props {
   option: string[];
   selectedValue: string | undefined;
@@ -35,7 +33,7 @@ export const Select = (props: Props) => {
     <div className={`relative w-[100%] h-[50px]`}>
       {selfEnterIsOpen ? (
         <>
-          <button className={`flex w-full h-[50px] ${INPUT_STYLE}`} type="button" onClick={changeToggleHandler}>
+          <button className={`flex w-full h-[50px] $"auth-input"`} type="button" onClick={changeToggleHandler}>
             <p className={`whitespace-nowrap`}>{selectedValue !== undefined ? selectedValue : placeholder}</p>
             <FaAngleDown className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer" />
           </button>
@@ -47,7 +45,7 @@ export const Select = (props: Props) => {
               setSelectedValue(event?.target.value);
             }}
             value={selectedValue}
-            className={`w-[100%] ${INPUT_STYLE}`}
+            className={`w-[100%] $"auth-input"`}
           />
           <FaAngleDown
             onClick={changeToggleHandler}
