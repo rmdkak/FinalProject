@@ -60,9 +60,13 @@ export const Detail = () => {
         {postData?.postImage !== null && (
           <img src={`${storageUrl}${postData?.postImage}`} alt="postImg" className="w-full" />
         )}
-        {postData?.wallpaperId !== null && postData?.tileId !== null && (
+        {postData?.leftWallpaperId !== null && postData?.tileId !== null && (
           <div className="flex">
-            <img src={`${storageUrl}/wallpaper/${postData?.wallpaperId}`} alt="벽지" className="w-[150px] h-[150px]" />
+            <img
+              src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
+              alt="벽지"
+              className="w-[150px] h-[150px]"
+            />
             <img src={`${storageUrl}/tile/${postData?.tileId}`} alt="바닥" className="w-[150px] h-[150px]" />
           </div>
         )}

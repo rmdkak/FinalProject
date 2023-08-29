@@ -6,18 +6,23 @@ interface props {
 }
 
 export const ColorPallet = ({ color }: props) => {
-  const getcolors: string[] = [];
+  const toneInTone: string[] = [];
+  const toneOnTone: string[] = [];
   const tetradColors: tinycolor.Instance[] = tinycolor(color as string).tetrad();
   const triadColors: tinycolor.Instance[] = tinycolor(color as string).triad();
+  const analogColors: tinycolor.Instance[] = tinycolor(color as string).analogous();
 
   tetradColors.map((color) => {
-    return getcolors.push(color.toHexString());
+    return toneInTone.push(color.toHexString());
   });
   triadColors.map((color) => {
-    return getcolors.push(color.toHexString());
+    return toneInTone.push(color.toHexString());
+  });
+  analogColors.map((color) => {
+    return toneOnTone.push(color.toHexString());
   });
 
-  const deleteDuplicate = new Set(getcolors);
+  const deleteDuplicate = new Set(toneInTone);
   const colors = [...deleteDuplicate];
 
   /**
@@ -37,22 +42,38 @@ export const ColorPallet = ({ color }: props) => {
 
   return (
     <>
-      {colors.map((color, idx) => {
-        return (
-          <li
-            onClick={() => {
-              handleCopyColorClipBoard(color);
-            }}
-            key={idx}
-            className="flex"
-          >
-            <div className="w-32 h-32" style={{ backgroundColor: color }} />
-            <span className="mt-auto font-bold" style={{ color }}>
-              {color}
-            </span>
-          </li>
-        );
-      })}
+      <h3>TONE IN TONE</h3>
+      <ul className="flex flex-wrap gap-4">
+        {colors.map((color, idx) => {
+          return (
+            <li
+              onClick={() => {
+                handleCopyColorClipBoard(color);
+              }}
+              key={idx}
+              className="flex"
+            >
+              <div className="interior-item" style={{ backgroundColor: color }} />
+            </li>
+          );
+        })}
+      </ul>
+      <h3>TONE ON TONE</h3>
+      <ul className="flex flex-wrap gap-4">
+        {toneOnTone.map((color, idx) => {
+          return (
+            <li
+              onClick={() => {
+                handleCopyColorClipBoard(color);
+              }}
+              key={idx}
+              className="flex"
+            >
+              <div className="interior-item" style={{ backgroundColor: color }} />
+            </li>
+          );
+        })}
+      </ul>
     </>
   );
 };

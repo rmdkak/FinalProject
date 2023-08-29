@@ -27,15 +27,8 @@ export const MyBookmarks = ({ userMyBookmarkData }: Props) => {
   }
   return (
     <>
-      {userMyBookmarkData.map((bookmark) => {
-        return (
-          <>
-            <p>id : {bookmark.id}</p>
-            <p>userId : {bookmark.userId}</p>
-            <p>tileId : {bookmark.tileId}</p>
-            <p>wallpaperId : {bookmark.wallpaperId}</p>
-          </>
-        );
+      {userMyBookmarkData.map(() => {
+        return <></>;
       })}
     </>
   );
