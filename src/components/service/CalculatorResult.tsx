@@ -6,14 +6,14 @@ interface Props {
 }
 
 const CalculatorResult = ({ resultName, result, meter }: Props): JSX.Element => {
-  // console.log(resultName, result);
   return (
     <>
       <div className="flex items-center justify-between">
         <h3>{resultName}</h3>
         <span>
           {/* 결과값 */}
-          <span>{result}</span>
+          {/* //FIX 오류 설정 어캐할건지 */}
+          <span>{result !== "NaN" ? result : "오류"}</span>
           {/* 오른쪽 평방미터 */}
           {meter !== true ? (
             <span>
