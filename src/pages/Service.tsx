@@ -22,18 +22,25 @@ export const Service = () => {
   const [tileBg, setTileBg] = useState<string>("");
 
   const { onOpenModal } = useModalStore((state) => state);
-  const { wallPaper, tile } = useServiceStore((state) => state);
+  const { wallPaper, tile, wallpaperPaint } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
   //  타일 사이즈 컨트롤
   // const [wallPaperSize, setWallPaperSize] = useState<number>(70);
   // const [tileSize, setTileSize] = useState<number>(70);
 
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
+  console.log(wallPaper);
   useEffect(() => {
-    if (wallPaper.right.image !== null) setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`);
-    if (wallPaper.left.image !== null) setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image}`);
     if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);
-  }, [wallPaper, tile]);
+    if (isWallPaperPaintSeleted) {
+      setRightWallPaperBg(wallpaperPaint.right);
+      setLeftWallPaperBg(wallpaperPaint.left);
+    } else {
+      if (wallPaper.right.image !== null) setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`);
+      if (wallPaper.left.image !== null) setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image}`);
+    }
+  }, [wallPaper, tile, wallpaperPaint]);
 
   const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
     useInteriorBookmark();
@@ -56,20 +63,39 @@ export const Service = () => {
             <div className="flex-column contents-center sticky top-[22.5%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
               <div className="cube">
                 {/* 벽지 */}
-                <div
-                  style={{
-                    backgroundImage: `url(${leftWallPaperBg})`,
-                    backgroundSize: `${70}px, ${70}px`,
-                  }}
-                  className="left-wall"
-                ></div>
-                <div
-                  style={{
-                    backgroundImage: `url(${RightWallPaperBg})`,
-                    backgroundSize: `${70}px, ${70}px`,
-                  }}
-                  className="right-wall"
-                ></div>
+                {!isWallPaperPaintSeleted ? (
+                  <>
+                    <div
+                      style={{
+                        backgroundImage: `url(${leftWallPaperBg})`,
+                        backgroundSize: `${70}px, ${70}px`,
+                      }}
+                      className="left-wall"
+                    ></div>
+                    <div
+                      style={{
+                        backgroundImage: `url(${RightWallPaperBg})`,
+                        backgroundSize: `${70}px, ${70}px`,
+                      }}
+                      className="right-wall"
+                    ></div>
+                  </>
+                ) : (
+                  <>
+                    <div
+                      style={{
+                        backgroundColor: leftWallPaperBg,
+                      }}
+                      className="left-wall"
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: RightWallPaperBg,
+                      }}
+                      className="right-wall"
+                    ></div>
+                  </>
+                )}
                 {/* 타일 */}
                 <div
                   style={{ backgroundImage: `url(${tileBg})`, backgroundSize: `${70}px, ${70}px` }}

@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { SketchPicker, type ColorResult } from "react-color";
 
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
@@ -19,7 +20,16 @@ interface Props {
  * @returns
  */
 export const ServiceItem = ({ data, type, wallCheck }: Props): JSX.Element => {
-  const { resetWallPaper, resetTile, setTile, setWallPaper, interiorSelecteIndex } = useServiceStore((state) => state);
+  const {
+    resetWallPaper,
+    resetTile,
+    setTile,
+    setWallPaper,
+    setWallpaperPaint,
+    resetWallpaperPaint,
+    interiorSelecteIndex,
+  } = useServiceStore((state) => state);
+  const [color, setColor] = useState<string>("#000");
 
   // 페이지 마운트, 언마운트시 전역데이터 초기화
   useEffect(() => {
@@ -39,11 +49,18 @@ export const ServiceItem = ({ data, type, wallCheck }: Props): JSX.Element => {
    */
   const getItemData = (selectItem: { id: string; image: string }): void => {
     if (type === "wallPaper") {
+      resetWallpaperPaint();
       wallCheck === true ? setWallPaper(selectItem, "left") : setWallPaper(selectItem, "right");
     }
     if (type === "tile") {
       setTile(selectItem);
     }
+  };
+
+  const changeColorPicker = (color: ColorResult) => {
+    setColor(color.hex);
+
+    wallCheck === true ? setWallpaperPaint(color.hex, "left") : setWallpaperPaint(color.hex, "right");
   };
 
   // type 에 따라 CHECK_DATA의 값이 바뀝니다.
@@ -61,7 +78,6 @@ export const ServiceItem = ({ data, type, wallCheck }: Props): JSX.Element => {
       filterData = FILTER_DATA;
     }
   };
-
   // 인테리어 헤더부분 리스트아이템 선택시 그 선택아이템의 값을 영어로 변환해 filterDate 에 매개변수로 전달합니다.
   // 값이 없을경우 filterDate = data(전체데이터) 로 할당됩니다.
   let changeName: string = "";
@@ -86,23 +102,34 @@ export const ServiceItem = ({ data, type, wallCheck }: Props): JSX.Element => {
       filterData = data;
       break;
   }
-
-  return (
-    <>
-      {filterData.map((item) => {
-        const { id, image } = item;
-        return (
-          <li
-            onClick={() => {
-              getItemData({ id, image });
-            }}
-            key={id}
-            className="cursor-pointer interior-item"
-          >
-            <img src={`${STORAGE_URL}${image}`} className="interior-item" alt={` ${type} 미리보기 이미지`} />
-          </li>
-        );
-      })}
-    </>
-  );
+  if (interiorSelecteIndex === 1 && type === "wallPaper") {
+    return (
+      <SketchPicker
+        color={color}
+        onChange={(color: ColorResult) => {
+          changeColorPicker(color);
+        }}
+        disableAlpha={true}
+      />
+    );
+  } else {
+    return (
+      <>
+        {filterData.map((item) => {
+          const { id, image } = item;
+          return (
+            <li
+              onClick={() => {
+                getItemData({ id, image });
+              }}
+              key={id}
+              className="cursor-pointer interior-item"
+            >
+              <img src={`${STORAGE_URL}${image}`} className="interior-item" alt={` ${type} 미리보기 이미지`} />
+            </li>
+          );
+        })}
+      </>
+    );
+  }
 };
