@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 import { storageUrl } from "api/supabase";
 import { DateConvertor } from "components/date";
 import { useDialog } from "components/overlay/dialog/Dialog.hooks";
@@ -43,12 +42,15 @@ export const Comments = () => {
 
   return (
     <div className="border-t-2 border-gray06">
-      <p className="font-semibold text-[20px] my-5">댓글</p>
-      <div className="gap-5 flex-column">
+      <p className="mt-20 mb-4 font-normal text-gray02">
+        댓글 <span className="text-black">{commentsData?.length}</span>개
+      </p>
+      <CommentForm kind="comment" commentId="" setOpenReply={setOpenReply} />
+      <div className="gap-5 pt-5 border-t-2 flex-column border-gray05">
         {commentsData?.map((comment) => {
           return (
             <div key={comment.id}>
-              <div className="flex border-b-2 border-[#E5E5E5] pb-[15px]">
+              <div className="flex border-b-2 border-gray06 pb-[15px]">
                 <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[50px] h-[50px]" />
                 <div className="flex flex-col justify-between gap-1 ml-3">
                   <div className="flex gap-2">
@@ -136,7 +138,6 @@ export const Comments = () => {
           );
         })}
       </div>
-      <CommentForm kind="comment" commentId="" setOpenReply={setOpenReply} />
     </div>
   );
 };

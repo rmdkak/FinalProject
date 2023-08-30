@@ -4,7 +4,11 @@ import { supabase } from "./supabaseClient";
 
 // get
 export const fetchDetailData = async (postId: string) => {
-  const { data } = await supabase.from("POSTS").select("*").eq("id", postId).single();
+  const { data, error } = await supabase.from("POSTS").select("*").eq("id", postId).single();
+  if (error != null) {
+    console.log("error.message :", error.message);
+    return;
+  }
   return data;
 };
 

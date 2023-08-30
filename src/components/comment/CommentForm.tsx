@@ -88,7 +88,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
   };
 
   return (
-    <div className="w-full p-5 mt-10 border-2 rounded-lg border-gray06">
+    <div className="w-full p-5 mb-20 border-2 rounded-lg border-gray06">
       <div className="contents-between">
         <p className="font-semibold text-[20px]">
           {currentSession != null
@@ -99,7 +99,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
           {content.length}/{textAreaMaxLength}자
         </div>
       </div>
-      <form onSubmit={createCommentHandler}>
+      <form onSubmit={createCommentHandler} className="contents-between">
         <textarea
           value={content}
           onClick={loginValidHandler}
@@ -108,17 +108,35 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
             autoResizeTextArea(e.target);
           }}
           placeholder={placeHolder}
-          className="w-full text-[20px] py-[12px] focus:outline-none"
+          className={
+            selectedImage != null
+              ? "w-[984px] text-[20px] py-[12px] focus:outline-none resize-none"
+              : "w-[1100px] text-[20px] py-[12px] focus:outline-none resize-none"
+          }
         />
-        <div className="contents-between">
+        <div className="flex-column">
+          {replyStatus && (
+            <button
+              onClick={() => {
+                setOpenReply(null);
+              }}
+              type="button"
+              className="h-[48px] w-[120px] text-gray03 rounded-lg border-[1px] border-gray05"
+            >
+              취소
+            </button>
+          )}
+          <button type="submit" className="h-[48px] w-[120px] text-gray03 rounded-lg border-[1px] border-gray05">
+            등록하기
+          </button>
           {selectedImage == null && commentStatus && (
-            <label htmlFor="imageInput">
-              <AiOutlineCamera className="text-gray-400 cursor-pointer text-[40px]" />
+            <label htmlFor="imageInput" className="">
+              <AiOutlineCamera className="text-gray-400 cursor-pointer text-[40px] mx-auto mt-[60px]" />
               <input type="file" id="imageInput" className="hidden" onChange={handleImageChange} />
             </label>
           )}
           {selectedImage != null && commentStatus && (
-            <div className="relative">
+            <div className="relative right-[96%] bottom-[32%]">
               <img
                 src={URL.createObjectURL(selectedImage)}
                 alt="Selected"
@@ -133,20 +151,6 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
               </div>
             </div>
           )}
-          {replyStatus && (
-            <button
-              onClick={() => {
-                setOpenReply(null);
-              }}
-              type="button"
-              className="bg-[#DDDDDD] h-[48px] px-[24px] text-[#7c7c7c] rounded-lg"
-            >
-              취소
-            </button>
-          )}
-          <button type="submit" className="bg-[#DDDDDD] h-[48px] px-[24px] text-[#7c7c7c] rounded-lg">
-            등록
-          </button>
         </div>
       </form>
     </div>
