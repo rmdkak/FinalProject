@@ -6,7 +6,7 @@ export const Footer = () => {
     <>
       <footer className="p-[5rem]  ">
         {/* footHead */}
-        <div className="flex justify-between mb-[50px] border-b border-[#d9d9d9] pb-6 ">
+        <div className="contents-between mb-[50px] border-b border-[#d9d9d9] pb-6 ">
           <h2 className=" item text-[2rem] leading-none">
             <Link to="/" className="font-title">
               STILE

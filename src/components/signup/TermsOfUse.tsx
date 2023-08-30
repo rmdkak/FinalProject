@@ -12,7 +12,7 @@ interface Props {
 
 const CHECKED_STYLE = `checked:bg-green-500 checked:text-white`;
 const CHECK_TYPE_STYLE = `w-6 h-6 appearance-none bg-white border-[2px] border-[#1A1A1A] ${CHECKED_STYLE}`;
-const TEXT_STYLE = "text-[14px] font-[400] leading-[130%] ml-[16px]";
+const TEXT_STYLE = "text-[14px] font-normal leading-[130%] ml-[16px]";
 const FLEX_CENTER = "flex items-center";
 const FLEX_V_CENTER = `${FLEX_CENTER} flex-col`;
 const TEXTAREA_STYLE = "w-full h-[300px] mt-[10px] resize-none focus:outline-none";
@@ -29,7 +29,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
 
   return (
     <div className={`${FLEX_V_CENTER} mt-[40px]`}>
-      <p className="text-[32px] font-[700] leading-[130%] mt-[40px]">회원가입</p>
+      <p className="text-[32px] font-bold leading-[130%] mt-[40px]">회원가입</p>
       <ul className={`w-[480px]`}>
         <li className={`${FLEX_CENTER} border-b-[1px] border-[#1A1A1A] w-full py-[16px]`}>
           <input
@@ -61,14 +61,14 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               className="flex items-center justify-between w-full"
             >
               <p className={TEXT_STYLE}>
-                [필수] <span className="text-[#888888]">이용약관 동의</span>
+                [필수] <span className="text-gray02">이용약관 동의</span>
               </p>
               <img src={arrowIcon} />
             </button>
           </div>
           {termsToggleIsOpen.terms1 && <textarea className={TEXTAREA_STYLE} value={TERMS_1} disabled></textarea>}
         </li>
-        <li className="relative flex flex-col items-center w-full py-[16px]">
+        <li className="relative flex-column items-center w-full py-[16px]">
           <div className="flex items-center w-full">
             <input
               onChange={termsCheckHandler}
@@ -84,7 +84,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               className="flex items-center justify-between w-full"
             >
               <p className={TEXT_STYLE}>
-                [필수] <span className="text-[#888888]">개인정보 수집 및 이용 동의</span>
+                [필수] <span className="text-gray02">개인정보 수집 및 이용 동의</span>
               </p>
               <img src={arrowIcon} />
             </button>

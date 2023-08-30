@@ -1,37 +1,60 @@
 import { useState, useEffect } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-import { POSTS_PER_PAGE } from "pages";
-
 interface PaginationProps {
-  totalPosts: number | undefined;
-  paginate: (pageNumber: number) => void;
+  data: any[];
+  dataLength: number;
+  postPerPage: number;
 }
 
-export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
+/**
+ * @param
+ */
+export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  let totalPages: number;
-  if (totalPosts != null) totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
-  
+  const totalPages = Math.ceil(dataLength / postPerPage);
   const pagesToShow = 3;
 
   const showPage = (pageNumber: number) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
-      paginate(pageNumber);
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const pageData = data.slice(indexOfFirstPost, indexOfLastPost);
+
   useEffect(() => {
     setCurrentPage(1);
-  }, [totalPosts]);
+  }, [dataLength]);
 
   const showPrevPage = () => {
     showPage(currentPage - 1);
   };
+
   const showNextPage = () => {
     showPage(currentPage + 1);
+  };
+
+  const jumpNextPage = () => {
+    const rest = (currentPage + pagesToShow) % pagesToShow;
+    if (rest === 0) {
+      showPage(currentPage + 1);
+    } else {
+      const jumpPage = currentPage + pagesToShow - rest + 1;
+      showPage(jumpPage);
+    }
+  };
+
+  const jumpPrevPage = () => {
+    const rest = (currentPage - pagesToShow) % pagesToShow;
+    if (rest === 0) {
+      currentPage !== pagesToShow ? showPage(currentPage - (pagesToShow + pagesToShow - 1)) : showPage(1);
+    } else {
+      const jumpPage = currentPage - pagesToShow - rest + 1;
+      showPage(jumpPage);
+    }
   };
 
   const getPageNumbers = () => {
@@ -48,28 +71,32 @@ export const PostPagination = ({ totalPosts, paginate }: PaginationProps) => {
 
   const selectedPageColor = (number: number) => {
     if (number === currentPage) {
-      return "text-[#000000]";
+      return "text-black";
     } else {
       return "text-[#e6e6e689]";
     }
   };
 
-  return (
+  const showPageComponent = (
     <ul className="relative flex gap-3">
+      <IoIosArrowBack className="text-[20px] cursor-pointer" onClick={jumpPrevPage} />
       <IoIosArrowBack className="text-[20px] cursor-pointer" onClick={showPrevPage} />
       {getPageNumbers().map((number) => (
         <li key={number}>
           <button
+            className={`w-[25px] font-bold ${selectedPageColor(number)}`}
             onClick={() => {
               showPage(number);
             }}
-            className={`w-[25px] font-bold ${selectedPageColor(number)}`}
           >
             {number}
           </button>
         </li>
       ))}
       <IoIosArrowForward className="text-[20px] cursor-pointer" onClick={showNextPage} />
+      <IoIosArrowForward className="text-[20px] cursor-pointer" onClick={jumpNextPage} />
     </ul>
   );
+
+  return { showPageComponent, pageData };
 };

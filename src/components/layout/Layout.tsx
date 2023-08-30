@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ScrollToTop } from "components/sidebar";
+import { ScrollToTop } from "components";
 
 import { Footer } from "./Footer";
 import { Header } from "./Header";

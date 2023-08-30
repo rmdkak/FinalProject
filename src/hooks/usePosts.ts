@@ -28,8 +28,9 @@ export const usePosts = () => {
       return await fetchPostData();
     },
   });
+
   // post
-  const createReplyMutation = useMutation({
+  const createPostMutation = useMutation({
     mutationFn: createPostHandler,
     onSuccess: async () => {
       await queryClient.invalidateQueries(["POSTS"]);
@@ -37,7 +38,7 @@ export const usePosts = () => {
   });
 
   // patch
-  const updateReplyMutation = useMutation({
+  const updatePostMutation = useMutation({
     mutationFn: patchPostHandler,
     onSuccess: async () => {
       await queryClient.invalidateQueries(["POSTS"]);
@@ -45,12 +46,12 @@ export const usePosts = () => {
   });
 
   // delete
-  const deleteReplyMutation = useMutation({
+  const deletePostMutation = useMutation({
     mutationFn: deletePostHandler,
     onSuccess: async () => {
       await queryClient.invalidateQueries(["POSTS"]);
     },
   });
 
-  return { fetchPostsMutation, createReplyMutation, updateReplyMutation, deleteReplyMutation, fetchDetailMutation };
+  return { fetchPostsMutation, createPostMutation, updatePostMutation, deletePostMutation, fetchDetailMutation };
 };

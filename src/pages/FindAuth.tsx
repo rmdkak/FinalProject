@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { INPUT_STYLE, Select } from "components";
-import { phoneOptions } from "components/signup/constant";
+import { findPassword } from "api/supabase";
+import { Select, phoneOptions } from "components";
 
 const TAB_STYLE = "w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center";
 const TAB_FOCUSED_STYLE = `${TAB_STYLE} text-black border-b-[1px] border-black`;
@@ -25,10 +25,10 @@ interface FindPasswordInput {
   phoneMidNumForPassword: string;
   phoneLastNumForPassword: string;
 }
-// type FindAuthInput = FindEmailInput | FindPasswordInput;
 
 export const FindAuth = () => {
   const param = useParams();
+  const navigate = useNavigate();
   const initialFocus =
     param.focus === "email" ? { focusEmail: true, focusPassword: false } : { focusEmail: false, focusPassword: true };
   const [focusTab, setFocusTab] = useState<FocusTab>(initialFocus);
@@ -62,13 +62,18 @@ export const FindAuth = () => {
     setIsDoneFind(true);
   };
 
-  const findPasswordHandler: SubmitHandler<FindPasswordInput> = (data) => {
-    console.log("findPasswordHandler :", data);
+  const findPasswordHandler: SubmitHandler<FindPasswordInput> = async (data) => {
+    const { emailForPassword } = data;
     // TODO
     // 휴대폰 번호 가공하기
+
     // data table에서 이메일과 닉네임과 휴대폰 번호로 유저 찾기
+
     // 찾은 데이터의 유저에게 reset password 이메일 보내기
-    // 성공 실패 여부 알려주기
+    await findPassword(emailForPassword);
+    // dialog 변경
+    alert("이메일이 전송되었습니다.");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -80,9 +85,9 @@ export const FindAuth = () => {
 
   return (
     <>
-      <div className="w-[560px] flex flex-col items-center gap-[40px] mx-auto text-[12px] font-normal leading-[110%]">
-        <h2 className="w-full text-center text-[32px] mt-[80px] pb-[24px] font-[400] leading-[130%]">회원정보 찾기</h2>
-        <div className="flex items-center justify-center">
+      <div className="w-[560px] flex-column items-center gap-[40px] mx-auto text-[12px] font-normal leading-[110%]">
+        <h2 className="w-full text-center text-[32px] mt-[80px] pb-[24px] font-normal leading-[130%]">회원정보 찾기</h2>
+        <div className="flex contents-center">
           <div
             className={focusTab.focusEmail ? TAB_FOCUSED_STYLE : TAB_UNFOCUSED_STYLE}
             onClick={() => {
@@ -105,17 +110,17 @@ export const FindAuth = () => {
           </div>
         </div>
         {focusTab.focusEmail && !isDoneFind && (
-          <form onSubmit={emailHandleSubmit(findEmailHandler)} className="flex flex-col gap-[24px]">
-            <div className="flex flex-col gap-[8px]">
+          <form onSubmit={emailHandleSubmit(findEmailHandler)} className="flex-column gap-[24px]">
+            <div className="flex-column gap-[8px]">
               <label htmlFor="nicknameForEmail">닉네임</label>
               <input
                 id="nicknameForEmail"
                 {...emailRegister("nicknameForEmail")}
                 placeholder="닉네임을 입력해주세요."
-                className={INPUT_STYLE}
+                className="auth-input"
               />
             </div>
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex-column gap-[8px]">
               <label>휴대 전화</label>
               <div className="flex items-center w-full">
                 <Select
@@ -132,7 +137,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
                 <span className="mx-[12px]">-</span>
                 <input
@@ -141,7 +146,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
               </div>
             </div>
@@ -152,7 +157,7 @@ export const FindAuth = () => {
         )}
         {focusTab.focusEmail && isDoneFind && (
           <>
-            <div className="flex flex-col w-full pb-[24px] border-b-[1px] border-b-black">
+            <div className="flex-column w-full pb-[24px] border-b-[1px] border-b-black">
               <div className="flex h-[48px] items-center px-[24px] gap-[16px] text-[14px] font-normal leading-[110%]">
                 <p className="text-gray03 min-w-[100px]">닉네임</p>
                 <p className="w-full text-black">홍길동(로직 구현중)</p>
@@ -176,24 +181,24 @@ export const FindAuth = () => {
           </>
         )}
         {focusTab.focusPassword && !isDoneFind && (
-          <form onSubmit={passwordHandleSubmit(findPasswordHandler)} className="flex flex-col gap-[24px]">
-            <div className="flex flex-col gap-[8px]">
+          <form onSubmit={passwordHandleSubmit(findPasswordHandler)} className="flex-column gap-[24px]">
+            <div className="flex-column gap-[8px]">
               <label>이메일</label>
               <input
                 {...passwordRegister("emailForPassword")}
                 placeholder="이메일을 입력해주세요."
-                className={INPUT_STYLE}
+                className="auth-input"
               />
             </div>
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex-column gap-[8px]">
               <label>닉네임</label>
               <input
                 {...passwordRegister("nicknameForPassword")}
                 placeholder="닉네임을 입력해주세요."
-                className={INPUT_STYLE}
+                className="auth-input"
               />
             </div>
-            <div className="flex flex-col gap-[8px]">
+            <div className="flex-column gap-[8px]">
               <label>휴대 전화</label>
               <div className="flex items-center w-full">
                 <Select
@@ -210,7 +215,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
                 <span className="mx-[12px]">-</span>
                 <input
@@ -219,7 +224,7 @@ export const FindAuth = () => {
                   })}
                   type="text"
                   placeholder="휴대전화"
-                  className={`${INPUT_STYLE} text-center`}
+                  className={`$"auth-input" text-center`}
                 />
               </div>
             </div>

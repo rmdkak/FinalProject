@@ -4,8 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
-import { type PasswordVisible, PasswordVisibleButton } from "components/button";
-import { Select } from "components/input";
+import { type PasswordVisible, PasswordVisibleButton, Select } from "components";
 import { BUTTON_COMMON_STYLE } from "pages";
 import { useAuthStore } from "store";
 
@@ -26,7 +25,6 @@ interface Props {
   nextStep: () => void;
 }
 
-const INPUT_STYLE = "w-full px-[24px] py-[12px] border-[1px] border-[#888888] focus:outline-none";
 const DUPLICATE_CHECK_BUTTON = "h-[50px] text-white bg-[#888] ml-[8px] px-[20px] whitespace-nowrap";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
@@ -120,8 +118,8 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-[32px] font-[700] leading-[130%] mt-[40px]">회원가입</h2>
+    <div className="items-center flex-column">
+      <h2 className="text-[32px] font-bold leading-[130%] mt-[40px]">회원가입</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
         {/* 이메일 */}
         <div className="flex items-center w-full">
@@ -134,7 +132,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
               })}
               type="id"
               placeholder="이메일"
-              className={INPUT_STYLE}
+              className="auth-input"
             />
           </div>
           <span className="mx-[8px]">@</span>
@@ -164,7 +162,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type="text"
             placeholder="닉네임"
-            className={INPUT_STYLE}
+            className="auth-input"
           />
           <button
             type="button"
@@ -190,7 +188,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type={showPassword.password ? "text" : "password"}
             placeholder="비밀번호"
-            className={INPUT_STYLE}
+            className="auth-input"
           />
           <PasswordVisibleButton
             passwordType={"password"}
@@ -213,7 +211,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type={showPassword.passwordConfirm ?? false ? "text" : "password"}
             placeholder="비밀번호"
-            className={INPUT_STYLE}
+            className="auth-input"
           />
           <PasswordVisibleButton
             passwordType={"passwordConfirm"}
@@ -238,7 +236,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type="text"
             placeholder="휴대전화"
-            className={`${INPUT_STYLE} text-center`}
+            className={`$"auth-input" text-center`}
           />
           <span className="mx-[12px]">-</span>
           <input
@@ -247,7 +245,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             })}
             type="text"
             placeholder="휴대전화"
-            className={`${INPUT_STYLE} text-center`}
+            className={`$"auth-input" text-center`}
           />
         </div>
         <InvalidText errorsMessage={errors.phoneMiddleNum?.message} />

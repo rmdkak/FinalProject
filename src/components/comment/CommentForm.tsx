@@ -88,8 +88,8 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
   };
 
   return (
-    <div className="border-2 border-[#E5E5E5] p-5 rounded-lg mt-10 w-full">
-      <div className="flex justify-between">
+    <div className="w-full p-5 mt-10 border-2 rounded-lg border-gray06">
+      <div className="contents-between">
         <p className="font-semibold text-[20px]">
           {currentSession != null
             ? currentSession?.user.user_metadata.name
@@ -110,7 +110,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
           placeholder={placeHolder}
           className="w-full text-[20px] py-[12px] focus:outline-none"
         />
-        <div className="flex justify-between">
+        <div className="contents-between">
           {selectedImage == null && commentStatus && (
             <label htmlFor="imageInput">
               <AiOutlineCamera className="text-gray-400 cursor-pointer text-[40px]" />

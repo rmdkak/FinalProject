@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { BsBookmarkFill, BsShare } from "react-icons/bs";
+import { BsBookmarkFill, BsShare, BsCalculator } from "react-icons/bs";
 
-import { GetColor } from "components/colorExtraction";
-import { Modal } from "components/modals";
-import { InteriorSection, ResouresCalculator } from "components/service";
+import calcArrow from "assets/calcArrow.svg";
+import { GetColor, InteriorSection, ResouresCalculator, Modal } from "components";
 import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -54,7 +53,7 @@ export const Service = () => {
           {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
-            <div className="flex-column contents-center bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
+            <div className="flex-column contents-center sticky top-[22.5%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
               <div className="cube">
                 {/* 벽지 */}
                 <div
@@ -84,10 +83,15 @@ export const Service = () => {
               <InteriorSection />
               <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
               <div>
-                <label htmlFor="calc">자재 소모량 계산기</label>
-                <button className="h-6" id="calc" onClick={onOpenModal}>
-                  {`>`}
-                </button>
+                <div className="flex mb-6">
+                  <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
+                  <label className="hover:cursor-pointer text-gray02" htmlFor="calc">
+                    자재 소모량 계산기
+                  </label>
+                  <button className="h-[24px] ml-2" id="calc" onClick={onOpenModal}>
+                    <img src={calcArrow} alt="" />
+                  </button>
+                </div>
 
                 {/* 자재량 소모 계산기 모달 */}
                 <Modal title="자재 소모량 계산기">
@@ -143,6 +147,49 @@ export const Service = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <h1 className="static bottom-0 left-0 mt-20 mb-10 text-2xl font-semibold">가장 인기있는 조합</h1>
+        <div className="w-full overflow-x-scroll">
+          <div className="mb-20 flex-column">
+            <ul className="flex">
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+              <li className="flex">
+                <div className="best-colors-item-back"></div>
+                <div className="best-colors-item-front"></div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

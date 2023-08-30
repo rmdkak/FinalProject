@@ -10,7 +10,11 @@ export const fetchDetailData = async (postId: string) => {
 
 // get
 export const fetchPostData = async () => {
-  const { data } = await supabase.from("POSTS").select("*").order("created_at", { ascending: false });
+  const { data, error } = await supabase.from("POSTS").select("*").order("created_at", { ascending: false });
+  if (error != null) {
+    console.log("error.message :", error.message);
+    return;
+  }
   return data;
 };
 
