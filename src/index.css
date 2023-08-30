@@ -140,7 +140,7 @@ body {
     @apply pb-[24px] border-b border-b-black;
   }
   .auth-input {
-    @apply w-full h-[48px] px-[24px] py-[12px] border border-gray05 rounded-[8px] disabled:bg-gray05 focus:outline-none auth-tab-title placeholder:text-gray02;
+    @apply w-full h-[48px] px-[24px] py-[12px] border border-gray05 rounded-[8px] disabled:bg-gray05 focus:outline-none text-[14px] font-normal leading-[130%] placeholder:text-gray02;
   }
   .auth-button {
     @apply w-full h-[48px] px-[24px] py-[12px] rounded-[8px];
