@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type SubmitHandler } from "react-hook-form";
+import { FaRegSquareCheck } from "react-icons/fa6";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,7 +9,7 @@ import { login, githubLogin, googleLogin, kakaoLogin } from "api/supabase";
 import githubLogo from "assets/githubLogo.svg";
 import googleLogo from "assets/googleLogo.svg";
 import kakaoLogo from "assets/kakaoLogo.svg";
-import { CheckBoxIcon, PasswordVisibleButton, InvalidText } from "components";
+import { PasswordVisibleButton, InvalidText } from "components";
 import { useAuthStore, useLoggingStore } from "store";
 
 export interface LoginInputs {
@@ -28,6 +29,7 @@ export const Login = () => {
     handleSubmit,
     formState: { errors },
     resetField,
+    setError,
   } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
@@ -35,10 +37,13 @@ export const Login = () => {
       await login(data);
       navigate("/");
     } catch (error) {
-      console.error("error :", error);
-      // TODO 커스텀alert 로직
+      setError("root", { message: "일치하는 회원정보가 없습니다." });
     }
   };
+
+  const checkClickHandler = () => {
+    setStayLoggedInStatus(!stayLoggedInStatus)
+  }
 
   useEffect(() => {
     if (currentSession !== null) {
@@ -50,7 +55,7 @@ export const Login = () => {
 
   return (
     <div className="w-[560px] flex-column items-center mx-auto">
-      <h2 className="w-full text-center text-[32px] mt-[80px] pb-[24px] border-b-[1px] border-black font-normal leading-[130%]">
+      <h2 className="w-full text-center mt-[80px] pb-[24px] border-b border-black title-3">
         로그인
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-[40px]">
@@ -64,7 +69,7 @@ export const Login = () => {
               minLength: { value: 8, message: "이메일이 너무 짧습니다." },
             })}
             placeholder="이메일을 입력해주세요."
-            className="auth-input"
+            className={`auth-input ${errors.email?.message === undefined ? "" : "border-error"}`}
           />
           <IoMdCloseCircle
             className="h-[16px] absolute right-[24px] top-[50%] translate-y-[-50%] text-[25px] text-gray04 cursor-pointer"
@@ -86,7 +91,7 @@ export const Login = () => {
             })}
             type={showPassword.password ? "text" : "password"}
             id="password"
-            className="auth-input"
+            className={`auth-input ${errors.password?.message === undefined ? "" : "border-error"}`}
             placeholder="비밀번호"
           />
           <PasswordVisibleButton
@@ -98,28 +103,42 @@ export const Login = () => {
         <InvalidText errorsMessage={errors.password?.message} />
 
         <p>{errors.password?.message}</p>
-        <div className="flex items-center justify-between h-[20px] mt-[24px] text-gray02 ">
-          <div className="flex items-center gap-[8px] h-full">
-            <CheckBoxIcon checkState={stayLoggedInStatus} changeCheckState={setStayLoggedInStatus} size={20} />
-            <p className="text-[12px] leading-[110%] self-center">로그인 유지</p>
+        <div className="flex items-center justify-between h-[20px] mt-[24px] text-gray02">
+          <div className="flex items-center h-full">
+            <input
+              id="logging"
+              type="checkbox"
+              checked={stayLoggedInStatus}
+              className="hidden"
+              onChange={checkClickHandler}
+            />
+            <label htmlFor="logging" className="flex contents-center gap-[8px] text-[12px] leading-[110%] self-center cursor-pointer hover:text-black">
+              {stayLoggedInStatus ? (
+                <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
+              ) : (
+                <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
+              )}
+              {/* <CheckBoxIcon checkState={stayLoggedInStatus} changeCheckState={setStayLoggedInStatus} size={20} /> */}
+              로그인 유지</label>
           </div>
 
           <div className="flex gap-[8px] items-center">
-            <Link to="/find-auth/email" className="text-[12px] leading-[110%] font-normal">
+            <Link to="/find-auth/email" className="text-[12px] leading-[110%] font-normal hover:text-black">
               이메일 찾기
             </Link>
 
             <div className="w-[1px] h-[8px] bg-gray06"></div>
 
-            <Link to="/find-auth/password" className="text-[12px] leading-[110%] font-normal">
+            <Link to="/find-auth/password" className="text-[12px] leading-[110%] font-normal hover:text-black">
               비밀번호 찾기
             </Link>
           </div>
         </div>
 
-        <button className="w-full px-[24px] py-[12px] mt-[24px] bg-point rounded-[8px] text-[#1A1A1A] text-[14px] font-semibold leading-[130%]">
+        <button className="auth-button mt-[24px] bg-point text-black auth-button-text point-button-hover">
           로그인
         </button>
+        <InvalidText errorsMessage={errors.root?.message} />
 
         <div className="w-full mt-[40px] h-[120px]">
           <div className="relative flex contents-center h-[48px]">
@@ -162,7 +181,7 @@ export const Login = () => {
           </p>
           <Link
             to={"/signup"}
-            className="flex contents-center w-full h-[48px] rounded-[8px] bg-white border border-black text-[14px] font-medium leading-[130%]"
+            className="auth-button-text flex contents-center w-full h-[48px] rounded-[8px] bg-white border border-black white-button-hover"
           >
             회원가입
           </Link>

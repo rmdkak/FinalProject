@@ -1,3 +1,4 @@
+import { AuthError } from "@supabase/supabase-js";
 import defaultImg from "assets/defaultImg.png";
 import { type LoginInputs } from "pages";
 import { type Tables } from "types/supabase";
@@ -18,19 +19,13 @@ interface SignupInputs {
   name: string;
 }
 
-interface MetaData {
-  phone: string | null;
-  avatar_url: string | null;
-  name: string | null;
-}
-
 /**
  * @Authentication signIn
  */
 export const login = async (inputValue: LoginInputs) => {
   const { error } = await auth.signInWithPassword(inputValue);
 
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new AuthError(error.message);
 };
 
 /**
@@ -39,7 +34,7 @@ export const login = async (inputValue: LoginInputs) => {
 export const logout = async () => {
   const { error } = await auth.signOut();
 
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -56,16 +51,28 @@ export const signup = async (inputValue: SignupInputs) => {
     await addUser({ id: data.user.id, email, name, phone, avatar_url: DEFAULT_PROFILE_IMG_URL });
     await uploadImage({ file: defaultImg, userId: data.user.id });
   }
-  if (error != null) throw new Error(printErrorMessage(error.message));
+  if (error !== null) throw new Error(printErrorMessage(error.message));
 };
 
-export const findPassword = async (email: string) => {
+export const findEmail = async ({ name, phone }: { name: string, phone: string }) => {
+  const { data, error } = await supabase.from(TABLE).select().eq("name", name).eq("phone", phone).single();
+  if (error !== null) throw new Error(error.message);
+  return data
+};
+
+export const findPassword = async ({ name, phone, email }: { name: string, phone: string, email: string }) => {
+  const { data, error } = await supabase.from(TABLE).select().eq("name", name).eq("phone", phone).eq("email", email).single();
+  if (error !== null) throw new Error(error.message);
+  return data
+};
+
+export const sendEmailForFindPassword = async (email: string) => {
   const { error } = await auth.resetPasswordForEmail(email, {
     // FIXME 배포되면 변경되어야 함
     redirectTo: "http://localhost:3000/update-password",
   });
 
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -73,7 +80,7 @@ export const findPassword = async (email: string) => {
  */
 export const changeEmail = async (email: string) => {
   const { error } = await auth.updateUser({ email });
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -81,15 +88,25 @@ export const changeEmail = async (email: string) => {
  */
 export const changePassword = async (password: string) => {
   const { error } = await auth.updateUser({ password });
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
  * @Authentication updateUser
  */
-export const changeMetaData = async ({ phone, avatar_url: profileImg, name }: MetaData) => {
-  const { error } = await auth.updateUser({ data: { phone, avatar_url: profileImg, name } });
-  if (error != null) throw new Error(error.message);
+export const changeMetaAvatar = async (profileImgUrl: string) => {
+  const { error } = await auth.updateUser({ data: { avatar_url: profileImgUrl } });
+  if (error !== null) throw new Error(error.message);
+};
+
+export const changeMetaPhone = async (phone: string) => {
+  const { error } = await auth.updateUser({ data: { phone } });
+  if (error !== null) throw new Error(error.message);
+};
+
+export const changeMetaName = async (name: string) => {
+  const { error } = await auth.updateUser({ data: { name } });
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -115,7 +132,7 @@ export const deleteUserData = async (userId: string) => {
  */
 export const fetchUser = async (userUuid: string) => {
   const { data, error } = await supabase.from(TABLE).select().eq("id", userUuid);
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
   return data[0];
 };
 
@@ -126,7 +143,7 @@ export const fetchUser = async (userUuid: string) => {
  */
 export const fetchUserCheckData = async () => {
   const { data, error } = await supabase.from(TABLE).select("email,name");
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
   return data;
 };
 
@@ -137,7 +154,7 @@ export const fetchUserCheckData = async () => {
 export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
   const { error } = await supabase.from(TABLE).insert([inputValue]).select();
 
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -147,7 +164,7 @@ export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
 export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"USERS", "Update">; userId: string }) => {
   const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select();
 
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -155,11 +172,10 @@ export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"US
  * @method upload
  */
 const uploadImage = async ({ file, userId }: { file: Blob; userId: string }) => {
-  // await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: false })
   const { error } = await supabase.storage
     .from(STORAGE)
     .upload(`${PATH}${userId}`, file, { cacheControl: "3600", upsert: true });
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -167,11 +183,10 @@ const uploadImage = async ({ file, userId }: { file: Blob; userId: string }) => 
  * @method update
  */
 export const updateImage = async ({ file, userId }: { file: Blob; userId: string }) => {
-  // await supabase.storage.from(STORAGE).upload(`${PATH}${userId}`, file, { cacheControl: '3600', upsert: false })
   const { error } = await supabase.storage
     .from(STORAGE)
     .update(`${PATH}${userId}`, file, { cacheControl: "3600", upsert: true });
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 /**
@@ -180,7 +195,7 @@ export const updateImage = async ({ file, userId }: { file: Blob; userId: string
  */
 export const deleteImage = async (userId: string) => {
   const { error } = await supabase.storage.from(STORAGE).remove([`${PATH}${userId}`]);
-  if (error != null) throw new Error(error.message);
+  if (error !== null) throw new Error(error.message);
 };
 
 const OAUTH_OPTIONS = { queryParams: { access_type: "offline", prompt: "consent" } };
@@ -191,7 +206,7 @@ const OAUTH_OPTIONS = { queryParams: { access_type: "offline", prompt: "consent"
 export const googleLogin = async () => {
   const { error } = await auth.signInWithOAuth({ provider: "google", options: OAUTH_OPTIONS });
 
-  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
+  if (error !== null) throw new Error("로그인 정보가 잘못되었습니다.");
 };
 
 /**
@@ -201,7 +216,7 @@ export const googleLogin = async () => {
 export const githubLogin = async () => {
   const { error } = await auth.signInWithOAuth({ provider: "github", options: OAUTH_OPTIONS });
 
-  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
+  if (error !== null) throw new Error("로그인 정보가 잘못되었습니다.");
 };
 
 /**
@@ -211,7 +226,7 @@ export const githubLogin = async () => {
 export const kakaoLogin = async () => {
   const { error } = await auth.signInWithOAuth({ provider: "kakao", options: OAUTH_OPTIONS });
 
-  if (error != null) throw new Error("로그인 정보가 잘못되었습니다.");
+  if (error !== null) throw new Error("로그인 정보가 잘못되었습니다.");
 };
 
 const printErrorMessage = (message: string) => {
