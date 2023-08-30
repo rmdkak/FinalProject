@@ -56,7 +56,6 @@ export const ResouresCalculator = (): JSX.Element => {
           (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) / 10,
       );
 
-    console.log(RESULT_CONSUMPTION);
     setResult({
       resultArea: `${RESULT_AREA}`,
       result_consumption: `${RESULT_CONSUMPTION}`,

@@ -189,6 +189,12 @@ body {
   background-color: #bcbcbc;
 }
 
+/* 보더 배경 */
+.border-dashed {
+  border: 30px solid #000;
+  border-image: url("assets/border.svg") 30 round;
+}
+
 @layer components {
   /* home page */
   .flex-column {

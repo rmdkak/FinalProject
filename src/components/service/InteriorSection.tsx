@@ -11,9 +11,9 @@ import TextureTitle from "./TextureTitle";
 export const InteriorSection = (): JSX.Element => {
   const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
   const [taleData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
-  const { checkType, setTypeCheck } = useServiceStore((state) => state);
-  const [clickLeftWall, setClickLeftWall] = useState<boolean>(false);
-  const [clickRightWall, setClickRightWall] = useState<boolean>(true);
+  const { checkType, setTypeCheck, interiorSelectX, setLeftInteriorSelectX, setRightInteriorSelectX } = useServiceStore(
+    (state) => state,
+  );
 
   /**
    *  서버에서 타일 리스트 데이터, 벽지 리스트 데이터를 가져오는 함수입니다.
@@ -78,22 +78,20 @@ export const InteriorSection = (): JSX.Element => {
             <div className="flex gap-4">
               <span
                 className={
-                  clickLeftWall ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
+                  interiorSelectX ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
                 }
                 onClick={() => {
-                  setClickRightWall(false);
-                  setClickLeftWall(true);
+                  setLeftInteriorSelectX();
                 }}
               >
                 왼쪽 벽
               </span>
               <span
                 className={
-                  clickRightWall ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
+                  !interiorSelectX ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
                 }
                 onClick={() => {
-                  setClickLeftWall(false);
-                  setClickRightWall(true);
+                  setRightInteriorSelectX();
                 }}
               >
                 오른쪽 벽
@@ -114,10 +112,10 @@ export const InteriorSection = (): JSX.Element => {
       <div className="h-[272px] flex overflow-x-auto">
         <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 ">
           {checkType === "wallPaper" ? (
-            <ServiceItem type={checkType} data={wallData} wallCheck={clickLeftWall} />
+            <ServiceItem data={wallData} />
           ) : (
             // sift
-            <ServiceItem type={checkType} data={taleData} />
+            <ServiceItem data={taleData} />
           )}
         </ul>
       </div>
