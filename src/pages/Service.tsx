@@ -30,7 +30,7 @@ export const Service = () => {
   // const [tileSize, setTileSize] = useState<number>(70);
 
   const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
-  console.log(wallPaper);
+
   useEffect(() => {
     if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);
     if (isWallPaperPaintSeleted) {
@@ -60,7 +60,7 @@ export const Service = () => {
           {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
-            <div className="flex-column contents-center sticky top-[22.5%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
+            <div className="flex flex-none contents-center sticky top-[22.5%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
               <div className="cube">
                 {/* 벽지 */}
                 {!isWallPaperPaintSeleted ? (
@@ -107,6 +107,7 @@ export const Service = () => {
             <div className="flex-column w-[860px] gap-10">
               {/* 인테리어 섹션 */}
               <InteriorSection />
+              {/* 컬러 추출 */}
               <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
               <div>
                 <div className="flex mb-6">
@@ -146,7 +147,7 @@ export const Service = () => {
                     />
                   ) : (
                     <button
-                      className="w-[350px] h-[64px] rounded-xl bg-point"
+                      className="flex-auto h-[64px] rounded-xl bg-point"
                       onClick={async () => {
                         if (
                           currentSession === null ||
@@ -166,7 +167,7 @@ export const Service = () => {
                       저장하기
                     </button>
                   )}
-                  <button className="w-[350px] h-[64px] border-[1px] rounded-xl border-gray05">추천하기</button>
+                  <button className="flex-auto h-[64px] border-[1px] rounded-xl border-gray05">추천하기</button>
                   <button className="w-[64px] h-[64px] rounded-xl border-[1px] border-gray05">
                     <BsShare className="mx-auto w-7 h-7 fill-black" />
                   </button>
