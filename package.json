@@ -51,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-color": "^3.0.6",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "autoprefixer": "^10.4.15",
     "eslint-config-prettier": "^9.0.0",

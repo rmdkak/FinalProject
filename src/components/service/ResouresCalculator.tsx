@@ -106,6 +106,7 @@ export const ResouresCalculator = (): JSX.Element => {
                   <img
                     className={`mr-1 ${selectItem === index ? "" : "opacity-40"}`}
                     src={IMG_LIST[index]}
+                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                     alt={`${item} 아이콘`}
                   />
                   {item}

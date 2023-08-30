@@ -25,6 +25,11 @@ interface Store {
   setWallPaper: (selectWallpaper: Wallpaper, type: string) => void;
   resetWallPaper: () => void;
 
+  // 벽지 페인트
+  wallpaperPaint: { left: string; right: string };
+  setWallpaperPaint: (selectedPaint: string, type: string) => void;
+  resetWallpaperPaint: () => void;
+
   // 타일
   tile: Tile;
   setTile: (selectWallpaper: Tile) => void;
@@ -75,6 +80,23 @@ export const useServiceStore = create<Store>()((set) => ({
     set(() => ({ wallPaper: { left: { image: null, id: null }, right: { image: null, id: null } } }));
   },
 
+  // 벽지 페인트
+  wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" },
+  setWallpaperPaint: (selectedPaint, type) => {
+    if (type === "left") {
+      set((state) => ({
+        wallpaperPaint: { ...state.wallpaperPaint, left: selectedPaint },
+      }));
+    } else if (type === "right") {
+      set((state) => ({
+        wallpaperPaint: { ...state.wallpaperPaint, right: selectedPaint },
+      }));
+    }
+  },
+  resetWallpaperPaint: () => {
+    set(() => ({ wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" } }));
+  },
+
   // 타일
   tile: { image: null, id: null },
   setTile: (selectTile) => {
@@ -87,14 +109,14 @@ export const useServiceStore = create<Store>()((set) => ({
   // 커스텀셀프이미지
   customSelfWallPaper: [],
   setCustomSelfWallPaper: (previewImg: Wallpaper[]) => {
-    set((state) => ({ customSelfWallPaper: [...state.customSelfWallPaper, ...previewImg] }));
+    set(() => ({ customSelfWallPaper: [...previewImg] }));
   },
   delCustomSelfWallPaper: (id: string) => {
     set((state) => ({ customSelfWallPaper: state.customSelfWallPaper.filter((item) => item.id !== id) }));
   },
   customSelfTile: [],
   setCustomSelfTile: (previewImg: Tile[]) => {
-    set((state) => ({ customSelfTile: [...state.customSelfTile, ...previewImg] }));
+    set(() => ({ customSelfTile: [...previewImg] }));
   },
   delCustomSelfTile: (id: string) => {
     set((state) => ({ customSelfTile: state.customSelfTile.filter((item) => item.id !== id) }));

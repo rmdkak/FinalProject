@@ -100,14 +100,30 @@ export const MyBookmark = () => {
                     className="w-[62px] h-[62px] rounded-[12px] bg-blue-500"
                   /> */}
                   <div className="flex">
-                    <img
-                      src={`${storageUrl}/wallpaper/${bookmark.leftWallpaperId as string}`}
-                      className="w-[31px] h-[62px] rounded-l-[12px] bg-blue-500"
-                    />
-                    <img
-                      src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId as string}`}
-                      className="w-[31px] h-[62px] rounded-r-[12px] bg-blue-500"
-                    />
+                    {bookmark.leftWallpaperId === null ? (
+                      // 벽지인지 페인트인지 확인
+                      <img
+                        src={`${storageUrl}/wallpaper/${bookmark.leftWallpaperId as string}`}
+                        className="w-[31px] h-[62px] rounded-l-[12px] bg-blue-500"
+                      />
+                    ) : (
+                      <img
+                        src={`${storageUrl}/wallpaper/${bookmark.leftWallpaperId as string}`}
+                        className="w-[31px] h-[62px] rounded-l-[12px] bg-blue-500"
+                      />
+                    )}
+
+                    {bookmark.rightWallpaperId === null ? (
+                      <img
+                        src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId as string}`}
+                        className="w-[31px] h-[62px] rounded-r-[12px] bg-blue-500"
+                      />
+                    ) : (
+                      <img
+                        src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId as string}`}
+                        className="w-[31px] h-[62px] rounded-r-[12px] bg-blue-500"
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="flex-column gap-[8px]">

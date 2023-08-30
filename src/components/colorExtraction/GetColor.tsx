@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { useColor } from "color-thief-react";
 import { type ReducerState, type ColorFormats, type ArrayRGB } from "color-thief-react/lib/types";
+import { useServiceStore } from "store";
 
 import { ColorPallet } from "./ColorPallet";
 
@@ -13,6 +14,8 @@ interface props {
 export const GetColor = ({ leftWall, rightWall }: props) => {
   const [color, setColor] = useState<string | null>(leftWall);
   const [colorSide, setColorSide] = useState<boolean>(false);
+  const { wallpaperPaint } = useServiceStore((state) => state);
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
 
   useEffect(() => {
     colorSide ? setColor(rightWall) : setColor(leftWall);
@@ -20,15 +23,15 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
 
   if (color === null) {
     return (
-      <div className="w-full gap-6 flex-column">
+      <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
         <div>
-          <h2 className="mb-6 text-[30px] font-medium">현재 색상 코드</h2>
+          <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
           <ul className="flex flex-wrap gap-4">
             <li className="text-[30px] font-bold">타일을 선택해주세요.</li>
           </ul>
         </div>
         <div>
-          <h2 className="mb-6 text-[30px] font-medium">현재 색상과 어울리는 추천 조합</h2>
+          <h2 className="mb-6 text-lg font-medium pt-6 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
           <ul className="flex flex-wrap gap-4"></ul>
         </div>
       </div>
@@ -52,52 +55,8 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
       });
   };
 
-  if (loading) {
-    return (
-      <div className="w-full gap-6 flex-column">
-        <div>
-          <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
-          <ul className="flex flex-wrap gap-4">
-            <li className="text-xl font-bold">색을 추출 중입니다.</li>
-          </ul>
-        </div>
-        <div>
-          <h2 className="mb-8 text-lg font-medium">현재 색상과 어울리는 추천 조합</h2>
-          <ul className="flex flex-wrap gap-4"></ul>
-        </div>
-      </div>
-    );
-  } else if (data === undefined) {
-    return (
-      <div className="w-full gap-6 flex-column">
-        <div>
-          <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
-          <ul className="flex flex-wrap gap-4">
-            <li className="text-xl font-bold text-gray01">색을 선택해주세요.</li>
-          </ul>
-        </div>
-        <div>
-          <h2 className="mb-6 text-lg font-medium">현재 색상과 어울리는 추천 조합</h2>
-          <ul className="flex flex-wrap gap-4"></ul>
-        </div>
-      </div>
-    );
-  } else if (error !== undefined) {
-    return (
-      <div className="w-full gap-6 flex-column">
-        <div>
-          <h2 className="mb-6 text-lg font-medium">현재 색상 코드</h2>
-          <ul className="flex flex-wrap gap-4">
-            <li className="text-xl font-bold">색을 추출하는데 실패했습니다.</li>
-          </ul>
-        </div>
-        <div>
-          <h2 className="mb-6 font-medium ttext-lg">현재 색상과 어울리는 추천 조합</h2>
-          <ul className="flex flex-wrap gap-4"></ul>
-        </div>
-      </div>
-    );
-  } else {
+  if (isWallPaperPaintSeleted) {
+    const paint = colorSide ? wallpaperPaint.right : wallpaperPaint.left;
     return (
       <div className="flex-column w-full gap-6 border-y-[1px] border-gray05">
         <div>
@@ -132,19 +91,121 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           <ul className="flex flex-wrap gap-4">
             <li
               onClick={() => {
-                handleCopyColorClipBoard(data as string);
+                handleCopyColorClipBoard(paint);
               }}
               className="flex"
             >
-              <div className="interior-item" style={{ backgroundColor: data as string }} />
+              <div className="interior-item" style={{ backgroundColor: paint }} />
             </li>
           </ul>
         </div>
         <div className="gap-6 mb-6 flex-column">
           <h2 className="text-lg font-medium pt-6 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
-          <ColorPallet color={data} />
+          <ColorPallet color={paint} />
         </div>
       </div>
     );
+  } else {
+    if (loading) {
+      return (
+        <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
+          <div>
+            <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
+            <ul className="flex flex-wrap gap-4">
+              <li className="text-xl font-bold">색을 추출 중입니다.</li>
+            </ul>
+          </div>
+          <div>
+            <h2 className="mb-6 text-lg font-medium pt-6 border-t-[1px] border-gray05">
+              현재 색상과 어울리는 추천 조합
+            </h2>
+            <ul className="flex flex-wrap gap-4"></ul>
+          </div>
+        </div>
+      );
+    } else if (data === undefined) {
+      return (
+        <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
+          <div>
+            <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
+            <ul className="flex flex-wrap gap-4">
+              <li className="text-xl font-bold text-gray01">색을 선택해주세요.</li>
+            </ul>
+          </div>
+          <div>
+            <h2 className="mb-6 text-lg font-medium pt-6 border-t-[1px] border-gray05">
+              현재 색상과 어울리는 추천 조합
+            </h2>
+            <ul className="flex flex-wrap gap-4"></ul>
+          </div>
+        </div>
+      );
+    } else if (error !== undefined) {
+      return (
+        <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
+          <div>
+            <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
+            <ul className="flex flex-wrap gap-4">
+              <li className="text-xl font-bold">색을 추출하는데 실패했습니다.</li>
+            </ul>
+          </div>
+          <div>
+            <h2 className="mb-6 text-lg font-medium pt-6 border-t-[1px] border-gray05">
+              현재 색상과 어울리는 추천 조합
+            </h2>
+            <ul className="flex flex-wrap gap-4"></ul>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex-column w-full gap-6 border-y-[1px] border-gray05">
+          <div>
+            <div className="flex items-center gap-3 my-6">
+              <h2 className="text-lg font-medium">현재 색상 코드</h2>
+              <span
+                className={
+                  colorSide
+                    ? "text-gray-300 hover:cursor-pointer"
+                    : "text-black border-b-2 border-black hover:cursor-pointer"
+                }
+                onClick={() => {
+                  setColorSide(false);
+                }}
+              >
+                왼쪽 벽
+              </span>
+              <span
+                className={
+                  colorSide
+                    ? "text-black border-b-2 border-black hover:cursor-pointer"
+                    : "text-gray-300 hover:cursor-pointer"
+                }
+                onClick={() => {
+                  setColorSide(true);
+                }}
+              >
+                오른쪽 벽
+              </span>
+            </div>
+
+            <ul className="flex flex-wrap gap-4">
+              <li
+                onClick={() => {
+                  handleCopyColorClipBoard(data as string);
+                }}
+                className="flex"
+              >
+                <div className="interior-item" style={{ backgroundColor: data as string }} />
+              </li>
+            </ul>
+          </div>
+          <div className="gap-6 mb-6 flex-column">
+            <h2 className="text-lg font-medium pt-6 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
+            <ColorPallet color={data} />
+          </div>
+        </div>
+      );
+    }
   }
 };
