@@ -22,7 +22,7 @@ export const Service = () => {
   const [tileBg, setTileBg] = useState<string>("");
 
   const { onOpenModal } = useModalStore((state) => state);
-  const { wallPaper, tile, wallpaperPaint } = useServiceStore((state) => state);
+  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
   //  타일 사이즈 컨트롤
@@ -44,6 +44,7 @@ export const Service = () => {
 
   const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
     useInteriorBookmark();
+
   // TODO IsLoading, IsError 구현하기
   const { data: currentBookmarkData } = interiorBookmarkResponse;
 
@@ -67,14 +68,18 @@ export const Service = () => {
                   <>
                     <div
                       style={{
-                        backgroundImage: `url(${leftWallPaperBg})`,
+                        backgroundImage: `url(${
+                          interiorSelecteIndex !== 4 ? leftWallPaperBg : (wallPaper.left.image as string)
+                        })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
                       className="left-wall"
                     ></div>
                     <div
                       style={{
-                        backgroundImage: `url(${RightWallPaperBg})`,
+                        backgroundImage: `url(${
+                          interiorSelecteIndex !== 4 ? RightWallPaperBg : (wallPaper.right.image as string)
+                        })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
                       className="right-wall"
@@ -98,7 +103,10 @@ export const Service = () => {
                 )}
                 {/* 타일 */}
                 <div
-                  style={{ backgroundImage: `url(${tileBg})`, backgroundSize: `${70}px, ${70}px` }}
+                  style={{
+                    backgroundImage: `url(${interiorSelecteIndex !== 4 ? tileBg : (tile.image as string)})`,
+                    backgroundSize: `${70}px, ${70}px`,
+                  }}
                   className="floor"
                 ></div>
               </div>
