@@ -19,8 +19,8 @@ export const Comments = () => {
   const { fetchCommentsMutation } = useComments();
   const { data: commentsData } = fetchCommentsMutation;
 
-  const { fetchPostsMutation } = usePosts();
-  const { data: postData } = fetchPostsMutation;
+  const { fetchDetailMutation } = usePosts();
+  const { data: detailData } = fetchDetailMutation;
 
   const { deleteCommentMutation, deleteReplyMutation } = useComments();
 
@@ -53,7 +53,7 @@ export const Comments = () => {
                 <div className="flex flex-col justify-between gap-1 ml-3">
                   <div className="flex gap-2">
                     <p className="font-semibold">{comment.USERS?.name}</p>
-                    {postData?.userId === comment.writtenId && (
+                    {detailData?.userId === comment.writtenId && (
                       <div className="text-[14px] pl-[6px] text-red-500 border border-red-500 rounded-xl w-[50px]">
                         글쓴이
                       </div>
@@ -88,6 +88,7 @@ export const Comments = () => {
                   </div>
                 </div>
               </div>
+
               {/* 대댓글 영역 */}
               <div>
                 {comment.RECOMMENTS.map((reply) => (
@@ -97,7 +98,7 @@ export const Comments = () => {
                       <div className="flex flex-col gap-1 ml-3">
                         <div className="flex gap-2">
                           <p className="font-semibold">{reply.USERS?.name}</p>
-                          {postData?.userId === reply.writtenId && (
+                          {detailData?.userId === reply.writtenId && (
                             <div className="text-[14px] pl-[6px] text-red-500 border border-red-500 rounded-xl w-[50px]">
                               글쓴이
                             </div>
