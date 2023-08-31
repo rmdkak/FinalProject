@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import {
+  MdOutlineKeyboardArrowRight,
+  MdOutlineKeyboardArrowLeft,
+  MdOutlineKeyboardDoubleArrowRight,
+  MdOutlineKeyboardDoubleArrowLeft,
+} from "react-icons/md";
 
 interface PaginationProps {
   data: any[];
@@ -71,16 +76,16 @@ export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps
 
   const selectedPageColor = (number: number) => {
     if (number === currentPage) {
-      return "text-black";
+      return "text-gray-700";
     } else {
       return "text-[#e6e6e689]";
     }
   };
-
+  
   const showPageComponent = (
-    <ul className="relative flex gap-3">
-      <IoIosArrowBack className="text-[20px] cursor-pointer" onClick={jumpPrevPage} />
-      <IoIosArrowBack className="text-[20px] cursor-pointer" onClick={showPrevPage} />
+    <ul className="flex items-center gap-3">
+      <MdOutlineKeyboardDoubleArrowLeft className="text-[20px] cursor-pointer text-gray-700" onClick={jumpPrevPage} />
+      <MdOutlineKeyboardArrowLeft className="text-[20px] cursor-pointer text-gray-700" onClick={showPrevPage} />
       {getPageNumbers().map((number) => (
         <li key={number}>
           <button
@@ -89,12 +94,12 @@ export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps
               showPage(number);
             }}
           >
-            {number}
+            <p className="text-[14px]">{number}</p>
           </button>
         </li>
       ))}
-      <IoIosArrowForward className="text-[20px] cursor-pointer" onClick={showNextPage} />
-      <IoIosArrowForward className="text-[20px] cursor-pointer" onClick={jumpNextPage} />
+      <MdOutlineKeyboardArrowRight className="text-[20px] cursor-pointer text-gray-700" onClick={showNextPage} />
+      <MdOutlineKeyboardDoubleArrowRight className="text-[20px] cursor-pointer text-gray-700" onClick={jumpNextPage} />
     </ul>
   );
 

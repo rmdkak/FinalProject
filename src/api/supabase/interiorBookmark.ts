@@ -2,14 +2,14 @@ import { type Tables } from "types/supabase";
 
 import { supabase } from "./supabaseClient";
 
-const DATA_TABLE = "ITEM-BOOKMARK";
+const DATA_TABLE = "BOOKMARKS";
 // get
 export const fetchItemBookmark = async ({
   userId,
   tileId,
   leftWallpaperId,
   rightWallpaperId,
-}: Tables<"ITEM-BOOKMARK", "Insert">) => {
+}: Tables<"BOOKMARKS", "Insert">) => {
   if (userId === null) return;
   const { data } = await supabase
     .from(DATA_TABLE)
@@ -27,7 +27,7 @@ export const onInteriorBookmarkPostHandler = async ({
   tileId,
   leftWallpaperId,
   rightWallpaperId,
-}: Tables<"ITEM-BOOKMARK", "Insert">) => {
+}: Tables<"BOOKMARKS", "Insert">) => {
   if (userId == null) return;
   await supabase.from(DATA_TABLE).insert({ userId, tileId, leftWallpaperId, rightWallpaperId }).select();
 };
@@ -38,7 +38,7 @@ export const onInteriorBookmarkDeleteHandler = async ({
   tileId,
   leftWallpaperId,
   rightWallpaperId,
-}: Tables<"ITEM-BOOKMARK", "Insert">) => {
+}: Tables<"BOOKMARKS", "Insert">) => {
   if (userId == null) return;
   await supabase
     .from(DATA_TABLE)

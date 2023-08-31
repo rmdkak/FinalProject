@@ -15,6 +15,7 @@ export const fetchDetailData = async (postId: string) => {
 // get
 export const fetchPostData = async () => {
   const { data, error } = await supabase.from("POSTS").select("*").order("created_at", { ascending: false });
+  console.log("data :", data);
   if (error != null) {
     console.log("error.message :", error.message);
     return;
@@ -24,7 +25,9 @@ export const fetchPostData = async () => {
 
 // post
 export const createPostHandler = async (postData: Tables<"POSTS", "Insert">) => {
-  await supabase.from("POSTS").insert(postData).select();
+  const {data,error} = await supabase.from("POSTS").insert(postData).select();
+  console.log('error :', error);
+  console.log('data :', data);
 };
 
 // patch

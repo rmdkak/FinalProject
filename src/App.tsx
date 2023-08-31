@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 
 import { addUser, auth, fetchUserCheckData } from "api/supabase";
 import Router from "shared/Router";
-import { useAuthStore, useLoggingStore } from "store";
+import { useAuthStore } from "store";
 
 const App = () => {
-  const { setCurrentSession } = useAuthStore();
-  const { stayLoggedInStatus } = useLoggingStore();
+  const { setCurrentSession, stayLoggedInStatus } = useAuthStore();
 
   const [userData, setUserData] = useState<Array<{ email: string; name: string }>>();
 

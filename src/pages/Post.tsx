@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
@@ -15,7 +16,6 @@ export const Post = () => {
   const { currentSession } = useAuthStore();
   const userId = currentSession?.user.id;
   const nickname = currentSession?.user.user_metadata.name;
-
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
   const {
@@ -48,6 +48,10 @@ export const Post = () => {
     }
     navigate("/community");
   };
+
+  useEffect(() => {
+    if (currentSession === null) navigate("/");
+  }, [currentSession]);
 
   const movePageHandler = (moveEvent: string) => {
     switch (moveEvent) {

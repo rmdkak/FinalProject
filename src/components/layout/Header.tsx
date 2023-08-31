@@ -6,14 +6,13 @@ import hambergerMenu from "assets/hamburgerMenu.svg";
 import logOutIcon from "assets/logout.svg";
 import userIcon from "assets/user.svg";
 import { Sidebar } from "components";
-import { useAuthStore, useLoggingStore } from "store";
+import { useAuthStore } from "store";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const { currentSession } = useAuthStore();
-  const { setStayLoggedInStatus } = useLoggingStore();
+  const { currentSession, setStayLoggedInStatus } = useAuthStore();
   const userUid = currentSession?.user.id;
 
   // 로그아웃

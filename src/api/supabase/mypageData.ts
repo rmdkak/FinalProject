@@ -32,7 +32,7 @@ export const deleteCommentsData = async (postIdsToDelete: string[]) => {
 
 // MyBookmarks Get
 export const fetchMyBookmarksData = async (id: string) => {
-  const { data, error } = await supabase.from("ITEM-BOOKMARK").select("*").eq("userId", id);
+  const { data, error } = await supabase.from("BOOKMARKS").select("*").eq("userId", id);
   if (error != null) {
     console.error(error.message);
     return;
@@ -42,12 +42,12 @@ export const fetchMyBookmarksData = async (id: string) => {
 
 // my bookmark Delete
 export const deleteBookmarksData = async (postIdsToDelete: string[]) => {
-  await supabase.from("ITEM-BOOKMARK").delete().in("id", postIdsToDelete);
+  await supabase.from("BOOKMARKS").delete().in("id", postIdsToDelete);
 };
 
 // MyLikes Get
 export const fetchMyLikesData = async (id: string) => {
-  const { data, error } = await supabase.from("POST-BOOKMARKS").select("*").eq("userId", id);
+  const { data, error } = await supabase.from("POSTLIKES").select("*").eq("userId", id);
   if (error != null) {
     console.error(error.message);
     return;
@@ -57,5 +57,5 @@ export const fetchMyLikesData = async (id: string) => {
 
 // my like Delete
 export const deleteLikesData = async (postIdsToDelete: string[]) => {
-  await supabase.from("POST-BOOKMARKS").delete().in("id", postIdsToDelete);
+  await supabase.from("POSTLIKES").delete().in("id", postIdsToDelete);
 };
