@@ -19,6 +19,7 @@ export const usePosts = () => {
     queryFn: async () => {
       return await fetchDetailData(postId as string);
     },
+    enabled: postId !== undefined
   });
 
   // get
