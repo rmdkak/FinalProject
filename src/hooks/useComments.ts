@@ -1,7 +1,15 @@
 import { useParams } from "react-router-dom";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createCommentsHandler, createReplyHandler, patchCommentsHandler, deleteCommentHandler, patchReplyHandler, deleteReplyHandler, fetchComments } from "api/supabase";
+import {
+  createCommentsHandler,
+  createReplyHandler,
+  patchCommentsHandler,
+  deleteCommentHandler,
+  patchReplyHandler,
+  deleteReplyHandler,
+  fetchComments,
+} from "api/supabase";
 
 export const useComments = () => {
   const queryClient = useQueryClient();
