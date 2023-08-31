@@ -7,8 +7,8 @@ export const useDialog = () => {
   const { mount: _mount, unmount: _unmount } = useOverlayContext();
 
   type ConfirmType = (element: ReactNode) => Promise<boolean>;
-  const Confirm: ConfirmType = async element => {
-    return await new Promise(resolve => {
+  const Confirm: ConfirmType = async (element) => {
+    return await new Promise((resolve) => {
       _mount(
         "Confirm",
         <Dialog
@@ -23,14 +23,14 @@ export const useDialog = () => {
           }}
         >
           {element}
-        </Dialog>
+        </Dialog>,
       );
     });
   };
 
   type AlertType = (element: ReactNode) => Promise<boolean>;
-  const Alert: AlertType = async element => {
-    return await new Promise(resolve => {
+  const Alert: AlertType = async (element) => {
+    return await new Promise((resolve) => {
       _mount(
         "Alert",
         <Dialog
@@ -41,7 +41,7 @@ export const useDialog = () => {
           }}
         >
           {element}
-        </Dialog>
+        </Dialog>,
       );
     });
   };

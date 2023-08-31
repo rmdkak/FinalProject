@@ -24,21 +24,21 @@ export const UpdatePassword = () => {
       .then(() => {
         alert("비밀번호가 정상적으로 변경되었습니다.");
         navigate("/");
-
-      }).catch((error) => {
+      })
+      .catch((error) => {
         switch (error.message) {
           case "New password should be different from the old password.":
-            alert("이전 비밀번호와 동일합니다.")
+            alert("이전 비밀번호와 동일합니다.");
             break;
           case "Auth session missing!":
-            alert("이메일 유효시간이 만료되었습니다.")
+            alert("이메일 유효시간이 만료되었습니다.");
             break;
           default:
-            alert("Error")
-            console.log("newError : ", error.message)
+            alert("Error");
+            console.log("newError : ", error.message);
             break;
         }
-      })
+      });
   };
 
   return (
@@ -71,7 +71,7 @@ export const UpdatePassword = () => {
                     const prevPassword = getValues("newPasswordConfirm");
                     return prevPassword === value || "비밀번호가 일치하지 않습니다.";
                   },
-                }
+                },
               })}
             />
           </div>

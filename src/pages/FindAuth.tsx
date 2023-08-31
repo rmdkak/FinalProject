@@ -35,7 +35,7 @@ export const FindAuth = () => {
   const [focusTab, setFocusTab] = useState<FocusTab>(initialFocus);
   const [isDoneFind, setIsDoneFind] = useState(false);
   const [selectPhoneFistNum, setSelectPhoneFistNum] = useState<string | undefined>();
-  const [findUser, setFindUser] = useState<Tables<"USERS", "Row">>()
+  const [findUser, setFindUser] = useState<Tables<"USERS", "Row">>();
 
   const {
     register: emailRegister,
@@ -54,14 +54,14 @@ export const FindAuth = () => {
 
   // 이메일 찾기
   const findEmailHandler: SubmitHandler<FindEmailInput> = async (data) => {
-    const { nicknameForEmail, phoneMidNumForEmail, phoneLastNumForEmail } = data
+    const { nicknameForEmail, phoneMidNumForEmail, phoneLastNumForEmail } = data;
 
     if (selectPhoneFistNum === undefined) {
       emailSetError("phoneMidNumForEmail", { message: "휴대전화 앞자리를 선택해주세요." });
       return;
     }
 
-    const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/
+    const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/;
     const phone = `${selectPhoneFistNum}${phoneMidNumForEmail}${phoneLastNumForEmail}`;
     if (!phonePattern.test(phone)) {
       emailSetError("phoneMidNumForEmail", { message: "휴대전화 형식이 올바르지 않습니다." });
@@ -70,15 +70,16 @@ export const FindAuth = () => {
 
     await findEmail({ name: nicknameForEmail, phone })
       .then((data) => {
-        setIsDoneFind(true)
-        setFindUser(data)
-      }).catch(() => {
-        emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." })
-        setIsDoneFind(false)
+        setIsDoneFind(true);
+        setFindUser(data);
       })
+      .catch(() => {
+        emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
+        setIsDoneFind(false);
+      });
   };
 
-  // 비밀번호 찾기 
+  // 비밀번호 찾기
   const findPasswordHandler: SubmitHandler<FindPasswordInput> = async (data) => {
     const { emailForPassword, nicknameForPassword, phoneMidNumForPassword, phoneLastNumForPassword } = data;
     // TODO
@@ -88,7 +89,7 @@ export const FindAuth = () => {
       return;
     }
 
-    const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/
+    const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/;
     const phone = `${selectPhoneFistNum}${phoneMidNumForPassword}${phoneLastNumForPassword}`;
     if (!phonePattern.test(phone)) {
       emailSetError("phoneMidNumForEmail", { message: "휴대전화 형식이 올바르지 않습니다." });
@@ -100,9 +101,10 @@ export const FindAuth = () => {
         await sendEmailForFindPassword(data.email);
         alert("이메일이 전송되었습니다.");
         navigate("/");
-      }).catch(() => {
-        emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." })
       })
+      .catch(() => {
+        emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
+      });
   };
 
   useEffect(() => {
@@ -181,9 +183,7 @@ export const FindAuth = () => {
             </div>
             <InvalidText errorsMessage={emailErrors.phoneMidNumForEmail?.message} size={20} />
 
-            <button className="text-center auth-button bg-point body-3 point-button-hover">
-              아이디 찾기
-            </button>
+            <button className="text-center auth-button bg-point body-3 point-button-hover">아이디 찾기</button>
             <InvalidText errorsMessage={emailErrors.root?.message} size={20} />
           </form>
         )}
@@ -202,10 +202,7 @@ export const FindAuth = () => {
                 <p className="text-gray03 text-[12px] w-full">(2023.08.24 가입)</p>
               </div>
             </div>
-            <Link
-              to="/login"
-              className="text-center auth-button bg-point body-3 point-button-hover"
-            >
+            <Link to="/login" className="text-center auth-button bg-point body-3 point-button-hover">
               로그인
             </Link>
             <div className="text-gray03 text-[12px] font-normal leading-[130%]">

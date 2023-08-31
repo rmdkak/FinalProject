@@ -1,13 +1,7 @@
 import { useParams } from "react-router-dom";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  createPostHandler,
-  deletePostHandler,
-  fetchDetailData,
-  fetchPostData,
-  patchPostHandler,
-} from "api/supabase";
+import { createPostHandler, deletePostHandler, fetchDetailData, fetchPostData, patchPostHandler } from "api/supabase";
 
 export const usePosts = () => {
   const { id: postId } = useParams();
@@ -19,7 +13,7 @@ export const usePosts = () => {
     queryFn: async () => {
       return await fetchDetailData(postId as string);
     },
-    enabled: postId !== undefined
+    enabled: postId !== undefined,
   });
 
   // get

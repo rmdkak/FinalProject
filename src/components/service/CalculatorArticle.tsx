@@ -38,8 +38,9 @@ const CalculatorArticle = ({
 
         <div className="flex items-center mb-6">
           <div
-            className={`relative flex items-center  justify-center w-full ${selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
-              } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
+            className={`relative flex items-center  justify-center w-full ${
+              selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
+            } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
           >
             <input
               className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
@@ -54,8 +55,9 @@ const CalculatorArticle = ({
           </div>
           <span className="mx-2">X</span>
           <div
-            className={`relative flex items-center  justify-center w-full ${selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
-              } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
+            className={`relative flex items-center  justify-center w-full ${
+              selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
+            } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
           >
             <input
               className="box-border rounded-l pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"

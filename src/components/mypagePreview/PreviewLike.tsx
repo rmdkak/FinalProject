@@ -12,24 +12,27 @@ interface Props {
 }
 
 export const PreviewLike = ({ likeData }: Props) => {
-  if (likeData === undefined) return <PreviewEmpty />
-  console.log('likeData :', likeData);
+  if (likeData === undefined) return <PreviewEmpty />;
+  console.log("likeData :", likeData);
 
   return (
     <ul className="flex-column h-[130px]">
       {likeData.length === 0 ? <PreviewEmpty /> : null}
       {likeData.map((like) => {
-        const { POSTS: post } = like
+        const { POSTS: post } = like;
         return (
           <Fragment key={like.id}>
             {post !== null && (
               <li className={innerBoxStyle}>
-                <Link to={`/detail/${post.id}`} className={linkStyle}>{post.content}</Link>
+                <Link to={`/detail/${post.id}`} className={linkStyle}>
+                  {post.content}
+                </Link>
                 <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
-              </li>)}
+              </li>
+            )}
           </Fragment>
-        )
+        );
       })}
     </ul>
-  )
-}
+  );
+};
