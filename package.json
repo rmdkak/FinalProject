@@ -18,7 +18,9 @@
     "color-thief-react": "^2.1.0",
     "eslint": "^8.0.1",
     "react": "^18.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.4",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.15.0",
@@ -49,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-color": "^3.0.6",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "autoprefixer": "^10.4.15",
     "eslint-config-prettier": "^9.0.0",

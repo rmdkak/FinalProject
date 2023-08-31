@@ -56,7 +56,6 @@ export const ResouresCalculator = (): JSX.Element => {
           (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) / 10,
       );
 
-    console.log(RESULT_CONSUMPTION);
     setResult({
       resultArea: `${RESULT_AREA}`,
       result_consumption: `${RESULT_CONSUMPTION}`,
@@ -70,6 +69,10 @@ export const ResouresCalculator = (): JSX.Element => {
     setVisible(false);
   }, []);
 
+  /**
+   * 자재 소모량 계산기 헤더 부분 클릭 함수입니다.
+   * 이 클릭시
+   */
   const onSelectItem = useCallback((index: number) => {
     setSelectItem(index);
     setResoures({
@@ -80,7 +83,7 @@ export const ResouresCalculator = (): JSX.Element => {
       width: "",
       height: "",
     });
-    setVisible(false);
+    // setVisible(false);
   }, []);
 
   return (
@@ -97,10 +100,15 @@ export const ResouresCalculator = (): JSX.Element => {
                   }}
                   key={item}
                   className={`flex contents-center w-full px-6 py-3 mr-4 border rounded-lg cursor-pointer ${
-                    selectItem === index ? "bg-red-400" : "bg-red-700"
+                    selectItem === index ? "border-black" : "border-gray05 opacity-40"
                   } `}
                 >
-                  <img className="mr-1" src={IMG_LIST[index]} alt={`${item} 아이콘`} />
+                  <img
+                    className={`mr-1 ${selectItem === index ? "" : "opacity-40"}`}
+                    src={IMG_LIST[index]}
+                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                    alt={`${item} 아이콘`}
+                  />
                   {item}
                 </li>
               );

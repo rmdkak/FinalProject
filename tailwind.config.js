@@ -12,7 +12,7 @@ module.exports = {
         gray05: "#d5d5d5",
         gray06: "#e5e5e5",
         gray07: "#f3f3f3",
-        gray08: "f9f9f9",
+        gray08: "#f9f9f9",
         point: "#ffd75e",
         error: "#ff0000",
       },

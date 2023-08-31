@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
-interface Wallpaper {
+export interface Wallpaper {
   image: string | null;
   id: string | null;
 }
-
 interface Tile {
   image: string | null;
   id: string | null;
 }
+
 interface Store {
   checkType: "tile" | "wallPaper";
   setTypeCheck: (type: "tile" | "wallPaper") => void;
@@ -16,16 +16,32 @@ interface Store {
   // 인테리어 헤더
   interiorSelecteIndex: number;
   setInteriorSelecteIndex: (index: number) => void;
-
+  /** true = left, false right */
+  interiorSelectX: boolean;
+  setLeftInteriorSelectX: () => void;
+  setRightInteriorSelectX: () => void;
   // 벽지
   wallPaper: { left: Wallpaper; right: Wallpaper };
   setWallPaper: (selectWallpaper: Wallpaper, type: string) => void;
   resetWallPaper: () => void;
 
+  // 벽지 페인트
+  wallpaperPaint: { left: string; right: string };
+  setWallpaperPaint: (selectedPaint: string, type: string) => void;
+  resetWallpaperPaint: () => void;
+
   // 타일
   tile: Tile;
   setTile: (selectWallpaper: Tile) => void;
   resetTile: () => void;
+
+  // 셀프조합
+  customSelfWallPaper: Wallpaper[];
+  setCustomSelfWallPaper: (previewImg: Wallpaper[]) => void;
+  delCustomSelfWallPaper: (id: string) => void;
+  customSelfTile: Tile[];
+  setCustomSelfTile: (previewImg: Tile[]) => void;
+  delCustomSelfTile: (id: string) => void;
 }
 
 export const useServiceStore = create<Store>()((set) => ({
@@ -38,6 +54,13 @@ export const useServiceStore = create<Store>()((set) => ({
   interiorSelecteIndex: -1,
   setInteriorSelecteIndex: (index) => {
     set((state) => ({ interiorSelecteIndex: (state.interiorSelecteIndex = index) }));
+  },
+  interiorSelectX: true,
+  setLeftInteriorSelectX: () => {
+    set(() => ({ interiorSelectX: true }));
+  },
+  setRightInteriorSelectX: () => {
+    set(() => ({ interiorSelectX: false }));
   },
 
   //  벽지
@@ -57,6 +80,23 @@ export const useServiceStore = create<Store>()((set) => ({
     set(() => ({ wallPaper: { left: { image: null, id: null }, right: { image: null, id: null } } }));
   },
 
+  // 벽지 페인트
+  wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" },
+  setWallpaperPaint: (selectedPaint, type) => {
+    if (type === "left") {
+      set((state) => ({
+        wallpaperPaint: { ...state.wallpaperPaint, left: selectedPaint },
+      }));
+    } else if (type === "right") {
+      set((state) => ({
+        wallpaperPaint: { ...state.wallpaperPaint, right: selectedPaint },
+      }));
+    }
+  },
+  resetWallpaperPaint: () => {
+    set(() => ({ wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" } }));
+  },
+
   // 타일
   tile: { image: null, id: null },
   setTile: (selectTile) => {
@@ -64,5 +104,21 @@ export const useServiceStore = create<Store>()((set) => ({
   },
   resetTile: () => {
     set(() => ({ tile: { image: null, id: null } }));
+  },
+
+  // 커스텀셀프이미지
+  customSelfWallPaper: [],
+  setCustomSelfWallPaper: (previewImg: Wallpaper[]) => {
+    set(() => ({ customSelfWallPaper: [...previewImg] }));
+  },
+  delCustomSelfWallPaper: (id: string) => {
+    set((state) => ({ customSelfWallPaper: state.customSelfWallPaper.filter((item) => item.id !== id) }));
+  },
+  customSelfTile: [],
+  setCustomSelfTile: (previewImg: Tile[]) => {
+    set(() => ({ customSelfTile: [...previewImg] }));
+  },
+  delCustomSelfTile: (id: string) => {
+    set((state) => ({ customSelfTile: state.customSelfTile.filter((item) => item.id !== id) }));
   },
 }));

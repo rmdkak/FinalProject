@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { changeMetaAvatar, changeMetaName, changeMetaPhone, fetchUserCheckData, storageUrl, updateImage } from "api/supabase";
 import photoCamera from "assets/photoCamera.svg";
 import xmark from "assets/xmark.svg";
-import { type PasswordVisible, PasswordVisibleButton, InvalidText, phoneOptions, Select } from "components";
-import { MypageTitle } from "components";
+import { type PasswordVisible, PasswordVisibleButton, InvalidText, phoneOptions, Select, MypageTitle } from "components";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
 
