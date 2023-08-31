@@ -11,14 +11,14 @@ export const CheckBoxIcon = ({ checkState, changeCheckState, size }: Props) => {
     <>
       {checkState ? (
         <FaRegSquareCheck
-          className={`w-[${size}px] h-[${size}px] text-black`}
+          className={`w-[${size}px] h-[${size}px] text-black cursor-pointer`}
           onClick={() => {
             changeCheckState(!checkState);
           }}
         />
       ) : (
         <FaRegSquareCheck
-          className={`w-[${size}px] h-[${size}px] text-gray05`}
+          className={`w-[${size}px] h-[${size}px] text-gray05 cursor-pointer`}
           onClick={() => {
             changeCheckState(!checkState);
           }}

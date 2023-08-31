@@ -10,7 +10,7 @@ import githubLogo from "assets/githubLogo.svg";
 import googleLogo from "assets/googleLogo.svg";
 import kakaoLogo from "assets/kakaoLogo.svg";
 import { PasswordVisibleButton, InvalidText } from "components";
-import { useAuthStore, useLoggingStore } from "store";
+import { useAuthStore } from "store";
 
 export interface LoginInputs {
   email: string;
@@ -20,8 +20,7 @@ export interface LoginInputs {
 export const Login = () => {
   const navigate = useNavigate();
 
-  const { currentSession } = useAuthStore();
-  const { stayLoggedInStatus, setStayLoggedInStatus } = useLoggingStore();
+  const { currentSession, stayLoggedInStatus, setStayLoggedInStatus } = useAuthStore();
   const [showPassword, setShowPassword] = useState({ password: false });
 
   const {

@@ -32,8 +32,8 @@ export const createReplyHandler = async (replyData: Tables<"RECOMMENTS", "Insert
 // patch(reply)
 export const patchReplyHandler = async (replyData: Tables<"RECOMMENTS", "Update">) => {
   // 수정 로직 추가
-  console.log(replyData)
-}
+  console.log(replyData);
+};
 
 // delete(reply)
 export const deleteReplyHandler = async (replyId: string) => {
