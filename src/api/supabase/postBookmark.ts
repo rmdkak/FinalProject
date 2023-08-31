@@ -4,20 +4,22 @@ import { supabase } from "./supabaseClient";
 
 const DATA_TABLE = "POSTLIKES";
 // get
-export const fetchPostBookmark = async ({ userId }: Pick<Tables<"POSTLIKES", "Row">, "userId">) => {
-  if (userId == null) return;
-  const { data } = await supabase.from(DATA_TABLE).select().eq("userId", userId);
+export const fetchPostLike = async (postId: string) => {
+  const { data, error } = await supabase.from(DATA_TABLE).select().eq("postId", postId).limit(1).single();
+
+  if (error !== null) {
+    console.error("error :", error);
+    return;
+  }
+
   return data;
 };
 
 // post
-export const onBookmarkPostHandler = async ({ postId, userId }: Tables<"POSTLIKES", "Insert">) => {
-  if (postId == null || userId == null) return;
-  await supabase.from(DATA_TABLE).insert({ postId, userId }).select();
-};
+export const changePostLike = async ({ postId, userId }: Tables<"POSTLIKES", "Insert">) => {
+  const { error } = await supabase.from("POSTLIKES").update({ userId }).eq("postId", postId).select();
 
-// delete
-export const onBookmarkDeleteHandler = async ({ postId, userId }: Tables<"POSTLIKES", "Insert">) => {
-  if (postId == null || userId == null) return;
-  await supabase.from(DATA_TABLE).delete().eq("postId", postId).eq("userId", userId);
+  if (error !== null) {
+    console.error(error);
+  }
 };

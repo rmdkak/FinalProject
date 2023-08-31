@@ -125,19 +125,19 @@ export interface Database {
           created_at: string;
           id: string;
           postId: string;
-          userId: string;
+          userId: string[];
         };
         Insert: {
           created_at?: string;
           id?: string;
           postId: string;
-          userId: string;
+          userId: string[];
         };
         Update: {
           created_at?: string;
           id?: string;
           postId?: string;
-          userId?: string;
+          userId?: string[];
         };
         Relationships: [
           {

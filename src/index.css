@@ -278,6 +278,9 @@ body {
   .point-button-hover {
     @apply hover:bg-[#FFFBF0] hover:border hover:border-point;
   }
+  .outline-button-hover {
+    @apply hover:border-black;
+  }
   .gray-button-hover {
     @apply hover:border hover:border-black;
   }
