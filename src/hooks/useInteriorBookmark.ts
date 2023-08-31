@@ -35,7 +35,6 @@ export const useInteriorBookmark = () => {
       const previousBookmark = queryClient.getQueryData(queryKey);
       // 미리 업데이트하기
       queryClient.setQueryData(queryKey, newBookmark);
-      // queryClient.setQueryData<Array<Tables<"ITEM-BOOKMARK", "Insert">>>(queryKey, (old) => [...old ?? [], newBookmark])
       // 백업값 리턴으로 넘겨주기
       return { previousBookmark };
     },

@@ -81,7 +81,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
         commentId,
       };
       if (commentStatus) await supabase.from("COMMENTS").insert([commentData]);
-      if (replyStatus) await supabase.from("RE-COMMENTS").insert([replyData]);
+      if (replyStatus) await supabase.from("RECOMMENTS").insert([replyData]);
     } catch (error) {
       console.log("error", error);
     }

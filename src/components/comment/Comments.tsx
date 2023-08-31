@@ -10,7 +10,7 @@ import { type Tables } from "types/supabase";
 import { CommentForm } from "./CommentForm";
 
 type CommentsType = Tables<"COMMENTS", "Row">;
-type ReplyType = Tables<"RE-COMMENTS", "Row">;
+type ReplyType = Tables<"RECOMMENTS", "Row">;
 
 interface CommentWithUser extends CommentsType {
   user: {
@@ -39,7 +39,7 @@ export const Comments = () => {
       const { data: postData } = await supabase.from("POSTS").select("*").eq("id", paramsId).single();
       if (postData !== null) setPostData(postData);
 
-      const { data: replyData } = await supabase.from("RE-COMMENTS").select("*").order("created_at");
+      const { data: replyData } = await supabase.from("RECOMMENTS").select("*").order("created_at");
       if (replyData !== null) {
         const replyWithUserData = await Promise.all(
           replyData.map(async (reply) => {
@@ -102,7 +102,7 @@ export const Comments = () => {
   const deleteReplyHandler = async (replyId: string) => {
     try {
       const checkDelete = window.confirm("정말로 삭제하시겠습니까?");
-      if (checkDelete) await supabase.from("RE-COMMENTS").delete().eq("id", replyId);
+      if (checkDelete) await supabase.from("RECOMMENTS").delete().eq("id", replyId);
     } catch (error) {
       console.log("error :", error);
     }
