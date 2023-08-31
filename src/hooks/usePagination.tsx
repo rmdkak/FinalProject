@@ -81,7 +81,7 @@ export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps
       return "text-[#e6e6e689]";
     }
   };
-  
+
   const showPageComponent = (
     <ul className="flex items-center gap-3">
       <MdOutlineKeyboardDoubleArrowLeft className="text-[20px] cursor-pointer text-gray-700" onClick={jumpPrevPage} />

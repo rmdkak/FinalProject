@@ -1,6 +1,6 @@
 import { type MouseEvent, type ReactNode } from "react";
 
-import Button from "components/button/Button";
+import { Button } from "components";
 
 interface Props {
   onClose: any;

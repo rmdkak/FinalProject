@@ -60,11 +60,11 @@ export const SelfPattern = (): JSX.Element => {
 
       {checkType === "wallPaper"
         ? customSelfWallPaper.map((item: Wallpaper) => {
-            return <SelfItem key={item.id} item={item} />;
-          })
+          return <SelfItem key={item.id} item={item} />;
+        })
         : customSelfTile.map((item: Wallpaper) => {
-            return <SelfItem key={item.id} item={item} />;
-          })}
+          return <SelfItem key={item.id} item={item} />;
+        })}
     </>
   );
 };

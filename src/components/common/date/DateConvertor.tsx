@@ -67,10 +67,10 @@ export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type, cl
         break;
     }
   }, [datetime, type]);
-  
+
   if (formattedDate.includes("NaN")) {
     setFormattedDate("");
   }
-  
+
   return <p className={className}>{formattedDate}</p>;
 };

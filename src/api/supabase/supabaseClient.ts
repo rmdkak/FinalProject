@@ -6,10 +6,7 @@ const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY as string;
 const storageUrl = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
 const options = {
-  auth: {
-    // persistSession: false,
-    storageKey: "stile-token"
-  }
+  auth: { storageKey: "stile-token" }
 }
 
 const supabase = createClient<Database>(supabaseUrl, supabaseKey, options);
