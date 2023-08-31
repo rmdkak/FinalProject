@@ -50,7 +50,7 @@ export const Post = () => {
   };
 
   useEffect(() => {
-    if (currentSession === null) navigate("/");
+    if (currentSession === null) navigate("/login");
   }, [currentSession]);
 
   const movePageHandler = (moveEvent: string) => {

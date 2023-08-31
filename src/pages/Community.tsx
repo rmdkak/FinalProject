@@ -77,7 +77,7 @@ export const Community = () => {
     dataLength: filteredPosts.length,
     postPerPage: 8,
   });
-  
+
   const createPostHandler = async () => {
     if (currentSession === null) {
       const sessionCheck = await Confirm("게시물 작성은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
@@ -150,11 +150,11 @@ export const Community = () => {
               <select
                 value={selectedOption}
                 onChange={handleOptionChange}
-                className="p-1 text-[#888888] border shadow focus:outline-none"
+                className="p-1 w-[115px] text-[#888888] border shadow focus:outline-none"
               >
                 <option value="whole">전체 게시글</option>
                 <option value="normal">일반 게시글</option>
-                <option value="recommendation">조합 추천</option>
+                <option value="recommendation">조합추천 게시글</option>
               </select>
               <p className="text-[#888888]">
                 총 <span className="font-semibold text-[#1A1A1A]">{filteredPosts?.length}</span>개의 게시물이 있습니다.
@@ -170,7 +170,7 @@ export const Community = () => {
           </div>
           {pageData.map((post) => {
             return (
-              <div key={post.id} className="py-[30px] border-b border-gray-200">
+              <div key={post.id} className="py-[25px] border-b border-gray-200">
                 <div
                   onClick={() => {
                     goDetailPage(post.id);
@@ -187,7 +187,7 @@ export const Community = () => {
                     {post.postImage != null && (
                       <img
                         src={`${storageUrl}${post.postImage as string}`}
-                        className="h-[80px] w-[132px] rounded-[8px] mr-[20px]"
+                        className="h-[100px] w-[132px] rounded-[8px] mr-[20px]"
                       />
                     )}
                     {isExistCombination(post) && (
@@ -213,7 +213,7 @@ export const Community = () => {
                     )}
                   </div>
                 </div>
-                <div className="flex mt-5 text-[#888888] text-[14px] gap-5">
+                <div className="flex mt-[10px] text-[#888888] text-[14px] gap-[15px]">
                   <p>{post.nickname}</p>
                   <DateConvertor datetime={post.created_at} type="dotDate" />
                   <p>좋아요 {post.bookmark}</p>

@@ -6,14 +6,17 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { supabase, storageUrl } from "api/supabase";
 import { Comments, DateConvertor } from "components";
+import { useDialog } from "components/overlay/dialog/Dialog.hooks";
 import { usePosts } from "hooks";
+import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 
 export const Detail = () => {
   const { id: paramsId } = useParams();
+  const { currentSession } = useAuthStore();
   const navigate = useNavigate();
   const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
-
+  const { Confirm } = useDialog();
   const { fetchPostsMutation } = usePosts();
   const { data: postList } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
@@ -44,7 +47,14 @@ export const Detail = () => {
         break;
     }
   };
-
+  const movePostPageHandler = async () => {
+    if (currentSession === null) {
+      const confirmCheck = await Confirm("게시글 작성은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (confirmCheck) navigate("/login");
+      return;
+    }
+    navigate("/post");
+  };
   return (
     // 상위 배너 영역
     <div className="w-[1280px] mx-auto mt-[30px]">
@@ -145,12 +155,7 @@ export const Detail = () => {
         )}
       </div>
       <div className="sticky gap-4 bottom-[35%] translate-x-[1350px] inline-flex flex-col">
-        <button
-          className="w-12 h-12 rounded-full bg-point"
-          onClick={() => {
-            navigate("/post");
-          }}
-        >
+        <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>
         <button className="w-12 h-12 rounded-full border-[1px] border-gray06">
