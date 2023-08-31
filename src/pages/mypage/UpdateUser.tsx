@@ -6,10 +6,10 @@ import { changeMetaAvatar, changeMetaName, changeMetaPhone, fetchUserCheckData, 
 import photoCamera from "assets/photoCamera.svg";
 import xmark from "assets/xmark.svg";
 import { type PasswordVisible, PasswordVisibleButton, InvalidText, phoneOptions, Select } from "components";
+import { MypageTitle } from "components";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
 
-import { MypageTitle } from "./CommonComponent";
 
 interface UpdateInput {
   name: string;

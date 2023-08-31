@@ -2,10 +2,8 @@ import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 
 import { storageUrl } from "api/supabase";
+import { EmptyData, MypageSubTitle, MypageTitle } from "components";
 import { useMypage, usePagination } from "hooks";
-
-import { MypageSubTitle, MypageTitle } from "./CommonComponent";
-import { EmptyData } from "./EmptyData";
 
 export const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);

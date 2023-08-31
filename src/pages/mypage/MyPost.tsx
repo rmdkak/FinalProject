@@ -2,11 +2,8 @@ import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { DateConvertor } from "components";
+import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle, SearchBar } from "components";
 import { useMypage, usePagination } from "hooks";
-
-import { MypageSubTitle, MypageTitle, SearchBar } from "./CommonComponent";
-import { EmptyData } from "./EmptyData";
 
 export const MyPost = () => {
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);

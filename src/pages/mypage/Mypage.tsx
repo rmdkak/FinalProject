@@ -4,10 +4,8 @@ import { RxBookmark, RxPencil2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
 import viewMore from "assets/viewMore.svg";
+import { PreviewBookmark, PreviewComment, PreviewLike, PreviewPost, MypageTitle } from "components";
 import { useAuth, useMypage } from "hooks";
-
-import { MypageTitle } from "./CommonComponent";
-import { PreviewBookmark, PreviewComment, PreviewLike, PreviewPost } from "./PreviewDetail";
 
 const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 translate-y-[-50%]";
 
@@ -24,7 +22,7 @@ export const Mypage = () => {
 
   const previewPost = postData?.filter((_, index) => index < 2)
   const previewComment = commentData?.filter((_, index) => index < 2)
-  const previewBookmark = bookmarkData?.filter((_, index) => index < 2)
+  const previewBookmark = bookmarkData?.filter((_, index) => index < 3)
   const previewLikes = likeData?.filter((_, index) => index < 2)
 
   const countBoxArray = [
@@ -55,7 +53,7 @@ export const Mypage = () => {
   const previewBox = countBoxArray.map((el) => {
     return (
       <div key={el.title} className="flex-column">
-        <div className="flex items-center justify-between border-b pb-[24px] mt-[80px]">
+        <div className="flex items-center justify-between border-b border-black pb-[24px] mt-[80px]">
           <p className="text-[18px] font-normal leading-[150%]">{el.title}</p>
           <Link to={el.link} className="flex contents-center gap-[12px] body-4 text-gray02">VIEW MORE<img src={viewMore} className="w-[24px] h-[24px]" /></Link>
         </div>

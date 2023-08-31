@@ -2,11 +2,8 @@ import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 
 import arrowIcon from "assets/arrowIcon.svg";
-import { DateConvertor } from "components";
+import { DateConvertor, MypageSubTitle, MypageTitle, SearchBar, EmptyData } from "components";
 import { useMypage, usePagination } from "hooks";
-
-import { MypageSubTitle, MypageTitle, SearchBar } from "./CommonComponent";
-import { EmptyData } from "./EmptyData";
 
 export const MyComment = () => {
   const [isOpenComment, setIsOpenComment] = useState<string>();
@@ -47,7 +44,6 @@ export const MyComment = () => {
     dataLength: userCommentData.length,
     postPerPage: 8,
   });
-  console.log('pageData :', pageData);
 
   return (
     <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
@@ -58,6 +54,7 @@ export const MyComment = () => {
         <ul className="w-full">
           {/* 항목 */}
           {pageData.map((comment, index) => {
+            const { POSTS: post } = comment
             return (
               <li key={comment.id} className="flex-column contents-center border-y border-gray06">
                 {/* 포스트 */}
@@ -83,8 +80,8 @@ export const MyComment = () => {
                     isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id)
                   }}>
                     <p className="w-[80px]">{index + 1}</p>
-                    <p className="w-[1040px]">우와 정말 식물이랑 잘어울려요!!</p>
-                    <DateConvertor datetime={comment.created_at} type={"dotDate"} />
+                    <p className="w-[1040px]">{post.title}</p>
+                    <DateConvertor datetime={post.created_at} type={"dotDate"} />
 
                     <button className="flex contents-center w-[16px] h-[16px]">
                       {isOpenComment === comment.id ? (
@@ -103,7 +100,10 @@ export const MyComment = () => {
                 {isOpenComment === comment.id && (
                   <div className="flex items-center justify-between w-full h-[120px] p-[24px]">
                     <p className="flex self-start">{comment.content}</p>
-                    <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">수정</button>
+                    <div className="flex contents-center gap-[12px]">
+                      <DateConvertor datetime={comment.created_at} type={"dotDate"} />
+                      <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">수정</button>
+                    </div>
                   </div>
                 )}
               </li>
