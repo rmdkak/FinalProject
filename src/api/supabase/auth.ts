@@ -54,16 +54,22 @@ export const signup = async (inputValue: SignupInputs) => {
   if (error !== null) throw new Error(printErrorMessage(error.message));
 };
 
-export const findEmail = async ({ name, phone }: { name: string, phone: string }) => {
+export const findEmail = async ({ name, phone }: { name: string; phone: string }) => {
   const { data, error } = await supabase.from(TABLE).select().eq("name", name).eq("phone", phone).single();
   if (error !== null) throw new Error(error.message);
-  return data
+  return data;
 };
 
-export const findPassword = async ({ name, phone, email }: { name: string, phone: string, email: string }) => {
-  const { data, error } = await supabase.from(TABLE).select().eq("name", name).eq("phone", phone).eq("email", email).single();
+export const findPassword = async ({ name, phone, email }: { name: string; phone: string; email: string }) => {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select()
+    .eq("name", name)
+    .eq("phone", phone)
+    .eq("email", email)
+    .single();
   if (error !== null) throw new Error(error.message);
-  return data
+  return data;
 };
 
 export const sendEmailForFindPassword = async (email: string) => {

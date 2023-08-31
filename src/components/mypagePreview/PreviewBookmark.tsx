@@ -7,8 +7,8 @@ interface Props {
   bookmarkData: Array<Tables<"BOOKMARKS", "Row">> | undefined;
 }
 
-export const PreviewBookmark = ({ bookmarkData }: Pick<Props, "bookmarkData">) => {
-  if (bookmarkData === undefined) return <PreviewEmpty />
+export const PreviewBookmark = ({ bookmarkData }: Props) => {
+  if (bookmarkData === undefined) return <PreviewEmpty />;
   return (
     <ul className="flex h-[240px]">
       {bookmarkData.length === 0 ? <PreviewEmpty /> : null}
@@ -51,8 +51,8 @@ export const PreviewBookmark = ({ bookmarkData }: Pick<Props, "bookmarkData">) =
               </div>
             </div>
           </li>
-        )
+        );
       })}
     </ul>
-  )
-}
+  );
+};

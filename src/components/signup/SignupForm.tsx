@@ -25,8 +25,9 @@ interface Props {
   nextStep: () => void;
 }
 
-const DUPLICATE_CHECK_BUTTON = "auth-button-text h-[48px] text-black bg-white px-[20px] whitespace-nowrap border border-black rounded-[8px] white-button-hover";
-const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]"
+const DUPLICATE_CHECK_BUTTON =
+  "auth-button-text h-[48px] text-black bg-white px-[20px] whitespace-nowrap border border-black rounded-[8px] white-button-hover";
+const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
@@ -93,14 +94,13 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       return;
     }
 
-
     const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const email = `${id}@${selectEmail}`;
     if (!emailPattern.test(email)) {
       setError("id", { message: "이메일 형식이 올바르지 않습니다." });
       return;
     }
-    const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/
+    const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/;
     const phone = `${selectPhoneFistNum}${phoneMiddleNum}${phoneLastNum}`;
     if (!phonePattern.test(phone)) {
       setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
@@ -130,7 +130,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       </div>
       <SignupStep step={1} />
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
-
         {/* 이메일 */}
         <label className="self-start body-4 my-[8px]">이메일</label>
         <div className="flex items-center gap-[8px] w-full">
@@ -140,7 +139,9 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
                 required: "이메일을 입력해주세요.",
                 minLength: { value: 4, message: "id가 너무 짧습니다." },
                 maxLength: { value: 20, message: "id가 너무 깁니다." },
-                onChange: () => { setCheckedDuplicate({ ...checkedDuplicate, email: false }) }
+                onChange: () => {
+                  setCheckedDuplicate({ ...checkedDuplicate, email: false });
+                },
               })}
               type="id"
               placeholder="이메일"
@@ -164,10 +165,13 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             중복 체크
           </button>
         </div>
-        {checkedDuplicate.email
-          ? <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>사용 가능한 이메일입니다.</p>
-          : <InvalidText errorsMessage={errors.id?.message} size={30} />
-        }
+        {checkedDuplicate.email ? (
+          <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
+            사용 가능한 이메일입니다.
+          </p>
+        ) : (
+          <InvalidText errorsMessage={errors.id?.message} size={30} />
+        )}
 
         {/* 닉네임 */}
         <label className="self-start body-4 my-[8px]">닉네임</label>
@@ -177,7 +181,9 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
               required: "닉네임을 입력해주세요.",
               minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
               maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
-              onChange: () => { setCheckedDuplicate({ ...checkedDuplicate, name: false }) }
+              onChange: () => {
+                setCheckedDuplicate({ ...checkedDuplicate, name: false });
+              },
             })}
             type="text"
             placeholder="닉네임"
@@ -193,11 +199,13 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             중복 체크
           </button>
         </div>
-        {checkedDuplicate.name
-          ? <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>사용 가능한 닉네임입니다.</p>
-          : <InvalidText errorsMessage={errors.name?.message} size={30} />
-        }
-
+        {checkedDuplicate.name ? (
+          <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
+            사용 가능한 닉네임입니다.
+          </p>
+        ) : (
+          <InvalidText errorsMessage={errors.name?.message} size={30} />
+        )}
 
         {/* 비밀번호 */}
         <label className="self-start body-4 my-[8px]">비밀번호</label>
@@ -273,7 +281,11 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         <InvalidText errorsMessage={errors.phoneMiddleNum?.message} size={30} />
 
         <button className={`${NEXT_PREV_BUTTON} bg-point point-button-hover`}>회원가입</button>
-        <button className={`${NEXT_PREV_BUTTON} bg-white border border-black white-button-hover`} type="button" onClick={prevStep}>
+        <button
+          className={`${NEXT_PREV_BUTTON} bg-white border border-black white-button-hover`}
+          type="button"
+          onClick={prevStep}
+        >
           이전
         </button>
       </form>

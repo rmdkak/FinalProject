@@ -21,6 +21,7 @@ export const useComments = () => {
     queryFn: async () => {
       return await fetchComments(postId as string);
     },
+    enabled: postId !== undefined,
   });
 
   // post(comments)

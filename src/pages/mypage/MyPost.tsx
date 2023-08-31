@@ -45,7 +45,9 @@ export const MyPost = () => {
       <MypageTitle />
       <MypageSubTitle type="post" />
       {/* 글 목록 */}
-      {userPostData.length === 0 ? <EmptyData type="post" /> : (
+      {userPostData.length === 0 ? (
+        <EmptyData type="post" />
+      ) : (
         <ul className="w-full">
           {pageData?.map((post, index) => {
             return (
@@ -66,7 +68,9 @@ export const MyPost = () => {
                   )}
                 </label>
                 <p className="w-[80px]">{index + 1}</p>
-                <Link to={`/detail/${post.id as string}`} className="w-[830px]">{post.title}</Link>
+                <Link to={`/detail/${post.id as string}`} className="w-[830px]">
+                  {post.title}
+                </Link>
                 <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />
                 <button className="w-[80px] h-[32px] border border-gray05 rounded-[8px] px-[24px]">수정</button>
               </li>

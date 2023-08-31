@@ -6,21 +6,23 @@ const queryKey = ["auth"];
 
 export const useAuth = () => {
   const queryClient = useQueryClient();
-  const { currentSession } = useAuthStore()
+  const { currentSession } = useAuthStore();
 
   const currentUserResponse = useQuery({
     queryKey: [queryKey[0]],
     queryFn: async () => {
-      if (currentSession === null) return
-      return await fetchUser(currentSession.user.id)
+      if (currentSession === null) return;
+      return await fetchUser(currentSession.user.id);
     },
-    enabled: currentSession !== null
-  })
+    enabled: currentSession !== null,
+  });
 
   const patchUserMutation = useMutation({
     mutationFn: patchUser,
-    onSuccess: async () => { await queryClient.invalidateQueries({ queryKey }) },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey });
+    },
   });
 
-  return { currentUserResponse, patchUserMutation }
-}
+  return { currentUserResponse, patchUserMutation };
+};

@@ -2,13 +2,26 @@ import { type ChangeEvent, useState, useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { changeMetaAvatar, changeMetaName, changeMetaPhone, fetchUserCheckData, storageUrl, updateImage } from "api/supabase";
+import {
+  changeMetaAvatar,
+  changeMetaName,
+  changeMetaPhone,
+  fetchUserCheckData,
+  storageUrl,
+  updateImage,
+} from "api/supabase";
 import photoCamera from "assets/photoCamera.svg";
 import xmark from "assets/xmark.svg";
-import { type PasswordVisible, PasswordVisibleButton, InvalidText, phoneOptions, Select, MypageTitle } from "components";
+import {
+  type PasswordVisible,
+  PasswordVisibleButton,
+  InvalidText,
+  phoneOptions,
+  Select,
+  MypageTitle,
+} from "components";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
-
 
 interface UpdateInput {
   name: string;
@@ -21,7 +34,8 @@ interface UpdateInput {
 
 const LABEL_STYLE = "self-center w-[136px] px-[24px] text-[14px] font-normal leading-[130%]";
 
-const defaultProfileImgUrl = "https://aiqrtjdvdlzhtyadyqnh.supabase.co/storage/v1/object/public/Images/profileImg/defaultImg"
+const defaultProfileImgUrl =
+  "https://aiqrtjdvdlzhtyadyqnh.supabase.co/storage/v1/object/public/Images/profileImg/defaultImg";
 
 export const UpdateUser = () => {
   const navigate = useNavigate();
@@ -45,8 +59,6 @@ export const UpdateUser = () => {
     formState: { errors },
   } = useForm<UpdateInput>({ mode: "all" });
 
-
-
   const [imgFile, setImgFile] = useState<File>();
   const { previewProfileUrl, setPreviewProfileUrl } = useAuthStore();
   const onChangeAddFile = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,28 +67,28 @@ export const UpdateUser = () => {
     setPreviewProfileUrl(URL.createObjectURL(event.target.files[0]));
   };
 
-  const [deleteProfileImgUrl, setDeleteProfileImgUrl] = useState(false)
+  const [deleteProfileImgUrl, setDeleteProfileImgUrl] = useState(false);
   const resetImgFile = () => {
     if (imgFile !== undefined) {
       setImgFile(undefined);
       setPreviewProfileUrl("");
-      return
+      return;
     }
     if (imgFile === undefined || currentProfileImg !== defaultProfileImgUrl) {
-      setPreviewProfileUrl(defaultProfileImgUrl)
-      setDeleteProfileImgUrl(true)
+      setPreviewProfileUrl(defaultProfileImgUrl);
+      setDeleteProfileImgUrl(true);
     }
-  }
+  };
 
   // 중복체크
-  const [checkedDuplicate, setCheckedDuplicate] = useState(false)
+  const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const duplicateCheck = async () => {
-    const getUserData = await fetchUserCheckData()
+    const getUserData = await fetchUserCheckData();
 
     const matchUser = getUserData.filter((user) => user.name === getValues("name"));
 
-    if (matchUser === null || matchUser.length === 0) setCheckedDuplicate(true)
-    else setError("name", { message: "이미 존재하는 닉네임입니다." })
+    if (matchUser === null || matchUser.length === 0) setCheckedDuplicate(true);
+    else setError("name", { message: "이미 존재하는 닉네임입니다." });
   };
 
   const { patchUserMutation } = useAuth();
@@ -90,12 +102,14 @@ export const UpdateUser = () => {
     // 이미지 변경
     if (imgFile !== undefined) {
       const profileImg = `${storageUrl}/profileImg/${userId}`;
-      await updateImage({ file: imgFile, userId }).catch((error) => { console.error(error) });
-      await changeMetaAvatar(profileImg)
+      await updateImage({ file: imgFile, userId }).catch((error) => {
+        console.error(error);
+      });
+      await changeMetaAvatar(profileImg);
       patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
     }
     if (deleteProfileImgUrl || imgFile === undefined) {
-      await changeMetaAvatar(defaultProfileImgUrl)
+      await changeMetaAvatar(defaultProfileImgUrl);
       patchUserMutation.mutate({ inputValue: { avatar_url: defaultProfileImgUrl }, userId });
     }
 
@@ -106,7 +120,7 @@ export const UpdateUser = () => {
         return;
       }
 
-      const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/
+      const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/;
       const phone = `${selectPhoneFistNum}${phoneMiddleNum}${phoneLastNum}`;
 
       if (!phonePattern.test(phone)) {
@@ -114,7 +128,7 @@ export const UpdateUser = () => {
         return;
       }
 
-      await changeMetaPhone(phone)
+      await changeMetaPhone(phone);
       patchUserMutation.mutate({ inputValue: { phone }, userId });
     }
 
@@ -125,16 +139,16 @@ export const UpdateUser = () => {
         return;
       }
 
-      await changeMetaName(name)
-      patchUserMutation.mutate({ inputValue: { name, }, userId });
+      await changeMetaName(name);
+      patchUserMutation.mutate({ inputValue: { name }, userId });
     }
   };
 
   useEffect(() => {
     return () => {
       setPreviewProfileUrl("");
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
@@ -144,7 +158,11 @@ export const UpdateUser = () => {
         <div className="flex-column items-center w-[328px] gap-[36px]">
           <div className="relative w-[120px]">
             {previewProfileUrl === "" ? (
-              isLoading ? <p>로딩중</p> : <img src={currentProfileImg} alt="프로필 이미지" className="w-[120px] h-[120px] rounded-full" />
+              isLoading ? (
+                <p>로딩중</p>
+              ) : (
+                <img src={currentProfileImg} alt="프로필 이미지" className="w-[120px] h-[120px] rounded-full" />
+              )
             ) : (
               <img src={previewProfileUrl} alt="프로필 이미지" className="w-[120px] h-[120px] rounded-full" />
             )}
@@ -153,7 +171,13 @@ export const UpdateUser = () => {
               <label htmlFor="profileImgButton">
                 <img src={photoCamera} className="w-[16px] h-[16px] cursor-pointer" />
               </label>
-              <input id="profileImgButton" type="file" accept="image/*" onChange={onChangeAddFile} style={{ display: "none" }} />
+              <input
+                id="profileImgButton"
+                type="file"
+                accept="image/*"
+                onChange={onChangeAddFile}
+                style={{ display: "none" }}
+              />
               <div className="h-[8px] bg-gray06 border" />
               <img src={xmark} onClick={resetImgFile} className="w-[16px] h-[16px] cursor-pointer" />
             </div>
@@ -184,15 +208,34 @@ export const UpdateUser = () => {
                     required: "닉네임은 필수 입력 사항입니다.",
                     minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
                     maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
-                    onChange: () => { setCheckedDuplicate(false) }
+                    onChange: () => {
+                      setCheckedDuplicate(false);
+                    },
                   })}
                 />
-                <button type="button" onClick={duplicateCheck} className="w-[120px] border border-black rounded-[8px] h-[48px] body-3" >중복체크</button>
+                <button
+                  type="button"
+                  onClick={duplicateCheck}
+                  className="w-[120px] border border-black rounded-[8px] h-[48px] body-3"
+                >
+                  중복체크
+                </button>
               </div>
-              {checkedDuplicate
-                ? <p className={"h-[40px] w-full flex items-center text-[12px] text-green-500 font-normal justify-center border-b border-b-gray06 pb-[5px]"}>사용 가능한 닉네임입니다.</p>
-                : <InvalidText className={"justify-center border-b border-b-gray06 pb-[5px]"} errorsMessage={errors.name?.message} size={40} />
-              }
+              {checkedDuplicate ? (
+                <p
+                  className={
+                    "h-[40px] w-full flex items-center text-[12px] text-green-500 font-normal justify-center border-b border-b-gray06 pb-[5px]"
+                  }
+                >
+                  사용 가능한 닉네임입니다.
+                </p>
+              ) : (
+                <InvalidText
+                  className={"justify-center border-b border-b-gray06 pb-[5px]"}
+                  errorsMessage={errors.name?.message}
+                  size={40}
+                />
+              )}
             </div>
 
             {/* 패스워드 */}
@@ -241,7 +284,11 @@ export const UpdateUser = () => {
                 </div>
                 <div className="w-[120px]" />
               </div>
-              <InvalidText className={"justify-center border-b border-b-gray06 pb-[5px]"} errorsMessage={errors.password?.message} size={40} />
+              <InvalidText
+                className={"justify-center border-b border-b-gray06 pb-[5px]"}
+                errorsMessage={errors.password?.message}
+                size={40}
+              />
             </div>
 
             {/* 휴대전화 */}
@@ -274,7 +321,11 @@ export const UpdateUser = () => {
                 </div>
                 <div className="w-[120px]" />
               </div>
-              <InvalidText className={"justify-center border-b border-b-gray06 pb-[5px]"} errorsMessage={errors.phoneMiddleNum?.message} size={40} />
+              <InvalidText
+                className={"justify-center border-b border-b-gray06 pb-[5px]"}
+                errorsMessage={errors.phoneMiddleNum?.message}
+                size={40}
+              />
             </div>
 
             <div className="relative flex gap-[16px] justify-center items-center">
@@ -292,12 +343,14 @@ export const UpdateUser = () => {
               </button>
               <div className="right-[-33px] translate-x-full absolute flex items-center gap-[12px]">
                 <p className="text-[14px] font-normal leading-[130%] text-gray02">더 이상 이용하지 않으시나요?</p>
-                <button type="button" className="w-[120px] h-[48px] border border-gray05 text-gray02 rounded-[8px]">회원탈퇴</button>
+                <button type="button" className="w-[120px] h-[48px] border border-gray05 text-gray02 rounded-[8px]">
+                  회원탈퇴
+                </button>
               </div>
             </div>
           </div>
         </form>
       </div>
-    </div >
+    </div>
   );
 };

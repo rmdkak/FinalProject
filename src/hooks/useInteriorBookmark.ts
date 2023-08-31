@@ -22,7 +22,7 @@ export const useInteriorBookmark = () => {
         rightWallpaperId: wallPaper.right.id,
       });
     },
-    enabled: (userId !== null && tile.id !== null && wallPaper.left.id !== null && wallPaper.right.id !== null)
+    enabled: userId !== null && tile.id !== null && wallPaper.left.id !== null && wallPaper.right.id !== null,
   });
 
   const addInteriorBookmarkMutation = useMutation({

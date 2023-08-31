@@ -1,1 +1,1 @@
-export * from './PostBookmark'
+export * from "./PostBookmark";

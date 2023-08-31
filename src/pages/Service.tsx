@@ -53,6 +53,26 @@ export const Service = () => {
     setIsItemBookmarkedData(currentBookmarkData[0]);
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
 
+  const addBookmark = async () => {
+    if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
+    addInteriorBookmarkMutation.mutate({
+      userId: currentSession.user.id,
+      tileId: tile.id,
+      leftWallpaperId: wallPaper.left.id,
+      rightWallpaperId: wallPaper.right.id,
+    });
+  };
+
+  const deleteBookmark = async () => {
+    if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
+    deleteInteriorBookmarkMutation.mutate({
+      userId: currentSession.user.id,
+      tileId: tile.id,
+      leftWallpaperId: wallPaper.left.id,
+      rightWallpaperId: wallPaper.right.id,
+    });
+  };
+
   return (
     <>
       <div className="m-20 flex-column">
@@ -135,43 +155,9 @@ export const Service = () => {
 
                 <div className="flex gap-4 mt-6">
                   {isItemBookmarkedData != null ? (
-                    <BsBookmarkFill
-                      className="text-[50px] cursor-pointer"
-                      onClick={async () => {
-                        if (
-                          currentSession === null ||
-                          tile.id == null ||
-                          wallPaper.left.id == null ||
-                          wallPaper.right.id == null
-                        )
-                          return;
-                        deleteInteriorBookmarkMutation.mutate({
-                          userId: currentSession.user.id,
-                          tileId: tile.id,
-                          leftWallpaperId: wallPaper.left.id,
-                          rightWallpaperId: wallPaper.right.id,
-                        });
-                      }}
-                    />
+                    <BsBookmarkFill onClick={deleteBookmark} className="text-[50px] cursor-pointer" />
                   ) : (
-                    <button
-                      className="flex-auto h-[64px] rounded-xl bg-point"
-                      onClick={async () => {
-                        if (
-                          currentSession === null ||
-                          tile.id == null ||
-                          wallPaper.left.id == null ||
-                          wallPaper.right.id == null
-                        )
-                          return;
-                        addInteriorBookmarkMutation.mutate({
-                          userId: currentSession.user.id,
-                          tileId: tile.id,
-                          leftWallpaperId: wallPaper.left.id,
-                          rightWallpaperId: wallPaper.right.id,
-                        });
-                      }}
-                    >
+                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl bg-point">
                       저장하기
                     </button>
                   )}

@@ -50,11 +50,13 @@ export const MyComment = () => {
       <MypageTitle />
       <MypageSubTitle type="comment" />
       {/* 글 목록 */}
-      {userCommentData.length === 0 ? <EmptyData type="comment" /> : (
+      {userCommentData.length === 0 ? (
+        <EmptyData type="comment" />
+      ) : (
         <ul className="w-full">
           {/* 항목 */}
           {pageData.map((comment, index) => {
-            const { POSTS: post } = comment
+            const { POSTS: post } = comment;
             return (
               <li key={comment.id} className="flex-column contents-center border-y border-gray06">
                 {/* 포스트 */}
@@ -76,21 +78,31 @@ export const MyComment = () => {
                       <FaRegSquareCheck className="text-gray05" />
                     )}
                   </label>
-                  <div className="flex contents-center gap-[24px] w-full h-full cursor-pointer" onClick={() => {
-                    isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id)
-                  }}>
+                  <div
+                    className="flex contents-center gap-[24px] w-full h-full cursor-pointer"
+                    onClick={() => {
+                      isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id);
+                    }}
+                  >
                     <p className="w-[80px]">{index + 1}</p>
                     <p className="w-[1040px]">{post.title}</p>
                     <DateConvertor datetime={post.created_at} type={"dotDate"} />
 
                     <button className="flex contents-center w-[16px] h-[16px]">
                       {isOpenComment === comment.id ? (
-                        <img className="rotate-180" src={arrowIcon}
-                          onClick={() => { openCommentHandler("") }}
+                        <img
+                          className="rotate-180"
+                          src={arrowIcon}
+                          onClick={() => {
+                            openCommentHandler("");
+                          }}
                         />
                       ) : (
-                        <img src={arrowIcon}
-                          onClick={() => { openCommentHandler(comment.id) }}
+                        <img
+                          src={arrowIcon}
+                          onClick={() => {
+                            openCommentHandler(comment.id);
+                          }}
                         />
                       )}
                     </button>
@@ -102,7 +114,9 @@ export const MyComment = () => {
                     <p className="flex self-start">{comment.content}</p>
                     <div className="flex contents-center gap-[12px]">
                       <DateConvertor datetime={comment.created_at} type={"dotDate"} />
-                      <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">수정</button>
+                      <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">
+                        수정
+                      </button>
                     </div>
                   </div>
                 )}

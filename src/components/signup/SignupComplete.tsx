@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import checkCircle from "assets/checkCircle.svg"
+import checkCircle from "assets/checkCircle.svg";
 import { useAuthStore } from "store";
 
 import { SignupStep } from "./SignupStep";
@@ -21,7 +21,7 @@ export const SignupComplete = () => {
       </p>
       <img src={checkCircle} className="w-[80px] h-[80px] my-[40px]" />
       <Link to={"/"} className="w-[480px]">
-        <button className="text-black auth-button-text auth-button bg-point point-button-hover" >홈으로 돌아가기</button>
+        <button className="text-black auth-button-text auth-button bg-point point-button-hover">홈으로 돌아가기</button>
       </Link>
     </div>
   );
