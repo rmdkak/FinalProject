@@ -74,7 +74,7 @@ export const Comments = () => {
                   </div>
                   <p>{comment.content}</p>
                   {comment.commentImg != null && (
-                    <img src={`${storageUrl}${comment.commentImg as string}`} className="my-[20px] w-[500px]" />
+                    <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px] w-[500px]" />
                   )}
                   <div className="flex gap-2 text-gray02">
                     <DateConvertor datetime={comment.created_at} type="dotDate" />
