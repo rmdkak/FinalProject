@@ -7,7 +7,7 @@ import {
   fetchDetailData,
   fetchPostData,
   patchPostHandler,
-} from "api/supabase/postData";
+} from "api/supabase";
 
 export const usePosts = () => {
   const { id: postId } = useParams();
