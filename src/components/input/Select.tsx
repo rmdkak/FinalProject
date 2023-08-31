@@ -26,15 +26,14 @@ export const Select = (props: Props) => {
     setToggleIsOpen(!toggleIsOpen);
   };
 
-  // TODO 공용 input style 정해지면 변경 import
   const commonStyle = "w-full px-[24px] py-[8px] cursor-pointer focus:outline-none hover:bg-gray05";
 
   return (
     <div className={`relative w-[100%] h-[50px]`}>
       {selfEnterIsOpen ? (
         <>
-          <button className="flex w-full h-[50px] auth-input" type="button" onClick={changeToggleHandler}>
-            <p className={`whitespace-nowrap`}>{selectedValue !== undefined ? selectedValue : placeholder}</p>
+          <button className="flex w-full h-[48px] auth-input" type="button" onClick={changeToggleHandler}>
+            <p className="text-center whitespace-nowrap body-3">{selectedValue !== undefined ? selectedValue : placeholder}</p>
             <FaAngleDown className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer" />
           </button>
         </>
@@ -45,7 +44,7 @@ export const Select = (props: Props) => {
               setSelectedValue(event?.target.value);
             }}
             value={selectedValue}
-            className={`w-[100%] $"auth-input"`}
+            className="w-[100%] auth-input"
           />
           <FaAngleDown
             onClick={changeToggleHandler}
@@ -53,7 +52,7 @@ export const Select = (props: Props) => {
           />
         </>
       )}
-      <div className={`absolute w-full top-[50px] bg-white z-50`}>
+      <div className={`absolute w-full top-[50px] bg-white z-50 shadow-lg body-3`}>
         {toggleIsOpen &&
           option.map((el) => (
             <div key={el} onClick={onChangeHandler} className={`${commonStyle}`}>

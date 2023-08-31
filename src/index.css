@@ -234,33 +234,52 @@ body {
     @apply w-[520px] h-[254px] bg-gray-200 mx-5;
   }
 
-  /* 유준호 
-  텍스트가 전부 조금씩 차이가 있어서 많이쓰이는 컴포넌트 위주로만 클래스 만들었습니다.
-  텍스트는 공통으로 선정 안된 것들은 짧아서 그냥 쓸까 생각도 있습니다. 
-  w- 
-  h- 
-  text- 
-  m- p- */
-  .title-text {
-    @apply font-normal leading-[130%];
+  /* 피그마에 나온 공용 텍스트*/
+  .title-1 {
+    @apply text-[56px] font-medium leading-[130%];
   }
-  .content-text {
-    @apply font-normal leading-[110%];
+  .title-2 {
+    @apply text-[36px] font-medium leading-[130%];
   }
-  .auth-form-title {
-    @apply text-[32px] title-text;
+  .title-3 {
+    @apply text-[32px] font-medium leading-[130%];
   }
-  .auth-tab-title {
-    @apply text-[14px] title-text;
+  .title-4 {
+    @apply text-[24px] font-normal leading-[145%];
   }
-  .auth-label {
-    @apply text-[12px] content-text;
+  .body-1 {
+    @apply text-[18px] font-normal leading-[150%];
+  }
+  .body-2 {
+    @apply text-[16px] font-normal leading-[150%];
+  }
+  .body-3 {
+    @apply text-[14px] font-normal leading-[150%];
+  }
+  .body-4 {
+    @apply text-[12px] font-normal leading-[150%];
+  }
+
+  .underline-pb {
+    @apply pb-[24px] border-b border-b-black;
   }
   .auth-input {
-    @apply w-full px-[24px] py-[12px] border border-gray05 rounded-[8px] disabled:bg-gray05 auth-tab-title placeholder:text-gray02;
+    @apply w-full h-[48px] px-[24px] py-[12px] border border-gray05 rounded-[8px] disabled:bg-gray05 focus:outline-none text-[14px] font-normal leading-[130%] placeholder:text-gray02;
   }
   .auth-button {
-    @apply w-full h-[48px] px-[24px] py-[12px] bg-point text-black;
+    @apply w-full h-[48px] px-[24px] py-[12px] rounded-[8px];
+  }
+  .auth-button-text {
+    @apply text-[14px] font-medium leading-[130%];
+  }
+  .white-button-hover {
+    @apply hover:bg-point hover:border-point;
+  }
+  .point-button-hover {
+    @apply hover:bg-[#FFFBF0] hover:border hover:border-point;
+  }
+  .gray-button-hover {
+    @apply hover:border hover:border-black;
   }
   .auth-error {
     @apply text-[12px] font-light leading-[110%] text-error;

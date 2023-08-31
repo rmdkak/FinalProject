@@ -13,6 +13,7 @@ export const useMypage = () => {
     queryFn: async () => {
       return await fetchMyPostsData(userId as string);
     },
+    enabled: userId !== undefined
   });
 
   // my post delete query
@@ -27,6 +28,7 @@ export const useMypage = () => {
     queryFn: async () => {
       return await fetchMyCommentsData(userId as string);
     },
+    enabled: userId !== undefined
   });
 
   // my comment delete query
@@ -41,6 +43,7 @@ export const useMypage = () => {
     queryFn: async () => {
       return await fetchMyBookmarksData(userId as string);
     },
+    enabled: userId !== undefined
   });
 
   // my bookmark delete query
@@ -55,6 +58,7 @@ export const useMypage = () => {
     queryFn: async () => {
       return await fetchMyLikesData(userId as string);
     },
+    enabled: userId !== undefined
   });
 
   // my like delete query

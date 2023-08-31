@@ -1,8 +1,7 @@
 import { useState } from "react";
 
 import { storageUrl } from "api/supabase";
-import { DateConvertor } from "components/date";
-import { useDialog } from "components/overlay/dialog/Dialog.hooks";
+import { useDialog, DateConvertor } from "components";
 import { useComments } from "hooks";
 import { usePosts } from "hooks/usePosts";
 import { useAuthStore } from "store";

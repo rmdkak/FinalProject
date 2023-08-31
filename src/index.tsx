@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { OverlayProvider } from "components/overlay/dialog/Overlay.context";
+import { OverlayProvider } from "components";
 
 import App from "./App";
 

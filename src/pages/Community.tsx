@@ -6,8 +6,7 @@ import { AutoPlay } from "@egjs/flicking-plugins";
 import Flicking from "@egjs/react-flicking";
 import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
-import { DateConvertor, PostBookmark } from "components";
-import { useDialog } from "components/overlay/dialog/Dialog.hooks";
+import { DateConvertor, PostBookmark, useDialog } from "components";
 import { usePagination, usePosts } from "hooks";
 import { useAuthStore } from "store";
 import "@egjs/react-flicking/dist/flicking.css";
@@ -77,7 +76,7 @@ export const Community = () => {
     dataLength: filteredPosts.length,
     postPerPage: 8,
   });
-  
+
   const createPostHandler = async () => {
     if (currentSession === null) {
       const sessionCheck = await Confirm("게시물 작성은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");

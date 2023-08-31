@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import uuid from "react-uuid";
 
 import { supabase } from "api/supabase";
-import { useDialog } from "components/overlay/dialog/Dialog.hooks";
+import { useDialog } from "components";
 import { useComments } from "hooks/useComments";
 import { useAuthStore } from "store";
 
