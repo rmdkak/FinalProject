@@ -14,8 +14,8 @@ const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 transl
 interface MyData {
   postData: Array<Tables<"POSTS", "Row">>;
   commentData: Array<Tables<"COMMENTS", "Row">>;
-  bookmarkData: Array<Tables<"ITEM-BOOKMARK", "Row">>;
-  likeData: Array<Tables<"POST-BOOKMARKS", "Row">>;
+  bookmarkData: Array<Tables<"BOOKMARKS", "Row">>;
+  likeData: Array<Tables<"POSTLIKES", "Row">>;
 }
 
 export const Mypage = () => {
