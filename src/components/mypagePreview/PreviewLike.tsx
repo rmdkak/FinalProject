@@ -11,7 +11,7 @@ interface Props {
   likeData: Array<Tables<"POSTLIKES", "Row"> & { POSTS: Tables<"POSTS", "Row"> | null }> | undefined;
 }
 
-export const PreviewLike = ({ likeData }: Pick<Props, "likeData">) => {
+export const PreviewLike = ({ likeData }: Props) => {
   if (likeData === undefined) return <PreviewEmpty />
   console.log('likeData :', likeData);
 
