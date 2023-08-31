@@ -11,7 +11,7 @@ interface Props {
 
 export const Dialog = ({ onClose, onSucess, type, children }: Props) => {
   type CloseDialog = (event: MouseEvent<HTMLDivElement | HTMLElement>) => void;
-  const close: CloseDialog = event => {
+  const close: CloseDialog = (event) => {
     const { target, currentTarget } = event;
     if (target !== currentTarget) return;
     onClose();

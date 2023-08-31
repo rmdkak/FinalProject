@@ -6,7 +6,7 @@ import {
   useCallback,
   useContext,
   useMemo,
-  useState
+  useState,
 } from "react";
 
 const OverlayContext = createContext<{
@@ -18,7 +18,7 @@ export const OverlayProvider = ({ children }: PropsWithChildren) => {
   const [overlays, setOverlays] = useState<Map<string, ReactNode>>(new Map());
 
   const mount = useCallback((id: string, element: ReactNode) => {
-    setOverlays(_overlays => {
+    setOverlays((_overlays) => {
       const overlays = new Map(_overlays);
       overlays.set(id, element);
 
@@ -27,7 +27,7 @@ export const OverlayProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   const unmount = useCallback((id: string) => {
-    setOverlays(_overlays => {
+    setOverlays((_overlays) => {
       const overlays = new Map(_overlays);
       overlays.delete(id);
 
@@ -38,9 +38,9 @@ export const OverlayProvider = ({ children }: PropsWithChildren) => {
   const values = useMemo(
     () => ({
       mount,
-      unmount
+      unmount,
     }),
-    [mount, unmount]
+    [mount, unmount],
   );
 
   return (

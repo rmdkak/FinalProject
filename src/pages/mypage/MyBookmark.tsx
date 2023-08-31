@@ -44,7 +44,9 @@ export const MyBookmark = () => {
     <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
       <MypageTitle />
       <MypageSubTitle type="bookmark" />
-      {userBookmarkData.length === 0 ? <EmptyData type="bookmark" /> : (
+      {userBookmarkData.length === 0 ? (
+        <EmptyData type="bookmark" />
+      ) : (
         <ul className="flex flex-wrap gap-y-[64px] gap-x-[40px] w-full mt-[40px]">
           {pageData.map((bookmark) => {
             return (
@@ -92,8 +94,8 @@ export const MyBookmark = () => {
                         src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId as string}`}
                         className="w-[31px] h-[62px] rounded-r-[12px] bg-blue-500"
                       />
-                    </div >
-                  </div >
+                    </div>
+                  </div>
                   <div className="flex-column gap-[8px]">
                     <p className="text-[14px] font-medium leading-[130%] text-center">바닥재</p>
                     <img
@@ -101,11 +103,11 @@ export const MyBookmark = () => {
                       className="w-[62px] h-[62px] rounded-[12px] bg-green-500"
                     />
                   </div>
-                </div >
-              </li >
+                </div>
+              </li>
             );
           })}
-        </ul >
+        </ul>
       )}
 
       <div className="flex items-center justify-between w-full mt-[68px]">
@@ -115,6 +117,6 @@ export const MyBookmark = () => {
       </div>
       {/* 페이지네이션 */}
       <div className="mt-[120px]">{showPageComponent}</div>
-    </div >
+    </div>
   );
 };

@@ -2,12 +2,12 @@ import { type Tables } from "types/supabase";
 
 import { supabase } from "./supabaseClient";
 
-const DATA_TABLE = "POSTLIKES"
+const DATA_TABLE = "POSTLIKES";
 // get
 export const fetchPostBookmark = async ({ userId }: Pick<Tables<"POSTLIKES", "Row">, "userId">) => {
   if (userId == null) return;
   const { data } = await supabase.from(DATA_TABLE).select().eq("userId", userId);
-  return data
+  return data;
 };
 
 // post

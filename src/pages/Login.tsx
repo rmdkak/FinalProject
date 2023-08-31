@@ -41,8 +41,8 @@ export const Login = () => {
   };
 
   const checkClickHandler = () => {
-    setStayLoggedInStatus(!stayLoggedInStatus)
-  }
+    setStayLoggedInStatus(!stayLoggedInStatus);
+  };
 
   useEffect(() => {
     if (currentSession !== null) {
@@ -54,9 +54,7 @@ export const Login = () => {
 
   return (
     <div className="w-[560px] flex-column items-center mx-auto">
-      <h2 className="w-full text-center mt-[80px] pb-[24px] border-b border-black title-3">
-        로그인
-      </h2>
+      <h2 className="w-full text-center mt-[80px] pb-[24px] border-b border-black title-3">로그인</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-[40px]">
         <label htmlFor="email" className="text-[12px] font-normal leading-[110%] text-gray01">
           이메일
@@ -111,14 +109,18 @@ export const Login = () => {
               className="hidden"
               onChange={checkClickHandler}
             />
-            <label htmlFor="logging" className="flex contents-center gap-[8px] text-[12px] leading-[110%] self-center cursor-pointer hover:text-black">
+            <label
+              htmlFor="logging"
+              className="flex contents-center gap-[8px] text-[12px] leading-[110%] self-center cursor-pointer hover:text-black"
+            >
               {stayLoggedInStatus ? (
                 <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
               ) : (
                 <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
               )}
               {/* <CheckBoxIcon checkState={stayLoggedInStatus} changeCheckState={setStayLoggedInStatus} size={20} /> */}
-              로그인 유지</label>
+              로그인 유지
+            </label>
           </div>
 
           <div className="flex gap-[8px] items-center">

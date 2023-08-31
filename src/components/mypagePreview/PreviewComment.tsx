@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const PreviewComment = ({ commentData }: Props) => {
-  if (commentData === undefined) return <PreviewEmpty />
+  if (commentData === undefined) return <PreviewEmpty />;
   const [isOpenComment, setIsOpenComment] = useState<string>();
   const openCommentHandler = (commentId: string) => {
     setIsOpenComment(commentId);
@@ -22,7 +22,7 @@ export const PreviewComment = ({ commentData }: Props) => {
     <ul className="flex-column h-[255px]">
       {commentData.length === 0 ? <PreviewEmpty /> : null}
       {commentData.map((comment) => {
-        const { POSTS: post } = comment
+        const { POSTS: post } = comment;
         return (
           <Fragment key={comment.id}>
             {post !== null && (
@@ -30,20 +30,32 @@ export const PreviewComment = ({ commentData }: Props) => {
                 {/* 포스트 */}
                 <div className="flex contents-center w-full border-y border-gray06 gap-[24px] h-[64px] px-[24px]">
                   {/* 체크 박스 */}
-                  <div className="flex items-center justify-between gap-[24px] w-full h-full cursor-pointer" onClick={() => {
-                    isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id)
-                  }}>
-                    <Link to={`/detail/${post.id}`} className={linkStyle}>{post.title}</Link>
+                  <div
+                    className="flex items-center justify-between gap-[24px] w-full h-full cursor-pointer"
+                    onClick={() => {
+                      isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id);
+                    }}
+                  >
+                    <Link to={`/detail/${post.id}`} className={linkStyle}>
+                      {post.title}
+                    </Link>
                     <div className="flex">
                       <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
                       <button className="flex contents-center w-[16px] h-[16px] ml-[12px]">
                         {isOpenComment === comment.id ? (
-                          <img className="rotate-180" src={arrowIcon}
-                            onClick={() => { openCommentHandler("") }}
+                          <img
+                            className="rotate-180"
+                            src={arrowIcon}
+                            onClick={() => {
+                              openCommentHandler("");
+                            }}
                           />
                         ) : (
-                          <img src={arrowIcon}
-                            onClick={() => { openCommentHandler(comment.id) }}
+                          <img
+                            src={arrowIcon}
+                            onClick={() => {
+                              openCommentHandler(comment.id);
+                            }}
                           />
                         )}
                       </button>
@@ -56,15 +68,17 @@ export const PreviewComment = ({ commentData }: Props) => {
                     <p className="flex self-start">{comment.content}</p>
                     <div className="flex contents-center gap-[12px]">
                       <DateConvertor datetime={comment.created_at} type={"dotDate"} />
-                      <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">수정</button>
+                      <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">
+                        수정
+                      </button>
                     </div>
                   </div>
                 )}
               </li>
             )}
           </Fragment>
-        )
+        );
       })}
-    </ul >
-  )
-}
+    </ul>
+  );
+};

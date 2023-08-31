@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react"
+import { useState, type ChangeEvent } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
@@ -13,11 +13,11 @@ export const MyLike = () => {
   };
 
   const { userLikesResponse, deleteUserLikeMutation } = useMypage();
-  const { data: userLikeData } = userLikesResponse
+  const { data: userLikeData } = userLikesResponse;
 
   const deleteLikes = () => {
-    deleteUserLikeMutation.mutate(likeIdsToDelete)
-  }
+    deleteUserLikeMutation.mutate(likeIdsToDelete);
+  };
 
   const onChange = (event: ChangeEvent<HTMLInputElement>, id: string) => {
     const filteredLikeIds = filteredLikeIdsHandler(id);
@@ -30,7 +30,7 @@ export const MyLike = () => {
     }
   };
 
-  if (userLikeData === undefined) return <p>에러페이지</p>
+  if (userLikeData === undefined) return <p>에러페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
     data: userLikeData,
@@ -45,9 +45,12 @@ export const MyLike = () => {
 
       <ul>
         {pageData.map((likedPost, index) => {
-          const { POSTS: post } = likedPost
+          const { POSTS: post } = likedPost;
           return (
-            <li key={likedPost.id} className="flex contents-center border-y border-gray06 gap-[24px] h-[64px] px-[24px]">
+            <li
+              key={likedPost.id}
+              className="flex contents-center border-y border-gray06 gap-[24px] h-[64px] px-[24px]"
+            >
               <input
                 id={likedPost.id}
                 type="checkbox"
@@ -64,11 +67,13 @@ export const MyLike = () => {
                 )}
               </label>
               <p className="w-[80px]">{pageData.length - index}</p>
-              <Link to={`/detail/${likedPost.id as string}`} className="w-[830px]">{post.title}</Link>
+              <Link to={`/detail/${likedPost.id as string}`} className="w-[830px]">
+                {post.title}
+              </Link>
               <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />
               <button className="w-[80px] h-[32px] border border-gray05 rounded-[8px] px-[24px]">수정</button>
             </li>
-          )
+          );
         })}
       </ul>
 
