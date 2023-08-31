@@ -3,7 +3,7 @@ export * from "./comment";
 export * from "./common";
 // export * from './dialog';
 export * from "./layout";
-export * from './mypage';
+export * from './mypagePreview';
 export * from './overlay';
 export * from "./postBookmark";
 export * from "./service";

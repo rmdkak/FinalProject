@@ -68,18 +68,16 @@ export const Service = () => {
                   <>
                     <div
                       style={{
-                        backgroundImage: `url(${
-                          interiorSelecteIndex !== 4 ? leftWallPaperBg : (wallPaper.left.image as string)
-                        })`,
+                        backgroundImage: `url(${interiorSelecteIndex !== 4 ? leftWallPaperBg : (wallPaper.left.image as string)
+                          })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
                       className="left-wall"
                     ></div>
                     <div
                       style={{
-                        backgroundImage: `url(${
-                          interiorSelecteIndex !== 4 ? RightWallPaperBg : (wallPaper.right.image as string)
-                        })`,
+                        backgroundImage: `url(${interiorSelecteIndex !== 4 ? RightWallPaperBg : (wallPaper.right.image as string)
+                          })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
                       className="right-wall"

@@ -20,10 +20,10 @@ export const Mypage = () => {
     userLikesResponse: { data: likeData },
   } = useMypage();
 
-  const previewPost = postData?.filter((_, index) => index < 2)
-  const previewComment = commentData?.filter((_, index) => index < 2)
-  const previewBookmark = bookmarkData?.filter((_, index) => index < 3)
-  const previewLikes = likeData?.filter((_, index) => index < 2)
+  const filteredPosts = postData?.filter((_, index) => index < 2)
+  const filteredComment = commentData?.filter((_, index) => index < 2)
+  const filteredBookmark = bookmarkData?.filter((_, index) => index < 3)
+  const filteredLikes = likeData?.filter((_, index) => index < 2)
 
   const countBoxArray = [
     { title: "내가 쓴 글", link: "/mypage/post", icon: <RxPencil2 className="w-[24px] h-[24px]" />, data: postData, },
@@ -57,10 +57,10 @@ export const Mypage = () => {
           <p className="text-[18px] font-normal leading-[150%]">{el.title}</p>
           <Link to={el.link} className="flex contents-center gap-[12px] body-4 text-gray02">VIEW MORE<img src={viewMore} className="w-[24px] h-[24px]" /></Link>
         </div>
-        {(el.title === "내가 쓴 글") && <PreviewPost postData={previewPost} />}
-        {(el.title === "내가 쓴 댓글") && <PreviewComment commentData={previewComment} />}
-        {(el.title === "북마크") && <PreviewBookmark bookmarkData={previewBookmark} />}
-        {(el.title === "좋아요") && <PreviewLike likeData={previewLikes} />}
+        {(el.title === "내가 쓴 글") && <PreviewPost postData={filteredPosts} />}
+        {(el.title === "내가 쓴 댓글") && <PreviewComment commentData={filteredComment} />}
+        {(el.title === "북마크") && <PreviewBookmark bookmarkData={filteredBookmark} />}
+        {(el.title === "좋아요") && <PreviewLike likeData={filteredLikes} />}
       </div>
     );
   });
