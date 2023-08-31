@@ -528,6 +528,6 @@ export interface Database {
 }
 
 export type Tables<
-T extends keyof Database["public"]["Tables"],
-A extends keyof Database["public"]["Tables"][T],
+  T extends keyof Database["public"]["Tables"],
+  A extends keyof Database["public"]["Tables"][T],
 > = Database["public"]["Tables"][T][A];

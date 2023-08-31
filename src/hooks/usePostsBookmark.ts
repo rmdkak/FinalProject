@@ -15,7 +15,8 @@ export const usePostsBookmark = () => {
     queryFn: async () => {
       if (userId === undefined) return
       return await fetchPostBookmark({ userId })
-    }
+    },
+    enabled: userId !== undefined
   });
 
   const addBookmarkMutation = useMutation({

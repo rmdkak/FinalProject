@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
 import { type PasswordVisible, PasswordVisibleButton, Select } from "components";
-import { BUTTON_COMMON_STYLE } from "pages";
 import { useAuthStore } from "store";
 
 import { emailOptions, phoneOptions } from "./constant";
 import { InvalidText } from "./InvalidText";
+import { SignupStep } from "./SignupStep";
 
 export interface SignupInputs {
   id: string;
@@ -25,7 +25,8 @@ interface Props {
   nextStep: () => void;
 }
 
-const DUPLICATE_CHECK_BUTTON = "h-[50px] text-white bg-[#888] ml-[8px] px-[20px] whitespace-nowrap";
+const DUPLICATE_CHECK_BUTTON = "auth-button-text h-[48px] text-black bg-white px-[20px] whitespace-nowrap border border-black rounded-[8px] white-button-hover";
+const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]"
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       setCheckedDuplicate({ ...checkedDuplicate, [target]: true });
     } else {
       target === "name"
-        ? setError("name", { message: "이미 존재하는 닉네임입니다.." })
+        ? setError("name", { message: "이미 존재하는 닉네임입니다." })
         : setError("id", { message: "이미 존재하는 이메일입니다." });
     }
   };
@@ -79,6 +80,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       setError("id", { message: "email을 선택해주세요." });
       return;
     }
+    if (selectPhoneFistNum === undefined) {
+      setError("phoneMiddleNum", { message: "휴대전화 앞자리를 선택해주세요." });
+      return;
+    }
     if (!checkedDuplicate.email) {
       setError("id", { message: "중복 체크를 해주세요." });
       return;
@@ -87,19 +92,20 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       setError("name", { message: "중복 체크를 해주세요." });
       return;
     }
-    if (selectPhoneFistNum === undefined || !/^[0-9]{3}$/.test(selectPhoneFistNum)) {
-      setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
-      return;
-    }
+
 
     const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     const email = `${id}@${selectEmail}`;
-
     if (!emailPattern.test(email)) {
       setError("id", { message: "이메일 형식이 올바르지 않습니다." });
       return;
     }
+    const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/
     const phone = `${selectPhoneFistNum}${phoneMiddleNum}${phoneLastNum}`;
+    if (!phonePattern.test(phone)) {
+      setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
+      return;
+    }
 
     try {
       await signup({ ...data, email, phone });
@@ -118,24 +124,30 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   }, []);
 
   return (
-    <div className="items-center flex-column">
-      <h2 className="text-[32px] font-bold leading-[130%] mt-[40px]">회원가입</h2>
+    <div className="items-center flex-column mt-[80px] w-[560px] mx-auto">
+      <div className="w-full text-center underline-pb">
+        <p className="title-3 mt-[40px]">회원가입</p>
+      </div>
+      <SignupStep step={1} />
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
+
         {/* 이메일 */}
-        <div className="flex items-center w-full">
-          <div className="w-[600px]">
+        <label className="self-start body-4 my-[8px]">이메일</label>
+        <div className="flex items-center gap-[8px] w-full">
+          <div className="flex-column w-[610px]">
             <input
               {...register("id", {
                 required: "이메일을 입력해주세요.",
                 minLength: { value: 4, message: "id가 너무 짧습니다." },
                 maxLength: { value: 20, message: "id가 너무 깁니다." },
+                onChange: () => { setCheckedDuplicate({ ...checkedDuplicate, email: false }) }
               })}
               type="id"
               placeholder="이메일"
-              className="auth-input"
+              className="auth-input body-3"
             />
           </div>
-          <span className="mx-[8px]">@</span>
+          <span className="body-3">@</span>
           <Select
             option={emailOptions}
             selectedValue={selectEmail}
@@ -152,17 +164,24 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             중복 체크
           </button>
         </div>
-        <InvalidText errorsMessage={errors.id?.message} />
-        <div className="flex items-center w-full">
+        {checkedDuplicate.email
+          ? <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>사용 가능한 이메일입니다.</p>
+          : <InvalidText errorsMessage={errors.id?.message} size={30} />
+        }
+
+        {/* 닉네임 */}
+        <label className="self-start body-4 my-[8px]">닉네임</label>
+        <div className="flex items-center gap-[8px] w-full">
           <input
             {...register("name", {
               required: "닉네임을 입력해주세요.",
               minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
               maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
+              onChange: () => { setCheckedDuplicate({ ...checkedDuplicate, name: false }) }
             })}
             type="text"
             placeholder="닉네임"
-            className="auth-input"
+            className="auth-input body-3"
           />
           <button
             type="button"
@@ -174,9 +193,16 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             중복 체크
           </button>
         </div>
-        <InvalidText errorsMessage={errors.name?.message} />
+        {checkedDuplicate.name
+          ? <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>사용 가능한 닉네임입니다.</p>
+          : <InvalidText errorsMessage={errors.name?.message} size={30} />
+        }
 
-        <div className="relative flex w-full">
+
+        {/* 비밀번호 */}
+        <label className="self-start body-4 my-[8px]">비밀번호</label>
+        <div className="relative flex items-center gap-[8px] w-full">
+          {/* <div className="relative flex w-full"> */}
           <input
             {...register("password", {
               required: "비밀번호를 입력해주세요.",
@@ -185,23 +211,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
                 message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
               },
               minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-            })}
-            type={showPassword.password ? "text" : "password"}
-            placeholder="비밀번호"
-            className="auth-input"
-          />
-          <PasswordVisibleButton
-            passwordType={"password"}
-            isVisibleState={showPassword}
-            setIsVisibleState={setShowPassword}
-          />
-        </div>
-        <InvalidText errorsMessage={errors.password?.message} />
-
-        <div className="relative flex w-full">
-          <input
-            {...register("passwordCheck", {
-              required: "비밀번호를 입력해주세요.",
               validate: {
                 matchesPreviousPassword: (value) => {
                   const prevPassword = getValues("password");
@@ -209,9 +218,24 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
                 },
               },
             })}
-            type={showPassword.passwordConfirm ?? false ? "text" : "password"}
+            type={showPassword.password ? "text" : "password"}
             placeholder="비밀번호"
-            className="auth-input"
+            className="auth-input body-3"
+          />
+          <PasswordVisibleButton
+            passwordType={"password"}
+            isVisibleState={showPassword}
+            setIsVisibleState={setShowPassword}
+          />
+        </div>
+
+        {/* 비밀번호 확인 */}
+        <div className="relative flex w-full mt-[8px]">
+          <input
+            {...register("passwordCheck")}
+            type={showPassword.passwordConfirm ?? false ? "text" : "password"}
+            placeholder="비밀번호 확인"
+            className="auth-input body-3"
           />
           <PasswordVisibleButton
             passwordType={"passwordConfirm"}
@@ -219,8 +243,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             setIsVisibleState={setShowPassword}
           />
         </div>
-        <InvalidText errorsMessage={errors.passwordCheck?.message} />
+        <InvalidText errorsMessage={errors.password?.message} size={30} />
 
+        {/* 휴대전화 */}
+        <label className="self-start body-4 my-[8px]">휴대폰 번호</label>
         <div className="flex items-center w-full">
           <Select
             option={phoneOptions}
@@ -231,28 +257,23 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
           />
           <span className="mx-[12px]">-</span>
           <input
-            {...register("phoneMiddleNum", {
-              pattern: { value: /^[0-9]{3,4}$/, message: "휴대전화 형식이 올바르지 않습니다." },
-            })}
+            {...register("phoneMiddleNum")}
             type="text"
             placeholder="휴대전화"
-            className={`$"auth-input" text-center`}
+            className="text-center auth-input body-3"
           />
           <span className="mx-[12px]">-</span>
           <input
-            {...register("phoneLastNum", {
-              pattern: { value: /^[0-9]{4}$/, message: "휴대전화 형식이 올바르지 않습니다." },
-            })}
+            {...register("phoneLastNum")}
             type="text"
             placeholder="휴대전화"
-            className={`$"auth-input" text-center`}
+            className="text-center auth-input body-3"
           />
         </div>
-        <InvalidText errorsMessage={errors.phoneMiddleNum?.message} />
-        <InvalidText errorsMessage={errors.phoneLastNum?.message} />
+        <InvalidText errorsMessage={errors.phoneMiddleNum?.message} size={30} />
 
-        <button className={BUTTON_COMMON_STYLE}>회원가입</button>
-        <button className={BUTTON_COMMON_STYLE} type="button" onClick={prevStep}>
+        <button className={`${NEXT_PREV_BUTTON} bg-point point-button-hover`}>회원가입</button>
+        <button className={`${NEXT_PREV_BUTTON} bg-white border border-black white-button-hover`} type="button" onClick={prevStep}>
           이전
         </button>
       </form>

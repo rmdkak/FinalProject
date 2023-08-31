@@ -53,7 +53,7 @@ export const ResouresCalculator = (): JSX.Element => {
     if (selectItem === 1)
       RESULT_CONSUMPTION = Math.ceil(
         (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) +
-          (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) / 10,
+        (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) / 10,
       );
 
     setResult({
@@ -99,9 +99,8 @@ export const ResouresCalculator = (): JSX.Element => {
                     onSelectItem(index);
                   }}
                   key={item}
-                  className={`flex contents-center w-full px-6 py-3 mr-4 border rounded-lg cursor-pointer ${
-                    selectItem === index ? "border-black" : "border-gray05 opacity-40"
-                  } `}
+                  className={`flex contents-center w-full px-6 py-3 mr-4 border rounded-lg cursor-pointer ${selectItem === index ? "border-black" : "border-gray05 opacity-40"
+                    } `}
                 >
                   <img
                     className={`mr-1 ${selectItem === index ? "" : "opacity-40"}`}
