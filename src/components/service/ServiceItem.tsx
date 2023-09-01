@@ -30,14 +30,13 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
     interiorSelecteIndex,
     interiorSelectX,
   } = useServiceStore((state) => state);
-  const [color, setColor] = useState<string>("#000");
+  const [color, setColor] = useState<string>("");
 
   // 페이지 마운트, 언마운트시 전역데이터 초기화
   useEffect(() => {
-    // console.log("페이지 마운트됨");
     resetWallPaper();
-    resetTile();
     resetWallpaperPaint();
+    resetTile();
   }, []);
 
   /**
@@ -56,7 +55,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
 
   const changeColorPicker = (color: ColorResult) => {
     setColor(color.hex);
-
+    resetWallPaper();
     interiorSelectX ? setWallpaperPaint(color.hex, "left") : setWallpaperPaint(color.hex, "right");
   };
 
@@ -116,6 +115,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
           changeColorPicker(color);
         }}
         disableAlpha={true}
+        width="400"
       />
     );
   } else {

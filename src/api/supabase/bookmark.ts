@@ -9,13 +9,17 @@ const DATA_TABLE = "BOOKMARKS";
 export const fetchBookmark = async (bookmark: BookmarkType) => {
   const { userId, tileId, leftWallpaperId, rightWallpaperId } = bookmark;
   if (userId === null) return;
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from(DATA_TABLE)
     .select()
     .eq("tileId", tileId)
     .eq("leftWallpaperId", leftWallpaperId)
     .eq("rightWallpaperId", rightWallpaperId)
     .eq("userId", userId);
+  if (error !== null) {
+    console.log("error :", error);
+    return;
+  }
   return data;
 };
 
