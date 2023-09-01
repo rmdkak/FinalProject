@@ -16,7 +16,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
   const [color, setColor] = useState<string | null>(leftWall);
   const [colorSide, setColorSide] = useState<boolean>(false);
   const { wallpaperPaint } = useServiceStore((state) => state);
-  const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== "" || wallpaperPaint.right !== "";
   const { Alert } = useDialog();
 
   useEffect(() => {

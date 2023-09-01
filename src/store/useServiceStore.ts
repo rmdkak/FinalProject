@@ -81,7 +81,7 @@ export const useServiceStore = create<Store>()((set) => ({
   },
 
   // 벽지 페인트
-  wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" },
+  wallpaperPaint: { left: "", right: "" },
   setWallpaperPaint: (selectedPaint, type) => {
     if (type === "left") {
       set((state) => ({
@@ -94,7 +94,7 @@ export const useServiceStore = create<Store>()((set) => ({
     }
   },
   resetWallpaperPaint: () => {
-    set(() => ({ wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" } }));
+    set(() => ({ wallpaperPaint: { left: "", right: "" } }));
   },
 
   // 타일
