@@ -6,7 +6,7 @@ import { AutoPlay } from "@egjs/flicking-plugins";
 import Flicking from "@egjs/react-flicking";
 import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
-import { DateConvertor, PostBookmark, useDialog } from "components";
+import { DateConvertor, useDialog } from "components";
 import { usePagination, usePosts } from "hooks";
 import { useAuthStore } from "store";
 import "@egjs/react-flicking/dist/flicking.css";
@@ -20,7 +20,8 @@ export const Community = () => {
 
   const { currentSession } = useAuthStore();
   const { Confirm } = useDialog();
-  const { fetchPostsMutation, deletePostMutation } = usePosts();
+  // const { fetchPostsMutation, deletePostMutation } = usePosts();
+  const { fetchPostsMutation } = usePosts();
   const { data: postList } = fetchPostsMutation;
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
 
@@ -54,14 +55,14 @@ export const Community = () => {
     setSelectedOption(event.target.value);
   };
 
-  const deleteHandler = async (id: string) => {
-    try {
-      const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
-      if (checkDelete) deletePostMutation.mutate(id);
-    } catch (error) {
-      console.log("error :", error);
-    }
-  };
+  // const deleteHandler = async (id: string) => {
+  //   try {
+  //     const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
+  //     if (checkDelete) deletePostMutation.mutate(id);
+  //   } catch (error) {
+  //     console.log("error :", error);
+  //   }
+  // };
 
   if (filteredPosts === undefined) {
     return (
@@ -102,7 +103,9 @@ export const Community = () => {
                   <img
                     src={post.postImage != null ? `${storageUrl}${post.postImage}` : noImage}
                     alt="postImg"
-                    className={`rounded-[8px] ${isExistCombination(post) ? "w-[322px]" : "w-[400px]"} h-[196px]`}
+                    className={`rounded-[8px] ${
+                      isExistCombination(post) ? "w-[322px]" : "w-[400px] mr-[78px]"
+                    } h-[196px] object-contain`}
                   />
                   {isExistCombination(post) && (
                     <div className="flex flex-col items-center gap-[5px] mt-[5px]">
@@ -169,28 +172,29 @@ export const Community = () => {
           </div>
           {pageData.map((post) => {
             return (
-              <div key={post.id} className="py-[25px] border-b border-gray-200">
-                <div
-                  onClick={() => {
-                    goDetailPage(post.id);
-                  }}
-                  className="flex justify-between gap-5 cursor-pointer"
-                >
+              <div
+                key={post.id}
+                className="py-[25px] border-b border-gray-200 cursor-pointer"
+                onClick={() => {
+                  goDetailPage(post.id);
+                }}
+              >
+                <div className="flex justify-between gap-5">
                   <div className="flex">
                     <div className="w-[1000px]">
                       <p className="text-[18px] font-semibold truncate">{post.title}</p>
                       <p className="text-[16px] mt-1 h-[45px] overflow-hidden text-[#888888]">{post.content}</p>
                     </div>
                   </div>
-                  <div className="flex">
+                  <div className="flex gap-5">
                     {post.postImage != null && (
                       <img
                         src={`${storageUrl}${post.postImage as string}`}
-                        className="h-[100px] w-[132px] rounded-[8px] mr-[20px]"
+                        className="h-[100px] w-[132px] rounded-[8px] object-contain"
                       />
                     )}
                     {isExistCombination(post) && (
-                      <div className="relative flex mr-[40px]">
+                      <div className="relative flex mr-[40px] ml-[20px]">
                         <div className="flex rounded-[12px]">
                           <img
                             src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
@@ -216,7 +220,7 @@ export const Community = () => {
                   <p>{post.nickname}</p>
                   <DateConvertor datetime={post.created_at} type="dotDate" />
                   <p>좋아요 {post.bookmark}</p>
-                  {currentSession?.user.id === post.userId && (
+                  {/* {currentSession?.user.id === post.userId && (
                     <div className="text-red-500">
                       <button className="mr-2">수정</button>
                       <button
@@ -227,8 +231,7 @@ export const Community = () => {
                         삭제
                       </button>
                     </div>
-                  )}
-                  <PostBookmark postId={post.id} />
+                  )} */}
                 </div>
               </div>
             );

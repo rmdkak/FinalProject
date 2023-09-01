@@ -28,8 +28,10 @@ export const Service = () => {
   //  타일 사이즈 컨트롤
   // const [wallPaperSize, setWallPaperSize] = useState<number>(70);
   // const [tileSize, setTileSize] = useState<number>(70);
+  // f3f3f3
+  // e5e5e5
 
-  const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== "" || wallpaperPaint.right !== "";
 
   useEffect(() => {
     if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);

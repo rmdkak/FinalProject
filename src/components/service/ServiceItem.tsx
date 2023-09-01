@@ -10,7 +10,6 @@ import { SelfPattern } from "./SelfPattern";
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 interface Props {
   data: Array<Tables<"WALLPAPER", "Row">>;
-  wallCheck?: true | false;
 }
 
 /**
@@ -19,7 +18,7 @@ interface Props {
  * @param type
  * @returns
  */
-export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
+export const ServiceItem = ({ data }: Props): JSX.Element => {
   const {
     checkType,
     resetWallPaper,
@@ -31,18 +30,13 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
     interiorSelecteIndex,
     interiorSelectX,
   } = useServiceStore((state) => state);
-  const [color, setColor] = useState<string>("#000");
+  const [color, setColor] = useState<string>("");
 
   // 페이지 마운트, 언마운트시 전역데이터 초기화
   useEffect(() => {
     // console.log("페이지 마운트됨");
     resetWallPaper();
     resetTile();
-    return () => {
-      // console.log("페이지 언마운트됨");
-      resetWallPaper();
-      resetTile();
-    };
   }, []);
 
   /**
