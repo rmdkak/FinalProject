@@ -3,9 +3,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { supabase } from "api/supabase";
-import { Modal } from "components";
-import { useAuthStore, useModalStore } from "store";
+import { savePostImageHandler } from "api/supabase";
+import { InteriorSection, Modal, useDialog } from "components";
+import { usePosts } from "hooks";
+import { useAuthStore, useModalStore, useServiceStore } from "store";
 
 interface Inputs {
   title: string;
@@ -13,11 +14,13 @@ interface Inputs {
   file: FileList;
 }
 export const Post = () => {
+  const { Alert } = useDialog();
   const { currentSession } = useAuthStore();
   const userId = currentSession?.user.id;
   const nickname = currentSession?.user.user_metadata.name;
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
+  const { createPostMutation } = usePosts();
   const {
     register,
     handleSubmit,
@@ -28,30 +31,60 @@ export const Post = () => {
   const isNotPassTextarea = errors.textarea?.type === "maxLength";
   const title = watch("title") ?? 0;
   const textarea = watch("textarea") ?? 0;
-
+  const { wallPaper, tile, wallpaperPaint } = useServiceStore();
+  console.log("wallpaperPaint :", wallpaperPaint);
+  console.log("tile :", tile);
+  console.log("wallPaper :", wallPaper);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const UUID = uuid();
     const title = data.title;
     const content = data.textarea;
-    const postImage = data.file[0];
-    const hasPostImgStatus = postImage == null ? null : `/postImg/${UUID}`;
-    try {
-      await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImage, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-      await supabase
-        .from("POSTS")
-        .insert({ id: UUID, title, content, bookmark: 0, nickname, postImage: hasPostImgStatus, userId });
-      await supabase.from("POSTLIKES").insert({ postId: UUID, userId: [] });
-    } catch (error) {
-      console.log("error", error);
+    const postImgfile = data.file[0];
+    const postImage = postImgfile == null ? null : `/postImg/${UUID}`;
+    // const leftPaintCode = wallpaperPaint.left;
+    // const rightPaintCode = wallpaperPaint.right;
+    const tileId = tile.id;
+    const leftWallpaperId = wallPaper.left.id;
+    const rightWallpaperId = wallPaper.right.id;
+
+    const isInteriorSelected = tileId !== null && leftWallpaperId !== null && rightWallpaperId !== null;
+    const isNotInteriorSelected = tileId === null && leftWallpaperId === null && rightWallpaperId === null;
+
+    if (isInteriorSelected || isNotInteriorSelected) {
+      const postData = {
+        id: UUID,
+        title,
+        content,
+        bookmark: 0,
+        nickname,
+        postImage,
+        userId,
+        tileId,
+        leftWallpaperId,
+        rightWallpaperId,
+      };
+      try {
+        await savePostImageHandler({ UUID, postImgfile });
+        createPostMutation.mutate(postData);
+        // await supabase.from("POSTLIKES").insert({ postId: UUID, userId: []});
+      } catch (error) {
+        console.log("error", error);
+      }
+    } else {
+      if (tileId === null) {
+        await Alert("타일이 선택되지 않았습니다.");
+      } else if (leftWallpaperId === null) {
+        await Alert("왼쪽 벽지가 선택되지 않았습니다.");
+      } else if (rightWallpaperId === null) {
+        await Alert("오른쪽 벽지가 선택되지 않았습니다.");
+      }
+      return;
     }
     navigate("/community");
   };
 
   useEffect(() => {
-    if (currentSession === null) navigate("/");
+    if (currentSession === null) navigate("/login");
   }, [currentSession]);
 
   const movePageHandler = (moveEvent: string) => {
@@ -69,7 +102,6 @@ export const Post = () => {
     <div className="w-[1280px] mx-auto mt-[40px]">
       <div className="items-center flex-column">
         <p className="font-bold text-[30px]">커뮤니티</p>
-        <p className="text-gray-400">서브 텍스트입니다. 서브 텍스트입니다.</p>
         <div className="w-full border-b-2 border-[#1A1A1A] mt-[70px]"></div>
       </div>
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
@@ -94,7 +126,9 @@ export const Post = () => {
           조합 추가하기+
         </button>
         <Modal title="인테리어 조합">
-          <p className="w-[300px]">테스트</p>
+          <div className="gap-10 flex-column w-[528px]">
+            <InteriorSection />
+          </div>
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"

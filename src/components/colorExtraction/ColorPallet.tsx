@@ -1,5 +1,5 @@
 import { type ArrayRGB } from "color-thief-react/lib/types";
-import { useDialog } from "components/overlay";
+import { useDialog } from "components";
 import tinycolor from "tinycolor2";
 
 interface props {

@@ -94,18 +94,24 @@ export const Detail = () => {
         break;
     }
   };
-
+  const movePostPageHandler = async () => {
+    if (currentSession === null) {
+      const confirmCheck = await Confirm("게시글 작성은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
+      if (confirmCheck) navigate("/login");
+      return;
+    }
+    navigate("/post");
+  };
   return (
     // 상위 배너 영역
     <div className="w-[1280px] mx-auto mt-[30px]">
       <div className="items-center flex-column">
         <p className="font-bold text-[30px]">커뮤니티</p>
-        <p className="text-gray02">서브 텍스트입니다. 서브 텍스트입니다.</p>
-        <div className="w-full border-b-[1px] border-black mt-[40px]"></div>
+        <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
-      <div className="contents-between border-b-2 border-gray06 my-[10px] p-[10px]">
-        <div className="w-[1000px]">
+      <div className="contents-between border-b border-gray06 my-[10px] p-[10px]">
+        <div className="w-[1000px] my-[10px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
             {postData?.title}
           </label>
@@ -116,46 +122,44 @@ export const Detail = () => {
             <p>좋아요: {postData?.bookmark}</p>
           </div>
         </div>
-        <div className="flex gap-4">
-          <div className="flex-column">
-            <p className="text-center">바닥재</p>
-            <img
-              className="w-16 h-16 rounded-lg bg-gray06"
-              src={`${storageUrl}/tile/${postData?.tileId}`}
-              alt="바닥재"
-            />
-          </div>
-          <div className="flex-column">
-            <p className="text-center">벽지</p>
-            <div className="flex">
+        {postData?.tileId !== null && postData?.leftWallpaperId !== null && postData?.rightWallpaperId !== null && (
+          <div className="flex gap-4">
+            <div className="flex-column">
+              <p className="text-center">벽지</p>
+              <div className="flex">
+                <img
+                  className="w-8 h-16 rounded-l-lg bg-gray06"
+                  src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
+                  alt="왼쪽 벽지"
+                />
+                <img
+                  className="w-8 h-16 rounded-r-lg bg-gray06"
+                  src={`${storageUrl}/wallpaper/${postData?.rightWallpaperId}`}
+                  alt="오른쪽 벽지"
+                />
+              </div>
+            </div>
+            <div className="flex-column">
+              <p className="text-center">바닥재</p>
               <img
-                className="w-8 h-16 rounded-l-lg bg-gray06"
-                src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
-                alt="왼쪽 벽지"
+                className="w-16 h-16 rounded-lg bg-gray06"
+                src={`${storageUrl}/tile/${postData?.tileId}`}
+                alt="바닥재"
               />
-              <img className="w-8 h-16 rounded-r-lg bg-gray06" src="" alt="오른쪽 벽지" />
             </div>
           </div>
-        </div>
+        )}
       </div>
       {/* 컨텐츠 영역 */}
       <div className="flex-column gap-5 my-[60px]">
         {postData?.postImage !== null && (
-          <img src={`${storageUrl}${postData?.postImage}`} alt="postImg" className="w-full" />
-        )}
-        {postData?.leftWallpaperId !== null && postData?.tileId !== null && (
-          <div className="flex">
-            <img
-              src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
-              alt="벽지"
-              className="w-[150px] h-[150px]"
-            />
-            <img src={`${storageUrl}/tile/${postData?.tileId}`} alt="바닥" className="w-[150px] h-[150px]" />
-          </div>
+          <img src={`${storageUrl}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
         )}
         <p>{postData?.content}</p>
       </div>
+      {/* 댓글 컴포넌트 */}
       <Comments />
+
       <div className=" mt-[40px]">
         <button
           className="h-[48px] px-[67px] rounded-lg border-[1px] border-gray05"
@@ -195,12 +199,7 @@ export const Detail = () => {
         )}
       </div>
       <div className="sticky gap-4 bottom-[35%] translate-x-[1350px] inline-flex flex-col">
-        <button
-          className="w-12 h-12 rounded-full bg-point"
-          onClick={() => {
-            navigate("/post");
-          }}
-        >
+        <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>
         {currentBookmarkData?.userId.includes(currentSession?.user.id as string) ?? false ? (

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import { useColor } from "color-thief-react";
 import { type ReducerState, type ColorFormats, type ArrayRGB } from "color-thief-react/lib/types";
-import { useDialog } from "components/overlay";
+import { useDialog } from "components";
 import { useServiceStore } from "store";
 
 import { ColorPallet } from "./ColorPallet";
