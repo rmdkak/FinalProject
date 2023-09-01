@@ -33,7 +33,9 @@ export const Select = (props: Props) => {
       {selfEnterIsOpen ? (
         <>
           <button className="flex w-full h-[48px] auth-input" type="button" onClick={changeToggleHandler}>
-            <p className="text-center whitespace-nowrap body-3">{selectedValue !== undefined ? selectedValue : placeholder}</p>
+            <p className="text-center whitespace-nowrap body-3">
+              {selectedValue !== undefined ? selectedValue : placeholder}
+            </p>
             <FaAngleDown className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer" />
           </button>
         </>

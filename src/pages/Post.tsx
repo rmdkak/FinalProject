@@ -43,6 +43,7 @@ export const Post = () => {
       await supabase
         .from("POSTS")
         .insert({ id: UUID, title, content, bookmark: 0, nickname, postImage: hasPostImgStatus, userId });
+      await supabase.from("POSTLIKES").insert({ postId: UUID, userId: [] });
     } catch (error) {
       console.log("error", error);
     }

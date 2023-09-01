@@ -6,7 +6,7 @@ import { AutoPlay } from "@egjs/flicking-plugins";
 import Flicking from "@egjs/react-flicking";
 import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
-import { DateConvertor, PostBookmark, useDialog } from "components";
+import { DateConvertor, useDialog } from "components";
 import { usePagination, usePosts } from "hooks";
 import { useAuthStore } from "store";
 import "@egjs/react-flicking/dist/flicking.css";
@@ -228,7 +228,6 @@ export const Community = () => {
                       </button>
                     </div>
                   )}
-                  <PostBookmark postId={post.id} />
                 </div>
               </div>
             );

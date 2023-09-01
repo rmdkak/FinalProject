@@ -5,7 +5,6 @@ export * from "./common";
 export * from "./layout";
 export * from "./mypagePreview";
 export * from "./overlay";
-export * from "./postBookmark";
 export * from "./service";
 export * from "./sidebar";
 export * from "./signup";
