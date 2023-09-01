@@ -47,7 +47,6 @@ export const Detail = () => {
   }, [paramsId]);
 
   const addBookmark = () => {
-    console.log("추가 작동");
     if (currentSession === null) {
       alert("북마크 기능은 로그인 후 이용가능합니다.");
       return;

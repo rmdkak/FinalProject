@@ -3,7 +3,7 @@ import { BsShare, BsCalculator } from "react-icons/bs";
 
 import calcArrow from "assets/calcArrow.svg";
 import { GetColor, InteriorSection, ResouresCalculator, Modal } from "components";
-import { useInteriorBookmark } from "hooks";
+import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
@@ -42,11 +42,10 @@ export const Service = () => {
     }
   }, [wallPaper, tile, wallpaperPaint]);
 
-  const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
-    useInteriorBookmark();
+  const { bookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = useBookmark();
 
   // TODO IsLoading, IsError 구현하기
-  const { data: currentBookmarkData } = interiorBookmarkResponse;
+  const { data: currentBookmarkData } = bookmarkResponse;
 
   useEffect(() => {
     if (currentBookmarkData == null) return;
@@ -55,7 +54,7 @@ export const Service = () => {
 
   const addBookmark = async () => {
     if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
-    addInteriorBookmarkMutation.mutate({
+    addBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
@@ -65,7 +64,7 @@ export const Service = () => {
 
   const deleteBookmark = async () => {
     if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
-    deleteInteriorBookmarkMutation.mutate({
+    deleteBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,

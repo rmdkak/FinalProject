@@ -35,7 +35,7 @@ export const UpdatePassword = () => {
             break;
           default:
             alert("Error");
-            console.log("newError : ", error.message);
+            console.error("newError : ", error.message);
             break;
         }
       });
