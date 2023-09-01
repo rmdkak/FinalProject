@@ -2,6 +2,8 @@ import { type ArrayRGB } from "color-thief-react/lib/types";
 import { useDialog } from "components";
 import tinycolor from "tinycolor2";
 
+import { ColorItem } from "./ColorItem";
+
 interface props {
   color: string | ArrayRGB;
 }
@@ -56,7 +58,7 @@ export const ColorPallet = ({ color }: props) => {
               key={idx}
               className="flex"
             >
-              <div className="interior-item" style={{ backgroundColor: color }} />
+              <ColorItem color={color} />
             </li>
           );
         })}
@@ -72,7 +74,7 @@ export const ColorPallet = ({ color }: props) => {
               key={idx}
               className="flex"
             >
-              <div className="interior-item" style={{ backgroundColor: color }} />
+              <ColorItem color={color} />
             </li>
           );
         })}

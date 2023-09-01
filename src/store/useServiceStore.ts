@@ -1,4 +1,5 @@
 import { create } from "zustand";
+type WallOrTile = "tile" | "wallPaper";
 
 export interface Wallpaper {
   image: string | null;
@@ -10,8 +11,8 @@ interface Tile {
 }
 
 interface Store {
-  checkType: "tile" | "wallPaper";
-  setTypeCheck: (type: "tile" | "wallPaper") => void;
+  checkType: WallOrTile;
+  setTypeCheck: (type: WallOrTile) => void;
 
   // 인테리어 헤더
   interiorSelecteIndex: number;
@@ -42,6 +43,11 @@ interface Store {
   customSelfTile: Tile[];
   setCustomSelfTile: (previewImg: Tile[]) => void;
   delCustomSelfTile: (id: string) => void;
+
+  // 아이템클릭 보더
+  onClickItemBorder: { left: string; right: string; tile: string };
+  setClickItemBorder: (id: string, type: boolean, headerTitle: WallOrTile) => void;
+  resetClickItemBordder: () => void;
 }
 
 export const useServiceStore = create<Store>()((set) => ({
@@ -120,5 +126,25 @@ export const useServiceStore = create<Store>()((set) => ({
   },
   delCustomSelfTile: (id: string) => {
     set((state) => ({ customSelfTile: state.customSelfTile.filter((item) => item.id !== id) }));
+  },
+  // 아이템클릭 보더
+  onClickItemBorder: { left: "", right: "", tile: "" },
+  setClickItemBorder: (id, type, headerTitle) => {
+    if (type && headerTitle === "wallPaper") {
+      set((state) => ({
+        onClickItemBorder: { ...state.onClickItemBorder, left: id },
+      }));
+    } else if (type === (false as boolean) && headerTitle === "wallPaper") {
+      set((state) => ({
+        onClickItemBorder: { ...state.onClickItemBorder, right: id },
+      }));
+    } else {
+      set((state) => ({
+        onClickItemBorder: { ...state.onClickItemBorder, tile: id },
+      }));
+    }
+  },
+  resetClickItemBordder: () => {
+    set(() => ({ onClickItemBorder: { left: "", right: "", tile: "" } }));
   },
 }));
