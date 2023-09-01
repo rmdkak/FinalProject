@@ -19,7 +19,7 @@ interface Props {
  * @param type
  * @returns
  */
-export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
+export const ServiceItem = ({ data }: Props): JSX.Element => {
   const {
     checkType,
     resetWallPaper,
@@ -38,10 +38,9 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
     // console.log("페이지 마운트됨");
     resetWallPaper();
     resetTile();
+    resetWallpaperPaint();
     return () => {
       // console.log("페이지 언마운트됨");
-      resetWallPaper();
-      resetTile();
     };
   }, []);
 
@@ -79,29 +78,37 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
       });
       filterData = FILTER_DATA;
     }
+    if (typeName === "All") {
+      filterData = data;
+    }
+    console.log("filterData", filterData);
   };
   // 인테리어 헤더부분 리스트아이템 선택시 그 선택아이템의 값을 영어로 변환해 filterDate 에 매개변수로 전달합니다.
   // 값이 없을경우 filterDate = data(전체데이터) 로 할당됩니다.
   let changeName: string = "";
   switch (CHECK_DATA[interiorSelecteIndex]) {
     case CHECK_DATA[0]:
-      changeName = CHECK_DATA[0] === "장판" ? "wallPaper" : "floorMat";
+      changeName = CHECK_DATA[0] === "전체" ? "All" : "All";
       filterDate(changeName);
       break;
     case CHECK_DATA[1]:
-      changeName = CHECK_DATA[1] === "마루" ? "paint" : "floor";
+      changeName = CHECK_DATA[1] === "장판" ? "wallPaper" : "floorMat";
       filterDate(changeName);
       break;
     case CHECK_DATA[2]:
-      changeName = CHECK_DATA[2] === "데코타일" ? "tile" : "decorationtile";
+      changeName = CHECK_DATA[2] === "마루" ? "paint" : "floor";
       filterDate(changeName);
       break;
     case CHECK_DATA[3]:
-      changeName = CHECK_DATA[3] === "포세린" ? "poserin" : "poserin";
+      changeName = CHECK_DATA[3] === "데코타일" ? "tile" : "decorationtile";
       filterDate(changeName);
       break;
     case CHECK_DATA[4]:
-      changeName = CHECK_DATA[4] === "셀프조합" ? "self" : "self";
+      changeName = CHECK_DATA[4] === "포세린" ? "poserin" : "poserin";
+      filterDate(changeName);
+      break;
+    case CHECK_DATA[5]:
+      changeName = CHECK_DATA[5] === "셀프조합" ? "self" : "self";
       break;
 
     default:
@@ -113,7 +120,7 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
     return <SelfPattern />;
   }
 
-  if (interiorSelecteIndex === 1 && checkType === "wallPaper") {
+  if (interiorSelecteIndex === 2 && checkType === "wallPaper") {
     return (
       <SketchPicker
         color={color}

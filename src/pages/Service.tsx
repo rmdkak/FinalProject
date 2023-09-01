@@ -89,7 +89,7 @@ export const Service = () => {
                     <div
                       style={{
                         backgroundImage: `url(${
-                          interiorSelecteIndex !== 4 ? leftWallPaperBg : (wallPaper.left.image as string)
+                          interiorSelecteIndex !== 5 ? leftWallPaperBg : (wallPaper.left.image as string)
                         })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
@@ -98,7 +98,7 @@ export const Service = () => {
                     <div
                       style={{
                         backgroundImage: `url(${
-                          interiorSelecteIndex !== 4 ? RightWallPaperBg : (wallPaper.right.image as string)
+                          interiorSelecteIndex !== 5 ? RightWallPaperBg : (wallPaper.right.image as string)
                         })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
