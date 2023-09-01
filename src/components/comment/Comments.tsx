@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PiArrowBendDownRightThin } from "react-icons/pi";
 
 import { storageUrl } from "api/supabase";
 import { useDialog, DateConvertor } from "components";
@@ -40,16 +41,16 @@ export const Comments = () => {
   };
 
   return (
-    <div className="border-t-2 border-gray06">
-      <p className="mt-20 mb-4 font-normal text-gray02">
+    <div className="border-t border-gray06">
+      <p className="mt-[70px] font-normal text-gray02">
         댓글 <span className="text-black">{commentsData?.length}</span>개
       </p>
       <CommentForm kind="comment" commentId="" setOpenReply={setOpenReply} />
-      <div className="gap-5 pt-5 border-t-2 flex-column border-gray05">
+      <div className="gap-5 border-t flex-column border-gray05">
         {commentsData?.map((comment) => {
           return (
             <div key={comment.id}>
-              <div className="flex border-b-2 border-gray06 pb-[15px]">
+              <div className="flex border-b border-gray06 py-[15px]">
                 <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[50px] h-[50px]" />
                 <div className="flex flex-col justify-between gap-1 ml-3">
                   <div className="flex gap-2">
@@ -74,7 +75,7 @@ export const Comments = () => {
                   </div>
                   <p>{comment.content}</p>
                   {comment.commentImg != null && (
-                    <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px] w-[500px]" />
+                    <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px] w-[300px]" />
                   )}
                   <div className="flex gap-2 text-gray02">
                     <DateConvertor datetime={comment.created_at} type="dotDate" />
@@ -93,8 +94,9 @@ export const Comments = () => {
               {/* 대댓글 영역 */}
               <div>
                 {comment.RECOMMENTS.map((reply) => (
-                  <div key={reply.id} className="border-b-2 border-[#E5E5E5]">
-                    <div className="flex py-[15px] ml-[50px]">
+                  <div key={reply.id} className="border-b border-[#E5E5E5]">
+                    <div className="flex py-[15px]">
+                      <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
                       <img src={reply.USERS?.avatar_url} alt="profileImg" className="w-[50px] h-[50px]" />
                       <div className="flex flex-col gap-1 ml-3">
                         <div className="flex gap-2">

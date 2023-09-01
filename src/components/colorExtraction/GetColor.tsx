@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import { useColor } from "color-thief-react";
 import { type ReducerState, type ColorFormats, type ArrayRGB } from "color-thief-react/lib/types";
+import { useDialog } from "components";
 import { useServiceStore } from "store";
 
 import { ColorItem } from "./ColorItem";
@@ -16,7 +17,8 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
   const [color, setColor] = useState<string | null>(leftWall);
   const [colorSide, setColorSide] = useState<boolean>(false);
   const { wallpaperPaint } = useServiceStore((state) => state);
-  const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== "" || wallpaperPaint.right !== "";
+  const { Alert } = useDialog();
 
   useEffect(() => {
     colorSide ? setColor(rightWall) : setColor(leftWall);
@@ -48,10 +50,11 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
   const handleCopyColorClipBoard = (color: string) => {
     navigator.clipboard
       .writeText(color)
-      .then(() => {
-        alert("컬러가 복사되었습니다.");
+      .then(async () => {
+        await Alert("컬러가 복사되었습니다.");
       })
-      .catch((error) => {
+      .catch(async (error) => {
+        await Alert("복사에 실패했습니다.");
         console.error("복사 실패", error);
       });
   };

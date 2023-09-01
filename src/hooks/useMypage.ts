@@ -1,14 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  deleteBookmarksData,
-  deleteCommentsData,
-  deleteLikesData,
-  deletePostsData,
-  fetchMyBookmarksData,
-  fetchMyCommentsData,
-  fetchMyLikesData,
-  fetchMyPostsData,
-} from "api/supabase";
+import * as supabaseApi from "api/supabase";
 import { useAuthStore } from "store";
 
 export const useMypage = () => {
@@ -20,14 +11,15 @@ export const useMypage = () => {
   const userPostsResponse = useQuery({
     queryKey: ["mypagePost", userId],
     queryFn: async () => {
-      return await fetchMyPostsData(userId as string);
+      if (userId === undefined) return;
+      return await supabaseApi.fetchMyPostsData(userId);
     },
     enabled: userId !== undefined,
   });
 
   // my post delete query
   const deleteUserPostsMutation = useMutation({
-    mutationFn: deletePostsData,
+    mutationFn: supabaseApi.deletePostsData,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["mypagePost"] });
     },
@@ -37,14 +29,15 @@ export const useMypage = () => {
   const userCommentsResponse = useQuery({
     queryKey: ["mypageComment", userId],
     queryFn: async () => {
-      return await fetchMyCommentsData(userId as string);
+      if (userId === undefined) return;
+      return await supabaseApi.fetchMyCommentsData(userId);
     },
     enabled: userId !== undefined,
   });
 
   // my comment delete query
   const deleteUserCommentMutation = useMutation({
-    mutationFn: deleteCommentsData,
+    mutationFn: supabaseApi.deleteCommentsData,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["mypageComment"] });
     },
@@ -54,14 +47,15 @@ export const useMypage = () => {
   const userBookmarksResponse = useQuery({
     queryKey: ["mypageBookmark", userId],
     queryFn: async () => {
-      return await fetchMyBookmarksData(userId as string);
+      if (userId === undefined) return;
+      return await supabaseApi.fetchMyBookmarksData(userId);
     },
     enabled: userId !== undefined,
   });
 
   // my bookmark delete query
   const deleteUserBookmarkMutation = useMutation({
-    mutationFn: deleteBookmarksData,
+    mutationFn: supabaseApi.deleteBookmarksData,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["mypageBookmark"] });
     },
@@ -71,14 +65,15 @@ export const useMypage = () => {
   const userLikesResponse = useQuery({
     queryKey: ["mypageLike", userId],
     queryFn: async () => {
-      return await fetchMyLikesData(userId as string);
+      if (userId === undefined) return;
+      return await supabaseApi.fetchMyLikesData(userId);
     },
     enabled: userId !== undefined,
   });
 
   // my like delete query
   const deleteUserLikeMutation = useMutation({
-    mutationFn: deleteLikesData,
+    mutationFn: supabaseApi.deleteLikesData,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["mypageLike"] });
     },

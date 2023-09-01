@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { BsBookmarkFill, BsShare, BsCalculator } from "react-icons/bs";
+import { BsShare, BsCalculator } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal } from "components";
-import { useInteriorBookmark } from "hooks";
+import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog } from "components";
+import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
@@ -20,33 +21,39 @@ export const Service = () => {
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");
+  const navigate = useNavigate();
+  const { Alert, Confirm } = useDialog();
 
   const { onOpenModal } = useModalStore((state) => state);
   const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
+
   //  타일 사이즈 컨트롤
   // const [wallPaperSize, setWallPaperSize] = useState<number>(70);
   // const [tileSize, setTileSize] = useState<number>(70);
 
-  const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== "" || wallpaperPaint.right !== "";
 
   useEffect(() => {
-    if (tile.image !== null) setTileBg(`${STORAGE_URL}${tile.image}`);
+    tile.image !== null ? setTileBg(`${STORAGE_URL}${tile.image}`) : setTileBg("");
     if (isWallPaperPaintSeleted) {
       setRightWallPaperBg(wallpaperPaint.right);
       setLeftWallPaperBg(wallpaperPaint.left);
     } else {
-      if (wallPaper.right.image !== null) setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`);
-      if (wallPaper.left.image !== null) setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image}`);
+      wallPaper.right.image !== null
+        ? setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`)
+        : setRightWallPaperBg("");
+      wallPaper.left.image !== null
+        ? setLeftWallPaperBg(`${STORAGE_URL}${wallPaper.left.image}`)
+        : setLeftWallPaperBg("");
     }
   }, [wallPaper, tile, wallpaperPaint]);
 
-  const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
-    useInteriorBookmark();
+  const { bookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = useBookmark();
 
   // TODO IsLoading, IsError 구현하기
-  const { data: currentBookmarkData } = interiorBookmarkResponse;
+  const { data: currentBookmarkData } = bookmarkResponse;
 
   useEffect(() => {
     if (currentBookmarkData == null) return;
@@ -54,23 +61,55 @@ export const Service = () => {
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
 
   const addBookmark = async () => {
-    if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
-    addInteriorBookmarkMutation.mutate({
+    if (currentSession === null) {
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
+      );
+      if (goToLogin) {
+        navigate("/login");
+      }
+      return;
+    }
+    if (tile.id === null || wallPaper.left.id === null || wallPaper.right.id === null) {
+      await Alert("벽지와 타일 3가지 모두 선택해주세요.");
+      return;
+    }
+    addBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
+    await Alert("조합이 저장되었습니다.");
   };
 
   const deleteBookmark = async () => {
     if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
-    deleteInteriorBookmarkMutation.mutate({
+    deleteBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
+    await Alert("조합이 삭제되었습니다.");
+  };
+
+  const recommendDesign = async () => {
+    if (currentSession === null) {
+      const sessionCheck = await Confirm(
+        <p>
+          해당 서비스는 로그인 후 이용 가능합니다.
+          <br />
+          로그인 페이지로 이동하시겠습니까?
+        </p>,
+      );
+      if (sessionCheck) navigate("/login");
+      return;
+    }
+    navigate("/post");
   };
 
   return (
@@ -81,7 +120,7 @@ export const Service = () => {
           {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
-            <div className="flex flex-none contents-center sticky top-[22.5%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
+            <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
               <div className="cube">
                 {/* 벽지 */}
                 {!isWallPaperPaintSeleted ? (
@@ -155,14 +194,21 @@ export const Service = () => {
 
                 <div className="flex gap-4 mt-6">
                   {isItemBookmarkedData != null ? (
-                    <BsBookmarkFill onClick={deleteBookmark} className="text-[50px] cursor-pointer" />
+                    <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">
+                      삭제하기
+                    </button>
                   ) : (
-                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl bg-point">
+                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl point-button">
                       저장하기
                     </button>
                   )}
-                  <button className="flex-auto h-[64px] border-[1px] rounded-xl border-gray05">추천하기</button>
-                  <button className="w-[64px] h-[64px] rounded-xl border-[1px] border-gray05">
+                  <button
+                    onClick={recommendDesign}
+                    className="flex-auto h-[64px] border-[1px] rounded-xl border-gray05 outline-button-hover"
+                  >
+                    추천하기
+                  </button>
+                  <button className="w-[64px] h-[64px] rounded-xl border-[1px] border-gray05 outline-button-hover">
                     <BsShare className="mx-auto w-7 h-7 fill-black" />
                   </button>
                 </div>

@@ -100,7 +100,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
         <button
           disabled={!termsInputIsCheck.terms1 || !termsInputIsCheck.terms2}
           // className="w-full h-[48px] text-black rounded-[8px] bg-point mt-[24px] disabled:bg-[#FFF5D7] text-[14px] font-medium leading-[130%]"
-          className="auth-button auth-button-text text-black bg-point mt-[24px] disabled:bg-white disabled:border disabled:border-black point-button-hover"
+          className="auth-button auth-button-text text-black mt-[24px] point-button"
           onClick={nextStep}
         >
           약관 동의

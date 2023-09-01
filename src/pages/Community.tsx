@@ -6,7 +6,7 @@ import { AutoPlay } from "@egjs/flicking-plugins";
 import Flicking from "@egjs/react-flicking";
 import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
-import { DateConvertor, PostBookmark, useDialog } from "components";
+import { DateConvertor, useDialog } from "components";
 import { usePagination, usePosts } from "hooks";
 import { useAuthStore } from "store";
 import "@egjs/react-flicking/dist/flicking.css";
@@ -102,7 +102,9 @@ export const Community = () => {
                   <img
                     src={post.postImage != null ? `${storageUrl}${post.postImage}` : noImage}
                     alt="postImg"
-                    className={`rounded-[8px] ${isExistCombination(post) ? "w-[322px]" : "w-[400px]"} h-[196px]`}
+                    className={`rounded-[8px] ${
+                      isExistCombination(post) ? "w-[322px]" : "w-[400px] mr-[78px]"
+                    } h-[196px] object-contain`}
                   />
                   {isExistCombination(post) && (
                     <div className="flex flex-col items-center gap-[5px] mt-[5px]">
@@ -149,11 +151,11 @@ export const Community = () => {
               <select
                 value={selectedOption}
                 onChange={handleOptionChange}
-                className="p-1 text-[#888888] border shadow focus:outline-none"
+                className="p-1 w-[115px] text-[#888888] border shadow focus:outline-none"
               >
                 <option value="whole">전체 게시글</option>
                 <option value="normal">일반 게시글</option>
-                <option value="recommendation">조합 추천</option>
+                <option value="recommendation">조합추천 게시글</option>
               </select>
               <p className="text-[#888888]">
                 총 <span className="font-semibold text-[#1A1A1A]">{filteredPosts?.length}</span>개의 게시물이 있습니다.
@@ -169,28 +171,29 @@ export const Community = () => {
           </div>
           {pageData.map((post) => {
             return (
-              <div key={post.id} className="py-[30px] border-b border-gray-200">
-                <div
-                  onClick={() => {
-                    goDetailPage(post.id);
-                  }}
-                  className="flex justify-between gap-5 cursor-pointer"
-                >
+              <div
+                key={post.id}
+                className="py-[25px] border-b border-gray-200 cursor-pointer"
+                onClick={() => {
+                  goDetailPage(post.id);
+                }}
+              >
+                <div className="flex justify-between gap-5">
                   <div className="flex">
                     <div className="w-[1000px]">
                       <p className="text-[18px] font-semibold truncate">{post.title}</p>
                       <p className="text-[16px] mt-1 h-[45px] overflow-hidden text-[#888888]">{post.content}</p>
                     </div>
                   </div>
-                  <div className="flex">
+                  <div className="flex gap-5">
                     {post.postImage != null && (
                       <img
                         src={`${storageUrl}${post.postImage as string}`}
-                        className="h-[80px] w-[132px] rounded-[8px] mr-[20px]"
+                        className="h-[100px] w-[132px] rounded-[8px] object-contain"
                       />
                     )}
                     {isExistCombination(post) && (
-                      <div className="relative flex mr-[40px]">
+                      <div className="relative flex mr-[40px] ml-[20px]">
                         <div className="flex rounded-[12px]">
                           <img
                             src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
@@ -212,7 +215,7 @@ export const Community = () => {
                     )}
                   </div>
                 </div>
-                <div className="flex mt-5 text-[#888888] text-[14px] gap-5">
+                <div className="flex mt-[10px] text-[#888888] text-[14px] gap-[15px]">
                   <p>{post.nickname}</p>
                   <DateConvertor datetime={post.created_at} type="dotDate" />
                   <p>좋아요 {post.bookmark}</p>
@@ -228,7 +231,6 @@ export const Community = () => {
                       </button>
                     </div>
                   )}
-                  <PostBookmark postId={post.id} />
                 </div>
               </div>
             );

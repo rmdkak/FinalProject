@@ -4,7 +4,14 @@ import { supabase } from "./supabaseClient";
 
 // get(comments)
 export const fetchComments = async (postId: string) => {
-  const { data } = await supabase.from("COMMENTS").select(`*,USERS (*),RECOMMENTS (*,USERS(*))`).eq("postId", postId);
+  const { data, error } = await supabase
+    .from("COMMENTS")
+    .select(`*,USERS (*),RECOMMENTS (*,USERS(*))`)
+    .eq("postId", postId);
+  if (error !== null) {
+    console.log("errorMessage", error);
+    return;
+  }
   return data;
 };
 
