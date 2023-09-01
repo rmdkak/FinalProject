@@ -47,7 +47,6 @@ export const Detail = () => {
   }, [paramsId]);
 
   const addBookmark = async () => {
-    console.log("추가 작동");
     if (currentSession === null) {
       const goToLogin = await Confirm(
         <>

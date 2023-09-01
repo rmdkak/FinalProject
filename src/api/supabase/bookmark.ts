@@ -2,14 +2,12 @@ import { type Tables } from "types/supabase";
 
 import { supabase } from "./supabaseClient";
 
+type BookmarkType = Tables<"BOOKMARKS", "Insert">;
 const DATA_TABLE = "BOOKMARKS";
+
 // get
-export const fetchItemBookmark = async ({
-  userId,
-  tileId,
-  leftWallpaperId,
-  rightWallpaperId,
-}: Tables<"BOOKMARKS", "Insert">) => {
+export const fetchBookmark = async (bookmark: BookmarkType) => {
+  const { userId, tileId, leftWallpaperId, rightWallpaperId } = bookmark;
   if (userId === null) return;
   const { data } = await supabase
     .from(DATA_TABLE)
@@ -22,23 +20,15 @@ export const fetchItemBookmark = async ({
 };
 
 // post
-export const onInteriorBookmarkPostHandler = async ({
-  userId,
-  tileId,
-  leftWallpaperId,
-  rightWallpaperId,
-}: Tables<"BOOKMARKS", "Insert">) => {
+export const addBookmark = async (bookmark: BookmarkType) => {
+  const { userId } = bookmark;
   if (userId == null) return;
-  await supabase.from(DATA_TABLE).insert({ userId, tileId, leftWallpaperId, rightWallpaperId }).select();
+  await supabase.from(DATA_TABLE).insert(bookmark).select();
 };
 
 // delete
-export const onInteriorBookmarkDeleteHandler = async ({
-  userId,
-  tileId,
-  leftWallpaperId,
-  rightWallpaperId,
-}: Tables<"BOOKMARKS", "Insert">) => {
+export const deleteBookmark = async (bookmark: BookmarkType) => {
+  const { userId, tileId, leftWallpaperId, rightWallpaperId } = bookmark;
   if (userId == null) return;
   await supabase
     .from(DATA_TABLE)
