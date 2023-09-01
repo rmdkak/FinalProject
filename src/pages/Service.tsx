@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { BsShare, BsCalculator } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal } from "components";
+import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog } from "components";
 import { useInteriorBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -16,6 +17,7 @@ interface FetchItemBookmark {
 }
 
 export const Service = () => {
+  const navigate = useNavigate();
   // 타일/ 벽지를 담는 겟터셋터함수
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
@@ -25,6 +27,7 @@ export const Service = () => {
   const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
+  const { Alert, Confirm } = useDialog();
   //  타일 사이즈 컨트롤
   // const [wallPaperSize, setWallPaperSize] = useState<number>(70);
   // const [tileSize, setTileSize] = useState<number>(70);
@@ -54,7 +57,18 @@ export const Service = () => {
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
 
   const addBookmark = async () => {
-    if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
+    if (currentSession === null) {
+      const goToLogin = await Confirm(`북마크 기능은 로그인 후 이용가능합니다.
+      로그인 하시겠습니까?`);
+      if (goToLogin) {
+        navigate("/login");
+      }
+      return;
+    }
+    if (tile.id === null || wallPaper.left.id === null || wallPaper.right.id === null) {
+      await Alert("벽지와 타일 3가지 모두 선택해주세요.");
+      return;
+    }
     addInteriorBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,

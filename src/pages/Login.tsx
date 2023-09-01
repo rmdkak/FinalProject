@@ -9,7 +9,7 @@ import { login, githubLogin, googleLogin, kakaoLogin } from "api/supabase";
 import githubLogo from "assets/githubLogo.svg";
 import googleLogo from "assets/googleLogo.svg";
 import kakaoLogo from "assets/kakaoLogo.svg";
-import { PasswordVisibleButton, InvalidText } from "components";
+import { PasswordVisibleButton, InvalidText, useDialog } from "components";
 import { useAuthStore } from "store";
 
 export interface LoginInputs {
@@ -19,7 +19,7 @@ export interface LoginInputs {
 
 export const Login = () => {
   const navigate = useNavigate();
-
+  const { Alert } = useDialog();
   const { currentSession, stayLoggedInStatus, setStayLoggedInStatus } = useAuthStore();
   const [showPassword, setShowPassword] = useState({ password: false });
 
@@ -46,7 +46,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (currentSession !== null) {
-      alert(`현재 로그인 상태입니다.
+      void Alert(`현재 로그인 상태입니다.
       잘못된 접근입니다.`);
       navigate("/");
     }

@@ -4,7 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
-import { type PasswordVisible, PasswordVisibleButton, Select } from "components";
+import { type PasswordVisible, PasswordVisibleButton, Select, useDialog } from "components";
 import { useAuthStore } from "store";
 
 import { emailOptions, phoneOptions } from "./constant";
@@ -32,7 +32,7 @@ const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]";
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
   const { currentSession } = useAuthStore();
-
+  const { Alert } = useDialog();
   const [selectEmail, setSelectEmail] = useState<string | undefined>();
   const [selectPhoneFistNum, setSelectPhoneFistNum] = useState<string | undefined>();
 
@@ -117,8 +117,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   useEffect(() => {
     if (currentSession !== null) {
-      alert(`현재 로그인 상태입니다.
-      잘못된 접근입니다.`);
+      void Alert("현재 로그인 상태입니다.");
       navigate("/");
     }
   }, []);

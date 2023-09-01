@@ -5,7 +5,7 @@ import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { supabase, storageUrl } from "api/supabase";
-import { Comments, DateConvertor } from "components";
+import { Comments, DateConvertor, useDialog } from "components";
 import { usePosts, usePostsLike } from "hooks";
 import { useAuthStore, useLikeStore } from "store";
 import { type Tables } from "types/supabase";
@@ -15,8 +15,8 @@ export const Detail = () => {
   const navigate = useNavigate();
   const { resetDetailPostId, setDetailPostId } = useLikeStore();
   const { currentSession } = useAuthStore();
+  const { Confirm } = useDialog();
   const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
-
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
   const { data: currentBookmarkData } = postLikeResponse;
   const { fetchPostsMutation } = usePosts();
@@ -46,10 +46,14 @@ export const Detail = () => {
     };
   }, [paramsId]);
 
-  const addBookmark = () => {
+  const addBookmark = async () => {
     console.log("추가 작동");
     if (currentSession === null) {
-      alert("북마크 기능은 로그인 후 이용가능합니다.");
+      const goToLogin = await Confirm(`북마크 기능은 로그인 후 이용가능합니다.
+      로그인 하시겠습니까?`);
+      if (goToLogin) {
+        navigate("/login");
+      }
       return;
     }
     if (paramsId === undefined) return;
@@ -58,9 +62,10 @@ export const Detail = () => {
     addLikeMutation.mutate({ postId: paramsId, userId: addIds });
   };
 
-  const deleteBookmark = () => {
+  const deleteBookmark = async () => {
     if (currentSession === null) {
-      alert("북마크 기능은 로그인 후 이용가능합니다.");
+      await Confirm(`북마크 기능은 로그인 후 이용가능합니다.
+      로그인 하시겠습니까?`);
       return;
     }
     if (paramsId === undefined) return;

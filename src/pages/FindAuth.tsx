@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase";
-import { InvalidText, Select, phoneOptions } from "components";
+import { InvalidText, Select, phoneOptions, useDialog } from "components";
 import { type Tables } from "types/supabase";
 
 const TAB_STYLE = "w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center cursor-pointer";
@@ -30,6 +30,7 @@ interface FindPasswordInput {
 export const FindAuth = () => {
   const param = useParams();
   const navigate = useNavigate();
+  const {Alert} =useDialog()
   const initialFocus =
     param.focus === "email" ? { focusEmail: true, focusPassword: false } : { focusEmail: false, focusPassword: true };
   const [focusTab, setFocusTab] = useState<FocusTab>(initialFocus);
@@ -99,7 +100,7 @@ export const FindAuth = () => {
     await findPassword({ name: nicknameForPassword, phone, email: emailForPassword })
       .then(async (data) => {
         await sendEmailForFindPassword(data.email);
-        alert("이메일이 전송되었습니다.");
+        await Alert("이메일이 전송되었습니다.");
         navigate("/");
       })
       .catch(() => {
