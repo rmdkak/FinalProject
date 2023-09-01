@@ -134,7 +134,7 @@ export const Service = () => {
 
             <div className="flex-column w-[860px] gap-10">
               {/* 인테리어 섹션 */}
-              <InteriorSection />
+              <InteriorSection onCheckCustom={true} />
               {/* 컬러 추출 */}
               <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
               <div>

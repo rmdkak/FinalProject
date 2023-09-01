@@ -6,8 +6,8 @@ import { type Tables } from "types/supabase";
 
 import { tileTextureList, wallPaperTextureList } from "./data";
 import { SelfPattern } from "./SelfPattern";
+import { ServiceSelectItem } from "./ServiceSelectItem";
 
-const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 interface Props {
   data: Array<Tables<"WALLPAPER", "Row">>;
   wallCheck?: true | false;
@@ -24,8 +24,6 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
     checkType,
     resetWallPaper,
     resetTile,
-    setTile,
-    setWallPaper,
     setWallpaperPaint,
     resetWallpaperPaint,
     interiorSelecteIndex,
@@ -43,20 +41,6 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
       // console.log("페이지 언마운트됨");
     };
   }, []);
-
-  /**
-   *
-   * @param image "매개변수 'image'는 클릭한 이미지의 경로 또는 식별자를 나타냅니다. 이 함수는 전역 상태 관리를 위해 'zustand'를 사용하여 이미지 값을 저장합니다. 저장된 이미지 값은 왼쪽의 인테리어 비주얼 요소에 표시되도록 설정됩니다."
-   */
-  const getItemData = (selectItem: { id: string; image: string }): void => {
-    if (checkType === "wallPaper") {
-      resetWallpaperPaint();
-      interiorSelectX ? setWallPaper(selectItem, "left") : setWallPaper(selectItem, "right");
-    }
-    if (checkType === "tile") {
-      setTile(selectItem);
-    }
-  };
 
   const changeColorPicker = (color: ColorResult) => {
     setColor(color.hex);
@@ -81,7 +65,6 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
     if (typeName === "All") {
       filterData = data;
     }
-    console.log("filterData", filterData);
   };
   // 인테리어 헤더부분 리스트아이템 선택시 그 선택아이템의 값을 영어로 변환해 filterDate 에 매개변수로 전달합니다.
   // 값이 없을경우 filterDate = data(전체데이터) 로 할당됩니다.
@@ -135,17 +118,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
       <>
         {filterData.map((item) => {
           const { id, image } = item;
-          return (
-            <li
-              onClick={() => {
-                getItemData({ id, image });
-              }}
-              key={id}
-              className="cursor-pointer interior-item"
-            >
-              <img src={`${STORAGE_URL}${image}`} className="interior-item" alt={` ${checkType} 미리보기 이미지`} />
-            </li>
-          );
+          return <ServiceSelectItem key={id} image={image} id={id} />;
         })}
       </>
     );

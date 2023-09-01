@@ -39,7 +39,7 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
     <>
       {/* 아이템 리스트 */}
       <div className="relative overflow-hidden interior-item">
-        {/* 닫기 버튼 */}
+        {/* 삭제 버튼 */}
         <button onClick={onClickPreviewCloseBtn} className="absolute top-3 right-3">
           <img className="w-3 h-3 transition-all opacity-80 hover:opacity-100" src={CloseBtn} alt="닫기 버튼" />
         </button>
