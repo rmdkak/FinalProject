@@ -219,7 +219,7 @@ body {
     @apply text-xl translate-y-1;
   }
   .service-item {
-    @apply w-[120px] h-[120px] rounded-xl bg-gray-200;
+    @apply w-[120px] h-[120px] rounded-full bg-gray-200;
   }
   .best-colors-item-text {
     @apply text-2xl mr-7;
@@ -313,6 +313,6 @@ body {
 
   /* 홍민~ */
   .interior-item {
-    @apply w-[120px] h-[120px] rounded-xl;
+    @apply w-[142px] h-[142px] rounded-full;
   }
 }
