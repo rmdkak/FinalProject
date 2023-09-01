@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { BsShare, BsCalculator } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal } from "components";
+import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog } from "components";
 import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -16,6 +17,7 @@ interface FetchItemBookmark {
 }
 
 export const Service = () => {
+  const navigate = useNavigate();
   // 타일/ 벽지를 담는 겟터셋터함수
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
@@ -25,6 +27,7 @@ export const Service = () => {
   const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
+  const { Alert, Confirm } = useDialog();
   //  타일 사이즈 컨트롤
   // const [wallPaperSize, setWallPaperSize] = useState<number>(70);
   // const [tileSize, setTileSize] = useState<number>(70);
@@ -53,7 +56,22 @@ export const Service = () => {
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
 
   const addBookmark = async () => {
-    if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
+    if (currentSession === null) {
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
+      );
+      if (goToLogin) {
+        navigate("/login");
+      }
+      return;
+    }
+    if (tile.id === null || wallPaper.left.id === null || wallPaper.right.id === null) {
+      await Alert("벽지와 타일 3가지 모두 선택해주세요.");
+      return;
+    }
     addBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,
@@ -154,20 +172,15 @@ export const Service = () => {
 
                 <div className="flex gap-4 mt-6">
                   {isItemBookmarkedData != null ? (
-                    <button
-                      onClick={deleteBookmark}
-                      className="flex-auto h-[64px] rounded-xl bg-white border border-gray05 white-button-hover"
-                    >
+                    <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">
                       삭제하기
                     </button>
                   ) : (
-                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl bg-point point-button-hover">
+                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl point-button">
                       저장하기
                     </button>
                   )}
-                  <button className="flex-auto h-[64px] border-[1px] rounded-xl border-gray05 outline-button-hover">
-                    추천하기
-                  </button>
+                  <button className="flex-auto h-[64px]  rounded-xl  gray-outline-button">추천하기</button>
                   <button className="w-[64px] h-[64px] rounded-xl border-[1px] border-gray05">
                     <BsShare className="mx-auto w-7 h-7 fill-black" />
                   </button>

@@ -2,7 +2,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { changePassword } from "api/supabase";
-import { InvalidText } from "components";
+import { InvalidText, useDialog } from "components";
 
 interface UpdatePasswordInput {
   newPassword: string;
@@ -11,6 +11,7 @@ interface UpdatePasswordInput {
 
 export const UpdatePassword = () => {
   const navigate = useNavigate();
+  const { Alert } = useDialog();
   const {
     register,
     handleSubmit,
@@ -21,21 +22,21 @@ export const UpdatePassword = () => {
   const onSubmit: SubmitHandler<UpdatePasswordInput> = async (data) => {
     const { newPassword } = data;
     await changePassword(newPassword)
-      .then(() => {
-        alert("비밀번호가 정상적으로 변경되었습니다.");
+      .then(async () => {
+        await Alert("비밀번호가 정상적으로 변경되었습니다.");
         navigate("/");
       })
-      .catch((error) => {
+      .catch(async (error) => {
         switch (error.message) {
           case "New password should be different from the old password.":
-            alert("이전 비밀번호와 동일합니다.");
+            await Alert("이전 비밀번호와 동일합니다.");
             break;
           case "Auth session missing!":
-            alert("이메일 유효시간이 만료되었습니다.");
+            await Alert("이메일 유효시간이 만료되었습니다.");
             break;
           default:
-            alert("Error");
-            console.error("newError : ", error.message);
+            await Alert("Error");
+            console.log("newError : ", error.message);
             break;
         }
       });
@@ -90,7 +91,7 @@ export const UpdatePassword = () => {
             />
           </div>
           <InvalidText errorsMessage={errors.newPasswordConfirm?.message} />
-          <button className="auth-button bg-point point-button-hover">변경하기</button>
+          <button className="auth-button point-button">변경하기</button>
         </form>
       </div>
     </section>

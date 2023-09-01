@@ -4,7 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
-import { type PasswordVisible, PasswordVisibleButton, Select } from "components";
+import { type PasswordVisible, PasswordVisibleButton, Select, useDialog } from "components";
 import { useAuthStore } from "store";
 
 import { emailOptions, phoneOptions } from "./constant";
@@ -26,13 +26,13 @@ interface Props {
 }
 
 const DUPLICATE_CHECK_BUTTON =
-  "auth-button-text h-[48px] text-black bg-white px-[20px] whitespace-nowrap border border-black rounded-[8px] white-button-hover";
+  "auth-button-text h-[48px] text-black px-[20px] whitespace-nowrap rounded-[8px] white-outline-button";
 const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
   const { currentSession } = useAuthStore();
-
+  const { Alert } = useDialog();
   const [selectEmail, setSelectEmail] = useState<string | undefined>();
   const [selectPhoneFistNum, setSelectPhoneFistNum] = useState<string | undefined>();
 
@@ -117,8 +117,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   useEffect(() => {
     if (currentSession !== null) {
-      alert(`현재 로그인 상태입니다.
-      잘못된 접근입니다.`);
+      void Alert("현재 로그인 상태입니다.");
       navigate("/");
     }
   }, []);
@@ -262,6 +261,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             setSelectedValue={setSelectPhoneFistNum}
             selfEnterOption={true}
             placeholder="phone"
+            defaultValue="010"
           />
           <span className="mx-[12px]">-</span>
           <input
@@ -280,12 +280,8 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         </div>
         <InvalidText errorsMessage={errors.phoneMiddleNum?.message} size={30} />
 
-        <button className={`${NEXT_PREV_BUTTON} bg-point point-button-hover`}>회원가입</button>
-        <button
-          className={`${NEXT_PREV_BUTTON} bg-white border border-black white-button-hover`}
-          type="button"
-          onClick={prevStep}
-        >
+        <button className={`${NEXT_PREV_BUTTON} point-button`}>회원가입</button>
+        <button className={`${NEXT_PREV_BUTTON} white-outline-button`} type="button" onClick={prevStep}>
           이전
         </button>
       </form>

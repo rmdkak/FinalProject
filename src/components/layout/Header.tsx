@@ -5,12 +5,13 @@ import { logout } from "api/supabase";
 import hambergerMenu from "assets/hamburgerMenu.svg";
 import logOutIcon from "assets/logout.svg";
 import userIcon from "assets/user.svg";
-import { Sidebar } from "components";
+import { Sidebar, useDialog } from "components";
 import { useAuthStore } from "store";
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { Alert } = useDialog();
 
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
   const userUid = currentSession?.user.id;
@@ -21,11 +22,10 @@ export const Header = () => {
     try {
       await logout();
       setStayLoggedInStatus(false);
-      alert(`임시
-      로그아웃 완료`);
+      await Alert("로그아웃 완료");
     } catch (error) {
+      await Alert("로그아웃 실패");
       console.error(error);
-      // TODO 커스텀alert 로직
     }
   };
 

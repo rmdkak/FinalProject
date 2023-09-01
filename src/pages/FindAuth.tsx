@@ -3,7 +3,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase";
-import { InvalidText, Select, phoneOptions } from "components";
+import { InvalidText, Select, phoneOptions, useDialog } from "components";
 import { type Tables } from "types/supabase";
 
 const TAB_STYLE = "w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center cursor-pointer";
@@ -30,6 +30,7 @@ interface FindPasswordInput {
 export const FindAuth = () => {
   const param = useParams();
   const navigate = useNavigate();
+  const { Alert } = useDialog();
   const initialFocus =
     param.focus === "email" ? { focusEmail: true, focusPassword: false } : { focusEmail: false, focusPassword: true };
   const [focusTab, setFocusTab] = useState<FocusTab>(initialFocus);
@@ -99,7 +100,7 @@ export const FindAuth = () => {
     await findPassword({ name: nicknameForPassword, phone, email: emailForPassword })
       .then(async (data) => {
         await sendEmailForFindPassword(data.email);
-        alert("이메일이 전송되었습니다.");
+        await Alert("이메일이 전송되었습니다.");
         navigate("/");
       })
       .catch(() => {
@@ -183,7 +184,7 @@ export const FindAuth = () => {
             </div>
             <InvalidText errorsMessage={emailErrors.phoneMidNumForEmail?.message} size={20} />
 
-            <button className="text-center auth-button bg-point body-3 point-button-hover">아이디 찾기</button>
+            <button className="text-center auth-button body-3 point-button">아이디 찾기</button>
             <InvalidText errorsMessage={emailErrors.root?.message} size={20} />
           </form>
         )}
@@ -202,7 +203,7 @@ export const FindAuth = () => {
                 <p className="text-gray03 text-[12px] w-full">(2023.08.24 가입)</p>
               </div>
             </div>
-            <Link to="/login" className="text-center auth-button bg-point body-3 point-button-hover">
+            <Link to="/login" className="text-center auth-button body-3 point-button">
               로그인
             </Link>
             <div className="text-gray03 text-[12px] font-normal leading-[130%]">
@@ -267,7 +268,7 @@ export const FindAuth = () => {
             </div>
             <InvalidText errorsMessage={passwordErrors.phoneMidNumForPassword?.message} size={20} />
 
-            <button className="text-center auth-button bg-point body-3 point-button-hover">
+            <button className="text-center auth-button body-3 point-button">
               비밀번호 찾기 || 메일로 새 비밀번호 받기
             </button>
           </form>
