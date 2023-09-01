@@ -3,8 +3,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { supabase } from "api/supabase";
+import { savePostImageHandler } from "api/supabase";
 import { InteriorSection, Modal, useDialog } from "components";
+import { usePosts } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
 interface Inputs {
@@ -19,6 +20,7 @@ export const Post = () => {
   const nickname = currentSession?.user.user_metadata.name;
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
+  const { createPostMutation } = usePosts();
   const {
     register,
     handleSubmit,
@@ -33,14 +35,14 @@ export const Post = () => {
   console.log("wallpaperPaint :", wallpaperPaint);
   console.log("tile :", tile);
   console.log("wallPaper :", wallPaper);
-  console.log(true && false && true);
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const UUID = uuid();
     const title = data.title;
     const content = data.textarea;
     const postImgfile = data.file[0];
     const postImage = postImgfile == null ? null : `/postImg/${UUID}`;
-
+    // const leftPaintCode = wallpaperPaint.left;
+    // const rightPaintCode = wallpaperPaint.right;
     const tileId = tile.id;
     const leftWallpaperId = wallPaper.left.id;
     const rightWallpaperId = wallPaper.right.id;
@@ -48,9 +50,6 @@ export const Post = () => {
     const isInteriorSelected = tileId !== null && leftWallpaperId !== null && rightWallpaperId !== null;
     const isNotInteriorSelected = tileId === null && leftWallpaperId === null && rightWallpaperId === null;
 
-    console.log("tileId :", tileId);
-    console.log("leftWallpaperId :", leftWallpaperId);
-    console.log("rightWallpaperId :", rightWallpaperId);
     if (isInteriorSelected || isNotInteriorSelected) {
       const postData = {
         id: UUID,
@@ -65,12 +64,9 @@ export const Post = () => {
         rightWallpaperId,
       };
       try {
-        await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImgfile, {
-          cacheControl: "3600",
-          upsert: false,
-        });
-        await supabase.from("POSTS").insert(postData);
-        // await supabase.from("POSTLIKES").insert({ postId: UUID, userId: [] });
+        await savePostImageHandler({ UUID, postImgfile });
+        createPostMutation.mutate(postData);
+        // await supabase.from("POSTLIKES").insert({ postId: UUID, userId: []});
       } catch (error) {
         console.log("error", error);
       }

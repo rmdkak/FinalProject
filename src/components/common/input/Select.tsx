@@ -6,14 +6,20 @@ interface Props {
   selectedValue: string | undefined;
   setSelectedValue: Dispatch<React.SetStateAction<string | undefined>>;
   placeholder?: string;
+  defaultValue?: string;
   selfEnterOption: boolean;
 }
 
-export const Select = (props: Props) => {
-  const { option, selectedValue, setSelectedValue, placeholder = "선택해주세요.", selfEnterOption } = props;
-
+export const Select = ({
+  option,
+  selectedValue,
+  setSelectedValue,
+  placeholder = "선택해주세요.",
+  defaultValue,
+  selfEnterOption,
+}: Props) => {
   const [toggleIsOpen, setToggleIsOpen] = useState(false);
-  const [selfEnterIsOpen, setSelfEnterIsOpen] = useState(true);
+  const [selfEnterIsOpen, setSelfEnterIsOpen] = useState(false);
 
   const onChangeHandler = (event: MouseEvent<HTMLDivElement> | ChangeEvent<HTMLInputElement>) => {
     if (event.target === null) return;
@@ -31,19 +37,19 @@ export const Select = (props: Props) => {
   return (
     <div className={`relative w-[100%] h-[50px]`}>
       {selfEnterIsOpen ? (
-        <>
-          <button className="flex w-full h-[48px] auth-input" type="button" onClick={changeToggleHandler}>
-            <p className="text-center whitespace-nowrap body-3">{selectedValue !== undefined ? selectedValue : placeholder}</p>
-            <FaAngleDown className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer" />
-          </button>
-        </>
+        <button className="flex w-full h-[48px] auth-input" type="button" onClick={changeToggleHandler}>
+          <p className="text-center whitespace-nowrap body-3">
+            {selectedValue !== undefined ? selectedValue : placeholder}
+          </p>
+          <FaAngleDown className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer" />
+        </button>
       ) : (
         <>
           <input
             onChange={(event) => {
               setSelectedValue(event?.target.value);
             }}
-            value={selectedValue}
+            value={selectedValue ?? defaultValue}
             className="w-[100%] auth-input"
           />
           <FaAngleDown

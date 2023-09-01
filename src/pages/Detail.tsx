@@ -5,18 +5,20 @@ import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { supabase, storageUrl } from "api/supabase";
-import { Comments, DateConvertor } from "components";
-import { useDialog } from "components/overlay/dialog/Dialog.hooks";
-import { usePosts } from "hooks";
-import { useAuthStore } from "store";
+import { Comments, DateConvertor, useDialog } from "components";
+import { usePosts, usePostsLike } from "hooks";
+import { useAuthStore, useLikeStore } from "store";
 import { type Tables } from "types/supabase";
 
 export const Detail = () => {
   const { id: paramsId } = useParams();
-  const { currentSession } = useAuthStore();
   const navigate = useNavigate();
-  const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
+  const { resetDetailPostId, setDetailPostId } = useLikeStore();
+  const { currentSession } = useAuthStore();
   const { Confirm } = useDialog();
+  const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
+  const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
+  const { data: currentBookmarkData } = postLikeResponse;
   const { fetchPostsMutation } = usePosts();
   const { data: postList } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
@@ -35,7 +37,52 @@ export const Detail = () => {
     fetchData().catch((error) => {
       console.error("Error fetching data:", error.message);
     });
+
+    // useQuery에서 북마크 조회 할 아이디 값
+    setDetailPostId(paramsId);
+    return () => {
+      // 조회 아이디 리셋
+      resetDetailPostId();
+    };
   }, [paramsId]);
+
+  const addBookmark = async () => {
+    if (currentSession === null) {
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
+      );
+      if (goToLogin) {
+        navigate("/login");
+      }
+      return;
+    }
+    if (paramsId === undefined) return;
+    if (currentBookmarkData === undefined) return;
+    const addIds = [...currentBookmarkData.userId, currentSession.user.id];
+    addLikeMutation.mutate({ postId: paramsId, userId: addIds });
+  };
+
+  const deleteBookmark = async () => {
+    if (currentSession === null) {
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
+      );
+      if (goToLogin) {
+        navigate("/login");
+      }
+      return;
+    }
+    if (paramsId === undefined) return;
+    if (currentBookmarkData === undefined) return;
+    const deletedIds = currentBookmarkData.userId.filter((id) => id !== currentSession.user.id);
+    deleteLikeMutation.mutate({ postId: paramsId, userId: deletedIds });
+  };
 
   const movePageHandler = (moveEvent: string) => {
     switch (moveEvent) {
@@ -155,9 +202,15 @@ export const Detail = () => {
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>
-        <button className="w-12 h-12 rounded-full border-[1px] border-gray06">
-          <BsSuitHeartFill className="w-6 h-6 mx-auto fill-gray01" />
-        </button>
+        {currentBookmarkData?.userId.includes(currentSession?.user.id as string) ?? false ? (
+          <button onClick={deleteBookmark} className="w-12 h-12 border rounded-full border-gray06">
+            <BsSuitHeartFill className="w-[24px] h-[24px] mx-auto  text-point" />
+          </button>
+        ) : (
+          <button onClick={addBookmark} className="w-12 h-12 border rounded-full border-gray06">
+            <BsSuitHeartFill className="w-[24px] h-[24px] mx-auto text-gray01 " />
+          </button>
+        )}
         <button className="w-12 h-12 rounded-full border-[1px] border-gray06">
           <BsShare className="w-6 h-6 mx-auto fill-gray01" />
         </button>

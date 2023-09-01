@@ -81,7 +81,7 @@ export const useServiceStore = create<Store>()((set) => ({
   },
 
   // 벽지 페인트
-  wallpaperPaint: { left: "", right: "" },
+  wallpaperPaint: { left: "#f3f3f3", right: "#e5e5e5" },
   setWallpaperPaint: (selectedPaint, type) => {
     if (type === "left") {
       set((state) => ({

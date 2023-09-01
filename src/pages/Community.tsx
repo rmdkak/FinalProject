@@ -20,8 +20,7 @@ export const Community = () => {
 
   const { currentSession } = useAuthStore();
   const { Confirm } = useDialog();
-  // const { fetchPostsMutation, deletePostMutation } = usePosts();
-  const { fetchPostsMutation } = usePosts();
+  const { fetchPostsMutation, deletePostMutation } = usePosts();
   const { data: postList } = fetchPostsMutation;
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
 
@@ -55,14 +54,14 @@ export const Community = () => {
     setSelectedOption(event.target.value);
   };
 
-  // const deleteHandler = async (id: string) => {
-  //   try {
-  //     const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
-  //     if (checkDelete) deletePostMutation.mutate(id);
-  //   } catch (error) {
-  //     console.log("error :", error);
-  //   }
-  // };
+  const deleteHandler = async (id: string) => {
+    try {
+      const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
+      if (checkDelete) deletePostMutation.mutate(id);
+    } catch (error) {
+      console.log("error :", error);
+    }
+  };
 
   if (filteredPosts === undefined) {
     return (
@@ -220,7 +219,7 @@ export const Community = () => {
                   <p>{post.nickname}</p>
                   <DateConvertor datetime={post.created_at} type="dotDate" />
                   <p>좋아요 {post.bookmark}</p>
-                  {/* {currentSession?.user.id === post.userId && (
+                  {currentSession?.user.id === post.userId && (
                     <div className="text-red-500">
                       <button className="mr-2">수정</button>
                       <button
@@ -231,7 +230,7 @@ export const Community = () => {
                         삭제
                       </button>
                     </div>
-                  )} */}
+                  )}
                 </div>
               </div>
             );

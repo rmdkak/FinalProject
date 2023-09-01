@@ -27,6 +27,14 @@ export const createPostHandler = async (postData: Tables<"POSTS", "Insert">) => 
   await supabase.from("POSTS").insert(postData).select();
 };
 
+// post
+export const savePostImageHandler = async ({ UUID, postImgfile }: { UUID: string; postImgfile: Blob }) => {
+  await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImgfile, {
+    cacheControl: "3600",
+    upsert: false,
+  });
+};
+
 // patch
 export const patchPostHandler = async (postData: Tables<"POSTS", "Update">) => {
   // 수정 로직 추가
