@@ -4,7 +4,7 @@ import { SketchPicker, type ColorResult } from "react-color";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
-import { tileTextureList, wallPaperTextureList } from "./data";
+import { SelectPaintIndex, tileTextureList, wallPaperTextureList } from "./data";
 import { SelfPattern } from "./SelfPattern";
 import { ServiceSelectItem } from "./ServiceSelectItem";
 
@@ -35,13 +35,6 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
     resetWallPaper();
     resetWallpaperPaint();
     resetTile();
-<<<<<<< HEAD
-    resetWallpaperPaint();
-    return () => {
-      // console.log("페이지 언마운트됨");
-    };
-=======
->>>>>>> 6485bde94c2078cb661902f420690045161b1533
   }, []);
 
   const changeColorPicker = (color: ColorResult) => {
@@ -105,7 +98,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
     return <SelfPattern />;
   }
 
-  if (interiorSelecteIndex === 2 && checkType === "wallPaper") {
+  if (interiorSelecteIndex === SelectPaintIndex && checkType === "wallPaper") {
     return (
       <SketchPicker
         color={color}

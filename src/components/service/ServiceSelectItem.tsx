@@ -30,24 +30,23 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
       setTile(selectItem);
     }
   };
-
   /**
    * 왼쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? "border-red-300" : "";
+  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? "border-[#CD0D0D]" : "";
   /**
    * 오른쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? "border-green-300" : "";
+  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? "border-[#1DCFBF]" : "";
   /**
    * 타일 클릭시 나오는 보더
    */
-  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? "border-blue-300" : "";
+  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? "border-[#3E16F1]" : "";
   /**
    * 왼쪽 벽지, 오른쪽 벽지가 같을경우나오는 보더
    */
   const CHECK_LEFT_RIGHT_BORDER =
-    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-red-600" : "";
+    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-[#E52689]" : "";
   return (
     <>
       <li
@@ -60,7 +59,7 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
       >
         <img
           src={`${STORAGE_URL}${image}`}
-          className={`interior-item border-8 border-white  ${CHECK_LEFT_RIGHT_BORDER} ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER}`}
+          className={`block interior-item border-8 border-white  ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER} ${CHECK_LEFT_RIGHT_BORDER} `}
           alt={` ${checkType} 미리보기 이미지`}
         />
       </li>

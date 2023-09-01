@@ -20,7 +20,6 @@ const TextureTitle = ({ data }: Props): JSX.Element => {
     // 저장된값이 기존값과 같으면 -1을 저장합니다.
     setInteriorSelecteIndex(-1);
   };
-  // console.log(interiorSelecteIndex);
   return (
     <div className="flex gap-4">
       {data.map((item, index) => (

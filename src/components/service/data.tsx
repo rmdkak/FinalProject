@@ -10,3 +10,6 @@ export const wallPaperTextureList: string[] = ["전체", "벽지", "페인트", 
 export const tileTextureList: string[] = ["전체", "장판", "마루", "데코타일", "포세린", "셀프조합"];
 
 export const ResouresCalculatorList: string[] = ["벽지", "타일"];
+
+export const SelectPaintIndex: number = 3;
+export const SelectCustomIndex: number = 5;

@@ -25,11 +25,9 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
 
   const onClickItem = () => {
     if (checkType === "wallPaper") {
-      //
       interiorSelectX ? setWallPaper(item, "left") : setWallPaper(item, "right");
     }
     if (checkType === "tile") {
-      //
       setTile(item);
     }
   };
@@ -46,7 +44,7 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
         {/* 이미지 */}
         <img
           onClick={onClickItem}
-          className="block h-full cursor-pointer "
+          className={`box-border block h-full cursor-pointer`}
           src={CHECK_TYPE_OF_STRING}
           alt="셀프 조합 이미지"
         />
