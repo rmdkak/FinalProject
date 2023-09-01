@@ -46,8 +46,12 @@ export const Login = () => {
 
   useEffect(() => {
     if (currentSession !== null) {
-      void Alert(`현재 로그인 상태입니다.
-      잘못된 접근입니다.`);
+      void Alert(
+        <>
+          <p>현재 로그인 상태입니다.</p>
+          <p>잘못된 접근입니다.</p>
+        </>,
+      );
       navigate("/");
     }
   }, []);
@@ -136,9 +140,7 @@ export const Login = () => {
           </div>
         </div>
 
-        <button className="auth-button mt-[24px] bg-point text-black auth-button-text point-button-hover">
-          로그인
-        </button>
+        <button className="auth-button mt-[24px] text-black auth-button-text point-button">로그인</button>
         <InvalidText errorsMessage={errors.root?.message} />
 
         <div className="w-full mt-[40px] h-[120px]">
@@ -182,7 +184,7 @@ export const Login = () => {
           </p>
           <Link
             to={"/signup"}
-            className="auth-button-text flex contents-center w-full h-[48px] rounded-[8px] bg-white border border-black white-button-hover"
+            className="auth-button-text flex contents-center w-full h-[48px] rounded-[8px] white-outline-button"
           >
             회원가입
           </Link>

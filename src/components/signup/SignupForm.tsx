@@ -26,7 +26,7 @@ interface Props {
 }
 
 const DUPLICATE_CHECK_BUTTON =
-  "auth-button-text h-[48px] text-black bg-white px-[20px] whitespace-nowrap border border-black rounded-[8px] white-button-hover";
+  "auth-button-text h-[48px] text-black px-[20px] whitespace-nowrap rounded-[8px] white-outline-button";
 const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
@@ -261,6 +261,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             setSelectedValue={setSelectPhoneFistNum}
             selfEnterOption={true}
             placeholder="phone"
+            defaultValue="010"
           />
           <span className="mx-[12px]">-</span>
           <input
@@ -279,12 +280,8 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         </div>
         <InvalidText errorsMessage={errors.phoneMiddleNum?.message} size={30} />
 
-        <button className={`${NEXT_PREV_BUTTON} bg-point point-button-hover`}>회원가입</button>
-        <button
-          className={`${NEXT_PREV_BUTTON} bg-white border border-black white-button-hover`}
-          type="button"
-          onClick={prevStep}
-        >
+        <button className={`${NEXT_PREV_BUTTON} point-button`}>회원가입</button>
+        <button className={`${NEXT_PREV_BUTTON} white-outline-button`} type="button" onClick={prevStep}>
           이전
         </button>
       </form>

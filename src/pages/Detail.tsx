@@ -49,8 +49,12 @@ export const Detail = () => {
   const addBookmark = async () => {
     console.log("추가 작동");
     if (currentSession === null) {
-      const goToLogin = await Confirm(`북마크 기능은 로그인 후 이용가능합니다.
-      로그인 하시겠습니까?`);
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
+      );
       if (goToLogin) {
         navigate("/login");
       }
@@ -64,8 +68,15 @@ export const Detail = () => {
 
   const deleteBookmark = async () => {
     if (currentSession === null) {
-      await Confirm(`북마크 기능은 로그인 후 이용가능합니다.
-      로그인 하시겠습니까?`);
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
+      );
+      if (goToLogin) {
+        navigate("/login");
+      }
       return;
     }
     if (paramsId === undefined) return;

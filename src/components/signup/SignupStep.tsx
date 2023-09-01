@@ -15,11 +15,11 @@ export const SignupStep = ({ step }: Props) => {
         <p className="body-3">약관동의</p>
       </div>
       <div className="contents-center flex-column gap-[12px]">
-        <div className={`${CIRCLE_STYLE} ${step === 1 ? FOCUS_STYLE : NOT_FOCUS_STYLE}`}>1</div>
+        <div className={`${CIRCLE_STYLE} ${step === 1 ? FOCUS_STYLE : NOT_FOCUS_STYLE}`}>2</div>
         <p className="body-3">정보입력</p>
       </div>
       <div className="contents-center flex-column gap-[12px]">
-        <div className={`${CIRCLE_STYLE} ${step === 2 ? FOCUS_STYLE : NOT_FOCUS_STYLE}`}>1</div>
+        <div className={`${CIRCLE_STYLE} ${step === 2 ? FOCUS_STYLE : NOT_FOCUS_STYLE}`}>3</div>
         <p className="body-3">가입완료</p>
       </div>
     </div>

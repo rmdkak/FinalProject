@@ -91,7 +91,7 @@ export const UpdatePassword = () => {
             />
           </div>
           <InvalidText errorsMessage={errors.newPasswordConfirm?.message} />
-          <button className="auth-button bg-point point-button-hover">변경하기</button>
+          <button className="auth-button point-button">변경하기</button>
         </form>
       </div>
     </section>

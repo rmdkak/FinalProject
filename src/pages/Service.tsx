@@ -58,8 +58,12 @@ export const Service = () => {
 
   const addBookmark = async () => {
     if (currentSession === null) {
-      const goToLogin = await Confirm(`북마크 기능은 로그인 후 이용가능합니다.
-      로그인 하시겠습니까?`);
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
+      );
       if (goToLogin) {
         navigate("/login");
       }
@@ -169,20 +173,15 @@ export const Service = () => {
 
                 <div className="flex gap-4 mt-6">
                   {isItemBookmarkedData != null ? (
-                    <button
-                      onClick={deleteBookmark}
-                      className="flex-auto h-[64px] rounded-xl bg-white border border-gray05 white-button-hover"
-                    >
+                    <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">
                       삭제하기
                     </button>
                   ) : (
-                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl bg-point point-button-hover">
+                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl point-button">
                       저장하기
                     </button>
                   )}
-                  <button className="flex-auto h-[64px] border-[1px] rounded-xl border-gray05 outline-button-hover">
-                    추천하기
-                  </button>
+                  <button className="flex-auto h-[64px]  rounded-xl  gray-outline-button">추천하기</button>
                   <button className="w-[64px] h-[64px] rounded-xl border-[1px] border-gray05">
                     <BsShare className="mx-auto w-7 h-7 fill-black" />
                   </button>
