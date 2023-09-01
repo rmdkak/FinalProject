@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { RxChevronRight } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 
@@ -6,46 +7,69 @@ import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import img01 from "assets/img01.png";
 import img02 from "assets/img02.png";
 import img03 from "assets/img03.png";
-import img04 from "assets/img04.png";
-import img05 from "assets/img05.png";
 
 export const Home = () => {
   const navigate = useNavigate();
   const arrowPlugins = [new Arrow()];
-  const mainAutoplayPlugins = [
-    new AutoPlay({ duration: 50, animationDuration: 3000, direction: "NEXT", stopOnHover: false }),
-  ];
+
   const serviceAutoplayPlugins = [
     new AutoPlay({ duration: 2000, animationDuration: 3000, direction: "NEXT", stopOnHover: false }),
   ];
 
+  const initialWidths = ["w-[780px]", "w-[160px]", "w-[160px]"];
+  const finalWidth = "w-[780px]";
+  const transitionInterval = 3000;
+
+  const [widths, setWidths] = useState<string[]>(initialWidths);
+  const [currentIdx, setCurrentIdx] = useState<number>(0);
+
+  //  5초마다 KV배너 이미지 크기 변화
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const updatedWidths = initialWidths.map((_, index) => {
+        if (index === currentIdx) {
+          return finalWidth;
+        } else {
+          return "w-[160px]";
+        }
+      });
+
+      setWidths(updatedWidths);
+      setCurrentIdx((currentIdx + 1) % 3);
+    }, transitionInterval);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [currentIdx, initialWidths]);
+
+  const VannerImgs = [img01, img02, img03];
+
   return (
     <>
-      <div className="flex w-full h-[968px] mb-40 ">
-        <div className="flex-column ml-20 mb-20 mt-[100px]">
+      <div className="flex w-full mb-40 ">
+        <div className="flex-column mx-20 mb-20 mt-[100px]">
           <div className="mx-auto my-auto">
             <h1 className="w-[560px] text-[56px]">
               내 스타일 그대로,
               <br />
               인테리어를 완성해보세요!
             </h1>
-            <p className="text-xl text-[#666]">
+            <p className="text-xl text-gray01">
               나만의 조합으로 완성되는, 소중한 우리 공간!
               <br />
               당신의 취향이 만들어가는 따뜻한 인테리어 세상에 오세요.
             </p>
           </div>
         </div>
-        <img src={img05} className="relative top-[35%] left-[20%] w-[160px] h-[160px] z-10" alt="" />
-        <Flicking align={"prev"} horizontal={false} circular={true} plugins={mainAutoplayPlugins}>
-          <div className="w-[900px]">
-            <img src={img01} className="w-[500px] h-[300px] rounded-xl translate-x-28"></img>
-          </div>
-          <img src={img02} className="w-[700px] h-[500px] -translate-y-14 translate-x-48 rounded-xl -z-10"></img>
-          <img src={img04} className="w-[700px] h-[500px] -translate-y-15 rounded-xl"></img>
-          <img src={img03} className="w-[600px] h-[400px] translate-x-52 -translate-y-5  rounded-xl"></img>
-          <img></img>
-        </Flicking>
+        {widths.map((widths, idx) => (
+          <img
+            key={idx}
+            src={VannerImgs[idx]}
+            alt="preview image"
+            className={`${widths} h-[800px] mr-10 rounded-xl object-cover transition-[width] duration-1000 ease-in-out`}
+          />
+        ))}
       </div>
       <div className="home-section">
         <div className="contents-between">
@@ -124,17 +148,6 @@ export const Home = () => {
               <p> 서브타이틀 영억 {`(날짜 및 설명글)`}</p>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="flex-column contents-center h-[180px] bg-gray07 mb-40">
-        <h1 className="text-2xl">얼마나 필요한지 모르시나요? 스타일의 편리한 기능을 이용해보세요!</h1>
-        <div className="text-gray02">
-          <label htmlFor="moveToEvent" className="hover:cursor-pointer">
-            VIEW MORE
-          </label>
-          <button id="moveToEvent">
-            <RxChevronRight className="view-more-icon" />
-          </button>
         </div>
       </div>
       <div className="gap-8 mx-20 mb-40 flex-column">
