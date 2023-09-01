@@ -13,7 +13,6 @@ interface Props {
 
 export const PreviewLike = ({ likeData }: Props) => {
   if (likeData === undefined) return <PreviewEmpty />;
-  console.log("likeData :", likeData);
 
   return (
     <ul className="flex-column h-[130px]">

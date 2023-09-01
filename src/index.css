@@ -272,14 +272,14 @@ body {
   .auth-button-text {
     @apply text-[14px] font-medium leading-[130%];
   }
-  .white-button-hover {
-    @apply hover:bg-point hover:border-point;
+  .white-outline-button {
+    @apply bg-white border border-black hover:bg-point hover:border-point;
   }
-  .point-button-hover {
-    @apply hover:bg-[#FFFBF0] hover:border hover:border-point;
+  .point-button {
+    @apply bg-point border border-point hover:bg-[#FFFBF0] hover:border hover:border-point disabled:bg-white disabled:border disabled:border-black;
   }
-  .outline-button-hover {
-    @apply hover:border-black;
+  .gray-outline-button {
+    @apply bg-white border border-gray05 hover:border-black;
   }
   .gray-button-hover {
     @apply hover:border hover:border-black;

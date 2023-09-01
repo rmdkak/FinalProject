@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/calcArrow.svg";
 import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog } from "components";
-import { useInteriorBookmark } from "hooks";
+import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
 const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
@@ -50,11 +50,10 @@ export const Service = () => {
     }
   }, [wallPaper, tile, wallpaperPaint]);
 
-  const { interiorBookmarkResponse, addInteriorBookmarkMutation, deleteInteriorBookmarkMutation } =
-    useInteriorBookmark();
+  const { bookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = useBookmark();
 
   // TODO IsLoading, IsError 구현하기
-  const { data: currentBookmarkData } = interiorBookmarkResponse;
+  const { data: currentBookmarkData } = bookmarkResponse;
 
   useEffect(() => {
     if (currentBookmarkData == null) return;
@@ -63,17 +62,22 @@ export const Service = () => {
 
   const addBookmark = async () => {
     if (currentSession === null) {
-      return await Alert(
-        <p>
-          해당 서비스는
-          <br /> 로그인 후 이용하실 수 있습니다.
-        </p>,
+      const goToLogin = await Confirm(
+        <>
+          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>로그인 하시겠습니까?</p>
+        </>,
       );
+      if (goToLogin) {
+        navigate("/login");
+      }
+      return;
     }
-    if (tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) {
-      return await Alert(<p>조합할 벽지, 바닥재를 모두 선택해주세요.</p>);
+    if (tile.id === null || wallPaper.left.id === null || wallPaper.right.id === null) {
+      await Alert("벽지와 타일 3가지 모두 선택해주세요.");
+      return;
     }
-    addInteriorBookmarkMutation.mutate({
+    addBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
@@ -84,7 +88,7 @@ export const Service = () => {
 
   const deleteBookmark = async () => {
     if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
-    deleteInteriorBookmarkMutation.mutate({
+    deleteBookmarkMutation.mutate({
       userId: currentSession.user.id,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
@@ -190,14 +194,11 @@ export const Service = () => {
 
                 <div className="flex gap-4 mt-6">
                   {isItemBookmarkedData != null ? (
-                    <button
-                      onClick={deleteBookmark}
-                      className="flex-auto h-[64px] rounded-xl bg-white border border-gray05 white-button-hover"
-                    >
+                    <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">
                       삭제하기
                     </button>
                   ) : (
-                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl bg-point point-button-hover">
+                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl point-button">
                       저장하기
                     </button>
                   )}
