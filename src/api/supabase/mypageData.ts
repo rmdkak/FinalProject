@@ -40,7 +40,7 @@ export const fetchMyBookmarksData = async (id: string) => {
   return data;
 };
 
-// my bookmark Delete
+// my bookmark select Delete
 export const deleteBookmarksData = async (postIdsToDelete: string[]) => {
   await supabase.from("BOOKMARKS").delete().in("id", postIdsToDelete);
 };
