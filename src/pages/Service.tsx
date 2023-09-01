@@ -81,7 +81,7 @@ export const Service = () => {
           {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
-            <div className="flex flex-none contents-center sticky top-[22.5%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
+            <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
               <div className="cube">
                 {/* 벽지 */}
                 {!isWallPaperPaintSeleted ? (
