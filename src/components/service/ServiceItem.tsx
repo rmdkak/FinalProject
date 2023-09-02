@@ -4,13 +4,12 @@ import { SketchPicker, type ColorResult } from "react-color";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
-import { tileTextureList, wallPaperTextureList } from "./data";
+import { SelectPaintIndex, tileTextureList, wallPaperTextureList } from "./data";
 import { SelfPattern } from "./SelfPattern";
+import { ServiceSelectItem } from "./ServiceSelectItem";
 
-const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 interface Props {
   data: Array<Tables<"WALLPAPER", "Row">>;
-  wallCheck?: true | false;
 }
 
 /**
@@ -19,49 +18,28 @@ interface Props {
  * @param type
  * @returns
  */
-export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
+export const ServiceItem = ({ data }: Props): JSX.Element => {
   const {
     checkType,
     resetWallPaper,
     resetTile,
-    setTile,
-    setWallPaper,
     setWallpaperPaint,
     resetWallpaperPaint,
     interiorSelecteIndex,
     interiorSelectX,
   } = useServiceStore((state) => state);
-  const [color, setColor] = useState<string>("#000");
+  const [color, setColor] = useState<string>("");
 
   // 페이지 마운트, 언마운트시 전역데이터 초기화
   useEffect(() => {
-    // console.log("페이지 마운트됨");
     resetWallPaper();
+    resetWallpaperPaint();
     resetTile();
-    return () => {
-      // console.log("페이지 언마운트됨");
-      resetWallPaper();
-      resetTile();
-    };
   }, []);
-
-  /**
-   *
-   * @param image "매개변수 'image'는 클릭한 이미지의 경로 또는 식별자를 나타냅니다. 이 함수는 전역 상태 관리를 위해 'zustand'를 사용하여 이미지 값을 저장합니다. 저장된 이미지 값은 왼쪽의 인테리어 비주얼 요소에 표시되도록 설정됩니다."
-   */
-  const getItemData = (selectItem: { id: string; image: string }): void => {
-    if (checkType === "wallPaper") {
-      resetWallpaperPaint();
-      interiorSelectX ? setWallPaper(selectItem, "left") : setWallPaper(selectItem, "right");
-    }
-    if (checkType === "tile") {
-      setTile(selectItem);
-    }
-  };
 
   const changeColorPicker = (color: ColorResult) => {
     setColor(color.hex);
-
+    resetWallPaper();
     interiorSelectX ? setWallpaperPaint(color.hex, "left") : setWallpaperPaint(color.hex, "right");
   };
 
@@ -79,29 +57,36 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
       });
       filterData = FILTER_DATA;
     }
+    if (typeName === "All") {
+      filterData = data;
+    }
   };
   // 인테리어 헤더부분 리스트아이템 선택시 그 선택아이템의 값을 영어로 변환해 filterDate 에 매개변수로 전달합니다.
   // 값이 없을경우 filterDate = data(전체데이터) 로 할당됩니다.
   let changeName: string = "";
   switch (CHECK_DATA[interiorSelecteIndex]) {
     case CHECK_DATA[0]:
-      changeName = CHECK_DATA[0] === "장판" ? "wallPaper" : "floorMat";
+      changeName = CHECK_DATA[0] === "전체" ? "All" : "All";
       filterDate(changeName);
       break;
     case CHECK_DATA[1]:
-      changeName = CHECK_DATA[1] === "마루" ? "paint" : "floor";
+      changeName = CHECK_DATA[1] === "장판" ? "wallPaper" : "floorMat";
       filterDate(changeName);
       break;
     case CHECK_DATA[2]:
-      changeName = CHECK_DATA[2] === "데코타일" ? "tile" : "decorationtile";
+      changeName = CHECK_DATA[2] === "마루" ? "paint" : "floor";
       filterDate(changeName);
       break;
     case CHECK_DATA[3]:
-      changeName = CHECK_DATA[3] === "포세린" ? "poserin" : "poserin";
+      changeName = CHECK_DATA[3] === "데코타일" ? "tile" : "decorationtile";
       filterDate(changeName);
       break;
     case CHECK_DATA[4]:
-      changeName = CHECK_DATA[4] === "셀프조합" ? "self" : "self";
+      changeName = CHECK_DATA[4] === "포세린" ? "poserin" : "poserin";
+      filterDate(changeName);
+      break;
+    case CHECK_DATA[5]:
+      changeName = CHECK_DATA[5] === "셀프조합" ? "self" : "self";
       break;
 
     default:
@@ -113,7 +98,7 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
     return <SelfPattern />;
   }
 
-  if (interiorSelecteIndex === 1 && checkType === "wallPaper") {
+  if (interiorSelecteIndex === SelectPaintIndex && checkType === "wallPaper") {
     return (
       <SketchPicker
         color={color}
@@ -121,6 +106,7 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
           changeColorPicker(color);
         }}
         disableAlpha={true}
+        width="400"
       />
     );
   } else {
@@ -128,17 +114,7 @@ export const ServiceItem = ({ data, wallCheck }: Props): JSX.Element => {
       <>
         {filterData.map((item) => {
           const { id, image } = item;
-          return (
-            <li
-              onClick={() => {
-                getItemData({ id, image });
-              }}
-              key={id}
-              className="cursor-pointer interior-item"
-            >
-              <img src={`${STORAGE_URL}${image}`} className="interior-item" alt={` ${checkType} 미리보기 이미지`} />
-            </li>
-          );
+          return <ServiceSelectItem key={id} image={image} id={id} />;
         })}
       </>
     );

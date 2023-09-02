@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 
 import { useColor } from "color-thief-react";
 import { type ReducerState, type ColorFormats, type ArrayRGB } from "color-thief-react/lib/types";
-import { useDialog } from "components/overlay";
+import { useDialog } from "components";
 import { useServiceStore } from "store";
 
+import { ColorItem } from "./ColorItem";
 import { ColorPallet } from "./ColorPallet";
 
 interface props {
@@ -16,7 +17,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
   const [color, setColor] = useState<string | null>(leftWall);
   const [colorSide, setColorSide] = useState<boolean>(false);
   const { wallpaperPaint } = useServiceStore((state) => state);
-  const isWallPaperPaintSeleted = wallpaperPaint.left !== "#f3f3f3" || wallpaperPaint.right !== "#e5e5e5";
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== "" || wallpaperPaint.right !== "";
   const { Alert } = useDialog();
 
   useEffect(() => {
@@ -199,7 +200,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
                 }}
                 className="flex"
               >
-                <div className="interior-item" style={{ backgroundColor: data as string }} />
+                <ColorItem color={data as string} />
               </li>
             </ul>
           </div>

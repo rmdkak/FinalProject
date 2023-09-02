@@ -48,5 +48,11 @@ export const usePosts = () => {
     },
   });
 
-  return { fetchPostsMutation, createPostMutation, updatePostMutation, deletePostMutation, fetchDetailMutation };
+  return {
+    fetchPostsMutation,
+    createPostMutation,
+    updatePostMutation,
+    deletePostMutation,
+    fetchDetailMutation,
+  };
 };

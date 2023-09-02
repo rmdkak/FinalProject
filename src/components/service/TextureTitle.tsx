@@ -1,3 +1,4 @@
+// NOTE 전체 탭 기능 수정해야합니다.  지금 뭔가 두루뭉실해가지고 확실히 틀을 잡읍시다.
 import React from "react";
 
 import { useServiceStore } from "store";
@@ -19,7 +20,6 @@ const TextureTitle = ({ data }: Props): JSX.Element => {
     // 저장된값이 기존값과 같으면 -1을 저장합니다.
     setInteriorSelecteIndex(-1);
   };
-  // console.log(interiorSelecteIndex);
   return (
     <div className="flex gap-4">
       {data.map((item, index) => (

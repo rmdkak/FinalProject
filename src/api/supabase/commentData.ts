@@ -4,13 +4,28 @@ import { supabase } from "./supabaseClient";
 
 // get(comments)
 export const fetchComments = async (postId: string) => {
-  const { data } = await supabase.from("COMMENTS").select(`*,USERS (*),RECOMMENTS (*,USERS(*))`).eq("postId", postId);
+  const { data, error } = await supabase
+    .from("COMMENTS")
+    .select(`*,USERS (*),RECOMMENTS (*,USERS(*))`)
+    .eq("postId", postId);
+  if (error !== null) {
+    console.log("errorMessage", error);
+    return;
+  }
   return data;
 };
 
 // post(comments)
 export const createCommentsHandler = async (commentData: Tables<"COMMENTS", "Insert">) => {
   await supabase.from("COMMENTS").insert(commentData).select();
+};
+
+// post(스토리지 저장)
+export const saveCommentImageHandler = async ({ id, commentImgFile }: { id: string; commentImgFile: Blob }) => {
+  await supabase.storage.from("Images").upload(`commentImg/${id}`, commentImgFile, {
+    cacheControl: "3600",
+    upsert: false,
+  });
 };
 
 // patch(comments)
