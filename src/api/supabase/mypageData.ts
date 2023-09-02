@@ -47,7 +47,7 @@ export const deleteBookmarksData = async (postIdsToDelete: string[]) => {
 
 // MyLikes Get
 export const fetchMyLikesData = async (id: string) => {
-  const { data, error } = await supabase.from("POSTLIKES").select(`*,POSTS (*)`).eq("userId", id);
+  const { data, error } = await supabase.from("POSTLIKES").select(`*,POSTS (*)`).contains("userId", [id]);
   if (error != null) {
     console.error(error.message);
     return;
