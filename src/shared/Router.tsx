@@ -11,6 +11,7 @@ const Router = () => {
           <Route path="/" element={<pages.Home />} />
           <Route path="/service" element={<pages.Service />} />
           <Route path="/post" element={<pages.Post />} />
+          <Route path="/updatepost" element={<pages.UpdatePost />} />
           <Route path="detail/:id" element={<pages.Detail />} />
           <Route path="/community" element={<pages.Community />} />
           <Route path="/mypage" element={<pages.Mypage />} />

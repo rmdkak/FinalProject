@@ -46,18 +46,18 @@ export const Comments = () => {
         댓글 <span className="text-black">{commentsData?.length}</span>개
       </p>
       <CommentForm kind="comment" commentId="" setOpenReply={setOpenReply} />
-      <div className="gap-5 border-t flex-column border-gray05">
+      <div className="border-t flex-column border-gray05">
         {commentsData?.map((comment) => {
           return (
             <div key={comment.id}>
-              <div className="flex border-b border-gray06 py-[15px]">
-                <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[50px] h-[50px]" />
-                <div className="flex flex-col justify-between gap-1 ml-3">
-                  <div className="flex gap-2">
-                    <p className="font-semibold">{comment.USERS?.name}</p>
+              <div className="flex py-5 border-b border-gray06">
+                <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px]" />
+                <div className="flex flex-col justify-between gap-3 ml-3">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold text-[18px]">{comment.USERS?.name}</p>
                     {detailData?.userId === comment.writtenId && (
-                      <div className="text-[14px] pl-[6px] text-red-500 border border-red-500 rounded-xl w-[50px]">
-                        글쓴이
+                      <div className=" bg-point border-none rounded-[4px] w-[64px] h-[24px] flex justify-center items-center">
+                        <p className="text-[12px]">글쓴이</p>
                       </div>
                     )}
                     {sessionId === comment.writtenId && (
@@ -73,12 +73,11 @@ export const Comments = () => {
                       </div>
                     )}
                   </div>
-                  <p>{comment.content}</p>
+                  <p className="text-[14px]">{comment.content}</p>
                   {comment.commentImg != null && (
                     <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px] w-[300px]" />
                   )}
-                  <div className="flex gap-2 text-gray02">
-                    <DateConvertor datetime={comment.created_at} type="dotDate" />
+                  <div className="flex gap-2 text-gray02 ">
                     <DateConvertor datetime={comment.created_at} type="timeAgo" />
                     <button
                       onClick={() => {

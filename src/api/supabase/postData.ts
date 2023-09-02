@@ -27,7 +27,7 @@ export const createPostHandler = async (postData: Tables<"POSTS", "Insert">) => 
   await supabase.from("POSTS").insert(postData).select();
 };
 
-// post
+// post(D스토리지 저장)
 export const savePostImageHandler = async ({ UUID, postImgfile }: { UUID: string; postImgfile: Blob }) => {
   await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImgfile, {
     cacheControl: "3600",

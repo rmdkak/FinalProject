@@ -20,6 +20,14 @@ export const createCommentsHandler = async (commentData: Tables<"COMMENTS", "Ins
   await supabase.from("COMMENTS").insert(commentData).select();
 };
 
+// post(스토리지 저장)
+export const saveCommentImageHandler = async ({ id, commentImgFile }: { id: string; commentImgFile: Blob }) => {
+  await supabase.storage.from("Images").upload(`commentImg/${id}`, commentImgFile, {
+    cacheControl: "3600",
+    upsert: false,
+  });
+};
+
 // patch(comments)
 export const patchCommentsHandler = async (commentData: Tables<"COMMENTS", "Update">) => {
   // 수정 로직 추가

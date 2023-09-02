@@ -6,9 +6,9 @@ import { AutoPlay } from "@egjs/flicking-plugins";
 import Flicking from "@egjs/react-flicking";
 import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
-import { DateConvertor, useDialog } from "components";
+import { DateConvertor } from "components";
+import { Toolbar } from "components/sidebar/Toolbar";
 import { usePagination, usePosts } from "hooks";
-import { useAuthStore } from "store";
 import "@egjs/react-flicking/dist/flicking.css";
 import { type Tables } from "types/supabase";
 
@@ -18,9 +18,7 @@ export const Community = () => {
   const [selectedOption, setSelectedOption] = useState<string>("whole");
   const navigate = useNavigate();
 
-  const { currentSession } = useAuthStore();
-  const { Confirm } = useDialog();
-  const { fetchPostsMutation, deletePostMutation } = usePosts();
+  const { fetchPostsMutation } = usePosts();
   const { data: postList } = fetchPostsMutation;
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
 
@@ -54,15 +52,6 @@ export const Community = () => {
     setSelectedOption(event.target.value);
   };
 
-  const deleteHandler = async (id: string) => {
-    try {
-      const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
-      if (checkDelete) deletePostMutation.mutate(id);
-    } catch (error) {
-      console.log("error :", error);
-    }
-  };
-
   if (filteredPosts === undefined) {
     return (
       <>
@@ -77,67 +66,53 @@ export const Community = () => {
     postPerPage: 8,
   });
 
-  const createPostHandler = async () => {
-    if (currentSession === null) {
-      const sessionCheck = await Confirm("게시물 작성은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
-      if (sessionCheck) navigate("/login");
-      return;
-    }
-    navigate("/post");
-  };
-
   return (
-    <div className="w-[1280px] mx-auto mt-[40px]">
+    <div className="w-[1600px] mx-auto mt-[40px]">
       <div className="text-center border-b border-gray-400 drop-shadow-xl">
         <p className="text-[32px] py-[10px]">커뮤니티</p>
       </div>
-      <div className="my-[30px]">
+      <div className="my-[40px]">
+        <div className="flex items-center gap-3 mb-[20px]">
+          <p className="text-[20px] font-medium">BEST CONTENTS</p>
+          <p className="text-gray01">현재 가장 인기있는 글을 먼저 만나보세요!</p>
+        </div>
         {/* 슬라이더 영역 */}
-        <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
+        <Flicking align={"prev"} circular={true} panelsPerView={4} plugins={plugins}>
           {postList
             ?.sort((a, b) => b.bookmark - a.bookmark)
             .map((post) => (
-              <div key={post.id} className="flex flex-col w-[400px] h-[349px] mx-[10px] ">
-                <div className="flex gap-[15px]">
+              <div key={post.id} className="flex flex-col w-[376px] h-[486px] mx-[10px] ">
+                <div className="">
                   <img
                     src={post.postImage != null ? `${storageUrl}${post.postImage}` : noImage}
                     alt="postImg"
-                    className={`rounded-[8px] ${
-                      isExistCombination(post) ? "w-[322px]" : "w-[400px] mr-[78px]"
-                    } h-[196px] object-contain`}
+                    className={"rounded-[8px] h-[376px] object-cover"}
                   />
+                </div>
+                <div className="flex justify-between mt-[20px]">
+                  <div className="w-[260px]">
+                    <p className="text-[18px] font-semibold truncate">{post.title}</p>
+                    <p className="my-[10px] text-[16px] text-[#888888] line-clamp-2 h-[46px]">{post.content}</p>
+                  </div>
                   {isExistCombination(post) && (
-                    <div className="flex flex-col items-center gap-[5px] mt-[5px]">
-                      <p>벽지</p>
-                      <div className="flex rounded-[12px]">
-                        <img
-                          src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
-                          alt="벽지"
-                          className="w-[31px] h-[55px] rounded-l-[8px]"
-                        />
-                        <img
-                          src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
-                          alt="벽지"
-                          className="w-[31px] h-[55px] rounded-r-[8px]"
-                        />
-                      </div>
-                      <p>바닥재</p>
+                    <div className="relative flex w-[116px]">
+                      <img
+                        src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
+                        alt="벽지"
+                        className="absolute w-[40px] h-[40px] left-[10px] rounded-full"
+                      />
+                      <img
+                        src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
+                        alt="벽지"
+                        className="absolute w-[40px] h-[40px] left-[40px] rounded-full"
+                      />
                       <img
                         src={`${storageUrl}/tile/${post.tileId as string}`}
                         alt="바닥"
-                        className="w-[62px] h-[55px] rounded-[8px]"
+                        className="absolute w-[40px] h-[40px] left-[70px] rounded-full"
                       />
                     </div>
                   )}
-                </div>
-                <div className="w-[300px]">
-                  <p className="mt-[16px] text-[18px] font-semibold truncate">{post.title}</p>
-                  <p className="my-[10px] text-[16px] text-[#888888] line-clamp-2 h-[46px]">{post.content}</p>
-                  <div className="flex gap-[10px] text-[#888888] text-[14px]">
-                    <p>{post.nickname}</p>
-                    <DateConvertor datetime={post.created_at} type="dotDate" />
-                    <p>좋아요 {post.bookmark}</p>
-                  </div>
                 </div>
               </div>
             ))}
@@ -145,13 +120,13 @@ export const Community = () => {
       </div>
       {/* 게시물 영역 */}
       <div className="flex justify-center">
-        <div className="w-[1280px] mx-auto">
-          <div className="contents-between mt-[10px] border-y border-gray-200 pb-[15px] pt-[50px]">
+        <div className="w-[1600px] mx-auto">
+          <div className="mt-[10px] border-y border-gray-200 pb-[15px] pt-[50px]">
             <div className="flex gap-3 text-[16px] items-center">
               <select
                 value={selectedOption}
                 onChange={handleOptionChange}
-                className="p-1 w-[115px] text-[#888888] border shadow focus:outline-none"
+                className="p-1 w-[140px] text-[#888888] border shadow focus:outline-none"
               >
                 <option value="whole">전체 게시글</option>
                 <option value="normal">일반 게시글</option>
@@ -161,82 +136,63 @@ export const Community = () => {
                 총 <span className="font-semibold text-[#1A1A1A]">{filteredPosts?.length}</span>개의 게시물이 있습니다.
               </p>
             </div>
-            <button
-              type="button"
-              className="px-4 py-2 font-semibold text-white bg-[#888888] rounded hover:bg-gray-500"
-              onClick={createPostHandler}
-            >
-              게시물 작성
-            </button>
           </div>
           {pageData.map((post) => {
             return (
               <div
                 key={post.id}
-                className="py-[25px] border-b border-gray-200 cursor-pointer"
+                className="border-b border-gray-200 cursor-pointer h-[192px] py-[20px] flex"
                 onClick={() => {
                   goDetailPage(post.id);
                 }}
               >
-                <div className="flex justify-between gap-5">
-                  <div className="flex">
-                    <div className="w-[1000px]">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex-column w-[1278px]">
+                    <div>
                       <p className="text-[18px] font-semibold truncate">{post.title}</p>
-                      <p className="text-[16px] mt-1 h-[45px] overflow-hidden text-[#888888]">{post.content}</p>
+                      <p className="mt-[10px] text-[16px] h-[45px] overflow-hidden text-[#888888]">{post.content}</p>
+                    </div>
+                    <div className="flex text-[#888888] text-[14px] gap-[10px] mt-[30px]">
+                      <p>{post.nickname}</p>
+                      <DateConvertor datetime={post.created_at} type="dotDate" />
+                      <DateConvertor datetime={post.created_at} type={"hourMinute"} />
+                      <p>좋아요 {post.bookmark}</p>
                     </div>
                   </div>
-                  <div className="flex gap-5">
+                  <div className="flex gap-3 w-[234px] justify-end items-center">
                     {post.postImage != null && (
                       <img
                         src={`${storageUrl}${post.postImage as string}`}
-                        className="h-[100px] w-[132px] rounded-[8px] object-contain"
+                        className="h-[154px] w-[154px] rounded-[8px] object-cover"
                       />
                     )}
                     {isExistCombination(post) && (
-                      <div className="relative flex mr-[40px] ml-[20px]">
-                        <div className="flex rounded-[12px]">
-                          <img
-                            src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
-                            alt="벽지"
-                            className="w-[31px] h-[55px] rounded-l-[8px]"
-                          />
-                          <img
-                            src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
-                            alt="벽지"
-                            className="w-[31px] h-[55px] rounded-r-[8px]"
-                          />
-                        </div>
+                      <div className="">
+                        <img
+                          src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
+                          alt="벽지"
+                          className="w-[64px] h-[64px] rounded-full relative top-[20px]"
+                        />
+                        <img
+                          src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
+                          alt="벽지"
+                          className="w-[64px] h-[64px] rounded-full relative"
+                        />
                         <img
                           src={`${storageUrl}/tile/${post.tileId as string}`}
                           alt="바닥"
-                          className="w-[62px] h-[55px] rounded-[8px] absolute top-[20px] left-[40px]"
+                          className="w-[64px] h-[64px] rounded-full relative bottom-[20px]"
                         />
                       </div>
                     )}
                   </div>
-                </div>
-                <div className="flex mt-[10px] text-[#888888] text-[14px] gap-[15px]">
-                  <p>{post.nickname}</p>
-                  <DateConvertor datetime={post.created_at} type="dotDate" />
-                  <p>좋아요 {post.bookmark}</p>
-                  {currentSession?.user.id === post.userId && (
-                    <div className="text-red-500">
-                      <button className="mr-2">수정</button>
-                      <button
-                        onClick={async () => {
-                          await deleteHandler(post.id);
-                        }}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  )}
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+      <Toolbar />
 
       <div className="flex gap-[16px] py-[30px] justify-end">
         <div className="flex items-center gap-[8px]">
