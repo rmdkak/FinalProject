@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { useEffect, useState } from "react";
 import { BsShare, BsPencilSquare, BsSuitHeartFill } from "react-icons/bs";
+import { FaRegHeart } from "react-icons/fa6";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -19,7 +20,7 @@ export const Detail = () => {
   const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
   const { data: currentBookmarkData } = postLikeResponse;
-  const { fetchPostsMutation } = usePosts();
+  const { fetchPostsMutation, deletePostMutation } = usePosts();
   const { data: postList } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
   let prevPage = "";
@@ -96,56 +97,81 @@ export const Detail = () => {
   };
   const movePostPageHandler = async () => {
     if (currentSession === null) {
-      const confirmCheck = await Confirm("게시글 작성은 로그인 후 이용 가능합니다. 로그인 페이지로 이동하시겠습니까?");
+      const confirmCheck = await Confirm(
+        <div>
+          <div className="flex text-[18px] justify-center mb-[10px]">
+            <p className="font-medium mr-[10px]">STILE</p>
+            <p>회원 이신가요?</p>
+          </div>
+          <div className="text-[14px] text-gray02">
+            <p>해당 서비스는 로그인 후 진행 가능합니다.</p>
+            <p>로그인 혹은 회원가입 해주세요.</p>
+          </div>
+        </div>,
+      );
       if (confirmCheck) navigate("/login");
       return;
     }
     navigate("/post");
   };
+
+  const deleteHandler = async (id: string) => {
+    try {
+      const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
+      if (checkDelete) deletePostMutation.mutate(id);
+    } catch (error) {
+      console.log("error :", error);
+    }
+  };
+
   return (
     // 상위 배너 영역
-    <div className="w-[1280px] mx-auto mt-[30px]">
+    <div className="w-[1600px] mx-auto mt-[30px]">
       <div className="items-center flex-column">
-        <p className="font-bold text-[30px]">커뮤니티</p>
+        <p className="font-medium text-[32px]">커뮤니티</p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
-      <div className="contents-between border-b border-gray06 my-[10px] p-[10px]">
-        <div className="w-[1000px] my-[10px]">
+      <div className="contents-between border-b border-gray06 my-[10px] py-[20px] items-center">
+        <div className="w-[1200px] my-[10px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
             {postData?.title}
           </label>
-          <div className="flex my-[15px] gap-[10px] text-gray02">
+          <div className="flex my-[15px] gap-[10px] text-gray02 text-[14px]">
             <a>{postData?.nickname}</a>
             <DateConvertor datetime={postData?.created_at as string} type="dotDate" />
             <DateConvertor datetime={postData?.created_at as string} type="hourMinute" />
-            <p>좋아요: {postData?.bookmark}</p>
+            <div className="flex items-center gap-1">
+              <FaRegHeart />
+              <p>좋아요: {postData?.bookmark}</p>
+            </div>
           </div>
         </div>
         {postData?.tileId !== null && postData?.leftWallpaperId !== null && postData?.rightWallpaperId !== null && (
           <div className="flex gap-4">
-            <div className="flex-column">
-              <p className="text-center">벽지</p>
-              <div className="flex">
-                <img
-                  className="w-8 h-16 rounded-l-lg bg-gray06"
-                  src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
-                  alt="왼쪽 벽지"
-                />
-                <img
-                  className="w-8 h-16 rounded-r-lg bg-gray06"
-                  src={`${storageUrl}/wallpaper/${postData?.rightWallpaperId}`}
-                  alt="오른쪽 벽지"
-                />
-              </div>
-            </div>
-            <div className="flex-column">
-              <p className="text-center">바닥재</p>
+            <div className="relative left-[50px] z-[1]">
               <img
-                className="w-16 h-16 rounded-lg bg-gray06"
+                className="w-24 h-24 rounded-full bg-gray06"
+                src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
+                alt="왼쪽 벽지"
+              />
+              <p className="text-[14px] text-center">좌측벽지</p>
+            </div>
+            <div className="relative left-[25px] z-[2]">
+              <img
+                className="w-24 h-24 rounded-full bg-gray06"
+                src={`${storageUrl}/wallpaper/${postData?.rightWallpaperId}`}
+                alt="오른쪽 벽지"
+              />
+              <p className="text-[14px] text-center">우측벽지</p>
+            </div>
+            <div className="z-[3]">
+              <img
+                className="w-24 h-24 rounded-full bg-gray06"
                 src={`${storageUrl}/tile/${postData?.tileId}`}
                 alt="바닥재"
               />
+              <p className="text-[14px] text-center">바닥재</p>
             </div>
           </div>
         )}
@@ -160,15 +186,30 @@ export const Detail = () => {
       {/* 댓글 컴포넌트 */}
       <Comments />
 
-      <div className=" mt-[40px]">
+      <div className="flex justify-between mt-[40px]">
         <button
-          className="h-[48px] px-[67px] rounded-lg border-[1px] border-gray05"
+          className="h-[48px] px-[30px] rounded-lg border-[1px] border-gray05"
           onClick={() => {
             movePageHandler("community");
           }}
         >
-          목록
+          커뮤니티 목록
         </button>
+        {currentSession?.user.id === postData?.userId && postData !== undefined && (
+          <div>
+            <button
+              onClick={async () => {
+                await deleteHandler(postData.id);
+              }}
+              className="w-[160px] h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"
+            >
+              삭제
+            </button>
+            <button type="button" className="mr-2 bg-point w-[160px] h-[48px] rounded-[8px]">
+              수정
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-20 flex-column border-t-[1px] border-gray06">
         {prevPage !== undefined && (
@@ -198,7 +239,7 @@ export const Detail = () => {
           </div>
         )}
       </div>
-      <div className="sticky gap-4 bottom-[35%] translate-x-[1350px] inline-flex flex-col">
+      <div className="sticky gap-4 bottom-[50%] translate-x-[1650px] inline-flex flex-col">
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>

@@ -8,3 +8,4 @@ export * from "./Post";
 export * from "./Service";
 export * from "./Signup";
 export * from "./UpdatePassword";
+export * from "./UpdatePost";
