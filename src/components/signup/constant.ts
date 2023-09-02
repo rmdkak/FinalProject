@@ -89,7 +89,13 @@ export const emailOptions = ["naver.com", "gmail.com", "kakao.com", "daum.net"];
 
 export const phoneOptions = ["010", "012", "013", "015"];
 
-export const idQuestionOptions = ["내가 졸업한 초등학교 이름은?", "나의 첫 자동차는?", "나의 첫 애완동물의 이름은?"];
+export const idQuestionOptions = [
+  "내가 졸업한 초등학교 이름은?",
+  "나의 첫 자동차는?",
+  "나의 첫 애완동물의 이름은?",
+  "나의 어머니 성함은?",
+  "나의 아버지 성함은?",
+];
 
 export const passwordValid = (passwordConfirm: string) => ({
   required: "비밀번호를 입력해주세요.",

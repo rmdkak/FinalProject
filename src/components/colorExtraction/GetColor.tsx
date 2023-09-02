@@ -24,24 +24,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
     colorSide ? setColor(rightWall) : setColor(leftWall);
   }, [colorSide, leftWall, rightWall]);
 
-  if (color === null) {
-    return (
-      <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
-        <div>
-          <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
-          <ul className="flex flex-wrap gap-4">
-            <li className="text-[30px] font-bold">타일을 선택해주세요.</li>
-          </ul>
-        </div>
-        <div>
-          <h2 className="mb-6 text-lg font-medium pt-6 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
-          <ul className="flex flex-wrap gap-4"></ul>
-        </div>
-      </div>
-    );
-  }
-
-  const { data, loading, error } = useColor<ColorFormats, ReducerState<string | ArrayRGB>>(color, "hex", {
+  const { data, loading, error } = useColor<ColorFormats, ReducerState<string | ArrayRGB>>(color as string, "hex", {
     crossOrigin: "anonymous",
   });
   /**
