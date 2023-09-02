@@ -17,14 +17,14 @@ export const PasswordVisibleButton = ({ passwordType, isVisibleState, setIsVisib
     <>
       {isVisibleState[passwordType] ?? false ? (
         <AiOutlineEyeInvisible
-          className="h-[16px] absolute right-[24px] top-[50%] translate-y-[-50%] text-[25px] text-gray04 cursor-pointer"
+          className="absolute h-4 text-2xl -translate-y-1/2 cursor-pointer right-6 top-1/2 text-gray04"
           onClick={() => {
             setIsVisibleState({ ...isVisibleState, [passwordType]: false });
           }}
         />
       ) : (
         <AiOutlineEye
-          className="h-[16px] absolute right-[24px] top-[50%] translate-y-[-50%] text-[25px] text-gray04 cursor-pointer"
+          className="absolute h-4 text-2xl -translate-y-1/2 cursor-pointer right-6 top-1/2 text-gray04"
           onClick={() => {
             setIsVisibleState({ ...isVisibleState, [passwordType]: true });
           }}
