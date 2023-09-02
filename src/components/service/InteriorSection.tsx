@@ -8,7 +8,14 @@ import { tileTextureList, wallPaperTextureList } from "./data";
 import { ServiceItem } from "./ServiceItem";
 import TextureTitle from "./TextureTitle";
 
-export const InteriorSection = (): JSX.Element => {
+interface Props {
+  onCheckCustom?: boolean;
+}
+/**
+ *
+ * @param onCheckCustom 커스텀 탭이 활성화, 비활성화 컨트롤하는 boolean 값입니다.
+ */
+export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
   const [taleData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
   const { checkType, setTypeCheck, interiorSelectX, setLeftInteriorSelectX, setRightInteriorSelectX } = useServiceStore(
@@ -42,7 +49,6 @@ export const InteriorSection = (): JSX.Element => {
   const onClickTypeSwitch = (type: "tile" | "wallPaper") => {
     setTypeCheck(type);
   };
-
   return (
     <>
       {/* 인테리어 헤더 */}
@@ -52,7 +58,7 @@ export const InteriorSection = (): JSX.Element => {
             className={
               checkType === "wallPaper"
                 ? "border-b-2 border-black hover:cursor-pointer text-black"
-                : "hover:cursor-pointer"
+                : "hover:cursor-pointer "
             }
             onClick={() => {
               onClickTypeSwitch("wallPaper");
@@ -74,7 +80,9 @@ export const InteriorSection = (): JSX.Element => {
         {checkType === "wallPaper" ? (
           <div className="gap-8 flex-column">
             {/* 벽지 종류 목록 */}
-            <TextureTitle data={wallPaperTextureList} />
+            <TextureTitle
+              data={(onCheckCustom as boolean) ? wallPaperTextureList : wallPaperTextureList.slice(0, -1)}
+            />
             <div className="flex gap-4">
               <span
                 className={
@@ -101,7 +109,7 @@ export const InteriorSection = (): JSX.Element => {
         ) : checkType === "tile" ? (
           <>
             {/* 타일 종류 목록 */}
-            <TextureTitle data={tileTextureList} />
+            <TextureTitle data={(onCheckCustom as boolean) ? tileTextureList : tileTextureList.slice(0, -1)} />
           </>
         ) : (
           <></>

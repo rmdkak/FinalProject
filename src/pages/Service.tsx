@@ -3,7 +3,7 @@ import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog } from "components";
+import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SelectCustomIndex } from "components";
 import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -128,7 +128,7 @@ export const Service = () => {
                     <div
                       style={{
                         backgroundImage: `url(${
-                          interiorSelecteIndex !== 4 ? leftWallPaperBg : (wallPaper.left.image as string)
+                          interiorSelecteIndex !== 5 ? leftWallPaperBg : (wallPaper.left.image as string)
                         })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
@@ -137,7 +137,7 @@ export const Service = () => {
                     <div
                       style={{
                         backgroundImage: `url(${
-                          interiorSelecteIndex !== 4 ? RightWallPaperBg : (wallPaper.right.image as string)
+                          interiorSelecteIndex !== 5 ? RightWallPaperBg : (wallPaper.right.image as string)
                         })`,
                         backgroundSize: `${70}px, ${70}px`,
                       }}
@@ -163,7 +163,9 @@ export const Service = () => {
                 {/* 타일 */}
                 <div
                   style={{
-                    backgroundImage: `url(${interiorSelecteIndex !== 4 ? tileBg : (tile.image as string)})`,
+                    backgroundImage: `url(${
+                      interiorSelecteIndex !== SelectCustomIndex ? tileBg : (tile.image as string)
+                    })`,
                     backgroundSize: `${70}px, ${70}px`,
                   }}
                   className="floor"
@@ -173,7 +175,7 @@ export const Service = () => {
 
             <div className="flex-column w-[860px] gap-10">
               {/* 인테리어 섹션 */}
-              <InteriorSection />
+              <InteriorSection onCheckCustom={true} />
               {/* 컬러 추출 */}
               <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
               <div>

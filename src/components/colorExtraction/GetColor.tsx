@@ -5,6 +5,7 @@ import { type ReducerState, type ColorFormats, type ArrayRGB } from "color-thief
 import { useDialog } from "components";
 import { useServiceStore } from "store";
 
+import { ColorItem } from "./ColorItem";
 import { ColorPallet } from "./ColorPallet";
 
 interface props {
@@ -199,7 +200,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
                 }}
                 className="flex"
               >
-                <div className="interior-item" style={{ backgroundColor: data as string }} />
+                <ColorItem color={data as string} />
               </li>
             </ul>
           </div>
