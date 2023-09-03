@@ -4,7 +4,7 @@ import { supabase } from "api/supabase";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
-import { tileTextureList, wallPaperTextureList } from "./data";
+import { TILE_TEXTURE_LIST, WALLPAPER_TEXTURE_LIST } from "./data";
 import { ServiceItem } from "./ServiceItem";
 import TextureTitle from "./TextureTitle";
 
@@ -81,7 +81,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
           <div className="gap-8 flex-column">
             {/* 벽지 종류 목록 */}
             <TextureTitle
-              data={(onCheckCustom as boolean) ? wallPaperTextureList : wallPaperTextureList.slice(0, -1)}
+              data={(onCheckCustom as boolean) ? WALLPAPER_TEXTURE_LIST : WALLPAPER_TEXTURE_LIST.slice(0, -1)}
             />
             <div className="flex gap-4">
               <span
@@ -109,7 +109,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
         ) : checkType === "tile" ? (
           <>
             {/* 타일 종류 목록 */}
-            <TextureTitle data={(onCheckCustom as boolean) ? tileTextureList : tileTextureList.slice(0, -1)} />
+            <TextureTitle data={(onCheckCustom as boolean) ? TILE_TEXTURE_LIST : TILE_TEXTURE_LIST.slice(0, -1)} />
           </>
         ) : (
           <></>
