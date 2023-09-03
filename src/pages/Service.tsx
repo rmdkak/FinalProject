@@ -3,7 +3,7 @@ import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SelectCustomIndex } from "components";
+import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SELECT_CUSTOM_INDEX } from "components";
 import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -25,7 +25,8 @@ export const Service = () => {
   const { Alert, Confirm } = useDialog();
 
   const { onOpenModal } = useModalStore((state) => state);
-  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex } = useServiceStore((state) => state);
+  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex, resetWallpaperPaint, resetWallPaper, resetTile } =
+    useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
 
@@ -59,6 +60,17 @@ export const Service = () => {
     if (currentBookmarkData == null) return;
     setIsItemBookmarkedData(currentBookmarkData[0]);
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
+
+  useEffect(() => {
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
+    return () => {
+      resetWallPaper();
+      resetWallpaperPaint();
+      resetTile();
+    };
+  }, []);
 
   const addBookmark = async () => {
     if (currentSession === null) {
@@ -164,7 +176,7 @@ export const Service = () => {
                 <div
                   style={{
                     backgroundImage: `url(${
-                      interiorSelecteIndex !== SelectCustomIndex ? tileBg : (tile.image as string)
+                      interiorSelecteIndex !== SELECT_CUSTOM_INDEX ? tileBg : (tile.image as string)
                     })`,
                     backgroundSize: `${70}px, ${70}px`,
                   }}

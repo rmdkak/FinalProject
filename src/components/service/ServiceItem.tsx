@@ -4,7 +4,7 @@ import { SketchPicker, type ColorResult } from "react-color";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
-import { SelectPaintIndex, tileTextureList, wallPaperTextureList } from "./data";
+import { SELECT_PAINT_INDEX, TILE_TEXTURE_LIST, WALLPAPER_TEXTURE_LIST } from "./data";
 import { SelfPattern } from "./SelfPattern";
 import { ServiceSelectItem } from "./ServiceSelectItem";
 
@@ -32,7 +32,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
 
   // type 에 따라 CHECK_DATA의 값이 바뀝니다.
   // 이 값은 벽지 타이틀이름 배열과, 바닥재 타이틀이름 배열입니다.
-  const CHECK_DATA = checkType === "wallPaper" ? tileTextureList : wallPaperTextureList;
+  const CHECK_DATA = checkType === "wallPaper" ? TILE_TEXTURE_LIST : WALLPAPER_TEXTURE_LIST;
 
   // 클릭시 스위치에서 보내준 값으로 필터를 돌리는 함수입니다.
   // 그 함수는 변수에 저장됩니다. (useState를 사용하면 무한 렌더링에 걸립니다.)
@@ -61,15 +61,15 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
       filterDate(changeName);
       break;
     case CHECK_DATA[2]:
-      changeName = CHECK_DATA[2] === "마루" ? "paint" : "floor";
+      changeName = CHECK_DATA[2] === "마루" ? "tile" : "floor";
       filterDate(changeName);
       break;
     case CHECK_DATA[3]:
-      changeName = CHECK_DATA[3] === "데코타일" ? "tile" : "decorationtile";
+      changeName = CHECK_DATA[3] === "데코타일" ? "poserin" : "decorationtile";
       filterDate(changeName);
       break;
     case CHECK_DATA[4]:
-      changeName = CHECK_DATA[4] === "포세린" ? "poserin" : "poserin";
+      changeName = CHECK_DATA[4] === "포세린" ? "paint" : "poserin";
       filterDate(changeName);
       break;
     case CHECK_DATA[5]:
@@ -85,7 +85,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
     return <SelfPattern />;
   }
 
-  if (interiorSelecteIndex === SelectPaintIndex && checkType === "wallPaper") {
+  if (interiorSelecteIndex === SELECT_PAINT_INDEX && checkType === "wallPaper") {
     return (
       <SketchPicker
         color={color}

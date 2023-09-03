@@ -19,7 +19,7 @@ export const Detail = () => {
   const [isHaveBookmark, setIsHaveBookmark] = useState(false);
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
   const { data: currentBookmarkData } = postLikeResponse;
-  const { fetchPostsMutation, fetchDetailMutation, deletePostMutation } = usePosts();
+  const { fetchPostsMutation, fetchDetailMutation, deletePostMutation, wholeChangePostLikeMutation } = usePosts();
   const { data: postData } = fetchDetailMutation;
   const { data: postList } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
@@ -41,7 +41,12 @@ export const Detail = () => {
 
   useEffect(() => {
     if (currentSession !== null && currentBookmarkData !== undefined) {
-      setIsHaveBookmark(currentBookmarkData.userId.includes(currentSession?.user.id));
+      const userId = currentSession?.user.id;
+      const bookmarkUserId = currentBookmarkData.userId;
+
+      if (userId !== undefined && bookmarkUserId !== undefined) {
+        setIsHaveBookmark(bookmarkUserId.includes(userId));
+      }
     }
   }, [currentSession, currentBookmarkData]);
 
@@ -58,10 +63,10 @@ export const Detail = () => {
       }
       return;
     }
-    if (paramsId === undefined) return;
-    if (currentBookmarkData === undefined) return;
+    if (paramsId === undefined || currentBookmarkData === undefined || postData?.bookmark === undefined) return;
     const addIds = [...currentBookmarkData.userId, currentSession.user.id];
     addLikeMutation.mutate({ postId: paramsId, userId: addIds });
+    wholeChangePostLikeMutation.mutate({ id: paramsId, likeState: "add", bookmark: postData?.bookmark });
   };
 
   const deleteBookmark = async () => {
@@ -77,10 +82,10 @@ export const Detail = () => {
       }
       return;
     }
-    if (paramsId === undefined) return;
-    if (currentBookmarkData === undefined) return;
+    if (paramsId === undefined || currentBookmarkData === undefined || postData?.bookmark === undefined) return;
     const deletedIds = currentBookmarkData.userId.filter((id) => id !== currentSession.user.id);
     deleteLikeMutation.mutate({ postId: paramsId, userId: deletedIds });
+    wholeChangePostLikeMutation.mutate({ id: paramsId, likeState: "delete", bookmark: postData?.bookmark });
   };
 
   const movePageHandler = (moveEvent: "back" | "community" | "update") => {
@@ -119,10 +124,9 @@ export const Detail = () => {
   const deleteHandler = async (id: string) => {
     try {
       const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
-      if (checkDelete) {
-        deletePostMutation.mutate(id);
-        navigate("/community");
-      }
+
+      if (checkDelete) deletePostMutation.mutate(id);
+      navigate("/community");
     } catch (error) {
       console.log("error :", error);
     }
@@ -147,11 +151,11 @@ export const Detail = () => {
             <DateConvertor datetime={postData?.created_at as string} type="hourMinute" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
-              <p>좋아요: {postData?.POSTLIKES[0].userId.length}</p>
+              <p>좋아요: {postData?.bookmark}</p>
             </div>
           </div>
         </div>
-        {postData?.tileId !== null && postData?.leftWallpaperId !== null && postData?.rightWallpaperId !== null && (
+        {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
           <div className="flex gap-4">
             <div>
               <img
@@ -182,7 +186,7 @@ export const Detail = () => {
       </div>
       {/* 컨텐츠 영역 */}
       <div className="flex-column gap-5 my-[60px]">
-        {postData?.postImage !== null && (
+        {postData?.postImage !== null && postData?.postImage !== undefined && (
           <img src={`${storageUrl}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
         )}
         <p>{postData?.content}</p>
@@ -249,7 +253,7 @@ export const Detail = () => {
           </div>
         )}
       </div>
-      <div className="sticky gap-4 bottom-[50%] translate-x-[1650px] inline-flex flex-col">
+      <div className="sticky gap-4 bottom-[50%] translate-x-[1400px] inline-flex flex-col">
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>
