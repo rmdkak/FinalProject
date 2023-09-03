@@ -1,6 +1,5 @@
 import { BG_MAGNIFICATION_LANGTH } from "components";
 import { create } from "zustand";
-
 type WallOrTile = "tile" | "wallPaper";
 export type SelectBg = "leftWall" | "rightWall" | "tile";
 
@@ -173,25 +172,25 @@ export const useServiceStore = create<Store>()((set) => ({
     if (type === "leftWall") {
       set((state) => ({
         selectBgSize:
-          state.selectBgSize.leftWall !== BG_MAGNIFICATION_LANGTH
+          state.selectBgSize.leftWall !== BG_MAGNIFICATION_LANGTH - 1
             ? { ...state.selectBgSize, leftWall: state.selectBgSize.leftWall + 1 }
-            : { ...state.selectBgSize, leftWall: BG_MAGNIFICATION_LANGTH },
+            : { ...state.selectBgSize, leftWall: BG_MAGNIFICATION_LANGTH - 1 },
       }));
     }
     if (type === "rightWall") {
       set((state) => ({
         selectBgSize:
-          state.selectBgSize.rightWall !== BG_MAGNIFICATION_LANGTH
+          state.selectBgSize.rightWall !== BG_MAGNIFICATION_LANGTH - 1
             ? { ...state.selectBgSize, rightWall: state.selectBgSize.rightWall + 1 }
-            : { ...state.selectBgSize, rightWall: BG_MAGNIFICATION_LANGTH },
+            : { ...state.selectBgSize, rightWall: BG_MAGNIFICATION_LANGTH - 1 },
       }));
     }
     if (type === "tile") {
       set((state) => ({
         selectBgSize:
-          state.selectBgSize.tile !== BG_MAGNIFICATION_LANGTH
+          state.selectBgSize.tile !== BG_MAGNIFICATION_LANGTH - 1
             ? { ...state.selectBgSize, tile: state.selectBgSize.tile + 1 }
-            : { ...state.selectBgSize, tile: BG_MAGNIFICATION_LANGTH },
+            : { ...state.selectBgSize, tile: BG_MAGNIFICATION_LANGTH - 1 },
       }));
     }
   },

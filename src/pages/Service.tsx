@@ -36,6 +36,7 @@ export const Service = () => {
 
   const { onOpenModal } = useModalStore((state) => state);
   const {
+    resetClickItemBordder,
     wallPaper,
     tile,
     wallpaperPaint,
@@ -83,10 +84,12 @@ export const Service = () => {
     resetWallPaper();
     resetWallpaperPaint();
     resetTile();
+    resetClickItemBordder();
     return () => {
       resetWallPaper();
       resetWallpaperPaint();
       resetTile();
+      resetClickItemBordder();
     };
   }, []);
 

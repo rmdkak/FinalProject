@@ -2,8 +2,6 @@ import React from "react";
 
 import { useServiceStore } from "store";
 
-import { SELECT_BORDER_COLOR } from "./data";
-
 interface Props {
   image: string;
   id: string;
@@ -37,15 +35,15 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
   /**
    * 왼쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? `border-[${SELECT_BORDER_COLOR}]` : "";
+  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? `border-[#666]` : "";
   /**
    * 오른쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? `border-[${SELECT_BORDER_COLOR}]` : "";
+  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? `border-[#666]` : "";
   /**
    * 타일 클릭시 나오는 보더
    */
-  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `border-[${SELECT_BORDER_COLOR}]` : "";
+  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `border-[#666]` : "";
   /**
    * 왼쪽 벽지, 오른쪽 벽지가 같을경우나오는 보더
    */
@@ -62,7 +60,7 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
       >
         <img
           src={`${STORAGE_URL}${image}`}
-          className={`block interior-item border-8 border-white ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER} drag-none
+          className={`block interior-item border-4 border-white ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER} drag-none
            `}
           alt={` ${checkType} 미리보기 이미지`}
         />
