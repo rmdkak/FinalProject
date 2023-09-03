@@ -56,6 +56,11 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
   const createCommentHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (content === "") {
+      await Alert("댓글은 1글자 이상 입력해주세요.");
+      return;
+    }
+
     const userId = currentSession?.user.id;
     const id = uuid();
     const commentImg = commentImgFile === null ? null : `/commentImg/${id}`;

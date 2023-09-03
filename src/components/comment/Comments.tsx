@@ -98,7 +98,7 @@ export const Comments = () => {
           return (
             <div key={comment.id}>
               <div className="flex py-5 border-b border-gray06 ">
-                <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px]" />
+                <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
                 <div className="flex flex-col justify-between w-full gap-2 ml-3">
                   <div className="flex items-center gap-2">
                     <p className="font-semibold">{comment.USERS?.name}</p>
@@ -227,7 +227,7 @@ export const Comments = () => {
                   <div key={reply.id} className="border-b border-[#E5E5E5]">
                     <div className="flex py-[15px]">
                       <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
-                      <img src={reply.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px]" />
+                      <img src={reply.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
                       <div className="flex flex-col w-full gap-1 ml-3">
                         <div className="flex gap-2">
                           <p className="font-semibold">{reply.USERS?.name}</p>
