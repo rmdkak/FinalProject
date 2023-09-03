@@ -77,7 +77,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
       {isOpen && (
         <div
           onClick={closeSideBarHandler}
-          className="fixed z-[9105] top-0 bottom-0 left-0 right-0 w-full h-full bg-[#00000040]"
+          className="fixed z-[9105] top-0 bottom-0 left-0 right-0 w-full h-full bg-[#00000080] backdrop-blur-sm"
         ></div>
       )}
     </>

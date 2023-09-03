@@ -4,7 +4,7 @@ import { supabase } from "./supabaseClient";
 
 // get
 export const fetchDetailData = async (postId: string) => {
-  const { data, error } = await supabase.from("POSTS").select("*").eq("id", postId).single();
+  const { data, error } = await supabase.from("POSTS").select("*,POSTLIKES (*)").eq("id", postId).single();
   if (error != null) {
     console.log("error.message :", error.message);
     return;
@@ -14,7 +14,10 @@ export const fetchDetailData = async (postId: string) => {
 
 // get
 export const fetchPostData = async () => {
-  const { data, error } = await supabase.from("POSTS").select("*").order("created_at", { ascending: false });
+  const { data, error } = await supabase
+    .from("POSTS")
+    .select("*,POSTLIKES (*)")
+    .order("created_at", { ascending: false });
   if (error != null) {
     console.log("error.message :", error.message);
     return;
@@ -25,6 +28,9 @@ export const fetchPostData = async () => {
 // post
 export const createPostHandler = async (postData: Tables<"POSTS", "Insert">) => {
   await supabase.from("POSTS").insert(postData).select();
+  const { id } = postData;
+  if (id === undefined) return;
+  await supabase.from("POSTLIKES").insert({ postId: id, userId: [] }).select();
 };
 
 // post(D스토리지 저장)
@@ -35,13 +41,26 @@ export const savePostImageHandler = async ({ UUID, postImgfile }: { UUID: string
   });
 };
 
+export const updatePostImageHandler = async ({ UUID, postImgfile }: { UUID: string; postImgfile: Blob }) => {
+  await supabase.storage.from("Images").update(`postImg/${UUID}`, postImgfile, {
+    cacheControl: "3600",
+    upsert: false,
+  });
+};
+
 // patch
-export const patchPostHandler = async (postData: Tables<"POSTS", "Update">) => {
-  // 수정 로직 추가
-  console.log(postData);
+export const patchPostHandler = async (patchData: Tables<"POSTS", "Update">) => {
+  const { id } = patchData;
+  const { error } = await supabase.from("POSTS").update(patchData).eq("id", id).select();
+  if (error != null) {
+    console.log("error.message :", error.message);
+  }
 };
 
 // delete
 export const deletePostHandler = async (postId: string) => {
-  await supabase.from("POSTS").delete().eq("id", postId);
+  const { error } = await supabase.from("POSTS").delete().eq("id", postId);
+  if (error != null) {
+    console.log("error.message :", error.message);
+  }
 };

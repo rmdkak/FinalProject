@@ -66,7 +66,6 @@ export const Post = () => {
       try {
         await savePostImageHandler({ UUID, postImgfile });
         createPostMutation.mutate(postData);
-        // await supabase.from("POSTLIKES").insert({ postId: UUID, userId: []});
       } catch (error) {
         console.log("error", error);
       }

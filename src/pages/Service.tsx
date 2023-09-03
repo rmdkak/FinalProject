@@ -3,7 +3,7 @@ import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SelectCustomIndex } from "components";
+import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SELECT_CUSTOM_INDEX } from "components";
 import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -164,7 +164,7 @@ export const Service = () => {
                 <div
                   style={{
                     backgroundImage: `url(${
-                      interiorSelecteIndex !== SelectCustomIndex ? tileBg : (tile.image as string)
+                      interiorSelecteIndex !== SELECT_CUSTOM_INDEX ? tileBg : (tile.image as string)
                     })`,
                     backgroundSize: `${70}px, ${70}px`,
                   }}

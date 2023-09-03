@@ -8,7 +8,7 @@ import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
 import { DateConvertor } from "components";
 import { Toolbar } from "components/sidebar";
-import { usePagination, usePosts } from "hooks";
+import { usePagination, usePosts, useSearchBar } from "hooks";
 import "@egjs/react-flicking/dist/flicking.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
 import { type Tables } from "types/supabase";
@@ -56,17 +56,15 @@ export const Community = () => {
     setSelectedOption(event.target.value);
   };
 
-  if (filteredPosts === undefined) {
-    return (
-      <>
-        <p>에러 페이지</p>
-      </>
-    );
-  }
+  if (filteredPosts === undefined) return <p>에러 페이지</p>;
+
+  const { filteredData } = useSearchBar({ dataList: filteredPosts, type: "post" });
+
+  if (filteredData === undefined) return <p>에러 페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
-    data: filteredPosts,
-    dataLength: filteredPosts.length,
+    data: filteredData,
+    dataLength: filteredData.length,
     postPerPage: 8,
   });
 

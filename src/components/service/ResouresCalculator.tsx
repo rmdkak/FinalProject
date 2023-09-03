@@ -7,7 +7,7 @@ import { type ResultCalculator, type WidthHeight } from "types/calculator";
 
 import CalculatorArticle from "./CalculatorArticle";
 import CalculatorResult from "./CalculatorResult";
-import { ResouresCalculatorList } from "./data";
+import { RESOURES_CALCULATOR_LIST } from "./data";
 
 const IMG_LIST: string[] = [wallPaperIMG, tileIMG];
 
@@ -92,7 +92,7 @@ export const ResouresCalculator = (): JSX.Element => {
         {/* 계산기 헤더 */}
         <div className="mb-10">
           <ul className="flex items-center justify-between">
-            {ResouresCalculatorList.map((item, index) => {
+            {RESOURES_CALCULATOR_LIST.map((item, index) => {
               return (
                 <li
                   onClick={() => {

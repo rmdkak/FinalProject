@@ -17,7 +17,7 @@ export const deletePostsData = async (postIdsToDelete: string[]) => {
 
 // MyComments Get
 export const fetchMyCommentsData = async (id: string) => {
-  const { data, error } = await supabase.from("COMMENTS").select(`*,POSTS (*)`).eq("writtenId", id);
+  const { data, error } = await supabase.from("COMMENTS").select(`*,POSTS (*)`).eq("userId", id);
   if (error != null) {
     console.error(error.message);
     return;
@@ -47,7 +47,7 @@ export const deleteBookmarksData = async (postIdsToDelete: string[]) => {
 
 // MyLikes Get
 export const fetchMyLikesData = async (id: string) => {
-  const { data, error } = await supabase.from("POSTLIKES").select(`*,POSTS (*)`).eq("userId", id);
+  const { data, error } = await supabase.from("POSTLIKES").select(`*,POSTS (*)`).contains("userId", [id]);
   if (error != null) {
     console.error(error.message);
     return;

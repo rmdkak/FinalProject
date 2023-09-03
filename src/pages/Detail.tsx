@@ -5,11 +5,10 @@ import { FaRegHeart } from "react-icons/fa6";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { supabase, storageUrl } from "api/supabase";
+import { storageUrl } from "api/supabase";
 import { Comments, DateConvertor, useDialog } from "components";
 import { usePosts, usePostsLike } from "hooks";
 import { useAuthStore, useLikeStore } from "store";
-import { type Tables } from "types/supabase";
 
 export const Detail = () => {
   const { id: paramsId } = useParams();
@@ -17,10 +16,11 @@ export const Detail = () => {
   const { resetDetailPostId, setDetailPostId } = useLikeStore();
   const { currentSession } = useAuthStore();
   const { Confirm } = useDialog();
-  const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
+  const [isHaveBookmark, setIsHaveBookmark] = useState(false);
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
   const { data: currentBookmarkData } = postLikeResponse;
-  const { fetchPostsMutation, deletePostMutation } = usePosts();
+  const { fetchPostsMutation, fetchDetailMutation, deletePostMutation } = usePosts();
+  const { data: postData } = fetchDetailMutation;
   const { data: postList } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
   let prevPage = "";
@@ -31,14 +31,6 @@ export const Detail = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data: postData } = await supabase.from("POSTS").select("*").eq("id", paramsId).single();
-      if (postData !== null) setPostData(postData);
-    };
-    fetchData().catch((error) => {
-      console.error("Error fetching data:", error.message);
-    });
-
     // useQuery에서 북마크 조회 할 아이디 값
     setDetailPostId(paramsId);
     return () => {
@@ -46,6 +38,12 @@ export const Detail = () => {
       resetDetailPostId();
     };
   }, [paramsId]);
+
+  useEffect(() => {
+    if (currentSession !== null && currentBookmarkData !== undefined) {
+      setIsHaveBookmark(currentBookmarkData.userId.includes(currentSession?.user.id));
+    }
+  }, [currentSession, currentBookmarkData]);
 
   const addBookmark = async () => {
     if (currentSession === null) {
@@ -85,13 +83,16 @@ export const Detail = () => {
     deleteLikeMutation.mutate({ postId: paramsId, userId: deletedIds });
   };
 
-  const movePageHandler = (moveEvent: string) => {
+  const movePageHandler = (moveEvent: "back" | "community" | "update") => {
     switch (moveEvent) {
       case "back":
         navigate(-1);
         break;
       case "community":
         navigate("/community");
+        break;
+      case "update":
+        navigate(`/updatepost/${postData?.id}`);
         break;
     }
   };
@@ -118,7 +119,10 @@ export const Detail = () => {
   const deleteHandler = async (id: string) => {
     try {
       const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
-      if (checkDelete) deletePostMutation.mutate(id);
+      if (checkDelete) {
+        deletePostMutation.mutate(id);
+        navigate("/community");
+      }
     } catch (error) {
       console.log("error :", error);
     }
@@ -126,14 +130,14 @@ export const Detail = () => {
 
   return (
     // 상위 배너 영역
-    <div className="w-[1600px] mx-auto mt-[30px]">
+    <div className="w-[1280px] mx-auto mt-[30px]">
       <div className="items-center flex-column">
         <p className="font-medium text-[32px]">커뮤니티</p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
       <div className="contents-between border-b border-gray06 my-[10px] py-[20px] items-center">
-        <div className="w-[1200px] my-[10px]">
+        <div className="w-[1000px] my-[10px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
             {postData?.title}
           </label>
@@ -143,31 +147,31 @@ export const Detail = () => {
             <DateConvertor datetime={postData?.created_at as string} type="hourMinute" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
-              <p>좋아요: {postData?.bookmark}</p>
+              <p>좋아요: {postData?.POSTLIKES[0].userId.length}</p>
             </div>
           </div>
         </div>
         {postData?.tileId !== null && postData?.leftWallpaperId !== null && postData?.rightWallpaperId !== null && (
           <div className="flex gap-4">
-            <div className="relative left-[50px] z-[1]">
+            <div>
               <img
-                className="w-24 h-24 rounded-full bg-gray06"
+                className="w-16 h-16 rounded-full bg-gray06"
                 src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
                 alt="왼쪽 벽지"
               />
               <p className="text-[14px] text-center">좌측벽지</p>
             </div>
-            <div className="relative left-[25px] z-[2]">
+            <div>
               <img
-                className="w-24 h-24 rounded-full bg-gray06"
+                className="w-16 h-16 rounded-full bg-gray06"
                 src={`${storageUrl}/wallpaper/${postData?.rightWallpaperId}`}
                 alt="오른쪽 벽지"
               />
               <p className="text-[14px] text-center">우측벽지</p>
             </div>
-            <div className="z-[3]">
+            <div>
               <img
-                className="w-24 h-24 rounded-full bg-gray06"
+                className="w-16 h-16 rounded-full bg-gray06"
                 src={`${storageUrl}/tile/${postData?.tileId}`}
                 alt="바닥재"
               />
@@ -205,7 +209,13 @@ export const Detail = () => {
             >
               삭제
             </button>
-            <button type="button" className="mr-2 bg-point w-[160px] h-[48px] rounded-[8px]">
+            <button
+              onClick={() => {
+                movePageHandler("update");
+              }}
+              type="button"
+              className="mr-2 bg-point w-[160px] h-[48px] rounded-[8px]"
+            >
               수정
             </button>
           </div>
@@ -243,7 +253,7 @@ export const Detail = () => {
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>
-        {currentBookmarkData?.userId.includes(currentSession?.user.id as string) ?? false ? (
+        {isHaveBookmark ? (
           <button onClick={deleteBookmark} className="w-12 h-12 border rounded-full border-gray06">
             <BsSuitHeartFill className="w-[24px] h-[24px] mx-auto  text-point" />
           </button>

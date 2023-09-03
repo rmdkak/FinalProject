@@ -15,7 +15,7 @@ export const fetchPostLike = async (postId: string) => {
   return data;
 };
 
-// post
+// patch
 export const changePostLike = async ({ postId, userId }: Tables<"POSTLIKES", "Insert">) => {
   const { error } = await supabase.from("POSTLIKES").update({ userId }).eq("postId", postId).select();
 
