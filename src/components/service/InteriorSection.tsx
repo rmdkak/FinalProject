@@ -57,8 +57,8 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
           <span
             className={
               checkType === "wallPaper"
-                ? "border-b-2 border-black hover:cursor-pointer text-black"
-                : "hover:cursor-pointer "
+                ? "rounded-3xl px-10 py-2 bg-point hover:cursor-pointer text-black"
+                : "rounded-3xl px-10 py-2 bg-gray07 text-gray03 hover:cursor-pointer "
             }
             onClick={() => {
               onClickTypeSwitch("wallPaper");
@@ -68,7 +68,9 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
           </span>
           <span
             className={
-              checkType === "tile" ? "border-b-2 border-black hover:cursor-pointer text-black" : "hover:cursor-pointer"
+              checkType === "tile"
+                ? "rounded-3xl px-10 py-2 bg-point hover:cursor-pointer text-black"
+                : "rounded-3xl px-10 py-2 bg-gray07 text-gray03 hover:cursor-pointer"
             }
             onClick={() => {
               onClickTypeSwitch("tile");
@@ -118,7 +120,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
 
       {/* 인테리어 바디 */}
       <div>
-        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 max-h-[460px] overflow-y-auto">
+        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 h-[172px] overflow-y-auto">
           {checkType === "wallPaper" ? (
             <ServiceItem data={wallData} />
           ) : (

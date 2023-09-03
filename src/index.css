@@ -231,6 +231,6 @@ input:autofill:active {
 
   /* 홍민~ */
   .interior-item {
-    @apply w-[142px] h-[142px] rounded-full;
+    @apply w-[80px] h-[80px] rounded-full;
   }
 }

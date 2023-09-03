@@ -18,15 +18,15 @@ const SELECT_CUSTOM_INDEX: number = 5;
 /**
  * 색상값을 지정해둔 변수입니다. 왼쪽 벽지에 들어갈 값을 담슴니다.
  */
-const LEFT_ITEM_BORDER_COLOR = "#054ac";
+const LEFT_ITEM_BORDER_COLOR: string = "#054ac";
 /**
  * 색상값을 지정해둔 변수입니다. 오른쪽 벽지에 들어갈 값을 담슴니다.
  */
-const RIGHT_ITEM_BORDER_COLOR = "#4c04e0";
+const RIGHT_ITEM_BORDER_COLOR: string = "#4c04e0";
 /**
  * 색상값을 지정해둔 변수입니다. 타일에 들어갈 값을 담슴니다.
  */
-const TILE_ITEM_BORDER_COLOR = "#69eaac";
+const TILE_ITEM_BORDER_COLOR: string = "#69eaac";
 
 export {
   LEFT_ITEM_BORDER_COLOR,

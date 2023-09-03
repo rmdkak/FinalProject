@@ -152,7 +152,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
       return (
         <div className="flex-column w-full gap-6 border-y-[1px] border-gray05">
           <div>
-            <div className="flex items-center gap-3 my-6">
+            <div className="flex items-center gap-3 pt-2 my-6">
               <h2 className="text-lg font-medium">현재 색상 코드</h2>
               <span
                 className={
@@ -192,7 +192,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
             </ul>
           </div>
           <div className="gap-6 mb-6 flex-column">
-            <h2 className="text-lg font-medium pt-6 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
+            <h2 className="text-lg font-medium pt-8 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
             <ColorPallet color={data} />
           </div>
         </div>
