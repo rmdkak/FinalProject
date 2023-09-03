@@ -56,24 +56,25 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
   const createCommentHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const writtenId = currentSession?.user.id;
+    const userId = currentSession?.user.id;
     const id = uuid();
-    const commentImg = commentImgFile == null ? null : `/commentImg/${id}`;
+    const commentImg = commentImgFile === null ? null : `/commentImg/${id}`;
 
     if (postId == null) return;
-    if (writtenId == null) return;
+    if (userId == null) return;
 
     try {
       if (commentImgFile != null) {
         await saveCommentImageHandler({ id, commentImgFile });
       }
-      if (commentStatus) createCommentMutation.mutate({ id, writtenId, content, postId, commentImg });
-      if (replyStatus) createReplyMutation.mutate({ writtenId, content, commentId });
+      if (commentStatus) createCommentMutation.mutate({ id, userId, content, postId, commentImg });
+      if (replyStatus) createReplyMutation.mutate({ userId, content, commentId });
     } catch (error) {
       console.log("error", error);
     }
     setContent("");
     setCommentImgFile(null);
+    setOpenReply(null);
   };
 
   return (

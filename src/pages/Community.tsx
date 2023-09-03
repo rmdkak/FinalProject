@@ -7,7 +7,7 @@ import Flicking from "@egjs/react-flicking";
 import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
 import { DateConvertor } from "components";
-import { Toolbar } from "components/sidebar/Toolbar";
+import { Toolbar } from "components/sidebar";
 import { usePagination, usePosts, useSearchBar } from "hooks";
 import "@egjs/react-flicking/dist/flicking.css";
 import { type Tables } from "types/supabase";

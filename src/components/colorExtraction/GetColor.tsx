@@ -41,7 +41,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         console.error("복사 실패", error);
       });
   };
-
+  // 페인트가 선택 됐을 경우
   if (isWallPaperPaintSeleted) {
     const paint = colorSide ? wallpaperPaint.right : wallpaperPaint.left;
     return (
@@ -93,6 +93,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
       </div>
     );
   } else {
+    // 이미지 클릭시 로딩
     if (loading) {
       return (
         <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
@@ -110,6 +111,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           </div>
         </div>
       );
+      // 선택된 데이터가 없을 경우
     } else if (data === undefined) {
       return (
         <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
@@ -127,6 +129,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           </div>
         </div>
       );
+      // 이미지 클릭시 에러의 경우
     } else if (error !== undefined) {
       return (
         <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
@@ -145,6 +148,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         </div>
       );
     } else {
+      // 데이터가 뽑혔을 때
       return (
         <div className="flex-column w-full gap-6 border-y-[1px] border-gray05">
           <div>

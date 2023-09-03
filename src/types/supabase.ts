@@ -113,7 +113,7 @@ export interface Database {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "COMMENTS_writtenId_fkey";
+            foreignKeyName: "COMMENTS_userId_fkey";
             columns: ["userId"];
             referencedRelation: "USERS";
             referencedColumns: ["id"];
@@ -252,7 +252,7 @@ export interface Database {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "RECOMMENTS_writtenId_fkey";
+            foreignKeyName: "RECOMMENTS_userId_fkey";
             columns: ["userId"];
             referencedRelation: "USERS";
             referencedColumns: ["id"];

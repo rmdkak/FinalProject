@@ -122,7 +122,12 @@ export const Post = () => {
           <p className={title.length > 100 ? "text-red-600" : "text-gray03"}>제목 글자 수: {title.length} / 100</p>
         </div>
         <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
-          {wallPaper.left.image !== null ? (
+          {wallpaperPaint.left !== "" ? (
+            <div
+              className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
+              style={{ backgroundColor: wallpaperPaint.left }}
+            />
+          ) : wallPaper.left.image !== null ? (
             <img
               src={`${storageUrl}${wallPaper.left.image}`}
               alt="왼쪽벽지"
@@ -131,7 +136,12 @@ export const Post = () => {
           ) : (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray01" />
           )}
-          {wallPaper.right.image !== null ? (
+          {wallpaperPaint.right !== "" ? (
+            <div
+              className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
+              style={{ backgroundColor: wallpaperPaint.right }}
+            />
+          ) : wallPaper.right.image !== null ? (
             <img
               src={`${storageUrl}${wallPaper.right.image}`}
               alt="오른쪽벽지"
