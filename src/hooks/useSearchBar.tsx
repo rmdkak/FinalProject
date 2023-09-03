@@ -97,7 +97,6 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
 
   const onSubmit: SubmitHandler<Input> = (data) => {
     const { searchKeyword } = data;
-    console.log("searchKeyword :", searchKeyword);
     setConditionWord(searchKeyword);
   };
 
