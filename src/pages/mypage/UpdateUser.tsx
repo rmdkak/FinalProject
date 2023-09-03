@@ -56,6 +56,7 @@ export const UpdateUser = () => {
     return <p>에러페이지</p>;
   }
   const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
+  const prevProfileImg = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
 
   const {
     register,
@@ -75,7 +76,6 @@ export const UpdateUser = () => {
     // 미리보기 URL 생성
     setPreviewProfileUrl(URL.createObjectURL(imgFile));
 
-    const prevProfileImg = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
     const profileImg = `${storageUrl}/profileImg/${uid}`;
     // FIXME 메타데이터 변경에 쿼리 사용이 효과 있는지 확인 안됨
     await deleteImage(prevProfileImg);
@@ -152,6 +152,7 @@ export const UpdateUser = () => {
   const deleteAuth = async () => {
     await deleteUser(userId);
     await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
+    await deleteImage(prevProfileImg);
   };
 
   return (
@@ -165,10 +166,10 @@ export const UpdateUser = () => {
               isLoading ? (
                 <p>로딩중</p>
               ) : (
-                <img src={currentProfileImg} alt="프로필 이미지" className="w-[120px] h-[120px] rounded-full" />
+                <img src={previewProfileUrl} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
               )
             ) : (
-              <img src={previewProfileUrl} alt="프로필 이미지" className="w-[120px] h-[120px] rounded-full" />
+              <img src={currentProfileImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
             )}
             <div className="absolute flex justify-center items-center gap-[8px] bottom-0 left-1/2 translate-x-[-50%] translate-y-[25%] rounded-[8px] border bg-white w-[80px] h-[32px]">
               <label htmlFor="profileImgButton">
