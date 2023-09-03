@@ -147,12 +147,6 @@ export interface Database {
             referencedRelation: "POSTS";
             referencedColumns: ["id"];
           },
-          {
-            foreignKeyName: "POSTLIKES_userId_fkey";
-            columns: ["userId"];
-            referencedRelation: "USERS";
-            referencedColumns: ["id"];
-          },
         ];
       };
       POSTS: {
@@ -161,9 +155,11 @@ export interface Database {
           content: string;
           created_at: string;
           id: string;
+          leftColorCode: string | null;
           leftWallpaperId: string | null;
           nickname: string | null;
           postImage: string | null;
+          rightColorCode: string | null;
           rightWallpaperId: string | null;
           tileId: string | null;
           title: string;
@@ -174,9 +170,11 @@ export interface Database {
           content: string;
           created_at?: string;
           id?: string;
+          leftColorCode?: string | null;
           leftWallpaperId?: string | null;
           nickname?: string | null;
           postImage?: string | null;
+          rightColorCode?: string | null;
           rightWallpaperId?: string | null;
           tileId?: string | null;
           title: string;
@@ -187,9 +185,11 @@ export interface Database {
           content?: string;
           created_at?: string;
           id?: string;
+          leftColorCode?: string | null;
           leftWallpaperId?: string | null;
           nickname?: string | null;
           postImage?: string | null;
+          rightColorCode?: string | null;
           rightWallpaperId?: string | null;
           tileId?: string | null;
           title?: string;
@@ -286,27 +286,27 @@ export interface Database {
           created_at: string | null;
           email: string;
           id: string;
+          idAnswer: string | null;
+          idQuestion: string | null;
           name: string;
-          idAnswer: string;
-          idQuestion: string;
         };
         Insert: {
           avatar_url: string;
           created_at?: string | null;
           email: string;
           id?: string;
+          idAnswer?: string | null;
+          idQuestion?: string | null;
           name: string;
-          idAnswer?: string;
-          idQuestion?: string;
         };
         Update: {
           avatar_url?: string;
           created_at?: string | null;
           email?: string;
           id?: string;
+          idAnswer?: string | null;
+          idQuestion?: string | null;
           name?: string;
-          idAnswer?: string;
-          idQuestion?: string;
         };
         Relationships: [];
       };
