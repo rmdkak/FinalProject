@@ -2,8 +2,8 @@ import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 
 import arrowIcon from "assets/arrowIcon.svg";
-import { DateConvertor, MypageSubTitle, MypageTitle, SearchBar, EmptyData } from "components";
-import { useMypage, usePagination } from "hooks";
+import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData } from "components";
+import { useMypage, usePagination, useSearchBar } from "hooks";
 
 export const MyComment = () => {
   const [isOpenComment, setIsOpenComment] = useState<string>();
@@ -39,9 +39,13 @@ export const MyComment = () => {
 
   if (userCommentData === undefined) return <p>에러페이지</p>;
 
+  const { SearchBar, filteredData } = useSearchBar({ dataList: userCommentData, type: "comment", isUseMypage: true });
+
+  if (filteredData === undefined) return <p>에러페이지</p>;
+
   const { pageData, showPageComponent } = usePagination({
-    data: userCommentData,
-    dataLength: userCommentData.length,
+    data: filteredData,
+    dataLength: filteredData.length,
     postPerPage: 8,
   });
 

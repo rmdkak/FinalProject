@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const PreviewLike = ({ likeData }: Props) => {
-  console.log("likeData :", likeData);
   if (likeData === undefined) return <PreviewEmpty />;
 
   return (

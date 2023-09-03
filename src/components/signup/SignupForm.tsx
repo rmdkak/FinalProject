@@ -128,7 +128,9 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       <SignupStep step={1} />
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
         {/* 이메일 */}
-        <label className="self-start body-4 my-[8px]">이메일</label>
+        <label htmlFor="email" className="self-start body-4 my-[8px]">
+          이메일
+        </label>
         <div className="flex items-center gap-[8px] w-full">
           <div className="flex-column w-[610px]">
             <input
@@ -138,6 +140,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
                   setCheckedDuplicate({ ...checkedDuplicate, email: false });
                 },
               })}
+              id="email"
               type="id"
               placeholder="이메일"
               className="auth-input body-3"
@@ -169,9 +172,12 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         )}
 
         {/* 닉네임 */}
-        <label className="self-start body-4 my-[8px]">닉네임</label>
+        <label htmlFor="nickname" className="self-start body-4 my-[8px]">
+          닉네임
+        </label>
         <div className="flex items-center gap-[8px] w-full">
           <input
+            id="nickname"
             type="text"
             placeholder="닉네임"
             className="auth-input body-3"
@@ -201,10 +207,13 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         )}
 
         {/* 비밀번호 */}
-        <label className="self-start body-4 my-[8px]">비밀번호</label>
+        <label htmlFor="password" className="self-start body-4 my-[8px]">
+          비밀번호
+        </label>
         <div className="relative flex items-center gap-[8px] w-full">
           <input
             type={showPassword.password ? "text" : "password"}
+            id="password"
             placeholder="비밀번호"
             className="auth-input body-3"
             {...register("password", {

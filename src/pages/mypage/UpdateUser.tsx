@@ -8,7 +8,9 @@ import {
   changeMetaName,
   changePassword,
   deleteImage,
+  deleteUser,
   fetchUserCheckData,
+  patchUser,
   storageUrl,
   uploadImage,
 } from "api/supabase";
@@ -147,6 +149,11 @@ export const UpdateUser = () => {
     toggleOpenHandler("name");
   };
 
+  const deleteAuth = async () => {
+    await deleteUser(userId);
+    await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
+  };
+
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
       <MypageTitle />
@@ -185,8 +192,11 @@ export const UpdateUser = () => {
             {/* 닉네임 form */}
             <div className="gap-2 border-b pb-7 flex-column border-b-gray06">
               <div className="flex gap-6">
-                <label className={LABEL_STYLE}>닉네임</label>
+                <label htmlFor="nickname" className={LABEL_STYLE}>
+                  닉네임
+                </label>
                 <button
+                  id="nickname"
                   type="button"
                   onClick={() => {
                     toggleOpenHandler("name");
@@ -247,8 +257,11 @@ export const UpdateUser = () => {
             {/* 패스워드 */}
             <div className="gap-2 border-b flex-column border-b-gray06 pb-7">
               <div className="flex gap-6">
-                <label className={LABEL_STYLE}>비밀번호</label>
+                <label htmlFor="password" className={LABEL_STYLE}>
+                  비밀번호
+                </label>
                 <button
+                  id="password"
                   type="button"
                   onClick={() => {
                     toggleOpenHandler("password");
@@ -317,7 +330,11 @@ export const UpdateUser = () => {
               </button>
               <div className="right-[-33px] translate-x-full absolute flex items-center gap-[12px]">
                 <p className="text-[14px] font-normal leading-[130%] text-gray02">더 이상 이용하지 않으시나요?</p>
-                <button type="button" className="w-[120px] h-[48px] border border-gray05 text-gray02 rounded-[8px]">
+                <button
+                  onClick={deleteAuth}
+                  type="button"
+                  className="w-[120px] h-[48px] border border-gray05 text-gray02 rounded-[8px]"
+                >
                   회원탈퇴
                 </button>
               </div>
