@@ -1,13 +1,8 @@
 import { useState, type ChangeEvent } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import { type Tables } from "types/supabase";
-
 interface Props {
   dataList: any[];
-  commentDataList?: Array<Tables<"COMMENTS", "Row">>;
-  postDataList?: Array<Tables<"POSTS", "Row">>;
-  likeDataList?: Array<Tables<"POSTLIKES", "Row">>;
   type: "comment" | "post" | "like";
   isUseMypage?: boolean;
 }
