@@ -24,24 +24,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
     colorSide ? setColor(rightWall) : setColor(leftWall);
   }, [colorSide, leftWall, rightWall]);
 
-  if (color === null) {
-    return (
-      <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
-        <div>
-          <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
-          <ul className="flex flex-wrap gap-4">
-            <li className="text-[30px] font-bold">타일을 선택해주세요.</li>
-          </ul>
-        </div>
-        <div>
-          <h2 className="mb-6 text-lg font-medium pt-6 border-t-[1px] border-gray05">현재 색상과 어울리는 추천 조합</h2>
-          <ul className="flex flex-wrap gap-4"></ul>
-        </div>
-      </div>
-    );
-  }
-
-  const { data, loading, error } = useColor<ColorFormats, ReducerState<string | ArrayRGB>>(color, "hex", {
+  const { data, loading, error } = useColor<ColorFormats, ReducerState<string | ArrayRGB>>(color as string, "hex", {
     crossOrigin: "anonymous",
   });
   /**
@@ -58,7 +41,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         console.error("복사 실패", error);
       });
   };
-
+  // 페인트가 선택 됐을 경우
   if (isWallPaperPaintSeleted) {
     const paint = colorSide ? wallpaperPaint.right : wallpaperPaint.left;
     return (
@@ -110,6 +93,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
       </div>
     );
   } else {
+    // 이미지 클릭시 로딩
     if (loading) {
       return (
         <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
@@ -127,6 +111,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           </div>
         </div>
       );
+      // 선택된 데이터가 없을 경우
     } else if (data === undefined) {
       return (
         <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
@@ -144,6 +129,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           </div>
         </div>
       );
+      // 이미지 클릭시 에러의 경우
     } else if (error !== undefined) {
       return (
         <div className="w-full gap-6 flex-column border-b-[1px] border-gray05">
@@ -162,6 +148,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         </div>
       );
     } else {
+      // 데이터가 뽑혔을 때
       return (
         <div className="flex-column w-full gap-6 border-y-[1px] border-gray05">
           <div>
