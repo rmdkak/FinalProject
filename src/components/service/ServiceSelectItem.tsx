@@ -2,7 +2,8 @@ import React from "react";
 
 import { useServiceStore } from "store";
 
-import { LEFT_ITEM_BORDER_COLOR, RIGHT_ITEM_BORDER_COLOR, TILE_ITEM_BORDER_COLOR } from "./data";
+import { SELECT_BORDER_COLOR } from "./data";
+
 interface Props {
   image: string;
   id: string;
@@ -36,20 +37,19 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
   /**
    * 왼쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? `border-[${LEFT_ITEM_BORDER_COLOR}]` : "";
+  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? `border-[${SELECT_BORDER_COLOR}]` : "";
   /**
    * 오른쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? `border-[${RIGHT_ITEM_BORDER_COLOR}]` : "";
+  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? `border-[${SELECT_BORDER_COLOR}]` : "";
   /**
    * 타일 클릭시 나오는 보더
    */
-  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `border-[${TILE_ITEM_BORDER_COLOR}]` : "";
+  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `border-[${SELECT_BORDER_COLOR}]` : "";
   /**
    * 왼쪽 벽지, 오른쪽 벽지가 같을경우나오는 보더
    */
-  const CHECK_LEFT_RIGHT_BORDER =
-    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-[#E41205]" : "";
+
   return (
     <>
       <li
@@ -58,11 +58,12 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
           setClickItemBorder(id, interiorSelectX, checkType);
         }}
         key={id}
-        className={`cursor-pointer interior-item`}
+        className={`cursor-pointer interior-item ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER}`}
       >
         <img
           src={`${STORAGE_URL}${image}`}
-          className={`block interior-item border-8 border-white  ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER} ${CHECK_LEFT_RIGHT_BORDER} `}
+          className={`block interior-item border-8 border-white ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER} drag-none
+           `}
           alt={` ${checkType} 미리보기 이미지`}
         />
       </li>

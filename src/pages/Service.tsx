@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
+import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/BgSizeMinusBtn.svg";
+import bgSizePlusControlBtn from "assets/BgSizeControlBtns/BgSizePlusBtn.svg";
+import BgSizeTileControlBtn from "assets/BgSizeControlBtns/BgSizeTileControlBtn.svg";
+import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/BgSizeWallpaperControlBtn.svg";
 import calcArrow from "assets/calcArrow.svg";
 import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SELECT_CUSTOM_INDEX } from "components";
 import { useBookmark } from "hooks";
@@ -121,6 +125,30 @@ export const Service = () => {
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
             <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
+              {/* 배경크기 컨트롤 */}
+              <div className="absolute z-50 flex bottom-4 right-4">
+                {/* 왼쪽 벽지 */}
+                <button className="flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
+                  <img className="w-[10px]" src={BgSizeWallpaperControlBtn} alt="왼쪽 벽지 이미지" />
+                </button>
+                {/* 오른쪽 벽지 */}
+                <button className="flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
+                  <img className="w-[10px] scale-x-[-1]" src={BgSizeWallpaperControlBtn} alt="오른쪽 벽지 이미지" />
+                </button>
+                {/* 타일 */}
+                <button className="flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
+                  <img className="w-[10px]" src={BgSizeTileControlBtn} alt="타일 이미지" />
+                </button>
+                {/* 크기 확대 버튼 */}
+                <button className="flex  bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
+                  <img className="w-[10px]" src={bgSizePlusControlBtn} alt="추가 버튼이미지" />
+                </button>
+                {/* 크기 축소 버튼 */}
+                <button className="flex  bg-[#00000040] w-6 h-6 rounded contents-center active:bg-[#00000060]">
+                  <img className="w-[10px]" src={bgSizeMinusControlBtn} alt="감소 버튼이미지" />
+                </button>
+              </div>
+
               <div className="cube">
                 {/* 벽지 */}
                 {!isWallPaperPaintSeleted ? (
@@ -172,7 +200,6 @@ export const Service = () => {
                 ></div>
               </div>
             </div>
-
             <div className="flex-column w-[860px] gap-10">
               {/* 인테리어 섹션 */}
               <InteriorSection onCheckCustom={true} />
