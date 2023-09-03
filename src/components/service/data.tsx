@@ -31,7 +31,7 @@ const SELECT_CUSTOM_INDEX: number = 5;
 /**
  * 색상값을 지정해둔 변수입니다. 벽지, 타일을 클릭시 들어가는 색상 헥사코드입니다.
  */
-// const SELECT_BORDER_COLOR = "#666";
+const SELECT_BORDER_COLOR = "#666";
 
 /**
  * 기본 백그라운드 사이즈입니다 70
@@ -47,6 +47,7 @@ const BG_MAGNIFICATION: number[] = [25, 50, 75, 100, 125, 150, 200, 300];
 const BG_MAGNIFICATION_LANGTH: number = BG_MAGNIFICATION.length;
 
 export {
+  SELECT_BORDER_COLOR,
   BG_MAGNIFICATION_LANGTH,
   BG_DEFAULT_SIZE,
   BG_MAGNIFICATION,
