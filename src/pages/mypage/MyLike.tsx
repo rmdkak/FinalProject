@@ -2,8 +2,8 @@ import { useState, type ChangeEvent } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, MypageSubTitle, MypageTitle, SearchBar } from "components";
-import { useMypage, usePagination } from "hooks";
+import { DateConvertor, MypageSubTitle, MypageTitle } from "components";
+import { useMypage, usePagination, useSearchBar } from "hooks";
 
 export const MyLike = () => {
   const [likeIdsToDelete, setLikeIdsToDelete] = useState<string[]>([]);
@@ -32,9 +32,13 @@ export const MyLike = () => {
 
   if (userLikeData === undefined) return <p>에러페이지</p>;
 
+  const { SearchBar, filteredData } = useSearchBar({ dataList: userLikeData, type: "like", isUseMypage: true });
+
+  if (filteredData === undefined) return <p>에러페이지</p>;
+
   const { pageData, showPageComponent } = usePagination({
-    data: userLikeData,
-    dataLength: userLikeData.length,
+    data: filteredData,
+    dataLength: filteredData.length,
     postPerPage: 8,
   });
 
@@ -67,7 +71,7 @@ export const MyLike = () => {
                 )}
               </label>
               <p className="w-[80px]">{pageData.length - index}</p>
-              <Link to={`/detail/${likedPost.id as string}`} className="w-[830px]">
+              <Link to={`/detail/${post.id as string}`} className="w-[830px]">
                 {post.title}
               </Link>
               <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />

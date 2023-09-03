@@ -39,7 +39,6 @@ const App = () => {
           await addUser({
             id: session?.user.id as string,
             email: session?.user.email as string,
-            phone: session?.user.phone as string,
             name: session?.user.user_metadata.name as string,
             avatar_url: session?.user.user_metadata.avatar_url as string,
           }).catch((error) => {

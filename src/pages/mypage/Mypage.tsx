@@ -22,7 +22,7 @@ export const Mypage = () => {
 
   const filteredPosts = postData?.filter((_, index) => index < 2);
   const filteredComment = commentData?.filter((_, index) => index < 2);
-  const filteredBookmark = bookmarkData?.filter((_, index) => index < 3);
+  const filteredBookmark = bookmarkData?.filter((_, index) => index < 5);
   const filteredLikes = likeData?.filter((_, index) => index < 2);
 
   const countBoxArray = [

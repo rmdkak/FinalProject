@@ -53,7 +53,9 @@ export const UpdatePassword = () => {
           <p>새로운 비밀번호를 등록 후 사용해주세요.</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} action="#" className="w-full mt-[40px] flex-column">
-          <label className="self-start body-4 my-[8px]">새 비밀번호</label>
+          <label htmlFor="newPassword" className="self-start body-4 my-[8px]">
+            새 비밀번호
+          </label>
           <div className="flex w-full">
             <input
               id="newPassword"
@@ -78,7 +80,9 @@ export const UpdatePassword = () => {
           </div>
           <InvalidText errorsMessage={errors.newPassword?.message} />
 
-          <label className="self-start body-4 my-[8px]">새 비밀번호 확인</label>
+          <label htmlFor="newPasswordConfirm" className="self-start body-4 my-[8px]">
+            새 비밀번호 확인
+          </label>
           <div className="flex w-full">
             <input
               id="newPasswordConfirm"

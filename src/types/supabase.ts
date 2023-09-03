@@ -120,6 +120,7 @@ export interface Database {
           },
         ];
       };
+      // Type
       POSTLIKES: {
         Row: {
           created_at: string;
