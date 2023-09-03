@@ -1,5 +1,3 @@
-import React from "react";
-
 import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/bgSizeMinusControlBtn.svg";
 import bgSizePlusControlBtn from "assets/BgSizeControlBtns/bgSizePlusControlBtn.svg";
 import bgSizeTileControlBtn from "assets/BgSizeControlBtns/bgSizeTileControlBtn.svg";
