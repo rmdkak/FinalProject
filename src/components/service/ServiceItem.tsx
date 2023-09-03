@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SketchPicker, type ColorResult } from "react-color";
 
 import { useServiceStore } from "store";
@@ -19,23 +19,10 @@ interface Props {
  * @returns
  */
 export const ServiceItem = ({ data }: Props): JSX.Element => {
-  const {
-    checkType,
-    resetWallPaper,
-    resetTile,
-    setWallpaperPaint,
-    resetWallpaperPaint,
-    interiorSelecteIndex,
-    interiorSelectX,
-  } = useServiceStore((state) => state);
+  const { checkType, resetWallPaper, setWallpaperPaint, interiorSelecteIndex, interiorSelectX } = useServiceStore(
+    (state) => state,
+  );
   const [color, setColor] = useState<string>("");
-
-  // 페이지 마운트, 언마운트시 전역데이터 초기화
-  useEffect(() => {
-    resetWallPaper();
-    resetWallpaperPaint();
-    resetTile();
-  }, []);
 
   const changeColorPicker = (color: ColorResult) => {
     setColor(color.hex);
