@@ -104,8 +104,8 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
 
   const SearchBar = () => {
     return (
-      <div className="flex gap-[16px]">
-        <div className="flex items-center gap-[8px]">
+      <div className="flex gap-[22px]">
+        <div className="flex items-center gap-[12px]">
           <select
             onChange={changMonthOption}
             name="month"
@@ -130,7 +130,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
             className="w-[120px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
           />
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-[8px]">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-[12px]">
           <select
             onChange={changeCategory}
             value={category}
@@ -150,7 +150,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           <input
             {...register("searchKeyword")}
             type="text"
-            className="w-[180px] h-[32px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
+            className="w-[180px] h-[32px] px-2 border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
           />
           <button className="w-[64px] h-[32px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]">
             검색

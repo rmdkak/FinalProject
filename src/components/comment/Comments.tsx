@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { AiFillCloseCircle, AiOutlineCamera } from "react-icons/ai";
+import { AiOutlineCamera } from "react-icons/ai";
 import { PiArrowBendDownRightThin } from "react-icons/pi";
 import uuid from "react-uuid";
 
@@ -134,13 +134,12 @@ export const Comments = () => {
                             : `${storageUrl}${comment.commentImg}`
                         }
                         className={`my-[20px] w-[300px] h-[250px] ${
-                          selectedId === comment.id ? "border border-black" : ""
+                          selectedId === comment.id ? "border border-gray03" : ""
                         }`}
                       />
                       {selectedId === comment.id && (
                         <>
                           <div className="relative">
-                            <AiFillCloseCircle className="absolute bottom-[260px] left-[285px] z-10 text-[25px] bg-gray03 text-white cursor-pointer rounded-full" />
                             <label htmlFor="inputImg">
                               <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute bottom-[20px] left-[305px]" />
                               <input type="file" id="inputImg" className="hidden" onChange={handleImageChange} />

@@ -56,17 +56,17 @@ export const Toolbar = () => {
   };
 
   return (
-    <div className="sticky gap-4 bottom-[50%] translate-x-[1650px] inline-flex flex-col z-[9100]">
+    <div className="sticky gap-4 bottom-[50%] translate-x-[1350px] inline-flex flex-col z-[9100]">
       <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
         <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
       </button>
       {scrollPercent <= 50 ? (
         <button className="w-12 h-12 border rounded-full border-gray05" onClick={scrollToBottom}>
-          <SlArrowDown className="w-[20px] h-[20px] mx-auto fill-gray01" />
+          <SlArrowDown className="w-6 h-6 mx-auto fill-gray01" />
         </button>
       ) : (
         <button className="w-12 h-12 border rounded-full border-gray05" onClick={scrollToTop}>
-          <SlArrowUp className="w-[20px] h-[20px] mx-auto fill-gray01" />
+          <SlArrowUp className="w-6 h-6 mx-auto fill-gray01" />
         </button>
       )}
     </div>
