@@ -1,6 +1,8 @@
 import React from "react";
 
 import { useServiceStore } from "store";
+
+import { LEFT_ITEM_BORDER_COLOR, RIGHT_ITEM_BORDER_COLOR, TILE_ITEM_BORDER_COLOR } from "./data";
 interface Props {
   image: string;
   id: string;
@@ -30,23 +32,24 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
       setTile(selectItem);
     }
   };
+
   /**
    * 왼쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? "border-[#CD0D0D]" : "";
+  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? `border-[${LEFT_ITEM_BORDER_COLOR}]` : "";
   /**
    * 오른쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? "border-[#1DCFBF]" : "";
+  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? `border-[${RIGHT_ITEM_BORDER_COLOR}]` : "";
   /**
    * 타일 클릭시 나오는 보더
    */
-  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? "border-[#3E16F1]" : "";
+  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `border-[${TILE_ITEM_BORDER_COLOR}]` : "";
   /**
    * 왼쪽 벽지, 오른쪽 벽지가 같을경우나오는 보더
    */
   const CHECK_LEFT_RIGHT_BORDER =
-    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-[#E52689]" : "";
+    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-[#E41205]" : "";
   return (
     <>
       <li
