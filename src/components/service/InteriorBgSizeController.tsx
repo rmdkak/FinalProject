@@ -1,9 +1,7 @@
-import React from "react";
-
-import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/BgSizeMinusBtn.svg";
-import bgSizePlusControlBtn from "assets/BgSizeControlBtns/BgSizePlusBtn.svg";
+import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/bgSizeMinusControlBtn.svg";
+import bgSizePlusControlBtn from "assets/BgSizeControlBtns/bgSizePlusControlBtn.svg";
 import bgSizeTileControlBtn from "assets/BgSizeControlBtns/bgSizeTileControlBtn.svg";
-import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/bgSizeWallpaperControlBtn.svg";
+import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/BgSizeWallpaperControlBtn.svg";
 import { useServiceStore } from "store";
 
 export const InteriorBgSizeController = (): JSX.Element => {
