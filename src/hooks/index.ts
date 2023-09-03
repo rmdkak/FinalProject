@@ -5,3 +5,4 @@ export * from "./usePagination";
 export * from "./usePostsLike";
 export * from "./useComments";
 export * from "./usePosts";
+export * from "./useSearchBar";

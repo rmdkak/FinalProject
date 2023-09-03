@@ -87,7 +87,7 @@ export interface Database {
           created_at: string;
           id: string;
           postId: string;
-          writtenId: string;
+          userId: string;
         };
         Insert: {
           commentImg?: string | null;
@@ -95,7 +95,7 @@ export interface Database {
           created_at?: string;
           id: string;
           postId: string;
-          writtenId: string;
+          userId: string;
         };
         Update: {
           commentImg?: string | null;
@@ -103,7 +103,7 @@ export interface Database {
           created_at?: string;
           id?: string;
           postId?: string;
-          writtenId?: string;
+          userId?: string;
         };
         Relationships: [
           {
@@ -114,7 +114,7 @@ export interface Database {
           },
           {
             foreignKeyName: "COMMENTS_writtenId_fkey";
-            columns: ["writtenId"];
+            columns: ["userId"];
             referencedRelation: "USERS";
             referencedColumns: ["id"];
           },
@@ -228,21 +228,21 @@ export interface Database {
           content: string;
           created_at: string;
           id: string;
-          writtenId: string;
+          userId: string;
         };
         Insert: {
           commentId: string;
           content: string;
           created_at?: string;
           id?: string;
-          writtenId: string;
+          userId: string;
         };
         Update: {
           commentId?: string;
           content?: string;
           created_at?: string;
           id?: string;
-          writtenId?: string;
+          userId?: string;
         };
         Relationships: [
           {
@@ -253,7 +253,7 @@ export interface Database {
           },
           {
             foreignKeyName: "RECOMMENTS_writtenId_fkey";
-            columns: ["writtenId"];
+            columns: ["userId"];
             referencedRelation: "USERS";
             referencedColumns: ["id"];
           },

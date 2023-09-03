@@ -8,7 +8,7 @@ import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
 import { DateConvertor } from "components";
 import { Toolbar } from "components/sidebar/Toolbar";
-import { usePagination, usePosts } from "hooks";
+import { usePagination, usePosts, useSearchBar } from "hooks";
 import "@egjs/react-flicking/dist/flicking.css";
 import { type Tables } from "types/supabase";
 
@@ -52,17 +52,15 @@ export const Community = () => {
     setSelectedOption(event.target.value);
   };
 
-  if (filteredPosts === undefined) {
-    return (
-      <>
-        <p>에러 페이지</p>
-      </>
-    );
-  }
+  if (filteredPosts === undefined) return <p>에러 페이지</p>;
+
+  const { SearchBar, filteredData } = useSearchBar({ dataList: filteredPosts, type: "post" });
+
+  if (filteredData === undefined) return <p>에러 페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
-    data: filteredPosts,
-    dataLength: filteredPosts.length,
+    data: filteredData,
+    dataLength: filteredData.length,
     postPerPage: 8,
   });
 
@@ -138,6 +136,7 @@ export const Community = () => {
             </div>
           </div>
           {pageData.map((post) => {
+            const bookmarkLength = post.POSTLIKES[0].userId.length;
             return (
               <div
                 key={post.id}
@@ -156,7 +155,7 @@ export const Community = () => {
                       <p>{post.nickname}</p>
                       <DateConvertor datetime={post.created_at} type="dotDate" />
                       <DateConvertor datetime={post.created_at} type={"hourMinute"} />
-                      <p>좋아요 {post.bookmark}</p>
+                      <p>좋아요 {bookmarkLength}</p>
                     </div>
                   </div>
                   <div className="flex gap-3 w-[234px] justify-end items-center">
@@ -193,41 +192,8 @@ export const Community = () => {
         </div>
       </div>
       <Toolbar />
-
-      <div className="flex gap-[16px] py-[30px] justify-end">
-        <div className="flex items-center gap-[8px]">
-          <select className="w-[80px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]">
-            <option>1개월</option>
-            <option>3개월</option>
-            <option>6개월</option>
-          </select>
-          <p className="flex contents-center w-[80px] h-[32px] px-[10px] py-auto border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]">
-            직접설정
-          </p>
-          <input
-            type="date"
-            className="w-[120px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
-          />
-          <p>-</p>
-          <input
-            type="date"
-            className="w-[120px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
-          />
-        </div>
-        <div className="flex items-center gap-[8px]">
-          <select className="w-[100px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]">
-            <option>제목</option>
-            <option>작성자</option>
-            <option>내용</option>
-          </select>
-          <input
-            type="text"
-            className="w-[100px] h-[32px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
-          />
-          <button className="w-[64px] h-[32px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]">
-            검색
-          </button>
-        </div>
+      <div className="flex justify-end py-[30px] w-full">
+        <SearchBar />
       </div>
 
       <div className="flex justify-center mt-[20px]">{showPageComponent}</div>

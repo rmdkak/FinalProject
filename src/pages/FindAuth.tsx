@@ -145,7 +145,7 @@ export const FindAuth = () => {
             <InvalidText errorsMessage={emailErrors.nicknameForEmail?.message} size={20} />
 
             <div className="w-full flex-column gap-[8px]">
-              <label>본인확인질문</label>
+              <label htmlFor="idAnswerForEmail">본인확인질문</label>
               <Select
                 placeholder={"본인확인 질문을 선택해주세요."}
                 option={idQuestionOptions}
@@ -155,6 +155,7 @@ export const FindAuth = () => {
               />
               <input
                 {...emailRegister("idAnswerForEmail", { ...idAnswerValid })}
+                id="idAnswerForEmail"
                 placeholder="본인확인 질문에 답변해주세요."
                 className="auth-input body-3"
               />
@@ -201,9 +202,10 @@ export const FindAuth = () => {
             className="w-full gap-4 flex-column contents-center"
           >
             <div className="w-full flex-column gap-[8px]">
-              <label>이메일</label>
+              <label htmlFor="email">이메일</label>
               <input
                 {...passwordRegister("emailForPassword", { required: "이메일을 입력해주세요." })}
+                id="email"
                 placeholder="이메일을 입력해주세요."
                 className="auth-input body-3"
               />
@@ -211,9 +213,10 @@ export const FindAuth = () => {
             <InvalidText errorsMessage={passwordErrors.emailForPassword?.message} size={20} />
 
             <div className="w-full flex-column gap-[8px]">
-              <label>닉네임</label>
+              <label htmlFor="nicknameForPassword">닉네임</label>
               <input
                 {...passwordRegister("nicknameForPassword")}
+                id="nicknameForPassword"
                 placeholder="닉네임을 입력해주세요."
                 className="auth-input body-3"
               />
@@ -221,7 +224,7 @@ export const FindAuth = () => {
             <InvalidText errorsMessage={passwordErrors.nicknameForPassword?.message} size={20} />
 
             <div className="w-full flex-column gap-[8px]">
-              <label>본인확인질문</label>
+              <label htmlFor="idAnswerForPassword">본인확인질문</label>
               <Select
                 placeholder={"본인확인 질문을 선택해주세요."}
                 option={idQuestionOptions}
@@ -231,6 +234,7 @@ export const FindAuth = () => {
               />
               <input
                 {...passwordRegister("idAnswerForPassword", { ...idAnswerValid })}
+                id="idAnswerForPassword"
                 placeholder="본인확인 질문에 답변해주세요."
                 className="auth-input body-3"
               />

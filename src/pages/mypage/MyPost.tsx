@@ -2,8 +2,8 @@ import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle, SearchBar } from "components";
-import { useMypage, usePagination } from "hooks";
+import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
+import { useMypage, usePagination, useSearchBar } from "hooks";
 
 export const MyPost = () => {
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
@@ -34,9 +34,13 @@ export const MyPost = () => {
 
   if (userPostData === undefined) return <p>에러페이지</p>;
 
+  const { SearchBar, filteredData } = useSearchBar({ dataList: userPostData, type: "post", isUseMypage: true });
+
+  if (filteredData === undefined) return <p>에러페이지</p>;
+
   const { pageData, showPageComponent } = usePagination({
-    data: userPostData,
-    dataLength: userPostData.length,
+    data: filteredData,
+    dataLength: filteredData.length,
     postPerPage: 8,
   });
 
