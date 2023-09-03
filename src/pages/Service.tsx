@@ -2,12 +2,18 @@ import { useEffect, useState } from "react";
 import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/BgSizeMinusBtn.svg";
-import bgSizePlusControlBtn from "assets/BgSizeControlBtns/BgSizePlusBtn.svg";
-import BgSizeTileControlBtn from "assets/BgSizeControlBtns/BgSizeTileControlBtn.svg";
-import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/BgSizeWallpaperControlBtn.svg";
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SELECT_CUSTOM_INDEX } from "components";
+import {
+  GetColor,
+  InteriorSection,
+  ResouresCalculator,
+  Modal,
+  useDialog,
+  SELECT_CUSTOM_INDEX,
+  InteriorBgSizeController,
+  BG_DEFAULT_SIZE,
+  BG_MAGNIFICATION,
+} from "components";
 import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -29,7 +35,7 @@ export const Service = () => {
   const { Alert, Confirm } = useDialog();
 
   const { onOpenModal } = useModalStore((state) => state);
-  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex } = useServiceStore((state) => state);
+  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex, selectBgSize } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
 
@@ -116,6 +122,10 @@ export const Service = () => {
     navigate("/post");
   };
 
+  const LEFT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.leftWall]) / 100;
+  const RIFHT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.rightWall]) / 100;
+  const TILE_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.tile]) / 100;
+
   return (
     <>
       <div className="m-20 flex-column">
@@ -125,29 +135,8 @@ export const Service = () => {
           <div className="flex w-full gap-10">
             {/* 왼쪽 인터렉션 박스 */}
             <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
-              {/* 배경크기 컨트롤 */}
-              <div className="absolute z-50 flex bottom-4 right-4">
-                {/* 왼쪽 벽지 */}
-                <button className="flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
-                  <img className="w-[10px]" src={BgSizeWallpaperControlBtn} alt="왼쪽 벽지 이미지" />
-                </button>
-                {/* 오른쪽 벽지 */}
-                <button className="flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
-                  <img className="w-[10px] scale-x-[-1]" src={BgSizeWallpaperControlBtn} alt="오른쪽 벽지 이미지" />
-                </button>
-                {/* 타일 */}
-                <button className="flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
-                  <img className="w-[10px]" src={BgSizeTileControlBtn} alt="타일 이미지" />
-                </button>
-                {/* 크기 확대 버튼 */}
-                <button className="flex  bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]">
-                  <img className="w-[10px]" src={bgSizePlusControlBtn} alt="추가 버튼이미지" />
-                </button>
-                {/* 크기 축소 버튼 */}
-                <button className="flex  bg-[#00000040] w-6 h-6 rounded contents-center active:bg-[#00000060]">
-                  <img className="w-[10px]" src={bgSizeMinusControlBtn} alt="감소 버튼이미지" />
-                </button>
-              </div>
+              {/* 배경크기 컨트롤 박스 */}
+              <InteriorBgSizeController />
 
               <div className="cube">
                 {/* 벽지 */}
@@ -158,7 +147,7 @@ export const Service = () => {
                         backgroundImage: `url(${
                           interiorSelecteIndex !== 5 ? leftWallPaperBg : (wallPaper.left.image as string)
                         })`,
-                        backgroundSize: `${70}px, ${70}px`,
+                        backgroundSize: `${LEFT_WALLPAPER_BGSIZE}px, ${LEFT_WALLPAPER_BGSIZE}px`,
                       }}
                       className="left-wall"
                     ></div>
@@ -167,7 +156,7 @@ export const Service = () => {
                         backgroundImage: `url(${
                           interiorSelecteIndex !== 5 ? RightWallPaperBg : (wallPaper.right.image as string)
                         })`,
-                        backgroundSize: `${70}px, ${70}px`,
+                        backgroundSize: `${RIFHT_WALLPAPER_BGSIZE}px, ${RIFHT_WALLPAPER_BGSIZE}px`,
                       }}
                       className="right-wall"
                     ></div>
@@ -194,10 +183,11 @@ export const Service = () => {
                     backgroundImage: `url(${
                       interiorSelecteIndex !== SELECT_CUSTOM_INDEX ? tileBg : (tile.image as string)
                     })`,
-                    backgroundSize: `${70}px, ${70}px`,
+                    backgroundSize: `${TILE_BGSIZE}px, ${TILE_BGSIZE}px`,
                   }}
                   className="floor"
                 ></div>
+                InteriorBgSizeController
               </div>
             </div>
             <div className="flex-column w-[860px] gap-10">

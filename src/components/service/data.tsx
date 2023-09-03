@@ -33,7 +33,23 @@ const SELECT_CUSTOM_INDEX: number = 5;
  */
 const SELECT_BORDER_COLOR = "#666";
 
+/**
+ * 기본 백그라운드 사이즈입니다 70
+ */
+const BG_DEFAULT_SIZE: number = 70;
+/**
+ * 배경이미지의 배율 퍼센트입니다. 25~300% 까지 있습니다.
+ */
+const BG_MAGNIFICATION: number[] = [25, 50, 75, 100, 125, 150, 200, 300];
+/**
+ * BG_MAGNIFICATION의 최대값입니다.
+ */
+const BG_MAGNIFICATION_LANGTH: number = BG_MAGNIFICATION.length;
+
 export {
+  BG_MAGNIFICATION_LANGTH,
+  BG_DEFAULT_SIZE,
+  BG_MAGNIFICATION,
   SELECT_BORDER_COLOR,
   WALLPAPER_TEXTURE_LIST,
   TILE_TEXTURE_LIST,
