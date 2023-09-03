@@ -1,14 +1,16 @@
-import { type ChangeEvent, useState, useEffect } from "react";
+import { type ChangeEvent, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import uuid from "react-uuid";
 
 import {
   changeMetaAvatar,
   changeMetaName,
-  changeMetaPhone,
+  changePassword,
+  deleteImage,
   fetchUserCheckData,
   storageUrl,
-  updateImage,
+  uploadImage,
 } from "api/supabase";
 import photoCamera from "assets/photoCamera.svg";
 import xmark from "assets/xmark.svg";
@@ -16,9 +18,10 @@ import {
   type PasswordVisible,
   PasswordVisibleButton,
   InvalidText,
-  phoneOptions,
-  Select,
   MypageTitle,
+  passwordValid,
+  nameValid,
+  useDialog,
 } from "components";
 import { useAuth } from "hooks";
 import { useAuthStore } from "store";
@@ -27,9 +30,6 @@ interface UpdateInput {
   name: string;
   password: string;
   passwordConfirm: string;
-  phoneMiddleNum: string;
-  phoneLastNum: string;
-  email: string;
 }
 
 const LABEL_STYLE = "self-center w-[136px] px-[24px] text-[14px] font-normal leading-[130%]";
@@ -39,17 +39,21 @@ const defaultProfileImgUrl =
 
 export const UpdateUser = () => {
   const navigate = useNavigate();
+  const { Alert } = useDialog();
 
-  const [selectPhoneFistNum, setSelectPhoneFistNum] = useState<string | undefined>();
   const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
+  const [checkedDuplicate, setCheckedDuplicate] = useState(false);
+  const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
 
-  const { currentUserResponse } = useAuth();
+  const { previewProfileUrl, setPreviewProfileUrl } = useAuthStore();
+  const { currentUserResponse, patchUserMutation } = useAuth();
   const { data: currentUser, isLoading } = currentUserResponse;
 
   if (currentUser === undefined) {
     navigate("/");
     return <p>에러페이지</p>;
   }
+  const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
 
   const {
     register,
@@ -59,29 +63,35 @@ export const UpdateUser = () => {
     formState: { errors },
   } = useForm<UpdateInput>({ mode: "all" });
 
-  const [imgFile, setImgFile] = useState<File>();
-  const { previewProfileUrl, setPreviewProfileUrl } = useAuthStore();
-  const onChangeAddFile = (event: ChangeEvent<HTMLInputElement>) => {
+  // 프로필 이미지 변경
+  const changeProfileImgHandler = async (event: ChangeEvent<HTMLInputElement>) => {
+    const uid = uuid();
     if (event.target.files === null) return;
-    setImgFile(event.target.files[0]);
-    setPreviewProfileUrl(URL.createObjectURL(event.target.files[0]));
+    const imgFile = event.target.files[0];
+    if (imgFile === undefined) return;
+
+    // 미리보기 URL 생성
+    setPreviewProfileUrl(URL.createObjectURL(imgFile));
+
+    const prevProfileImg = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
+    const profileImg = `${storageUrl}/profileImg/${uid}`;
+    // FIXME 메타데이터 변경에 쿼리 사용이 효과 있는지 확인 안됨
+    await deleteImage(prevProfileImg);
+    patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
+    await changeMetaAvatar(profileImg);
+    await uploadImage({ file: imgFile, userId: uid });
   };
 
-  const [deleteProfileImgUrl, setDeleteProfileImgUrl] = useState(false);
-  const resetImgFile = () => {
-    if (imgFile !== undefined) {
-      setImgFile(undefined);
+  // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
+  const resetImgFile = async () => {
+    if (currentProfileImg !== defaultProfileImgUrl) {
+      await changeMetaAvatar(defaultProfileImgUrl);
+      patchUserMutation.mutate({ inputValue: { avatar_url: defaultProfileImgUrl }, userId });
       setPreviewProfileUrl("");
-      return;
-    }
-    if (imgFile === undefined || currentProfileImg !== defaultProfileImgUrl) {
-      setPreviewProfileUrl(defaultProfileImgUrl);
-      setDeleteProfileImgUrl(true);
     }
   };
 
   // 중복체크
-  const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const duplicateCheck = async () => {
     const getUserData = await fetchUserCheckData();
 
@@ -91,64 +101,51 @@ export const UpdateUser = () => {
     else setError("name", { message: "이미 존재하는 닉네임입니다." });
   };
 
-  const { patchUserMutation } = useAuth();
-  const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
-  // 회원 정보 수정
-  const onSubmit: SubmitHandler<UpdateInput> = async (data) => {
-    const { name, phoneMiddleNum, phoneLastNum } = data;
+  const toggleOpenHandler = (target: "name" | "password") => {
+    if (target === "name") {
+      setIsOpenToggle({ password: false, name: !isOpenToggle.name });
+    } else {
+      setIsOpenToggle({ name: false, password: !isOpenToggle.password });
+    }
+  };
 
-    if (currentUser === undefined) return;
-
-    // 이미지 변경
-    if (imgFile !== undefined) {
-      const profileImg = `${storageUrl}/profileImg/${userId}`;
-      await updateImage({ file: imgFile, userId }).catch((error) => {
-        console.error(error);
+  // 비밀번호 수정
+  const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
+    const { password } = data;
+    await changePassword(password)
+      .then(async () => {
+        await Alert("비밀번호가 정상적으로 변경되었습니다.");
+      })
+      .catch(async (error) => {
+        switch (error.message) {
+          case "New password should be different from the old password.":
+            await Alert("이전 비밀번호와 동일합니다.");
+            break;
+          case "Auth session missing!":
+            await Alert("이메일 유효시간이 만료되었습니다.");
+            break;
+          default:
+            await Alert("Error");
+            console.log("newError : ", error.message);
+            break;
+        }
       });
-      await changeMetaAvatar(profileImg);
-      patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
-    }
-    if (deleteProfileImgUrl || imgFile === undefined) {
-      await changeMetaAvatar(defaultProfileImgUrl);
-      patchUserMutation.mutate({ inputValue: { avatar_url: defaultProfileImgUrl }, userId });
-    }
+    toggleOpenHandler("password");
+  };
 
-    // 휴대전화 변경
-    if (phoneMiddleNum.length > 0 || phoneLastNum.length > 0) {
-      if (selectPhoneFistNum === undefined) {
-        setError("phoneMiddleNum", { message: "휴대전화 앞자리를 선택해주세요." });
-        return;
-      }
-
-      const phonePattern = /^01([0-9])-?([0-9]{3,4})-?([0-9]{4})$/;
-      const phone = `${selectPhoneFistNum}${phoneMiddleNum}${phoneLastNum}`;
-
-      if (!phonePattern.test(phone)) {
-        setError("phoneMiddleNum", { message: "휴대전화 형식이 올바르지 않습니다." });
-        return;
-      }
-
-      await changeMetaPhone(phone);
-      patchUserMutation.mutate({ inputValue: { phone }, userId });
-    }
-
-    // 닉네임 변경
-    if (name !== currentName) {
+  // 닉네임 수정
+  const changeNameHandler: SubmitHandler<UpdateInput> = async (data) => {
+    if (data.name !== currentName) {
       if (!checkedDuplicate) {
         setError("name", { message: "중복체크를 눌러주세요." });
         return;
       }
 
-      await changeMetaName(name);
-      patchUserMutation.mutate({ inputValue: { name }, userId });
+      await changeMetaName(data.name);
+      patchUserMutation.mutate({ inputValue: { name: data.name }, userId });
     }
+    toggleOpenHandler("name");
   };
-
-  useEffect(() => {
-    return () => {
-      setPreviewProfileUrl("");
-    };
-  }, []);
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
@@ -166,7 +163,6 @@ export const UpdateUser = () => {
             ) : (
               <img src={previewProfileUrl} alt="프로필 이미지" className="w-[120px] h-[120px] rounded-full" />
             )}
-            {/* <img src={currentProfileImg} className="w-[120px] h-[120px] rounded-full" /> */}
             <div className="absolute flex justify-center items-center gap-[8px] bottom-0 left-1/2 translate-x-[-50%] translate-y-[25%] rounded-[8px] border bg-white w-[80px] h-[32px]">
               <label htmlFor="profileImgButton">
                 <img src={photoCamera} className="w-[16px] h-[16px] cursor-pointer" />
@@ -175,7 +171,7 @@ export const UpdateUser = () => {
                 id="profileImgButton"
                 type="file"
                 accept="image/*"
-                onChange={onChangeAddFile}
+                onChange={changeProfileImgHandler}
                 style={{ display: "none" }}
               />
               <div className="h-[8px] bg-gray06 border" />
@@ -184,154 +180,132 @@ export const UpdateUser = () => {
           </div>
           <p className="text-[24px] font-normal leading-[145%]">{`${currentUser.name} 님`}</p>
         </div>
-        {/* form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="flex contents-center w-[624px]">
+        <div className="flex contents-center w-[624px]">
           <div className="flex-column w-full gap-[24px]">
-            {/* 프로필 사진 빈공간 */}
-            {/* <div className="border-b flex-column border-b-gray06">
-              <div className="flex gap-[24px] pb-[24px]">
-                <label className={LABEL_STYLE}>프로필 사진</label>
-                <div className="h-[48px]" />
-              </div>
-            </div> */}
-
-            {/* 닉네임 */}
-            <div className="flex-column">
-              <div className="flex gap-[24px]">
+            {/* 닉네임 form */}
+            <div className="gap-2 border-b pb-7 flex-column border-b-gray06">
+              <div className="flex gap-6">
                 <label className={LABEL_STYLE}>닉네임</label>
-                <input
-                  id={"name"}
-                  placeholder={"닉네임"}
-                  defaultValue={currentUser?.name}
-                  className="auth-input w-[300px]"
-                  {...register("name", {
-                    required: "닉네임은 필수 입력 사항입니다.",
-                    minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
-                    maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
-                    onChange: () => {
-                      setCheckedDuplicate(false);
-                    },
-                  })}
-                />
                 <button
                   type="button"
-                  onClick={duplicateCheck}
-                  className="w-[120px] border border-black rounded-[8px] h-[48px] body-3"
+                  onClick={() => {
+                    toggleOpenHandler("name");
+                  }}
+                  className="w-32 h-12 rounded-lg point-button body-3"
                 >
-                  중복체크
+                  변경
                 </button>
               </div>
-              {checkedDuplicate ? (
-                <p
-                  className={
-                    "h-[40px] w-full flex items-center text-[12px] text-green-500 font-normal justify-center border-b border-b-gray06 pb-[5px]"
-                  }
-                >
-                  사용 가능한 닉네임입니다.
-                </p>
-              ) : (
-                <InvalidText
-                  className={"justify-center border-b border-b-gray06 pb-[5px]"}
-                  errorsMessage={errors.name?.message}
-                  size={40}
-                />
+
+              {/* 토글 이름 변경 폼 */}
+              {isOpenToggle.name && (
+                <form onSubmit={handleSubmit(changeNameHandler)} className="flex-column">
+                  <div className="flex gap-6 mt-10">
+                    <input
+                      id={"name"}
+                      placeholder={"닉네임"}
+                      defaultValue={currentUser?.name}
+                      className="auth-input w-[300px]"
+                      {...register("name", {
+                        ...nameValid,
+                        onChange: () => {
+                          setCheckedDuplicate(false);
+                        },
+                      })}
+                    />
+                    <button
+                      type="button"
+                      onClick={duplicateCheck}
+                      className="w-32 h-12 rounded-lg gray-outline-button body-3"
+                    >
+                      중복체크
+                    </button>
+                  </div>
+                  {checkedDuplicate ? (
+                    <p className={"h-10 w-full flex contents-center text-xs text-green-500 font-normal"}>
+                      사용 가능한 닉네임입니다.
+                    </p>
+                  ) : (
+                    <InvalidText className="justify-center" errorsMessage={errors.name?.message} size={40} />
+                  )}
+                  <div className="flex gap-3">
+                    <button className="w-32 h-12 rounded-lg point-button body-3">수정</button>
+                    <button
+                      type="button"
+                      className="w-32 h-12 rounded-lg gray-outline-button body-3"
+                      onClick={() => {
+                        toggleOpenHandler("name");
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
+                </form>
               )}
             </div>
 
             {/* 패스워드 */}
-            <div className="flex-column">
-              <div className="flex gap-[24px]">
+            <div className="gap-2 border-b flex-column border-b-gray06 pb-7">
+              <div className="flex gap-6">
                 <label className={LABEL_STYLE}>비밀번호</label>
-                <div className="flex-column gap-[8px] w-[300px]">
-                  <div className="relative">
-                    <input
-                      placeholder="새 비밀번호"
-                      type={showPassword.password ? "text" : "password"}
-                      className="auth-input"
-                      {...register("password", {
-                        pattern: {
-                          value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                          message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
-                        },
-                        minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-                        validate: {
-                          matchesPreviousPassword: (value) => {
-                            const prevPassword = getValues("passwordConfirm");
-                            return prevPassword === value || "비밀번호가 일치하지 않습니다.";
-                          },
-                        },
-                      })}
-                    />
-                    <PasswordVisibleButton
-                      passwordType={"password"}
-                      isVisibleState={showPassword}
-                      setIsVisibleState={setShowPassword}
-                    />
-                  </div>
-                  <div className="relative">
-                    <input
-                      placeholder={"새 비밀번호 확인"}
-                      type={showPassword.passwordConfirm ?? false ? "text" : "password"}
-                      className="auth-input"
-                      {...register("passwordConfirm")}
-                    />
-                    <PasswordVisibleButton
-                      passwordType={"passwordConfirm"}
-                      isVisibleState={showPassword}
-                      setIsVisibleState={setShowPassword}
-                    />
-                  </div>
-                </div>
-                <div className="w-[120px]" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    toggleOpenHandler("password");
+                  }}
+                  className="w-32 h-12 rounded-lg point-button body-3"
+                >
+                  변경
+                </button>
               </div>
-              <InvalidText
-                className={"justify-center border-b border-b-gray06 pb-[5px]"}
-                errorsMessage={errors.password?.message}
-                size={40}
-              />
+              {isOpenToggle.password && (
+                <form onSubmit={handleSubmit(changePasswordHandler)}>
+                  <div className="flex-column gap-2 w-[300px]">
+                    <div className="relative">
+                      <input
+                        placeholder="새 비밀번호"
+                        type={showPassword.password ? "text" : "password"}
+                        className="auth-input"
+                        {...register("password", { ...passwordValid(getValues("passwordConfirm")) })}
+                      />
+                      <PasswordVisibleButton
+                        passwordType={"password"}
+                        isVisibleState={showPassword}
+                        setIsVisibleState={setShowPassword}
+                      />
+                    </div>
+                    <div className="relative">
+                      <input
+                        placeholder={"새 비밀번호 확인"}
+                        type={showPassword.passwordConfirm ?? false ? "text" : "password"}
+                        className="auth-input"
+                        {...register("passwordConfirm")}
+                      />
+                      <PasswordVisibleButton
+                        passwordType={"passwordConfirm"}
+                        isVisibleState={showPassword}
+                        setIsVisibleState={setShowPassword}
+                      />
+                    </div>
+                  </div>
+                  <InvalidText className={"justify-center"} errorsMessage={errors.password?.message} size={40} />
+                  <div className="flex gap-3">
+                    <button className="w-32 h-12 rounded-lg point-button body-3">수정</button>
+                    <button
+                      type="button"
+                      className="w-32 h-12 rounded-lg gray-outline-button body-3"
+                      onClick={() => {
+                        toggleOpenHandler("password");
+                      }}
+                    >
+                      취소
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
 
-            {/* 휴대전화 */}
-            {/* TODO 셀렉트 인풋 넣기 */}
-            <div className="border-b flex-column border-b-gray06">
-              <div className="flex items-center gap-[24px]">
-                <label className={LABEL_STYLE}>휴대전화</label>
-                <div className="flex items-center w-[300px]">
-                  <Select
-                    option={phoneOptions}
-                    selectedValue={selectPhoneFistNum}
-                    setSelectedValue={setSelectPhoneFistNum}
-                    selfEnterOption={true}
-                    placeholder=""
-                  />
-                  <span className="mx-[6px]">-</span>
-                  <input
-                    {...register("phoneMiddleNum")}
-                    type="text"
-                    placeholder="휴대전화"
-                    className="text-center auth-input body-3 w-[85px] px-[12px]"
-                  />
-                  <span className="mx-[6px]">-</span>
-                  <input
-                    {...register("phoneLastNum")}
-                    type="text"
-                    placeholder="휴대전화"
-                    className="text-center auth-input body-3 w-[85px] px-[12px]"
-                  />
-                </div>
-                <div className="w-[120px]" />
-              </div>
-              <InvalidText
-                className={"justify-center border-b border-b-gray06 pb-[5px]"}
-                errorsMessage={errors.phoneMiddleNum?.message}
-                size={40}
-              />
-            </div>
-
-            <div className="relative flex gap-[16px] justify-center items-center">
-              <button className="flex contents-center w-[192px] h-[48px] rounded-[8px] bg-point text-[14px] font-normal leading-[130%]">
-                회원정보 수정
-              </button>
+            <div className="relative flex items-center justify-center gap-4">
               <button
                 type="button"
                 className="flex contents-center w-[192px] h-[48px] rounded-[8px] bg-white border border-gray05 text-[14px] font-normal leading-[130%]"
@@ -349,7 +323,7 @@ export const UpdateUser = () => {
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

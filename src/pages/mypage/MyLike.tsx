@@ -67,7 +67,7 @@ export const MyLike = () => {
                 )}
               </label>
               <p className="w-[80px]">{pageData.length - index}</p>
-              <Link to={`/detail/${likedPost.id as string}`} className="w-[830px]">
+              <Link to={`/detail/${post.id as string}`} className="w-[830px]">
                 {post.title}
               </Link>
               <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />

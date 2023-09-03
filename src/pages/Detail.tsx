@@ -18,6 +18,7 @@ export const Detail = () => {
   const { currentSession } = useAuthStore();
   const { Confirm } = useDialog();
   const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
+  const [isHaveBookmark, setIsHaveBookmark] = useState(false);
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
   const { data: currentBookmarkData } = postLikeResponse;
   const { fetchPostsMutation, deletePostMutation } = usePosts();
@@ -46,6 +47,12 @@ export const Detail = () => {
       resetDetailPostId();
     };
   }, [paramsId]);
+
+  useEffect(() => {
+    if (currentSession !== null && currentBookmarkData !== undefined) {
+      setIsHaveBookmark(currentBookmarkData.userId.includes(currentSession?.user.id));
+    }
+  }, [currentSession, currentBookmarkData]);
 
   const addBookmark = async () => {
     if (currentSession === null) {
@@ -243,7 +250,7 @@ export const Detail = () => {
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>
-        {currentBookmarkData?.userId.includes(currentSession?.user.id as string) ?? false ? (
+        {isHaveBookmark ? (
           <button onClick={deleteBookmark} className="w-12 h-12 border rounded-full border-gray06">
             <BsSuitHeartFill className="w-[24px] h-[24px] mx-auto  text-point" />
           </button>

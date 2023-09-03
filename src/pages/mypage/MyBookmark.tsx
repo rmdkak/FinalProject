@@ -2,11 +2,14 @@ import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 
 import { storageUrl } from "api/supabase";
-import { EmptyData, MypageSubTitle, MypageTitle } from "components";
+import { EmptyData, Modal, MypageSubTitle, MypageTitle } from "components";
+import { ShowRoom } from "components/service/ShowRoom";
 import { useMypage, usePagination } from "hooks";
+import { useModalStore } from "store";
 
 export const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);
+  const { targetModal, setTargetModal, onOpenModal } = useModalStore();
 
   const filteredBookmarkIdsHandler = (selectId: string) => {
     return bookmarkIdsToDelete.filter((id) => id !== selectId);
@@ -32,6 +35,10 @@ export const MyBookmark = () => {
     }
   };
 
+  const createUrl = (type: "tile" | "wallpaper", interiorId: string) => {
+    return `${storageUrl}/${type}/${interiorId}`;
+  };
+
   if (userBookmarkData === undefined) return <p>에러페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
@@ -39,7 +46,7 @@ export const MyBookmark = () => {
     dataLength: userBookmarkData.length,
     postPerPage: 8,
   });
-
+  // 디브 전체 라벨로 감싸기
   return (
     <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
       <MypageTitle />
@@ -50,60 +57,62 @@ export const MyBookmark = () => {
         <ul className="flex flex-wrap gap-y-[64px] gap-x-[40px] w-full mt-[40px]">
           {pageData.map((bookmark) => {
             return (
-              <li key={bookmark.id} className="flex contents-center w-[400px] gap-[16px] h-[200px]">
-                <div className="relative">
-                  {/* 백그라운드 지우고 url 넣기 */}
-                  <img src={`공용컴포넌트`} className="w-[324px] h-[196px] rounded-[20px] bg-red-500" />
-                  <div className="absolute p-0 bg-white left-[16px] top-[16px] ">
-                    <input
-                      id={`post.id`}
-                      type="checkbox"
-                      className="hidden"
-                      onChange={(event) => {
-                        onChange(event, `post.id`);
-                      }}
-                    />
-                    <label className="" htmlFor={`post.id`}>
-                      {bookmarkIdsToDelete.find((id) => id === `post.id`) !== undefined ? (
-                        // FIXME 체크박스 흰배경있는 SVG 뽑아서 쓰기
-                        <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
-                      ) : (
-                        <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
-                      )}
-                    </label>
-                  </div>
+              <li
+                key={bookmark.id}
+                className="relative border border-gray05 rounded-[12px] w-[400px] gap-[16px] h-[200px]"
+              >
+                {/* 체크박스 */}
+                <div className="absolute bg-white left-[16px] top-[16px] ">
+                  <input
+                    id={bookmark.id}
+                    type="checkbox"
+                    className="hidden"
+                    onChange={(event) => {
+                      onChange(event, bookmark.id);
+                    }}
+                  />
+                  <label className="" htmlFor={bookmark.id}>
+                    {bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined ? (
+                      // FIXME 체크박스 흰배경있는 SVG 뽑아서 쓰기
+                      <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
+                    ) : (
+                      <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
+                    )}
+                  </label>
                 </div>
-                <div className="flex-column gap-[20px]">
-                  <div className="flex-column gap-[8px]">
-                    <p className="text-[14px] font-medium leading-[130%] text-center">벽지</p>
-                    {/* FIXME */}
-                    {/* <img
+                {/* 조합 이미지 */}
+                <button
+                  onMouseUp={() => {
+                    onOpenModal();
+                  }}
+                  onMouseDown={() => {
+                    setTargetModal(bookmark.id);
+                  }}
+                  className="relative flex w-[300px] mx-auto h-full contents-center"
+                >
+                  <img
                     src={`${storageUrl}/wallpaper/${bookmark.leftWallpaperId as string}`}
-                    className="w-[62px] h-[62px] rounded-[12px] bg-blue-500"
+                    className={`absolute translate-x-[-40%] translate-y-[-30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-blue-500`}
                   />
                   <img
                     src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId as string}`}
-                    className="w-[62px] h-[62px] rounded-[12px] bg-blue-500"
-                  /> */}
-                    <div className="flex">
-                      <img
-                        src={`${storageUrl}/wallpaper/${bookmark.leftWallpaperId as string}`}
-                        className="w-[31px] h-[62px] rounded-l-[12px] bg-blue-500"
-                      />
-                      <img
-                        src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId as string}`}
-                        className="w-[31px] h-[62px] rounded-r-[12px] bg-blue-500"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex-column gap-[8px]">
-                    <p className="text-[14px] font-medium leading-[130%] text-center">바닥재</p>
-                    <img
-                      src={`${storageUrl}/tile/${bookmark.tileId as string}`}
-                      className="w-[62px] h-[62px] rounded-[12px] bg-green-500"
+                    className={`absolute translate-x-[40%] translate-y-[-30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-blue-500`}
+                  />
+                  <img
+                    src={`${storageUrl}/tile/${bookmark.tileId as string}`}
+                    className={`absolute translate-y-[30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-green-500`}
+                  />
+                </button>
+                {targetModal === bookmark.id && (
+                  <Modal title="">
+                    <p>벽타일 조합 컴포넌트</p>
+                    <ShowRoom
+                      leftWallpaperBg={createUrl("wallpaper", bookmark.leftWallpaperId)}
+                      rightWallpaperBg={createUrl("wallpaper", bookmark.rightWallpaperId)}
+                      tileBg={createUrl("tile", bookmark.tileId)}
                     />
-                  </div>
-                </div>
+                  </Modal>
+                )}
               </li>
             );
           })}

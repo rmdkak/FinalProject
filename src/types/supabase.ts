@@ -120,6 +120,7 @@ export interface Database {
           },
         ];
       };
+      // Type
       POSTLIKES: {
         Row: {
           created_at: string;
@@ -282,27 +283,30 @@ export interface Database {
       USERS: {
         Row: {
           avatar_url: string;
-          Created: string | null;
+          created_at: string | null;
           email: string;
           id: string;
           name: string;
-          phone: string;
+          idAnswer: string;
+          idQuestion: string;
         };
         Insert: {
           avatar_url: string;
-          Created?: string | null;
+          created_at?: string | null;
           email: string;
           id?: string;
           name: string;
-          phone: string;
+          idAnswer?: string;
+          idQuestion?: string;
         };
         Update: {
           avatar_url?: string;
-          Created?: string | null;
+          created_at?: string | null;
           email?: string;
           id?: string;
           name?: string;
-          phone?: string;
+          idAnswer?: string;
+          idQuestion?: string;
         };
         Relationships: [];
       };
