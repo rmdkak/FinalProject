@@ -27,41 +27,40 @@ export const Post = () => {
     formState: { errors },
     watch,
   } = useForm<Inputs>();
-  const isNotPassTitle = errors.title?.type === "maxLength";
-  const isNotPassTextarea = errors.textarea?.type === "maxLength";
+
   const title = watch("title") ?? 0;
   const textarea = watch("textarea") ?? 0;
-  const { wallPaper, tile, wallpaperPaint } = useServiceStore();
+  const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
   console.log("wallpaperPaint :", wallpaperPaint);
-  console.log("tile :", tile);
-  console.log("wallPaper :", wallPaper);
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log("data :", data);
     const UUID = uuid();
-    const title = data.title;
-    const content = data.textarea;
     const postImgfile = data.file[0];
-    const postImage = postImgfile == null ? null : `/postImg/${UUID}`;
-    const tileId = tile.id;
-    const leftWallpaperId = wallPaper.left.id;
-    const rightWallpaperId = wallPaper.right.id;
-    // const leftPaintCode = wallpaperPaint.left;
-    // const rightPaintCode = wallpaperPaint.right;
+    const postImage = data.file[0] == null ? null : `/postImg/${UUID}`;
+    const isInteriorSelected = tile.id !== null && wallPaper.left.id !== null && wallpaperPaint.right !== null;
+    console.log("isInteriorSelected :", isInteriorSelected);
+    const isNotInteriorSelected = tile.id === null && wallPaper.left.id === null && wallpaperPaint.right === null;
+    console.log("isNotInteriorSelected :", isNotInteriorSelected);
+    const isColorCodeSeleted = wallpaperPaint.left !== "" && wallpaperPaint.right !== "";
+    console.log("isColorCodeSeleted :", isColorCodeSeleted);
+    const isNotColorCodeSeleted = wallpaperPaint.left === "" && wallpaperPaint.right === "";
+    console.log("isNotColorCodeSeleted :", isNotColorCodeSeleted);
 
-    const isInteriorSelected = tileId !== null && leftWallpaperId !== null && rightWallpaperId !== null;
-    const isNotInteriorSelected = tileId === null && leftWallpaperId === null && rightWallpaperId === null;
-
-    if (isInteriorSelected || isNotInteriorSelected) {
+    if (isInteriorSelected || isNotInteriorSelected || isColorCodeSeleted || isNotColorCodeSeleted) {
       const postData = {
         id: UUID,
-        title,
-        content,
+        title: data.title,
+        content: data.textarea,
         bookmark: 0,
         nickname,
         postImage,
         userId,
-        tileId,
-        leftWallpaperId,
-        rightWallpaperId,
+        tileId: tile.id,
+        leftWallpaperId: wallPaper.left.id,
+        rightWallpaperId: wallPaper.right.id,
+        leftColorCode: wallpaperPaint.left,
+        rightColorCode: wallpaperPaint.right,
       };
       try {
         await savePostImageHandler({ UUID, postImgfile });
@@ -70,15 +69,18 @@ export const Post = () => {
         console.log("error", error);
       }
     } else {
-      if (tileId === null) {
+      if (tile.id === null) {
         await Alert("타일이 선택되지 않았습니다.");
-      } else if (leftWallpaperId === null) {
+      } else if (wallPaper.left.id === null && wallpaperPaint.left === null) {
         await Alert("왼쪽 벽지가 선택되지 않았습니다.");
-      } else if (rightWallpaperId === null) {
+      } else if (wallpaperPaint.right === null && wallpaperPaint.right === null) {
         await Alert("오른쪽 벽지가 선택되지 않았습니다.");
       }
       return;
     }
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
     navigate("/community");
   };
 
@@ -98,7 +100,7 @@ export const Post = () => {
   };
 
   return (
-    <div className="w-[1600px] mx-auto mt-[40px]">
+    <div className="w-[1280px] mx-auto mt-[40px]">
       <div className="items-center flex-column">
         <p className="font-medium text-[32px]">커뮤니티</p>
         <div className="w-full border-b-2 border-gray01 mt-[70px]"></div>
@@ -114,8 +116,10 @@ export const Post = () => {
           />
         </div>
         <div className="mt-2 contents-between">
-          {isNotPassTitle ? (
+          {errors.title?.type === "maxLength" ? (
             <div className="text-red-600">제목은 최대 100자 까지만 입력할 수 있습니다!</div>
+          ) : errors.title?.type === "required" ? (
+            <div className="text-red-600">제목은 최소 1자 이상 작성해 주세요.</div>
           ) : (
             <div></div>
           )}
@@ -178,7 +182,13 @@ export const Post = () => {
           {...register("textarea", { required: true, maxLength: 1000 })}
         />
         <div className="mt-2 contents-between">
-          {isNotPassTextarea ? <div className="text-red-600">내용은 1000자 이내로 작성해 주세요!</div> : <div></div>}
+          {errors.textarea?.type === "maxLength" ? (
+            <div className="text-red-600">내용은 1000자 이내로 작성해 주세요!</div>
+          ) : errors.textarea?.type === "required" ? (
+            <div className="text-red-600">내용은 최소 1자 이상 작성해 주세요.</div>
+          ) : (
+            <div></div>
+          )}
           <p className={textarea.length > 1000 ? "text-red-600" : "text-gray-400"}>
             내용 글자 수: {textarea.length} / 1000
           </p>

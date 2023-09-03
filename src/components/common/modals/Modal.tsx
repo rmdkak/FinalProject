@@ -16,6 +16,10 @@ interface Props {
   title?: string;
 }
 
+//
+// size, css 등은 추후 디자인이 나오면 바꾸겠습니다.
+//
+
 export const Modal = ({ children, title }: Props): JSX.Element => {
   const { modalState, onCloseModal } = useModalStore((state) => state);
 
@@ -25,9 +29,6 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
     return onCloseModal;
   }, []);
 
-  // 스크롤 막음
-  modalState ? (document.body.style.overflowY = "hidden") : (document.body.style.overflowY = "auto");
-
   //   modalState값이 false라면 빈태그를 반환
   if (!modalState) return <></>;
 
@@ -35,6 +36,11 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
   let titleBorder: string = "";
   const checkTypeGuard = typeof title === "string" && title !== "";
   if (checkTypeGuard) titleBorder = " border-b border-black";
+
+  // 이벤트버블링 문제 해결 함수
+  // const stopEventBubbleing = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
+  // e.stopPropagation();
+  // };
 
   return (
     <>
@@ -44,11 +50,11 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
         className="fixed top-0 bottom-0 left-0 right-0 block w-full h-full bg-[#00000040] z-[9998]"
       ></div>
       {/* 모달 */}
-      <div className="fixed z-[9999] rounded-[20px] top-[50%] left-[50%] p-10 bg-white  translate-x-[-50%] translate-y-[-50%]">
+      <div className="fixed z-[9999] top-[50%] left-[50%] p-10 bg-white  translate-x-[-50%] translate-y-[-50%]">
         {/* 모달 헤더 */}
         <div className={`flex items-center justify-between pb-3 mb-8 ${titleBorder}`}>
           <h2 className="font-semibold">{title}</h2>
-          <button className="" onClick={onCloseModal}>
+          <button onClick={onCloseModal}>
             <img src={closeBtn} alt="닫기 버튼" />
           </button>
         </div>

@@ -29,7 +29,8 @@ export const Service = () => {
   const { Alert, Confirm } = useDialog();
 
   const { onOpenModal } = useModalStore((state) => state);
-  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex } = useServiceStore((state) => state);
+  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex, resetWallpaperPaint, resetWallPaper, resetTile } =
+    useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
 
@@ -63,6 +64,17 @@ export const Service = () => {
     if (currentBookmarkData == null) return;
     setIsItemBookmarkedData(currentBookmarkData[0]);
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
+
+  useEffect(() => {
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
+    return () => {
+      resetWallPaper();
+      resetWallpaperPaint();
+      resetTile();
+    };
+  }, []);
 
   const addBookmark = async () => {
     if (currentSession === null) {
