@@ -24,7 +24,9 @@ export const fetchPostData = async () => {
 
 // post
 export const createPostHandler = async (postData: Tables<"POSTS", "Insert">) => {
-  await supabase.from("POSTS").insert(postData).select();
+  const { data, error } = await supabase.from("POSTS").insert(postData).select();
+  console.log("error :", error);
+  console.log("data :", data);
 };
 
 // post(D스토리지 저장)

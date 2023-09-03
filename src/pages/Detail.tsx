@@ -119,6 +119,7 @@ export const Detail = () => {
     try {
       const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
       if (checkDelete) deletePostMutation.mutate(id);
+      navigate("/community");
     } catch (error) {
       console.log("error :", error);
     }
