@@ -48,124 +48,21 @@ input:autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.flicking-arrow-prev,
-.flicking-arrow-next {
-  position: absolute;
-  top: 50%;
-  width: 44px !important;
-  height: 44px !important;
-  cursor: pointer;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  z-index: 2;
+.flicking-viewport {
+  padding-bottom: 64px !important;
 }
 
-.flicking-arrow-prev.is-circle,
-.flicking-arrow-next.is-circle {
-  background-color: #fff !important;
-  border-radius: 50%;
-}
-
-.flicking-arrow-disabled.is-circle {
-  background-color: rgb(10 10 10 / 10%);
-}
-
-.flicking-arrow-prev.is-circle::before,
-.flicking-arrow-prev.is-circle::after,
-.flicking-arrow-next.is-circle::before,
-.flicking-arrow-next.is-circle::after {
-  background-color: #e5e5e5 !important;
-}
-
-.flicking-arrow-prev {
-  left: 10px;
-}
-.flicking-arrow-next {
-  right: 10px;
-}
-
-.flicking-arrow-prev.is-outside {
-  left: -74px;
-}
-.flicking-arrow-next.is-outside {
-  right: -74px;
-}
-
-.flicking-arrow-prev::before,
-.flicking-arrow-prev::after,
-.flicking-arrow-next::before,
-.flicking-arrow-next::after {
-  content: "";
-  width: 20px !important;
+.flicking-pagination-bullet {
+  width: 256px !important;
   height: 2px !important;
-  position: absolute;
-  background-color: #f2a65e;
-}
-.flicking-arrow-prev::before {
-  top: 48% !important;
-  left: 12px !important;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  -webkit-transform-origin: 0% 50%;
-  -ms-transform-origin: 0% 50%;
-  transform-origin: 0% 50%;
-}
-.flicking-arrow-prev::after {
-  top: calc(50% - 2px) !important;
-  left: 12px !important;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  -webkit-transform-origin: 0% 50%;
-  -ms-transform-origin: 0% 50%;
-  transform-origin: 0% 50%;
-}
-.flicking-arrow-next::before {
-  top: 48% !important;
-  right: 12px !important;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-  -webkit-transform-origin: 100% 50%;
-  -ms-transform-origin: 100% 50%;
-  transform-origin: 100% 50%;
-}
-.flicking-arrow-next::after {
-  top: calc(50% - 2px) !important;
-  right: 12px !important;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  -webkit-transform-origin: 100% 50%;
-  -ms-transform-origin: 100% 50%;
-  transform-origin: 100% 50%;
+  margin: 0 !important;
+  border-radius: 0 !important;
 }
 
-.flicking-arrow-disabled,
-.flicking-arrow-disabled {
-  cursor: default;
+.flicking-pagination-bullet-active {
+  background-color: #1a1a1a !important;
 }
 
-.flicking-arrow-disabled::before,
-.flicking-arrow-disabled::after,
-.flicking-arrow-disabled::before,
-.flicking-arrow-disabled::after {
-  background-color: #e6e6e6;
-}
-
-.flicking-arrow-prev.is-thin::before,
-.flicking-arrow-prev.is-thin::after,
-.flicking-arrow-next.is-thin::before,
-.flicking-arrow-next.is-thin::after {
-  height: 3px;
-}
-
-.flicking-arrow-prev.is-thin::after,
-.flicking-arrow-next.is-thin::after {
-  top: calc(50% - 2px);
-}
 /* 영문폰트 */
 @font-face {
   font-family: "Red Hat Display";
