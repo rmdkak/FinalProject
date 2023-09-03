@@ -7,7 +7,8 @@ export const fetchComments = async (postId: string) => {
   const { data, error } = await supabase
     .from("COMMENTS")
     .select(`*,USERS (*),RECOMMENTS (*,USERS(*))`)
-    .eq("postId", postId);
+    .eq("postId", postId)
+    .order("created_at", { ascending: false });
   if (error !== null) {
     console.log("errorMessage", error);
     return;
@@ -27,11 +28,31 @@ export const saveCommentImageHandler = async ({ id, commentImgFile }: { id: stri
     upsert: false,
   });
 };
+// post(스토리지 삭제)
+export const deleteCommentImageHandler = async (currentImg: string) => {
+  currentImg.replace("/", "");
+  await supabase.storage.from("Images").remove([currentImg]);
+};
 
 // patch(comments)
-export const patchCommentsHandler = async (commentData: Tables<"COMMENTS", "Update">) => {
-  // 수정 로직 추가
-  console.log(commentData);
+export const patchCommentsHandler = async ({
+  commentId,
+  newComment,
+  newCommentImg,
+}: {
+  commentId: string;
+  newComment: string;
+  newCommentImg: string;
+}) => {
+  const { error } = await supabase
+    .from("COMMENTS")
+    .update({ content: newComment, commentImg: newCommentImg })
+    .eq("id", commentId)
+    .select();
+
+  if (error !== null) {
+    console.error(error);
+  }
 };
 
 // delete(comments)
@@ -41,13 +62,16 @@ export const deleteCommentHandler = async (commentId: string) => {
 
 // post(reply)
 export const createReplyHandler = async (replyData: Tables<"RECOMMENTS", "Insert">) => {
-  await supabase.from("RECOMMENTS").insert(replyData).select();
+  await supabase.from("RECOMMENTS").insert(replyData).select().order("created_at", { ascending: false });
 };
 
 // patch(reply)
-export const patchReplyHandler = async (replyData: Tables<"RECOMMENTS", "Update">) => {
-  // 수정 로직 추가
-  console.log(replyData);
+export const patchReplyHandler = async ({ replyId, newReply }: { replyId: string; newReply: string }) => {
+  const { error } = await supabase.from("RECOMMENTS").update({ content: newReply }).eq("id", replyId).select();
+
+  if (error !== null) {
+    console.error(error);
+  }
 };
 
 // delete(reply)
