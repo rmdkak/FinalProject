@@ -1,9 +1,14 @@
 import React, { useState } from "react";
+
+import tinycolor from "tinycolor2";
+
 interface Props {
   color: string;
 }
 
 export const ColorItem = ({ color }: Props): JSX.Element => {
+  const isColorLight = tinycolor(color).isLight();
+
   const [mouseHover, setMouseHover] = useState<boolean>(false);
   return (
     <>
@@ -17,7 +22,7 @@ export const ColorItem = ({ color }: Props): JSX.Element => {
           setMouseHover(false);
         }}
       >
-        {mouseHover && <p>{color}</p>}
+        {mouseHover && <p className={isColorLight ? "text-black" : "text-white"}>{color}</p>}
       </div>
     </>
   );
