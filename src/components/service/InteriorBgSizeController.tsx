@@ -2,8 +2,8 @@ import React from "react";
 
 import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/BgSizeMinusBtn.svg";
 import bgSizePlusControlBtn from "assets/BgSizeControlBtns/BgSizePlusBtn.svg";
-import BgSizeTileControlBtn from "assets/BgSizeControlBtns/BgSizeTileControlBtn.svg";
-import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/BgSizeWallpaperControlBtn.svg";
+import bgSizeTileControlBtn from "assets/BgSizeControlBtns/bgSizeTileControlBtn.svg";
+import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/bgSizeWallpaperControlBtn.svg";
 import { useServiceStore } from "store";
 
 export const InteriorBgSizeController = (): JSX.Element => {
@@ -39,7 +39,7 @@ export const InteriorBgSizeController = (): JSX.Element => {
           }}
           className={`flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060] ${SELECT_BG_TILE}`}
         >
-          <img className="w-[10px]" src={BgSizeTileControlBtn} alt="타일 이미지" />
+          <img className="w-[10px]" src={bgSizeTileControlBtn} alt="타일 이미지" />
         </button>
         {/* 크기 확대 버튼 */}
         <button
