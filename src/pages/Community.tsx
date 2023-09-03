@@ -26,8 +26,21 @@ export const Community = () => {
   const { data: postList } = fetchPostsMutation;
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
 
-  const isExistCombination = (post: Tables<"POSTS", "Row">) => {
-    return post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null;
+  const isExistCombination = (post: Tables<"POSTS", "Row">, type: "all" | "interior" | "paint") => {
+    switch (type) {
+      case "all":
+        return (
+          post.tileId !== null &&
+          post.leftWallpaperId !== null &&
+          post.rightWallpaperId !== null &&
+          post.leftColorCode !== null &&
+          post.rightColorCode !== null
+        );
+      case "interior":
+        return post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null;
+      case "paint":
+        return post.leftColorCode !== null && post.rightColorCode !== null;
+    }
   };
 
   useEffect(() => {
@@ -37,11 +50,11 @@ export const Community = () => {
           setFilteredPosts(postList);
           break;
         case "normal":
-          const filterd = postList?.filter((post) => !isExistCombination(post));
+          const filterd = postList?.filter((post) => !isExistCombination(post, "all"));
           setFilteredPosts(filterd);
           break;
         case "recommendation":
-          const filterdRecommendation = postList?.filter((post) => isExistCombination(post));
+          const filterdRecommendation = postList?.filter((post) => isExistCombination(post, "all"));
           setFilteredPosts(filterdRecommendation);
           break;
       }
@@ -97,10 +110,12 @@ export const Community = () => {
                   className={"rounded-[8px] w-full h-[400px] object-cover"}
                 />
               </div>
+
               <div className="w-full gap-2 mt-3 flex-column">
                 <div className="flex h-12">
                   <p className="text-[20px] my-auto font-semibold truncate w-1/2">{post.title}</p>
-                  {isExistCombination(post) && (
+
+                  {isExistCombination(post, "interior") && (
                     <div className="inline-flex w-1/2">
                       <img
                         src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
@@ -111,6 +126,27 @@ export const Community = () => {
                         src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
                         alt="벽지"
                         className="relative w-[48px] h-[48px] left-[66px] rounded-full"
+                      />
+                      <img
+                        src={`${storageUrl}/tile/${post.tileId as string}`}
+                        alt="바닥"
+                        className="relative w-[48px] h-[48px] left-[56px] rounded-full"
+                      />
+                    </div>
+                  )}
+                  {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
+                    <div className="inline-flex w-1/2">
+                      <div
+                        className="relative w-[48px] h-[48px] left-[76px] rounded-full"
+                        style={{
+                          backgroundColor: post.leftColorCode,
+                        }}
+                      />
+                      <div
+                        className="relative w-[48px] h-[48px] left-[66px] rounded-full"
+                        style={{
+                          backgroundColor: post.rightColorCode,
+                        }}
                       />
                       <img
                         src={`${storageUrl}/tile/${post.tileId as string}`}
@@ -176,7 +212,7 @@ export const Community = () => {
                         className="h-[124px] w-[124px] rounded-[8px] object-cover mr-auto"
                       />
                     )}
-                    {isExistCombination(post) && (
+                    {isExistCombination(post, "interior") && (
                       <div>
                         <img
                           src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
@@ -187,6 +223,27 @@ export const Community = () => {
                           src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
                           alt="벽지"
                           className="relative w-12 h-12 rounded-full"
+                        />
+                        <img
+                          src={`${storageUrl}/tile/${post.tileId as string}`}
+                          alt="바닥"
+                          className="w-12 h-12 rounded-full relative bottom-[10px]"
+                        />
+                      </div>
+                    )}
+                    {isExistCombination(post, "paint") && (
+                      <div>
+                        <div
+                          className="w-12 h-12 rounded-full relative top-[10px]"
+                          style={{
+                            backgroundColor: post.leftColorCode,
+                          }}
+                        />
+                        <div
+                          className="relative w-12 h-12 rounded-full"
+                          style={{
+                            backgroundColor: post.rightColorCode,
+                          }}
                         />
                         <img
                           src={`${storageUrl}/tile/${post.tileId as string}`}
