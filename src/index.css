@@ -207,7 +207,7 @@ body {
     @apply flex justify-between;
   }
   .home-section {
-    @apply gap-10 mx-20 mb-40 flex-column;
+    @apply gap-10 w-[1280px] flex-column;
   }
   .vanner-preview {
     @apply w-[800px] h-[450px] rounded-xl mx-5;
