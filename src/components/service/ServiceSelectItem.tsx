@@ -33,20 +33,20 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
   /**
    * 왼쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? "border-[#CD0D0D]" : "";
+  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? "border-[#454545]" : "";
   /**
    * 오른쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? "border-[#1DCFBF]" : "";
+  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? "border-[#101010]" : "";
   /**
    * 타일 클릭시 나오는 보더
    */
-  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? "border-[#3E16F1]" : "";
+  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? "border-[#74104e]" : "";
   /**
    * 왼쪽 벽지, 오른쪽 벽지가 같을경우나오는 보더
    */
   const CHECK_LEFT_RIGHT_BORDER =
-    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-[#E52689]" : "";
+    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-[#E41205]" : "";
   return (
     <>
       <li

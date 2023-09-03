@@ -61,15 +61,15 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
       filterDate(changeName);
       break;
     case CHECK_DATA[2]:
-      changeName = CHECK_DATA[2] === "마루" ? "paint" : "floor";
+      changeName = CHECK_DATA[2] === "마루" ? "tile" : "floor";
       filterDate(changeName);
       break;
     case CHECK_DATA[3]:
-      changeName = CHECK_DATA[3] === "데코타일" ? "tile" : "decorationtile";
+      changeName = CHECK_DATA[3] === "데코타일" ? "poserin" : "decorationtile";
       filterDate(changeName);
       break;
     case CHECK_DATA[4]:
-      changeName = CHECK_DATA[4] === "포세린" ? "poserin" : "poserin";
+      changeName = CHECK_DATA[4] === "포세린" ? "paint" : "poserin";
       filterDate(changeName);
       break;
     case CHECK_DATA[5]:
