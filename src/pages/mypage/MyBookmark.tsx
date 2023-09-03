@@ -9,6 +9,7 @@ import { useModalStore } from "store";
 
 export const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
   const { targetModal, setTargetModal, onOpenModal } = useModalStore();
 
   const filteredBookmarkIdsHandler = (selectId: string) => {
@@ -46,12 +47,12 @@ export const MyBookmark = () => {
     dataLength: userBookmarkData.length,
     postPerPage: 8,
   });
-  // 디브 전체 라벨로 감싸기
+
   return (
     <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
       <MypageTitle />
       <MypageSubTitle type="bookmark" />
-      {userBookmarkData.length === 0 ? (
+      {pageData.length === 0 ? (
         <EmptyData type="bookmark" />
       ) : (
         <ul className="flex flex-wrap gap-y-[64px] gap-x-[40px] w-full mt-[40px]">
@@ -62,24 +63,26 @@ export const MyBookmark = () => {
                 className="relative border border-gray05 rounded-[12px] w-[400px] gap-[16px] h-[200px]"
               >
                 {/* 체크박스 */}
-                <div className="absolute bg-white left-[16px] top-[16px] ">
-                  <input
-                    id={bookmark.id}
-                    type="checkbox"
-                    className="hidden"
-                    onChange={(event) => {
-                      onChange(event, bookmark.id);
-                    }}
-                  />
-                  <label htmlFor={bookmark.id}>
-                    {bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined ? (
-                      // FIXME 체크박스 흰배경있는 SVG 뽑아서 쓰기
-                      <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
-                    ) : (
-                      <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
-                    )}
-                  </label>
-                </div>
+                {isDeleteMode ? (
+                  <div className="absolute bg-white left-[16px] top-[16px] ">
+                    <input
+                      id={bookmark.id}
+                      type="checkbox"
+                      className="hidden"
+                      onChange={(event) => {
+                        onChange(event, bookmark.id);
+                      }}
+                    />
+                    <label htmlFor={bookmark.id}>
+                      {bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined ? (
+                        <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
+                      ) : (
+                        <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
+                      )}
+                    </label>
+                  </div>
+                ) : null}
+
                 {/* 조합 이미지 */}
                 <button
                   onMouseUp={() => {
@@ -105,7 +108,6 @@ export const MyBookmark = () => {
                 </button>
                 {targetModal === bookmark.id && (
                   <Modal title="">
-                    <p>벽타일 조합 컴포넌트</p>
                     <ShowRoom
                       leftWallpaperBg={createUrl("wallpaper", bookmark.leftWallpaperId)}
                       rightWallpaperBg={createUrl("wallpaper", bookmark.rightWallpaperId)}
@@ -119,10 +121,32 @@ export const MyBookmark = () => {
         </ul>
       )}
 
-      <div className="flex items-center justify-between w-full mt-[68px]">
-        <button onClick={deletePosts} className="w-[100px] h-[48px] border border-gray05 rounded-[8px]">
-          선택삭제
-        </button>
+      <div className="flex items-center w-full mt-[68px]">
+        {isDeleteMode ? (
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                setIsDeleteMode(false);
+                setBookmarkIdsToDelete([]);
+              }}
+              className="w-24 h-12 rounded-lg gray-outline-button body-3"
+            >
+              취소
+            </button>
+            <button onClick={deletePosts} className="w-24 h-12 rounded-lg point-button body-3">
+              선택삭제
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => {
+              setIsDeleteMode(true);
+            }}
+            className="w-24 h-12 rounded-lg gray-outline-button body-3"
+          >
+            편집
+          </button>
+        )}
       </div>
       {/* 페이지네이션 */}
       <div className="mt-[120px]">{showPageComponent}</div>

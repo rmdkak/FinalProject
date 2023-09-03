@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 import viewMore from "assets/viewMore.svg";
 import { PreviewBookmark, PreviewComment, PreviewLike, PreviewPost, MypageTitle } from "components";
 import { useAuth, useMypage } from "hooks";
+import { useAuthStore } from "store";
 
 const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 translate-y-[-50%]";
 
 export const Mypage = () => {
+  const { currentSession } = useAuthStore();
   const { currentUserResponse } = useAuth();
   const { data: currentUser, isLoading, isError } = currentUserResponse;
 
@@ -97,12 +99,14 @@ export const Mypage = () => {
           )}
           <div className="flex-column contents-center gap-[12px]">
             <p className="text-black dark:text-white text-[24px] font-normal leading-[145%]">{`${name}님`}</p>
-            <Link
-              to="/mypage/update"
-              className="border-[1px] px-[24px] border-gray05 rounded-[8px] text-[12px] font-normal leading-[150%]"
-            >
-              회원정보수정
-            </Link>
+            {currentSession?.user.app_metadata.provider === "email" && (
+              <Link
+                to="/mypage/update"
+                className="border-[1px] px-[24px] border-gray05 rounded-[8px] text-[12px] font-normal leading-[150%]"
+              >
+                회원정보수정
+              </Link>
+            )}
           </div>
         </div>
         {/* 카운트 박스 */}

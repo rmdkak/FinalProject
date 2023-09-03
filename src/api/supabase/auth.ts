@@ -198,8 +198,8 @@ export const uploadImage = async ({ file, userId }: { file: Blob; userId: string
  * @storagePath "Images/profileImg"
  * @method remove
  */
-export const deleteImage = async (userId: string) => {
-  const { error } = await supabase.storage.from(STORAGE).remove([`${PATH}${userId}`]);
+export const deleteImage = async (imgId: string) => {
+  const { error } = await supabase.storage.from(STORAGE).remove([`${PATH}${imgId}`]);
   if (error !== null) throw new Error(error.message);
 };
 

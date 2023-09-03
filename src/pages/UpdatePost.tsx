@@ -36,7 +36,7 @@ export const UpdatePost = () => {
   const titleValue = watch("title") ?? 0;
   const contentValue = watch("content") ?? 0;
   const { onOpenModal } = useModalStore();
-  const { wallPaper, tile } = useServiceStore();
+  const { wallPaper, tile, wallpaperPaint } = useServiceStore();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const postImgfile = data.file[0];
@@ -98,43 +98,62 @@ export const UpdatePost = () => {
           </p>
         </div>
         <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
-          {wallPaper.left.image !== null ? (
+          {/* 왼쪽 벽지 */}
+          {wallpaperPaint.left !== "" ? (
+            <div
+              className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
+              style={{ backgroundColor: wallpaperPaint.left }}
+            />
+          ) : wallPaper.left.image !== null ? (
             <img
               src={`${storageUrl}${wallPaper.left.image}`}
               alt="왼쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
+          ) : leftWallpaperId === null ? (
+            <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${leftWallpaperId as string}`}
+              src={`${storageUrl}/wallpaper/${leftWallpaperId}`}
               alt="왼쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
           )}
-          {wallPaper.right.image !== null ? (
+          {/* 오른쪽 벽지 */}
+          {wallpaperPaint.right !== "" ? (
+            <div
+              className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
+              style={{ backgroundColor: wallpaperPaint.right }}
+            />
+          ) : wallPaper.right.image !== null ? (
             <img
               src={`${storageUrl}${wallPaper.right.image}`}
               alt="오른쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
             />
+          ) : rightWallpaperId === null ? (
+            <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${rightWallpaperId as string}`}
+              src={`${storageUrl}/wallpaper/${rightWallpaperId}`}
               alt="오른쪽벽지"
-              className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
+              className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
           )}
+          {/* 타일 */}
           {tile.image !== null ? (
             <img
               src={`${storageUrl}${tile.image}`}
               alt="바닥재"
               className="w-[40px] h-[40px] rounded-full absolute right-[140px]"
             />
+          ) : tileId === null ? (
+            <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/tile/${tileId as string}`}
+              src={`${storageUrl}/wallpaper/${tileId}`}
               alt="바닥재"
-              className="w-[40px] h-[40px] rounded-full absolute right-[140px]"
+              className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
           )}
           <button

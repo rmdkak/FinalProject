@@ -63,6 +63,7 @@ export const Community = () => {
     dataLength: filteredData.length,
     postPerPage: 8,
   });
+  console.log("pageData :", pageData);
 
   return (
     <div className="w-[1600px] mx-auto mt-[40px]">
@@ -136,7 +137,7 @@ export const Community = () => {
             </div>
           </div>
           {pageData.map((post) => {
-            const bookmarkLength = post.POSTLIKES[0].userId.length;
+            const bookmarkLength = post.POSTLIKES.length === 0 ? 0 : post.POSTLIKES[0].userId.length;
             return (
               <div
                 key={post.id}
