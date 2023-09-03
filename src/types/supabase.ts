@@ -87,7 +87,7 @@ export interface Database {
           created_at: string;
           id: string;
           postId: string;
-          writtenId: string;
+          userId: string;
         };
         Insert: {
           commentImg?: string | null;
@@ -95,7 +95,7 @@ export interface Database {
           created_at?: string;
           id: string;
           postId: string;
-          writtenId: string;
+          userId: string;
         };
         Update: {
           commentImg?: string | null;
@@ -103,7 +103,7 @@ export interface Database {
           created_at?: string;
           id?: string;
           postId?: string;
-          writtenId?: string;
+          userId?: string;
         };
         Relationships: [
           {
@@ -113,8 +113,8 @@ export interface Database {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "COMMENTS_writtenId_fkey";
-            columns: ["writtenId"];
+            foreignKeyName: "COMMENTS_userId_fkey";
+            columns: ["userId"];
             referencedRelation: "USERS";
             referencedColumns: ["id"];
           },
@@ -227,21 +227,21 @@ export interface Database {
           content: string;
           created_at: string;
           id: string;
-          writtenId: string;
+          userId: string;
         };
         Insert: {
           commentId: string;
           content: string;
           created_at?: string;
           id?: string;
-          writtenId: string;
+          userId: string;
         };
         Update: {
           commentId?: string;
           content?: string;
           created_at?: string;
           id?: string;
-          writtenId?: string;
+          userId?: string;
         };
         Relationships: [
           {
@@ -251,8 +251,8 @@ export interface Database {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "RECOMMENTS_writtenId_fkey";
-            columns: ["writtenId"];
+            foreignKeyName: "RECOMMENTS_userId_fkey";
+            columns: ["userId"];
             referencedRelation: "USERS";
             referencedColumns: ["id"];
           },

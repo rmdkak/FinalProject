@@ -126,14 +126,14 @@ export const Detail = () => {
 
   return (
     // 상위 배너 영역
-    <div className="w-[1600px] mx-auto mt-[30px]">
+    <div className="w-[1280px] mx-auto mt-[30px]">
       <div className="items-center flex-column">
         <p className="font-medium text-[32px]">커뮤니티</p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
       <div className="contents-between border-b border-gray06 my-[10px] py-[20px] items-center">
-        <div className="w-[1200px] my-[10px]">
+        <div className="w-[1000px] my-[10px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
             {postData?.title}
           </label>
@@ -149,25 +149,25 @@ export const Detail = () => {
         </div>
         {postData?.tileId !== null && postData?.leftWallpaperId !== null && postData?.rightWallpaperId !== null && (
           <div className="flex gap-4">
-            <div className="relative left-[50px] z-[1]">
+            <div>
               <img
-                className="w-24 h-24 rounded-full bg-gray06"
+                className="w-16 h-16 rounded-full bg-gray06"
                 src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
                 alt="왼쪽 벽지"
               />
               <p className="text-[14px] text-center">좌측벽지</p>
             </div>
-            <div className="relative left-[25px] z-[2]">
+            <div>
               <img
-                className="w-24 h-24 rounded-full bg-gray06"
+                className="w-16 h-16 rounded-full bg-gray06"
                 src={`${storageUrl}/wallpaper/${postData?.rightWallpaperId}`}
                 alt="오른쪽 벽지"
               />
               <p className="text-[14px] text-center">우측벽지</p>
             </div>
-            <div className="z-[3]">
+            <div>
               <img
-                className="w-24 h-24 rounded-full bg-gray06"
+                className="w-16 h-16 rounded-full bg-gray06"
                 src={`${storageUrl}/tile/${postData?.tileId}`}
                 alt="바닥재"
               />

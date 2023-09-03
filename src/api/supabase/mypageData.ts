@@ -17,7 +17,7 @@ export const deletePostsData = async (postIdsToDelete: string[]) => {
 
 // MyComments Get
 export const fetchMyCommentsData = async (id: string) => {
-  const { data, error } = await supabase.from("COMMENTS").select(`*,POSTS (*)`).eq("writtenId", id);
+  const { data, error } = await supabase.from("COMMENTS").select(`*,POSTS (*)`).eq("userId", id);
   if (error != null) {
     console.error(error.message);
     return;
