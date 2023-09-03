@@ -5,11 +5,10 @@ import { FaRegHeart } from "react-icons/fa6";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { supabase, storageUrl } from "api/supabase";
+import { storageUrl } from "api/supabase";
 import { Comments, DateConvertor, useDialog } from "components";
 import { usePosts, usePostsLike } from "hooks";
 import { useAuthStore, useLikeStore } from "store";
-import { type Tables } from "types/supabase";
 
 export const Detail = () => {
   const { id: paramsId } = useParams();
@@ -17,11 +16,11 @@ export const Detail = () => {
   const { resetDetailPostId, setDetailPostId } = useLikeStore();
   const { currentSession } = useAuthStore();
   const { Confirm } = useDialog();
-  const [postData, setPostData] = useState<Tables<"POSTS", "Row">>();
   const [isHaveBookmark, setIsHaveBookmark] = useState(false);
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
   const { data: currentBookmarkData } = postLikeResponse;
-  const { fetchPostsMutation, deletePostMutation } = usePosts();
+  const { fetchPostsMutation, fetchDetailMutation, deletePostMutation } = usePosts();
+  const { data: postData } = fetchDetailMutation;
   const { data: postList } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
   let prevPage = "";
@@ -32,14 +31,6 @@ export const Detail = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data: postData } = await supabase.from("POSTS").select("*").eq("id", paramsId).single();
-      if (postData !== null) setPostData(postData);
-    };
-    fetchData().catch((error) => {
-      console.error("Error fetching data:", error.message);
-    });
-
     // useQuery에서 북마크 조회 할 아이디 값
     setDetailPostId(paramsId);
     return () => {
@@ -92,13 +83,16 @@ export const Detail = () => {
     deleteLikeMutation.mutate({ postId: paramsId, userId: deletedIds });
   };
 
-  const movePageHandler = (moveEvent: string) => {
+  const movePageHandler = (moveEvent: "back" | "community" | "update") => {
     switch (moveEvent) {
       case "back":
         navigate(-1);
         break;
       case "community":
         navigate("/community");
+        break;
+      case "update":
+        navigate(`/updatepost/${postData?.id}`);
         break;
     }
   };
@@ -125,7 +119,10 @@ export const Detail = () => {
   const deleteHandler = async (id: string) => {
     try {
       const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
-      if (checkDelete) deletePostMutation.mutate(id);
+      if (checkDelete) {
+        deletePostMutation.mutate(id);
+        navigate("/community");
+      }
     } catch (error) {
       console.log("error :", error);
     }
@@ -150,7 +147,7 @@ export const Detail = () => {
             <DateConvertor datetime={postData?.created_at as string} type="hourMinute" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
-              <p>좋아요: {postData?.bookmark}</p>
+              <p>좋아요: {postData?.POSTLIKES[0].userId.length}</p>
             </div>
           </div>
         </div>
@@ -212,7 +209,13 @@ export const Detail = () => {
             >
               삭제
             </button>
-            <button type="button" className="mr-2 bg-point w-[160px] h-[48px] rounded-[8px]">
+            <button
+              onClick={() => {
+                movePageHandler("update");
+              }}
+              type="button"
+              className="mr-2 bg-point w-[160px] h-[48px] rounded-[8px]"
+            >
               수정
             </button>
           </div>

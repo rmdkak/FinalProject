@@ -126,6 +126,9 @@ export const changeMetaAvatar = async (profileImgUrl: string) => {
   if (error !== null) throw new Error(error.message);
 };
 
+/**
+ * @Authentication updateUser
+ */
 export const changeMetaName = async (name: string) => {
   const { error } = await auth.updateUser({ data: { name } });
   if (error !== null) throw new Error(error.message);
@@ -141,21 +144,12 @@ export const deleteUser = async (userUid: string) => {
 
 /**
  * @table "USERS"
- * @method delete
- */
-export const deleteUserData = async (userId: string) => {
-  if (userId == null) return;
-  await supabase.from(TABLE).delete().eq("userId", userId);
-};
-
-/**
- * @table "USERS"
  * @method get
  */
-export const fetchUser = async (userUuid: string) => {
-  const { data, error } = await supabase.from(TABLE).select().eq("id", userUuid);
+export const fetchUser = async (userId: string) => {
+  const { data, error } = await supabase.from(TABLE).select().eq("id", userId).single();
   if (error !== null) throw new Error(error.message);
-  return data[0];
+  return data;
 };
 
 /**

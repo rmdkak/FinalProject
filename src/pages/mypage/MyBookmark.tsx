@@ -71,7 +71,7 @@ export const MyBookmark = () => {
                       onChange(event, bookmark.id);
                     }}
                   />
-                  <label className="" htmlFor={bookmark.id}>
+                  <label htmlFor={bookmark.id}>
                     {bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined ? (
                       // FIXME 체크박스 흰배경있는 SVG 뽑아서 쓰기
                       <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />

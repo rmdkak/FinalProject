@@ -20,14 +20,17 @@ export const PreviewBookmark = ({ bookmarkData }: Props) => {
           >
             <img
               src={`${storageUrl}/wallpaper/${bookmark.leftWallpaperId}`}
+              alt="왼쪽 벽지"
               className={`absolute translate-x-[-40%] translate-y-[-30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-blue-500`}
             />
             <img
               src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId}`}
+              alt="오른쪽 벽지"
               className={`absolute translate-x-[40%] translate-y-[-30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-blue-500`}
             />
             <img
               src={`${storageUrl}/tile/${bookmark.tileId}`}
+              alt="타일"
               className={`absolute translate-y-[30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-green-500`}
             />
           </li>
