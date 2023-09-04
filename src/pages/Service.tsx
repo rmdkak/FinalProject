@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useEffect, useState } from "react";
 import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";

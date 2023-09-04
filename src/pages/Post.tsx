@@ -201,7 +201,7 @@ export const Post = () => {
           </label>
           <input type="file" className="w-full text-[14px] focus:outline-none" {...register("file")} />
         </div>
-        <div className="contents-between mt-[40px]">
+        <div className="my-[60px] contents-between">
           <button
             type="button"
             className="w-[160px] h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"
