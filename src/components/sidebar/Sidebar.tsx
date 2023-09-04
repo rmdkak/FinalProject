@@ -1,7 +1,9 @@
 import React, { useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
+import { logout } from "api/supabase";
 import close from "assets/close.svg";
+import { useDialog } from "components/common";
 import { useAuthStore } from "store";
 
 interface Props {
@@ -10,7 +12,22 @@ interface Props {
 }
 
 export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
-  const { currentSession } = useAuthStore();
+  const navigate = useNavigate();
+  const { currentSession, setStayLoggedInStatus } = useAuthStore();
+  const { Alert } = useDialog();
+
+  // 로그아웃
+  const logoutHandler = async () => {
+    navigate("/");
+    try {
+      await logout();
+      setStayLoggedInStatus(false);
+      await Alert("로그아웃 되었습니다.");
+    } catch (error) {
+      await Alert("로그아웃 실패");
+      console.error(error);
+    }
+  };
 
   const closeSideBarHandler = useCallback((): void => {
     setIsOpen(false);
@@ -44,10 +61,13 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
               </>
             ) : (
               <>
-                <li className="cursor-pointer text-[#1a1a1a]">
+                <li className="mr-4 cursor-pointer text-[#1a1a1a]">
                   <Link onClick={closeSideBarHandler} to={"/mypage"}>
                     마이페이지
                   </Link>
+                </li>
+                <li onClick={logoutHandler} className="cursor-pointer text-[#1a1a1a]">
+                  로그아웃
                 </li>
               </>
             )}

@@ -2,7 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 interface Props {
-  dataList: any[];
+  dataList: any[] | undefined;
   type: "comment" | "post" | "like";
   isUseMypage?: boolean;
 }
@@ -46,7 +46,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
   // 시간 조건 필터링
   const timeFilteredData =
     dataList === undefined
-      ? undefined
+      ? []
       : dataList.filter((data) => {
           const dataDate = refactorDate(data.created_at);
 
@@ -58,23 +58,20 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
         });
 
   // 검색 조건 필터링
-  const filteredData =
-    timeFilteredData === undefined
-      ? undefined
-      : timeFilteredData.filter((data) => {
-          if (conditionWord === undefined) return data;
-          switch (type) {
-            case "post":
-              return data[category].includes(conditionWord);
-            case "comment":
-              if (category === "content") return data[category].includes(conditionWord);
-              else return data.POSTS[category].includes(conditionWord);
-            case "like":
-              return data.POSTS[category].includes(conditionWord);
-            default:
-              return data;
-          }
-        });
+  const filteredData = timeFilteredData.filter((data) => {
+    if (conditionWord === undefined) return data;
+    switch (type) {
+      case "post":
+        return data[category].includes(conditionWord);
+      case "comment":
+        if (category === "content") return data[category].includes(conditionWord);
+        else return data.POSTS[category].includes(conditionWord);
+      case "like":
+        return data.POSTS[category].includes(conditionWord);
+      default:
+        return data;
+    }
+  });
 
   const changMonthOption = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectMonth = Number(event.target.value);
@@ -109,32 +106,32 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           <select
             onChange={changMonthOption}
             name="month"
-            className="w-[100px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
+            className="w-[100px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
           >
             <option value={1}>1개월</option>
             <option value={3}>3개월</option>
             <option value={6}>6개월</option>
           </select>
-          <p className="flex contents-center w-[80px] h-[32px] px-[10px] py-auto border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]">
+          <p className="flex contents-center w-[80px] h-[32px] px-[10px] py-auto gray-outline-button rounded-[4px] text-gray02 body-4">
             직접설정
           </p>
           <input
             type="date"
             {...register("min")}
-            className="w-[120px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
+            className="w-[120px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
           />
           <p>-</p>
           <input
             type="date"
             {...register("max")}
-            className="w-[120px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
+            className="w-[120px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
           />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-[12px]">
           <select
             onChange={changeCategory}
             value={category}
-            className="w-[100px] h-[32px] px-[10px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
+            className="w-[100px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
           >
             <option value={"title"}>제목</option>
             {/* {type === "post" ? <option value={"title"}>제목</option> : <option value={"title"}>글 제목</option>} */}
@@ -150,14 +147,12 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           <input
             {...register("searchKeyword")}
             type="text"
-            className="w-[180px] h-[32px] px-2 border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
+            className="w-[180px] h-[32px] px-2 gray-outline-button rounded-[4px] text-gray02 body-4"
           />
-          <button className="w-[64px] h-[32px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]">
-            검색
-          </button>
+          <button className="w-[64px] h-[32px] gray-outline-button rounded-[4px] text-gray02 body-4">검색</button>
           <button
             onClick={resetFilter}
-            className="w-[64px] h-[32px] border border-gray05 rounded-[4px] text-gray02 text-[12px] font-normal leading-[150%]"
+            className="w-[64px] h-[32px] gray-outline-button rounded-[4px] text-gray02 body-4"
           >
             초기화
           </button>

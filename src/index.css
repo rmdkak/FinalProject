@@ -199,7 +199,7 @@ body {
     @apply bg-point border border-point hover:bg-[#FFFBF0] hover:border hover:border-point disabled:bg-white disabled:border disabled:border-black;
   }
   .gray-outline-button {
-    @apply bg-white border border-gray05 hover:border-black;
+    @apply text-gray03 bg-white border border-gray05 hover:border-black hover:text-black;
   }
   .gray-button-hover {
     @apply hover:border hover:border-black;

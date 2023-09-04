@@ -40,11 +40,9 @@ export const MyBookmark = () => {
     return `${storageUrl}/${type}/${interiorId}`;
   };
 
-  if (userBookmarkData === undefined) return <p>에러페이지</p>;
-
   const { pageData, showPageComponent } = usePagination({
     data: userBookmarkData,
-    dataLength: userBookmarkData.length,
+    dataLength: userBookmarkData === undefined ? 0 : userBookmarkData.length,
     postPerPage: 8,
   });
 

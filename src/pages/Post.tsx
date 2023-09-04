@@ -13,6 +13,17 @@ interface Inputs {
   textarea: string;
   file: FileList;
 }
+interface WallorTile {
+  image: string;
+  id: string;
+}
+interface SelectedData {
+  leftWall: WallorTile | null;
+  rightWall: WallorTile | null;
+  leftWallPaint: string | null;
+  rightWallPaint: string | null;
+  tile: WallorTile | null;
+}
 export const Post = () => {
   const { Alert } = useDialog();
   const { currentSession } = useAuthStore();
@@ -27,10 +38,36 @@ export const Post = () => {
     formState: { errors },
     watch,
   } = useForm<Inputs>();
+  const {
+    wallPaper,
+    tile,
+    wallpaperPaint,
+    resetWallPaper,
+    resetWallpaperPaint,
+    resetTile,
+    setWallPaper,
+    setWallpaperPaint,
+    setTile,
+  } = useServiceStore();
+
+  useEffect(() => {
+    const data: SelectedData | null =
+      localStorage.getItem("selectedData") !== null ? JSON.parse(localStorage.getItem("selectedData") ?? "") : null;
+    if (data !== null) {
+      if (data.leftWall !== null && data.rightWall !== null && data.tile !== null) {
+        setWallPaper(data.leftWall, "left");
+        setWallPaper(data.rightWall, "right");
+        setTile(data.tile);
+      } else if (data.leftWallPaint !== null && data.rightWallPaint !== null && data.tile !== null) {
+        setWallpaperPaint(data.leftWallPaint, "left");
+        setWallpaperPaint(data.rightWallPaint, "right");
+        setTile(data.tile);
+      }
+    }
+  }, []);
 
   const title = watch("title") ?? 0;
   const textarea = watch("textarea") ?? 0;
-  const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
 
   const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
   const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
@@ -45,7 +82,8 @@ export const Post = () => {
 
     if (
       (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
-      (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted)
+      (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted) ||
+      (tile.id === null && isNotInteriorSelected && isNotColorCodeSeleted)
     ) {
       const postData = {
         id: UUID,
@@ -83,6 +121,7 @@ export const Post = () => {
     resetWallPaper();
     resetWallpaperPaint();
     resetTile();
+    localStorage.removeItem("selectedData");
     navigate("/community");
   };
 

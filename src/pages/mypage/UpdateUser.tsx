@@ -51,13 +51,6 @@ export const UpdateUser = () => {
   const { currentUserResponse, patchUserMutation } = useAuth();
   const { data: currentUser, isLoading } = currentUserResponse;
 
-  if (currentUser === undefined) {
-    navigate("/");
-    return <p>에러페이지</p>;
-  }
-  const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
-  const prevProfileImg = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
-
   const {
     register,
     handleSubmit,
@@ -77,7 +70,6 @@ export const UpdateUser = () => {
     setPreviewProfileUrl(URL.createObjectURL(imgFile));
 
     const profileImg = `${storageUrl}/profileImg/${uid}`;
-    // FIXME 메타데이터 변경에 쿼리 사용이 효과 있는지 확인 안됨
     await deleteImage(prevProfileImg);
     patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
@@ -128,7 +120,7 @@ export const UpdateUser = () => {
             break;
           default:
             await Alert("Error");
-            console.log("newError : ", error.message);
+            console.error("newError : ", error.message);
             break;
         }
       });
@@ -154,6 +146,13 @@ export const UpdateUser = () => {
     await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
     await deleteImage(prevProfileImg);
   };
+
+  if (currentUser === undefined) {
+    navigate("/");
+    return <p>에러페이지</p>;
+  }
+  const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
+  const prevProfileImg = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
@@ -322,7 +321,7 @@ export const UpdateUser = () => {
             <div className="relative flex items-center justify-center gap-4">
               <button
                 type="button"
-                className="flex contents-center w-[192px] h-[48px] rounded-[8px] bg-white border border-gray05 text-[14px] font-normal leading-[130%]"
+                className="flex contents-center w-[192px] h-[48px] rounded-[8px] bg-white gray-outline-button body-3"
                 onClick={() => {
                   navigate(-1);
                 }}

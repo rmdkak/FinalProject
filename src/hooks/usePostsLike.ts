@@ -69,7 +69,7 @@ export const usePostsLike = () => {
     onError: (err, _, context) => {
       if (context === undefined) return;
       if (err !== null) {
-        console.log("err :", err);
+        console.error("err :", err);
         return queryClient.setQueryData(queryKey, context.backupLike);
       }
     },
