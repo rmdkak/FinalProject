@@ -56,6 +56,11 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
   const createCommentHandler = async (event: React.FormEvent) => {
     event.preventDefault();
 
+    if (content === "") {
+      await Alert("댓글은 1글자 이상 입력해주세요.");
+      return;
+    }
+
     const userId = currentSession?.user.id;
     const id = uuid();
     const commentImg = commentImgFile === null ? null : `/commentImg/${id}`;
@@ -94,7 +99,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
             autoResizeTextArea(e.target);
           }}
           placeholder={placeHolder}
-          className="w-full text-[20px] py-[12px] focus:outline-none"
+          className="w-full text-[20px] py-[12px] resize-none focus:outline-none"
           disabled={currentSession === null}
         />
         <div className="contents-between">

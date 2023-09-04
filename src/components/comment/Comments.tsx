@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { AiFillCloseCircle, AiOutlineCamera } from "react-icons/ai";
+import { AiOutlineCamera } from "react-icons/ai";
 import { PiArrowBendDownRightThin } from "react-icons/pi";
 import uuid from "react-uuid";
 
@@ -98,7 +98,7 @@ export const Comments = () => {
           return (
             <div key={comment.id}>
               <div className="flex py-5 border-b border-gray06 ">
-                <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px]" />
+                <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
                 <div className="flex flex-col justify-between w-full gap-2 ml-3">
                   <div className="flex items-center gap-2">
                     <p className="font-semibold">{comment.USERS?.name}</p>
@@ -134,13 +134,12 @@ export const Comments = () => {
                             : `${storageUrl}${comment.commentImg}`
                         }
                         className={`my-[20px] w-[300px] h-[250px] ${
-                          selectedId === comment.id ? "border border-black" : ""
+                          selectedId === comment.id ? "border border-gray03" : ""
                         }`}
                       />
                       {selectedId === comment.id && (
                         <>
                           <div className="relative">
-                            <AiFillCloseCircle className="absolute bottom-[260px] left-[285px] z-10 text-[25px] bg-gray03 text-white cursor-pointer rounded-full" />
                             <label htmlFor="inputImg">
                               <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute bottom-[20px] left-[305px]" />
                               <input type="file" id="inputImg" className="hidden" onChange={handleImageChange} />
@@ -227,7 +226,7 @@ export const Comments = () => {
                   <div key={reply.id} className="border-b border-[#E5E5E5]">
                     <div className="flex py-[15px]">
                       <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
-                      <img src={reply.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px]" />
+                      <img src={reply.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
                       <div className="flex flex-col w-full gap-1 ml-3">
                         <div className="flex gap-2">
                           <p className="font-semibold">{reply.USERS?.name}</p>

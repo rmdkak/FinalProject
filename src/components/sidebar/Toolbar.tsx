@@ -62,11 +62,11 @@ export const Toolbar = () => {
       </button>
       {scrollPercent <= 50 ? (
         <button className="w-12 h-12 border rounded-full border-gray05" onClick={scrollToBottom}>
-          <SlArrowDown className="w-[20px] h-[20px] mx-auto fill-gray01" />
+          <SlArrowDown className="w-6 h-6 mx-auto fill-gray01" />
         </button>
       ) : (
         <button className="w-12 h-12 border rounded-full border-gray05" onClick={scrollToTop}>
-          <SlArrowUp className="w-[20px] h-[20px] mx-auto fill-gray01" />
+          <SlArrowUp className="w-6 h-6 mx-auto fill-gray01" />
         </button>
       )}
     </div>

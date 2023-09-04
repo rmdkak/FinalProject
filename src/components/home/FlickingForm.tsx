@@ -44,7 +44,7 @@ export const FlickingForm = ({ post }: props) => {
             </div>
           )}
         </div>
-        <p className="text-[16px] text-[#888888] line-clamp-2 h-[46px]">{post.content}</p>
+        <p className="text-[16px] text-gray02 line-clamp-2 h-[46px]">{post.content}</p>
       </div>
     </div>
   );

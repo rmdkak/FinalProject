@@ -31,23 +31,22 @@ export const Post = () => {
   const title = watch("title") ?? 0;
   const textarea = watch("textarea") ?? 0;
   const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
-  console.log("wallpaperPaint :", wallpaperPaint);
+
+  const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
+  const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
+
+  const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
+  const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log("data :", data);
     const UUID = uuid();
     const postImgfile = data.file[0];
     const postImage = data.file[0] == null ? null : `/postImg/${UUID}`;
-    const isInteriorSelected = tile.id !== null && wallPaper.left.id !== null && wallpaperPaint.right !== null;
-    console.log("isInteriorSelected :", isInteriorSelected);
-    const isNotInteriorSelected = tile.id === null && wallPaper.left.id === null && wallpaperPaint.right === null;
-    console.log("isNotInteriorSelected :", isNotInteriorSelected);
-    const isColorCodeSeleted = wallpaperPaint.left !== "" && wallpaperPaint.right !== "";
-    console.log("isColorCodeSeleted :", isColorCodeSeleted);
-    const isNotColorCodeSeleted = wallpaperPaint.left === "" && wallpaperPaint.right === "";
-    console.log("isNotColorCodeSeleted :", isNotColorCodeSeleted);
 
-    if (isInteriorSelected || isNotInteriorSelected || isColorCodeSeleted || isNotColorCodeSeleted) {
+    if (
+      (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
+      (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted)
+    ) {
       const postData = {
         id: UUID,
         title: data.title,
@@ -71,10 +70,13 @@ export const Post = () => {
     } else {
       if (tile.id === null) {
         await Alert("타일이 선택되지 않았습니다.");
-      } else if (wallPaper.left.id === null && wallpaperPaint.left === null) {
-        await Alert("왼쪽 벽지가 선택되지 않았습니다.");
-      } else if (wallpaperPaint.right === null && wallpaperPaint.right === null) {
-        await Alert("오른쪽 벽지가 선택되지 않았습니다.");
+        return;
+      } else if (wallPaper.left.id === null && wallpaperPaint.left === "") {
+        await Alert(`왼쪽 벽이 선택되지 않았습니다.`);
+        return;
+      } else if (wallPaper.right.id === null && wallpaperPaint.right === "") {
+        await Alert(`오른쪽 벽이 선택되지 않았습니다.`);
+        return;
       }
       return;
     }
@@ -126,7 +128,7 @@ export const Post = () => {
           <p className={title.length > 100 ? "text-red-600" : "text-gray03"}>제목 글자 수: {title.length} / 100</p>
         </div>
         <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
-          {wallpaperPaint.left !== "" ? (
+          {wallpaperPaint.left !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
               style={{ backgroundColor: wallpaperPaint.left }}
@@ -140,7 +142,7 @@ export const Post = () => {
           ) : (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray01" />
           )}
-          {wallpaperPaint.right !== "" ? (
+          {wallpaperPaint.right !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
               style={{ backgroundColor: wallpaperPaint.right }}

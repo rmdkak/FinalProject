@@ -53,7 +53,7 @@ export const Service = () => {
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
 
-  const isWallPaperPaintSeleted = wallpaperPaint.left !== "" || wallpaperPaint.right !== "";
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
 
   const resetState = () => {
     resetWallPaper();
@@ -65,8 +65,8 @@ export const Service = () => {
   useEffect(() => {
     tile.image !== null ? setTileBg(`${STORAGE_URL}${tile.image}`) : setTileBg("");
     if (isWallPaperPaintSeleted) {
-      setRightWallPaperBg(wallpaperPaint.right);
-      setLeftWallPaperBg(wallpaperPaint.left);
+      setRightWallPaperBg(wallpaperPaint.right as string);
+      setLeftWallPaperBg(wallpaperPaint.left as string);
     } else {
       wallPaper.right.image !== null
         ? setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`)
@@ -212,7 +212,6 @@ export const Service = () => {
                   }}
                   className="floor"
                 ></div>
-                InteriorBgSizeController
               </div>
             </div>
             <div className="flex-column w-[600px] gap-10">

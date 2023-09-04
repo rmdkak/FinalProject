@@ -23,3 +23,16 @@ export const changePostLike = async ({ postId, userId }: Tables<"POSTLIKES", "In
     console.error(error);
   }
 };
+
+export const wholeChangePostLike = async ({
+  id,
+  likeState,
+  bookmark,
+}: {
+  id: string;
+  likeState: "delete" | "add";
+  bookmark: number;
+}) => {
+  const newLikes = likeState === "delete" ? bookmark - 1 : bookmark + 1;
+  await supabase.from("POSTS").update({ bookmark: newLikes }).eq("id", id);
+};
