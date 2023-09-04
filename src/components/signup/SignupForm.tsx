@@ -45,7 +45,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     setError,
     getValues,
     formState: { errors },
-  } = useForm<SignupInputs>({ mode: "all" });
+  } = useForm<SignupInputs>({ mode: "onSubmit" });
 
   useEffect(() => {
     const getUsers = async () => {
