@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
 import { savePostImageHandler, storageUrl } from "api/supabase";
-import { InteriorSection, Modal, useDialog } from "components";
+import { Button, InteriorSection, Modal, useDialog } from "components";
 import { usePosts } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -19,7 +19,7 @@ export const Post = () => {
   const userId = currentSession?.user.id;
   const nickname = currentSession?.user.user_metadata.name;
   const navigate = useNavigate();
-  const { onOpenModal } = useModalStore((state) => state);
+  const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   const { createPostMutation } = usePosts();
   const {
     register,
@@ -33,10 +33,10 @@ export const Post = () => {
   const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
 
   const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
-  const isNotColorCodeSeleted = wallpaperPaint.left === "" && wallpaperPaint.right === "";
+  const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
 
   const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
-  const isColorCodeSeleted = wallpaperPaint.left !== "" && wallpaperPaint.right !== "";
+  const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const UUID = uuid();
@@ -128,7 +128,7 @@ export const Post = () => {
           <p className={title.length > 100 ? "text-red-600" : "text-gray03"}>제목 글자 수: {title.length} / 100</p>
         </div>
         <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
-          {wallpaperPaint.left !== "" ? (
+          {wallpaperPaint.left !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
               style={{ backgroundColor: wallpaperPaint.left }}
@@ -142,7 +142,7 @@ export const Post = () => {
           ) : (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray01" />
           )}
-          {wallpaperPaint.right !== "" ? (
+          {wallpaperPaint.right !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
               style={{ backgroundColor: wallpaperPaint.right }}
@@ -154,7 +154,7 @@ export const Post = () => {
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
             />
           ) : (
-            <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray01" />
+            <div className="bg-gray07 w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray01" />
           )}
           {tile.image !== null ? (
             <img
@@ -163,7 +163,7 @@ export const Post = () => {
               className="w-[40px] h-[40px] rounded-full absolute right-[140px]"
             />
           ) : (
-            <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray01" />
+            <div className="bg-gray08 w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray01" />
           )}
           <button
             type="button"
@@ -176,6 +176,9 @@ export const Post = () => {
         <Modal title="인테리어 조합">
           <div className="gap-10 flex-column w-[528px]">
             <InteriorSection />
+            <div className="flex justify-end">
+              <Button onClick={onCloseModal}>확인</Button>
+            </div>
           </div>
         </Modal>
         <textarea
@@ -201,7 +204,7 @@ export const Post = () => {
           </label>
           <input type="file" className="w-full text-[14px] focus:outline-none" {...register("file")} />
         </div>
-        <div className="contents-between mt-[40px]">
+        <div className="my-[60px] contents-between">
           <button
             type="button"
             className="w-[160px] h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"

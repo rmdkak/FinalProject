@@ -185,6 +185,39 @@ export const Detail = () => {
             </div>
           </div>
         )}
+        {postData?.leftColorCode !== null &&
+          postData?.leftColorCode !== undefined &&
+          postData?.rightColorCode !== null &&
+          postData?.rightColorCode !== undefined && (
+            <div className="flex gap-4">
+              <div>
+                <div
+                  className="w-16 h-16 rounded-full bg-gray06"
+                  style={{
+                    backgroundColor: postData.leftColorCode,
+                  }}
+                />
+                <p className="text-[14px] text-center">좌측벽지</p>
+              </div>
+              <div>
+                <div
+                  className="w-16 h-16 rounded-full bg-gray06"
+                  style={{
+                    backgroundColor: postData.rightColorCode,
+                  }}
+                />
+                <p className="text-[14px] text-center">우측벽지</p>
+              </div>
+              <div>
+                <img
+                  className="w-16 h-16 rounded-full bg-gray06"
+                  src={`${storageUrl}/tile/${postData?.tileId}`}
+                  alt="바닥재"
+                />
+                <p className="text-[14px] text-center">바닥재</p>
+              </div>
+            </div>
+          )}
       </div>
       {/* 컨텐츠 영역 */}
       <div className="flex-column gap-5 my-[60px]">

@@ -1,3 +1,5 @@
+import thumnail1 from "assets/thumbnail1.png";
+import thumnail2 from "assets/thumbnail2.png";
 import { FlickingForm, HomeContentsTitle, HomeKvBanner } from "components/home";
 import { usePosts } from "hooks";
 
@@ -9,7 +11,7 @@ export const Home = () => {
 
   const testArr = [1, 2, 3, 4, 5, 6, 7, 8];
   return (
-    <div className="items-center flex-column gap-[120px] mt-20">
+    <div className="items-center flex-column gap-[120px] mt-16">
       <div className="flex w-full">
         <div className="flex-column w-[30%] min-w-[560px] mx-[5%] mb-20 mt-[100px]">
           <div className="mx-auto my-auto">
@@ -49,22 +51,22 @@ export const Home = () => {
         <HomeContentsTitle title={"EVENT"} page={"event"} />
         <div className="flex gap-10">
           <div className="w-full gap-6 flex-column">
-            <div className="h-[400px] bg-gray-200 rounded-xl"></div>
+            <img src={thumnail1} alt="thumnail" className="h-[400px] rounded-xl object-contain"></img>
             <div className="gap-2 flex-column">
-              <h2 className="text-2xl">이벤트 배너 영역</h2>
-              <p> 서브타이틀 영억 {`(날짜 및 설명글)`}</p>
+              <h2 className="text-2xl font-medium">홈 & 리빙 페스티벌</h2>
+              <p className="text-gray02">가을 분위기로 변신할 수 있는 기회! 홈&리빙 페스티벌을 즐겨보세요</p>
             </div>
           </div>
           <div className="w-full gap-6 flex-column">
-            <div className="h-[400px] bg-gray-200 rounded-xl"></div>
+            <img src={thumnail2} alt="thumnail" className="h-[400px] rounded-xl object-contain"></img>
             <div className="gap-2 flex-column">
-              <h2 className="text-2xl">이벤트 배너 영역</h2>
-              <p> 서브타이틀 영억 {`(날짜 및 설명글)`}</p>
+              <h2 className="text-2xl font-medium">요즘 뜨는 신상 아이템</h2>
+              <p className="text-gray02">최신 유행하는 신상 아이템을 바로 확인해보세요!</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="home-section">
+      <div className="mb-20 home-section">
         <HomeContentsTitle title={"COMMUNITY"} page={"community"} />
         <div className="flex w-full gap-10">
           {filterdPostList?.map((post) => (
