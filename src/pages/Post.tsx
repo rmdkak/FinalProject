@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
 import { savePostImageHandler, storageUrl } from "api/supabase";
-import { InteriorSection, Modal, useDialog } from "components";
+import { Button, InteriorSection, Modal, useDialog } from "components";
 import { usePosts } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -19,7 +19,7 @@ export const Post = () => {
   const userId = currentSession?.user.id;
   const nickname = currentSession?.user.user_metadata.name;
   const navigate = useNavigate();
-  const { onOpenModal } = useModalStore((state) => state);
+  const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   const { createPostMutation } = usePosts();
   const {
     register,
@@ -154,7 +154,7 @@ export const Post = () => {
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
             />
           ) : (
-            <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray01" />
+            <div className="bg-gray07 w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray01" />
           )}
           {tile.image !== null ? (
             <img
@@ -163,7 +163,7 @@ export const Post = () => {
               className="w-[40px] h-[40px] rounded-full absolute right-[140px]"
             />
           ) : (
-            <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray01" />
+            <div className="bg-gray08 w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray01" />
           )}
           <button
             type="button"
@@ -176,6 +176,9 @@ export const Post = () => {
         <Modal title="인테리어 조합">
           <div className="gap-10 flex-column w-[528px]">
             <InteriorSection />
+            <div className="flex justify-end">
+              <Button onClick={onCloseModal}>확인</Button>
+            </div>
           </div>
         </Modal>
         <textarea
