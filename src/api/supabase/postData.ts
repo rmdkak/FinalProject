@@ -34,18 +34,15 @@ export const createPostHandler = async (postData: Tables<"POSTS", "Insert">) => 
 };
 
 // post(D스토리지 저장)
-export const savePostImageHandler = async ({ UUID, postImgfile }: { UUID: string; postImgfile: Blob }) => {
-  await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImgfile, {
+export const savePostImageHandler = async ({ UUID, postImgFile }: { UUID: string; postImgFile: Blob }) => {
+  await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImgFile, {
     cacheControl: "3600",
     upsert: false,
   });
 };
 
-export const updatePostImageHandler = async ({ UUID, postImgfile }: { UUID: string; postImgfile: Blob }) => {
-  await supabase.storage.from("Images").update(`postImg/${UUID}`, postImgfile, {
-    cacheControl: "3600",
-    upsert: false,
-  });
+export const deletePostImage = async (UUID: string) => {
+  await supabase.storage.from("Images").remove([`postImg/${UUID}`]);
 };
 
 // patch

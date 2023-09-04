@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 import { PiArrowBendDownRightThin } from "react-icons/pi";
 import uuid from "react-uuid";
@@ -21,7 +21,6 @@ export const Comments = () => {
   const [selectedCommentImgFile, setSelectedCommentImgFile] = useState<File | null>(null);
 
   const { Confirm, Alert } = useDialog();
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { fetchCommentsMutation } = useComments();
   const { data: commentsData } = fetchCommentsMutation;
@@ -74,9 +73,6 @@ export const Comments = () => {
     setSelectedId(id);
     setNewComment(content);
     if (commentImg !== null && commentImg !== undefined) setCurrentImg(commentImg);
-    if (textareaRef.current !== null) {
-      textareaRef.current.focus();
-    }
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -111,14 +107,13 @@ export const Comments = () => {
                   {selectedId === comment.id ? (
                     <textarea
                       autoFocus={selectedId === comment.id}
-                      ref={textareaRef}
                       rows={3}
                       maxLength={500}
                       defaultValue={comment.content}
                       onChange={(e) => {
                         autoResizeTextArea(e.target);
                       }}
-                      className="p-1 rounded-[4px] border border-black text-[14px] outline-none"
+                      className="p-1 rounded-[4px] border border-black text-[14px] outline-none resize-none"
                     />
                   ) : (
                     <p className="text-[14px]">{comment.content}</p>
@@ -138,14 +133,12 @@ export const Comments = () => {
                         }`}
                       />
                       {selectedId === comment.id && (
-                        <>
-                          <div className="relative">
-                            <label htmlFor="inputImg">
-                              <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute bottom-[20px] left-[305px]" />
-                              <input type="file" id="inputImg" className="hidden" onChange={handleImageChange} />
-                            </label>
-                          </div>
-                        </>
+                        <div className="relative">
+                          <label htmlFor="inputImg">
+                            <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute bottom-[20px] left-[305px]" />
+                            <input type="file" id="inputImg" className="hidden" onChange={handleImageChange} />
+                          </label>
+                        </div>
                       )}
                     </>
                   )}
@@ -239,14 +232,13 @@ export const Comments = () => {
                         {selectedId === reply.id ? (
                           <textarea
                             autoFocus={selectedId === reply.id}
-                            ref={textareaRef}
                             rows={3}
                             maxLength={500}
                             defaultValue={reply.content}
                             onChange={(e) => {
                               autoResizeTextArea(e.target);
                             }}
-                            className="p-1 rounded-[4px] border border-black text-[14px] outline-none"
+                            className="p-1 rounded-[4px] border border-black text-[14px] outline-none resize-none"
                           />
                         ) : (
                           <p className="text-[14px]">{reply.content}</p>
