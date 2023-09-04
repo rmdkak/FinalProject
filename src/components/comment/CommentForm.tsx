@@ -99,7 +99,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
             autoResizeTextArea(e.target);
           }}
           placeholder={placeHolder}
-          className="w-full text-[20px] py-[12px] focus:outline-none"
+          className="w-full text-[20px] py-[12px] resize-none focus:outline-none"
           disabled={currentSession === null}
         />
         <div className="contents-between">

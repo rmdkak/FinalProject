@@ -33,10 +33,10 @@ export const Post = () => {
   const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
 
   const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
-  const isNotColorCodeSeleted = wallpaperPaint.left === "" && wallpaperPaint.right === "";
+  const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
 
   const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
-  const isColorCodeSeleted = wallpaperPaint.left !== "" && wallpaperPaint.right !== "";
+  const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const UUID = uuid();
@@ -128,7 +128,7 @@ export const Post = () => {
           <p className={title.length > 100 ? "text-red-600" : "text-gray03"}>제목 글자 수: {title.length} / 100</p>
         </div>
         <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
-          {wallpaperPaint.left !== "" ? (
+          {wallpaperPaint.left !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
               style={{ backgroundColor: wallpaperPaint.left }}
@@ -142,7 +142,7 @@ export const Post = () => {
           ) : (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray01" />
           )}
-          {wallpaperPaint.right !== "" ? (
+          {wallpaperPaint.right !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
               style={{ backgroundColor: wallpaperPaint.right }}

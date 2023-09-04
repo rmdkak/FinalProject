@@ -42,8 +42,11 @@ export const UpdatePost = () => {
     const postImgfile = data.file[0];
     const postImage = postImgfile == null ? null : `/postImg/${id}`;
 
-    const isInteriorSelected = tile.id !== null && wallPaper.left.id !== null && wallPaper.right.id !== null;
-    const isNotInteriorSelected = tile.id === null && wallPaper.left.id === null && wallPaper.right.id === null;
+    const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
+    const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
+
+    const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
+    const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
 
     const updateData = {
       id,
@@ -56,7 +59,10 @@ export const UpdatePost = () => {
       rightWallpaperId: wallPaper.right.id,
     };
 
-    if (isInteriorSelected || isNotInteriorSelected) {
+    if (
+      (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
+      (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted)
+    ) {
       try {
         await updatePostImageHandler({ UUID: id, postImgfile });
         updatePostMutation.mutate(updateData);
@@ -99,7 +105,7 @@ export const UpdatePost = () => {
         </div>
         <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
           {/* 왼쪽 벽지 */}
-          {wallpaperPaint.left !== "" ? (
+          {wallpaperPaint.left !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
               style={{ backgroundColor: wallpaperPaint.left }}
@@ -120,7 +126,7 @@ export const UpdatePost = () => {
             />
           )}
           {/* 오른쪽 벽지 */}
-          {wallpaperPaint.right !== "" ? (
+          {wallpaperPaint.right !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
               style={{ backgroundColor: wallpaperPaint.right }}

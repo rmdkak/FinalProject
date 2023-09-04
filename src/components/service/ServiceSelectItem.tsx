@@ -34,7 +34,6 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
       setTile(selectItem);
     }
   };
-
   /**
    * 왼쪽 벽지 클릭시 나오는 보더
    */
