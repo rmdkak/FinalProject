@@ -73,7 +73,12 @@ export const MyLike = () => {
                   {post.title}
                 </Link>
                 <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />
-                <button className="w-[80px] h-[32px] border border-gray05 rounded-[8px] px-[24px]">수정</button>
+                <Link
+                  to={`/detail/${post.id as string}`}
+                  className="flex contents-center w-[80px] h-8 gray-outline-button rounded-lg"
+                >
+                  수정
+                </Link>
               </li>
             );
           })}

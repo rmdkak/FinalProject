@@ -98,7 +98,7 @@ export const Mypage = () => {
             />
           )}
           <div className="flex-column contents-center gap-[12px]">
-            <p className="text-black dark:text-white text-[24px] font-normal leading-[145%]">{`${name}님`}</p>
+            <p className="text-black text-[24px] font-normal leading-[145%]">{`${name}님`}</p>
             {currentSession?.user.app_metadata.provider === "email" && (
               <Link
                 to="/mypage/update"
