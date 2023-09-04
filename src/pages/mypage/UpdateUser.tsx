@@ -180,7 +180,7 @@ export const UpdateUser = () => {
                 type="file"
                 accept="image/*"
                 onChange={changeProfileImgHandler}
-                style={{ display: "none" }}
+                className="hidden"
               />
               <div className="h-[8px] bg-gray06 border" />
               <img src={xmark} onClick={resetImgFile} className="w-[16px] h-[16px] cursor-pointer" />

@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import uuid from "react-uuid";
 
-import { storageUrl, updatePostImageHandler } from "api/supabase";
+import { deletePostImage, savePostImageHandler, storageUrl } from "api/supabase";
 import { InteriorSection, InvalidText, Modal } from "components";
 import { usePosts } from "hooks";
 import { useModalStore, useServiceStore } from "store";
@@ -19,9 +20,10 @@ export const UpdatePost = () => {
   const { fetchDetailMutation, updatePostMutation } = usePosts();
   const { data: postData } = fetchDetailMutation;
 
-  if (postData === undefined) {
-    return <p>데이터를 불러올 수 없습니다.</p>;
-  }
+  const [previewImg, setPreviewImg] = useState<string | null>(null);
+
+  if (postData === undefined) return <p>데이터를 불러올 수 없습니다.</p>;
+  if (postData.postImage === null) return <p>데이터를 불러올 수 없습니다.</p>;
 
   const { id, title, content, tileId, leftWallpaperId, rightWallpaperId } = postData;
 
@@ -39,8 +41,9 @@ export const UpdatePost = () => {
   const { wallPaper, tile, wallpaperPaint } = useServiceStore();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const postImgfile = data.file[0];
-    const postImage = postImgfile == null ? null : `/postImg/${id}`;
+    const postImgFile = data.file[0];
+    const fileUuid = uuid();
+    const postImage = postImgFile === undefined ? postData.postImage : `/postImg/${fileUuid}`;
 
     const isInteriorSelected = tile.id !== null && wallPaper.left.id !== null && wallPaper.right.id !== null;
     const isNotInteriorSelected = tile.id === null && wallPaper.left.id === null && wallPaper.right.id === null;
@@ -50,7 +53,6 @@ export const UpdatePost = () => {
       title: data.title,
       content: data.content,
       postImage,
-      bookmark: 0,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
@@ -58,7 +60,12 @@ export const UpdatePost = () => {
 
     if (isInteriorSelected || isNotInteriorSelected) {
       try {
-        await updatePostImageHandler({ UUID: id, postImgfile });
+        if (postData.postImage !== null) {
+          await deletePostImage(postData.postImage);
+        }
+        if (postImgFile !== null) {
+          await savePostImageHandler({ UUID: fileUuid, postImgFile });
+        }
         updatePostMutation.mutate(updateData);
         navigate(-1);
       } catch (error) {
@@ -171,7 +178,7 @@ export const UpdatePost = () => {
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="h-[449px] border-[1px] border-[#a7a7a7] focus:outline-none p-[20px] text-[25px]"
+          className="h-[449px] border-[1px] border-[#a7a7a7] focus:outline-none p-[20px] text-[25px] resize-none"
           {...register("content", {
             required: "내용을 입력해주세요.",
             maxLength: { value: 1000, message: "내용은 1000자 이내로 작성해 주세요!" },
@@ -183,11 +190,27 @@ export const UpdatePost = () => {
             내용 글자 수: {contentValue.length ?? 0} / 1000
           </p>
         </div>
+        {previewImg === null ? (
+          postData?.postImage === null ? null : (
+            <img src={`${storageUrl}${postData?.postImage}`} alt="포스트 이미지" className="w-[320px] object-contain" />
+          )
+        ) : (
+          <img src={previewImg} alt="미리보기 이미지" className="w-[320px] object-contain" />
+        )}
         <div className="flex w-full border-y border-gray06 h-[72px] justify-center items-center mt-[20px]">
           <label htmlFor="img" className="w-[128px] text-[14px] font-normal">
             첨부파일
           </label>
-          <input type="file" className="w-full text-[14px] focus:outline-none" {...register("file")} />
+          <input
+            type="file"
+            accept="image/*"
+            className="w-full text-[14px] focus:outline-none"
+            {...register("file", {
+              onChange: (event) => {
+                setPreviewImg(URL.createObjectURL(event.target.files[0]));
+              },
+            })}
+          />
         </div>
         <div className="contents-between mt-[40px]">
           <button

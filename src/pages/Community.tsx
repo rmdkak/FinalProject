@@ -68,7 +68,10 @@ export const Community = () => {
     postPerPage: 8,
   });
 
-  const flickingPostList = postList?.filter((_, idx) => idx < 5).sort((a, b) => b.bookmark - a.bookmark);
+  if (postList === undefined) return <p>에러 페이지</p>;
+
+  const newPostList = [...postList];
+  const flickingPostList = newPostList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 5);
 
   return (
     <div className="flex-column w-[1280px] mx-auto mt-20 gap-10">

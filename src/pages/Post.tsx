@@ -40,7 +40,7 @@ export const Post = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const UUID = uuid();
-    const postImgfile = data.file[0];
+    const postImgFile = data.file[0];
     const postImage = data.file[0] == null ? null : `/postImg/${UUID}`;
 
     if (
@@ -62,7 +62,7 @@ export const Post = () => {
         rightColorCode: wallpaperPaint.right,
       };
       try {
-        await savePostImageHandler({ UUID, postImgfile });
+        await savePostImageHandler({ UUID, postImgFile });
         createPostMutation.mutate(postData);
       } catch (error) {
         console.log("error", error);
@@ -180,7 +180,7 @@ export const Post = () => {
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="h-[449px] border-[1px] border-[#a7a7a7] focus:outline-none p-[20px] text-[25px]"
+          className="h-[449px] border-[1px] border-[#a7a7a7] focus:outline-none p-[20px] text-[25px] resize-none"
           {...register("textarea", { required: true, maxLength: 1000 })}
         />
         <div className="mt-2 contents-between">
