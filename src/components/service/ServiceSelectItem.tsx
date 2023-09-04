@@ -47,9 +47,6 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
    * 타일 클릭시 나오는 보더
    */
   const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `4px solid ${SELECT_BORDER_COLOR}` : "";
-  /**
-   * 왼쪽 벽지, 오른쪽 벽지가 같을경우나오는 보더
-   */
 
   return (
     <>
