@@ -78,7 +78,7 @@ export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps
     if (number === currentPage) {
       return "text-gray-700";
     } else {
-      return "text-[#e6e6e689]";
+      return "text-gray05";
     }
   };
 

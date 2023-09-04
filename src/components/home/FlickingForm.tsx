@@ -1,20 +1,27 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { storageUrl } from "api/supabase";
 import noImage from "assets/no_image.png";
 import { type Tables } from "types/supabase";
-
 interface props {
   post: Tables<"POSTS", "Row">;
 }
 export const FlickingForm = ({ post }: props) => {
+  const navigate = useNavigate();
+
   const isExistCombination = (post: Tables<"POSTS", "Row">) => {
     return post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null;
   };
 
   return (
-    <div className="w-[400px] flex-column ">
-      <div className="">
+    <div
+      className="w-[400px] flex-column cursor-pointer"
+      onClick={() => {
+        navigate(`/detail/${post.id}`);
+      }}
+    >
+      <div>
         <img
           src={post.postImage != null ? `${storageUrl}${post.postImage}` : noImage}
           alt="postImg"

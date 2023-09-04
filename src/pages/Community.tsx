@@ -81,7 +81,10 @@ export const Community = () => {
     postPerPage: 8,
   });
 
-  const flickingPostList = postList?.filter((_, idx) => idx < 5).sort((a, b) => b.bookmark - a.bookmark);
+  if (postList === undefined) return <p>에러 페이지</p>;
+
+  const newPostList = [...postList];
+  const flickingPostList = newPostList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 5);
 
   return (
     <div className="flex-column w-[1280px] mx-auto mt-20 gap-10">
@@ -187,72 +190,70 @@ export const Community = () => {
             return (
               <div
                 key={post.id}
-                className="flex gap-4 py-8 border-b border-gray-200 cursor-pointer"
+                className="flex justify-between gap-4 py-8 ml-3 border-b border-gray-200 cursor-pointer"
                 onClick={() => {
                   goDetailPage(post.id);
                 }}
               >
-                <div className="flex items-center gap-4 ml-3">
-                  <div className="flex-column w-[1028px] gap-8">
-                    <div className="gap-4 flex-column">
-                      <p className="text-[18px] font-semibold truncate">{post.title}</p>
-                      <p className="text-[16px] h-[52px] overflow-hidden text-[#888888]">{post.content}</p>
-                    </div>
-                    <div className="flex text-[#888888] text-[12px] gap-2">
-                      <p>{post.nickname}</p>
-                      <DateConvertor datetime={post.created_at} type="dotDate" />
-                      <DateConvertor datetime={post.created_at} type={"hourMinute"} />
-                      <p>좋아요 {post.bookmark}</p>
-                    </div>
+                <div className="flex-column w-[1028px] gap-8">
+                  <div className="gap-4 flex-column">
+                    <p className="text-[18px] font-semibold truncate">{post.title}</p>
+                    <p className="text-[16px] h-[52px] overflow-hidden text-[#888888]">{post.content}</p>
                   </div>
-                  <div className="flex items-center justify-end gap-4 w-[188px]">
-                    {post.postImage !== null && (
+                  <div className="flex text-[#888888] text-[12px] gap-2">
+                    <p>{post.nickname}</p>
+                    <DateConvertor datetime={post.created_at} type="dotDate" />
+                    <DateConvertor datetime={post.created_at} type={"hourMinute"} />
+                    <p>좋아요 {post.bookmark}</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end gap-4">
+                  {post.postImage !== null && (
+                    <img
+                      src={`${storageUrl}${post.postImage as string}`}
+                      className="h-[124px] w-[124px] rounded-[8px] object-cover mr-auto"
+                    />
+                  )}
+                  {isExistCombination(post, "interior") && (
+                    <div>
                       <img
-                        src={`${storageUrl}${post.postImage as string}`}
-                        className="h-[124px] w-[124px] rounded-[8px] object-cover mr-auto"
+                        src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
+                        alt="벽지"
+                        className="w-12 h-12 rounded-full relative top-[10px]"
                       />
-                    )}
-                    {isExistCombination(post, "interior") && (
-                      <div>
-                        <img
-                          src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
-                          alt="벽지"
-                          className="w-12 h-12 rounded-full relative top-[10px]"
-                        />
-                        <img
-                          src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
-                          alt="벽지"
-                          className="relative w-12 h-12 rounded-full"
-                        />
-                        <img
-                          src={`${storageUrl}/tile/${post.tileId as string}`}
-                          alt="바닥"
-                          className="w-12 h-12 rounded-full relative bottom-[10px]"
-                        />
-                      </div>
-                    )}
-                    {isExistCombination(post, "paint") && (
-                      <div>
-                        <div
-                          className="w-12 h-12 rounded-full relative top-[10px]"
-                          style={{
-                            backgroundColor: post.leftColorCode,
-                          }}
-                        />
-                        <div
-                          className="relative w-12 h-12 rounded-full"
-                          style={{
-                            backgroundColor: post.rightColorCode,
-                          }}
-                        />
-                        <img
-                          src={`${storageUrl}/tile/${post.tileId as string}`}
-                          alt="바닥"
-                          className="w-12 h-12 rounded-full relative bottom-[10px]"
-                        />
-                      </div>
-                    )}
-                  </div>
+                      <img
+                        src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
+                        alt="벽지"
+                        className="relative w-12 h-12 rounded-full"
+                      />
+                      <img
+                        src={`${storageUrl}/tile/${post.tileId as string}`}
+                        alt="바닥"
+                        className="w-12 h-12 rounded-full relative bottom-[10px]"
+                      />
+                    </div>
+                  )}
+                  {isExistCombination(post, "paint") && (
+                    <div>
+                      <div
+                        className="w-12 h-12 rounded-full relative top-[10px]"
+                        style={{
+                          backgroundColor: post.leftColorCode,
+                        }}
+                      />
+                      <div
+                        className="relative w-12 h-12 rounded-full"
+                        style={{
+                          backgroundColor: post.rightColorCode,
+                        }}
+                      />
+                      <img
+                        src={`${storageUrl}/tile/${post.tileId as string}`}
+                        alt="바닥"
+                        className="w-12 h-12 rounded-full relative bottom-[10px]"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             );

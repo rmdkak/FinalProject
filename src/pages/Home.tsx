@@ -64,7 +64,7 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      <div className="home-section">
+      <div className="mb-20 home-section">
         <HomeContentsTitle title={"COMMUNITY"} page={"community"} />
         <div className="flex w-full gap-10">
           {filterdPostList?.map((post) => (

@@ -65,11 +65,6 @@ export const Service = () => {
     resetWallPaper();
     resetWallpaperPaint();
     resetTile();
-    return () => {
-      resetWallPaper();
-      resetWallpaperPaint();
-      resetTile();
-    };
   }, []);
 
   const addBookmark = async () => {
