@@ -1,6 +1,6 @@
 import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/bgSizeMinusControlBtn.svg";
 import bgSizePlusControlBtn from "assets/BgSizeControlBtns/bgSizePlusControlBtn.svg";
-import bgSizeTileControlBtn from "assets/BgSizeControlBtns/bgSizeTileControlBtn.svg";
+import bgSizeTileControlBtn from "assets/BgSizeControlBtns/BgSizeTileControlBtn.svg";
 import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/BgSizeWallpaperControlBtn.svg";
 import { useServiceStore } from "store";
 
