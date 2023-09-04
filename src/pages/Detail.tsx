@@ -248,7 +248,7 @@ export const Detail = () => {
           </div>
         )}
       </div>
-      <div className="sticky gap-4 bottom-[50%] translate-x-[1650px] inline-flex flex-col">
+      <div className="sticky gap-4 bottom-[50%] translate-x-[1350px] inline-flex flex-col">
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
         </button>

@@ -1,5 +1,8 @@
+import { BG_MAGNIFICATION_LANGTH } from "components";
 import { create } from "zustand";
+
 type WallOrTile = "tile" | "wallPaper";
+export type SelectBg = "leftWall" | "rightWall" | "tile";
 
 export interface Wallpaper {
   image: string | null;
@@ -10,6 +13,11 @@ interface Tile {
   id: string | null;
 }
 
+interface selectBgSize {
+  leftWall: number;
+  rightWall: number;
+  tile: number;
+}
 interface Store {
   checkType: WallOrTile;
   setTypeCheck: (type: WallOrTile) => void;
@@ -47,7 +55,14 @@ interface Store {
   // 아이템클릭 보더
   onClickItemBorder: { left: string; right: string; tile: string };
   setClickItemBorder: (id: string, type: boolean, headerTitle: WallOrTile) => void;
-  resetClickItemBordder: () => void;
+  resetClickItemBorder: () => void;
+
+  // 배경 선택
+  selectBg: SelectBg;
+  setSelectBg: (type: SelectBg) => void;
+  selectBgSize: selectBgSize;
+  setIncreseSelectBgSize: (type: SelectBg) => void;
+  setDecreseSelectBgSize: (type: SelectBg) => void;
 }
 
 export const useServiceStore = create<Store>()((set) => ({
@@ -144,7 +159,66 @@ export const useServiceStore = create<Store>()((set) => ({
       }));
     }
   },
-  resetClickItemBordder: () => {
+  resetClickItemBorder: () => {
     set(() => ({ onClickItemBorder: { left: "", right: "", tile: "" } }));
+  },
+
+  // 배경색 크기 컨트롤러
+  selectBg: "leftWall",
+  setSelectBg: (type: SelectBg) => {
+    set(() => ({ selectBg: type }));
+  },
+  selectBgSize: { leftWall: 3, rightWall: 3, tile: 3 },
+  setIncreseSelectBgSize: (type: SelectBg) => {
+    if (type === "leftWall") {
+      set((state) => ({
+        selectBgSize:
+          state.selectBgSize.leftWall !== BG_MAGNIFICATION_LANGTH
+            ? { ...state.selectBgSize, leftWall: state.selectBgSize.leftWall + 1 }
+            : { ...state.selectBgSize, leftWall: BG_MAGNIFICATION_LANGTH },
+      }));
+    }
+    if (type === "rightWall") {
+      set((state) => ({
+        selectBgSize:
+          state.selectBgSize.rightWall !== BG_MAGNIFICATION_LANGTH
+            ? { ...state.selectBgSize, rightWall: state.selectBgSize.rightWall + 1 }
+            : { ...state.selectBgSize, rightWall: BG_MAGNIFICATION_LANGTH },
+      }));
+    }
+    if (type === "tile") {
+      set((state) => ({
+        selectBgSize:
+          state.selectBgSize.tile !== BG_MAGNIFICATION_LANGTH
+            ? { ...state.selectBgSize, tile: state.selectBgSize.tile + 1 }
+            : { ...state.selectBgSize, tile: BG_MAGNIFICATION_LANGTH },
+      }));
+    }
+  },
+  setDecreseSelectBgSize: (type: SelectBg) => {
+    if (type === "leftWall") {
+      set((state) => ({
+        selectBgSize:
+          state.selectBgSize.leftWall !== 0
+            ? { ...state.selectBgSize, leftWall: state.selectBgSize.leftWall - 1 }
+            : { ...state.selectBgSize, leftWall: 0 },
+      }));
+    }
+    if (type === "rightWall") {
+      set((state) => ({
+        selectBgSize:
+          state.selectBgSize.rightWall !== 0
+            ? { ...state.selectBgSize, rightWall: state.selectBgSize.rightWall - 1 }
+            : { ...state.selectBgSize, rightWall: 0 },
+      }));
+    }
+    if (type === "tile") {
+      set((state) => ({
+        selectBgSize:
+          state.selectBgSize.tile !== 0
+            ? { ...state.selectBgSize, tile: state.selectBgSize.tile - 1 }
+            : { ...state.selectBgSize, tile: 0 },
+      }));
+    }
   },
 }));

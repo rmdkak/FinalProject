@@ -82,7 +82,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
               }}
               className="flex"
             >
-              <div className="interior-item" style={{ backgroundColor: paint }} />
+              <ColorItem color={paint} />
             </li>
           </ul>
         </div>

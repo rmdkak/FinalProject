@@ -120,7 +120,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
 
       {/* 인테리어 바디 */}
       <div>
-        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 h-[172px] overflow-y-auto">
+        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 h-[176px] overflow-y-auto">
           {checkType === "wallPaper" ? (
             <ServiceItem data={wallData} />
           ) : (

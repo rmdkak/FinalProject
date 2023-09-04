@@ -29,6 +29,10 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
     return onCloseModal;
   }, []);
 
+  // 모달창 띄워질시 스크롤 없앰
+  // NOTE: 추후 논의
+  // modalState ? (document.body.style.overflowY = "hidden") : (document.body.style.overflowY = "auto");
+
   //   modalState값이 false라면 빈태그를 반환
   if (!modalState) return <></>;
 
@@ -36,11 +40,6 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
   let titleBorder: string = "";
   const checkTypeGuard = typeof title === "string" && title !== "";
   if (checkTypeGuard) titleBorder = " border-b border-black";
-
-  // 이벤트버블링 문제 해결 함수
-  // const stopEventBubbleing = (e: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
-  // e.stopPropagation();
-  // };
 
   return (
     <>
