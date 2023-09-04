@@ -7,3 +7,4 @@ export * from "./ServiceItem";
 export * from "./TextureTitle";
 export * from "./SelfPattern";
 export * from "./ServiceSelectItem";
+export * from "./InteriorBgSizeController";

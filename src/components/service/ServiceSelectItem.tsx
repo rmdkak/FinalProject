@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import React from "react";
 
 import { useServiceStore } from "store";
 
-import { LEFT_ITEM_BORDER_COLOR, RIGHT_ITEM_BORDER_COLOR, TILE_ITEM_BORDER_COLOR } from "./data";
+import { SELECT_BORDER_COLOR } from "./data";
+
 interface Props {
   image: string;
   id: string;
@@ -18,6 +20,7 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
     setTile,
     onClickItemBorder,
   } = useServiceStore((state) => state);
+  console.log(onClickItemBorder);
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
   /**
    *
@@ -32,24 +35,19 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
       setTile(selectItem);
     }
   };
-
   /**
    * 왼쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? `border-[${LEFT_ITEM_BORDER_COLOR}]` : "";
+  const CHECK_LEFT_ITEM_BORDER = onClickItemBorder.left === id ? `4px solid ${SELECT_BORDER_COLOR}` : "";
   /**
    * 오른쪽 벽지 클릭시 나오는 보더
    */
-  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? `border-[${RIGHT_ITEM_BORDER_COLOR}]` : "";
+  const CHECK_RIGHT_ITEM_BORDER = onClickItemBorder.right === id ? `4px solid ${SELECT_BORDER_COLOR}` : "";
   /**
    * 타일 클릭시 나오는 보더
    */
-  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `border-[${TILE_ITEM_BORDER_COLOR}]` : "";
-  /**
-   * 왼쪽 벽지, 오른쪽 벽지가 같을경우나오는 보더
-   */
-  const CHECK_LEFT_RIGHT_BORDER =
-    onClickItemBorder.left === id && onClickItemBorder.right === id ? "border-[#E41205]" : "";
+  const CHECK_TILE_ITEM_BORDER = onClickItemBorder.tile === id ? `4px solid ${SELECT_BORDER_COLOR}` : "";
+
   return (
     <>
       <li
@@ -62,7 +60,15 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
       >
         <img
           src={`${STORAGE_URL}${image}`}
-          className={`block interior-item border-8 border-white  ${CHECK_LEFT_ITEM_BORDER} ${CHECK_RIGHT_ITEM_BORDER} ${CHECK_TILE_ITEM_BORDER} ${CHECK_LEFT_RIGHT_BORDER} `}
+          style={
+            onClickItemBorder.left === id
+              ? { border: CHECK_LEFT_ITEM_BORDER }
+              : onClickItemBorder.right === id
+              ? { border: CHECK_RIGHT_ITEM_BORDER }
+              : { border: CHECK_TILE_ITEM_BORDER }
+          }
+          className={`block interior-item border-4 drag-none
+           `}
           alt={` ${checkType} 미리보기 이미지`}
         />
       </li>

@@ -1,9 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useEffect, useState } from "react";
 import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
+import { AutoPlay } from "@egjs/flicking-plugins";
+import Flicking from "@egjs/react-flicking";
 import calcArrow from "assets/calcArrow.svg";
-import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, SELECT_CUSTOM_INDEX } from "components";
+import {
+  GetColor,
+  InteriorSection,
+  ResouresCalculator,
+  Modal,
+  useDialog,
+  SELECT_CUSTOM_INDEX,
+  InteriorBgSizeController,
+  BG_DEFAULT_SIZE,
+  BG_MAGNIFICATION,
+} from "components";
 import { useBookmark } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -16,6 +29,8 @@ interface FetchItemBookmark {
   rightWallpaperId: string;
 }
 
+const plugins = [new AutoPlay({ animationDuration: 2000, direction: "NEXT", stopOnHover: false })];
+
 export const Service = () => {
   // 타일/ 벽지를 담는 겟터셋터함수
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
@@ -25,22 +40,34 @@ export const Service = () => {
   const { Alert, Confirm } = useDialog();
 
   const { onOpenModal } = useModalStore((state) => state);
-  const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex, resetWallpaperPaint, resetWallPaper, resetTile } =
-    useServiceStore((state) => state);
+  const {
+    wallPaper,
+    tile,
+    wallpaperPaint,
+    interiorSelecteIndex,
+    resetWallpaperPaint,
+    resetWallPaper,
+    resetTile,
+    resetClickItemBorder,
+    selectBgSize,
+  } = useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
 
-  //  타일 사이즈 컨트롤
-  // const [wallPaperSize, setWallPaperSize] = useState<number>(70);
-  // const [tileSize, setTileSize] = useState<number>(70);
+  const isWallPaperPaintSeleted = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
 
-  const isWallPaperPaintSeleted = wallpaperPaint.left !== "" || wallpaperPaint.right !== "";
+  const resetState = () => {
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
+    resetClickItemBorder();
+  };
 
   useEffect(() => {
     tile.image !== null ? setTileBg(`${STORAGE_URL}${tile.image}`) : setTileBg("");
     if (isWallPaperPaintSeleted) {
-      setRightWallPaperBg(wallpaperPaint.right);
-      setLeftWallPaperBg(wallpaperPaint.left);
+      setRightWallPaperBg(wallpaperPaint.right as string);
+      setLeftWallPaperBg(wallpaperPaint.left as string);
     } else {
       wallPaper.right.image !== null
         ? setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`)
@@ -62,9 +89,10 @@ export const Service = () => {
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
 
   useEffect(() => {
-    resetWallPaper();
-    resetWallpaperPaint();
-    resetTile();
+    resetState();
+    return () => {
+      resetState();
+    };
   }, []);
 
   const addBookmark = async () => {
@@ -119,15 +147,23 @@ export const Service = () => {
     navigate("/post");
   };
 
+  const testArr = [1, 2, 3, 4, 5, 6, 7, 8];
+  const LEFT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.leftWall]) / 100;
+  const RIFHT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.rightWall]) / 100;
+  const TILE_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.tile]) / 100;
+
   return (
     <>
-      <div className="m-20 flex-column">
-        <h1 className="mb-10 text-3xl font-bold">Interior Design</h1>
+      <div className="mx-auto flex-column w-[1280px] gap-10">
+        <h1 className="mt-20 text-3xl font-bold ">Interior Design</h1>
         <div className="gap-40 flex-column">
           {/* 벽지/ 타일 비교 박스 */}
-          <div className="flex w-full gap-10">
+          <div className="flex w-full gap-20">
             {/* 왼쪽 인터렉션 박스 */}
-            <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
+            <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[600px] h-[400px] overflow-hidden rounded-xl">
+              {/* 배경크기 컨트롤 박스 */}
+              <InteriorBgSizeController />
+
               <div className="cube">
                 {/* 벽지 */}
                 {!isWallPaperPaintSeleted ? (
@@ -137,7 +173,7 @@ export const Service = () => {
                         backgroundImage: `url(${
                           interiorSelecteIndex !== 5 ? leftWallPaperBg : (wallPaper.left.image as string)
                         })`,
-                        backgroundSize: `${70}px, ${70}px`,
+                        backgroundSize: `${LEFT_WALLPAPER_BGSIZE}px, ${LEFT_WALLPAPER_BGSIZE}px`,
                       }}
                       className="left-wall"
                     ></div>
@@ -146,7 +182,7 @@ export const Service = () => {
                         backgroundImage: `url(${
                           interiorSelecteIndex !== 5 ? RightWallPaperBg : (wallPaper.right.image as string)
                         })`,
-                        backgroundSize: `${70}px, ${70}px`,
+                        backgroundSize: `${RIFHT_WALLPAPER_BGSIZE}px, ${RIFHT_WALLPAPER_BGSIZE}px`,
                       }}
                       className="right-wall"
                     ></div>
@@ -173,14 +209,13 @@ export const Service = () => {
                     backgroundImage: `url(${
                       interiorSelecteIndex !== SELECT_CUSTOM_INDEX ? tileBg : (tile.image as string)
                     })`,
-                    backgroundSize: `${70}px, ${70}px`,
+                    backgroundSize: `${TILE_BGSIZE}px, ${TILE_BGSIZE}px`,
                   }}
                   className="floor"
                 ></div>
               </div>
             </div>
-
-            <div className="flex-column w-[860px] gap-10">
+            <div className="flex-column w-[600px] gap-10">
               {/* 인테리어 섹션 */}
               <InteriorSection onCheckCustom={true} />
               {/* 컬러 추출 */}
@@ -191,7 +226,7 @@ export const Service = () => {
                   <label className="hover:cursor-pointer text-gray02" htmlFor="calc">
                     자재 소모량 계산기
                   </label>
-                  <button className="h-[24px] ml-2" id="calc" onClick={onOpenModal}>
+                  <button className="h-6 ml-2" id="calc" onClick={onOpenModal}>
                     <img src={calcArrow} alt="" />
                   </button>
                 </div>
@@ -225,48 +260,21 @@ export const Service = () => {
             </div>
           </div>
         </div>
-        <h1 className="static bottom-0 left-0 mt-20 mb-10 text-2xl font-semibold">가장 인기있는 조합</h1>
-        <div className="w-full overflow-x-scroll">
-          <div className="mb-20 flex-column">
-            <ul className="flex">
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-              <li className="flex">
-                <div className="best-colors-item-back"></div>
-                <div className="best-colors-item-front"></div>
-              </li>
-            </ul>
-          </div>
+        <div className="w-full">
+          <h1 className="mt-20 mb-10 text-2xl font-semibold">지금 뜨고있는 베스트조합</h1>
+          {/* <div className="flex gap-10 mb-10"> */}
+          <Flicking align={"prev"} circular={true} panelsPerView={5} plugins={plugins}>
+            {testArr.map((_, idx) => (
+              <div key={idx} className="inline-flex mb-24">
+                <div className="relative inline-flex w-[220px] h-20 mr-10">
+                  <div className="absolute top-0 left-[0px] interior-item bg-gray01"></div>
+                  <div className="absolute top-0 left-[70px] interior-item bg-gray02"></div>
+                  <div className="absolute top-0 left-[140px] interior-item bg-gray03"></div>
+                </div>
+              </div>
+            ))}
+          </Flicking>
+          {/* </div> */}
         </div>
       </div>
     </>

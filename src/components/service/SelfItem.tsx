@@ -44,7 +44,7 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
         {/* 이미지 */}
         <img
           onClick={onClickItem}
-          className={`box-border block h-full cursor-pointer`}
+          className={`box-border block h-full cursor-pointer drag-none`}
           src={CHECK_TYPE_OF_STRING}
           alt="셀프 조합 이미지"
         />

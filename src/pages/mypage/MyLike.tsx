@@ -2,7 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, MypageSubTitle, MypageTitle } from "components";
+import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
 import { useMypage, usePagination, useSearchBar } from "hooks";
 
 export const MyLike = () => {
@@ -46,40 +46,43 @@ export const MyLike = () => {
     <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
       <MypageTitle />
       <MypageSubTitle type="like" />
-
-      <ul>
-        {pageData.map((likedPost, index) => {
-          const { POSTS: post } = likedPost;
-          return (
-            <li
-              key={likedPost.id}
-              className="flex contents-center border-y border-gray06 gap-[24px] h-[64px] px-[24px]"
-            >
-              <input
-                id={likedPost.id}
-                type="checkbox"
-                className="hidden"
-                onChange={(event) => {
-                  onChange(event, likedPost.id);
-                }}
-              />
-              <label htmlFor={likedPost.id}>
-                {likeIdsToDelete.find((id) => id === likedPost.id) !== undefined ? (
-                  <FaRegSquareCheck className="text-black" />
-                ) : (
-                  <FaRegSquareCheck className="text-gray05" />
-                )}
-              </label>
-              <p className="w-[80px]">{pageData.length - index}</p>
-              <Link to={`/detail/${post.id as string}`} className="w-[830px]">
-                {post.title}
-              </Link>
-              <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />
-              <button className="w-[80px] h-[32px] border border-gray05 rounded-[8px] px-[24px]">수정</button>
-            </li>
-          );
-        })}
-      </ul>
+      {pageData.length === 0 ? (
+        <EmptyData type="like" />
+      ) : (
+        <ul>
+          {pageData.map((likedPost, index) => {
+            const { POSTS: post } = likedPost;
+            return (
+              <li
+                key={likedPost.id}
+                className="flex contents-center border-y border-gray06 gap-[24px] h-[64px] px-[24px]"
+              >
+                <input
+                  id={likedPost.id}
+                  type="checkbox"
+                  className="hidden"
+                  onChange={(event) => {
+                    onChange(event, likedPost.id);
+                  }}
+                />
+                <label htmlFor={likedPost.id}>
+                  {likeIdsToDelete.find((id) => id === likedPost.id) !== undefined ? (
+                    <FaRegSquareCheck className="text-black" />
+                  ) : (
+                    <FaRegSquareCheck className="text-gray05" />
+                  )}
+                </label>
+                <p className="w-[80px]">{pageData.length - index}</p>
+                <Link to={`/detail/${post.id as string}`} className="w-[830px]">
+                  {post.title}
+                </Link>
+                <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />
+                <button className="w-[80px] h-[32px] border border-gray05 rounded-[8px] px-[24px]">수정</button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
       <div className="flex items-center justify-between w-full mt-[68px]">
         <button onClick={deleteLikes} className="w-[100px] h-[48px] border border-gray05 rounded-[8px]">

@@ -17,6 +17,29 @@ body {
   font-style: normal;
 }
 
+/* 이미지 드래그 방지 */
+.drag-none {
+  -webkit-user-drag: none;
+}
+
+/* 스크롤바 */
+/* 스크롤바 전체 */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+  background-color: #e5e5e5;
+}
+/* 스크롤 막대 */
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: #1a1a1a;
+}
+/* 스크롤 막대 외부 */
+::-webkit-scrollbar-track {
+  border-radius: 2px;
+  background-color: #e5e5e5;
+}
+
 /* tailwind로 appearance 속성이 먹지 않아 css로 넣었습니다. */
 .inputNumberArrow {
   &::-webkit-outer-spin-button,
@@ -25,27 +48,6 @@ body {
 
     margin: 0;
   }
-}
-/* 인풋 자동완성시 배경채워지는거 */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  font-family: "Pretendard-Regular";
-  -webkit-text-fill-color: #000;
-  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
-  box-shadow: 0 0 0px 1000px #fff inset;
-  transition: background-color 5000s ease-in-out 0s;
-}
-input:autofill,
-input:autofill:hover,
-input:autofill:focus,
-input:autofill:active {
-  font-family: "Pretendard-Regular";
-  -webkit-text-fill-color: #000;
-  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
-  box-shadow: 0 0 0px 1000px #fff inset;
-  transition: background-color 5000s ease-in-out 0s;
 }
 
 .flicking-viewport {
@@ -231,6 +233,6 @@ input:autofill:active {
 
   /* 홍민~ */
   .interior-item {
-    @apply w-[142px] h-[142px] rounded-full;
+    @apply w-[80px] h-[80px] rounded-full;
   }
 }
