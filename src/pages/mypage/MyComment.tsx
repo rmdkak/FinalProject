@@ -1,5 +1,6 @@
 import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 import arrowIcon from "assets/arrowIcon.svg";
 import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData } from "components";
@@ -37,15 +38,11 @@ export const MyComment = () => {
     }
   };
 
-  if (userCommentData === undefined) return <p>에러페이지</p>;
-
   const { SearchBar, filteredData } = useSearchBar({ dataList: userCommentData, type: "comment", isUseMypage: true });
-
-  if (filteredData === undefined) return <p>에러페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
     data: filteredData,
-    dataLength: filteredData.length,
+    dataLength: filteredData === undefined ? 0 : filteredData.length,
     postPerPage: 8,
   });
 
@@ -54,7 +51,7 @@ export const MyComment = () => {
       <MypageTitle />
       <MypageSubTitle type="comment" />
       {/* 글 목록 */}
-      {userCommentData.length === 0 ? (
+      {pageData.length === 0 ? (
         <EmptyData type="comment" />
       ) : (
         <ul className="w-full">
@@ -118,9 +115,12 @@ export const MyComment = () => {
                     <p className="flex self-start">{comment.content}</p>
                     <div className="flex contents-center gap-[12px]">
                       <DateConvertor datetime={comment.created_at} type={"dotDate"} />
-                      <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">
+                      <Link
+                        to={`/detail/${post.id as string}`}
+                        className="flex contents-center w-[80px] h-8 gray-outline-button rounded-lg"
+                      >
                         수정
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}

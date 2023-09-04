@@ -36,7 +36,7 @@ export const UpdatePassword = () => {
             break;
           default:
             await Alert("Error");
-            console.log("newError : ", error.message);
+            console.error("newError : ", error.message);
             break;
         }
       });

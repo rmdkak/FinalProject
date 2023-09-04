@@ -32,15 +32,11 @@ export const MyPost = () => {
     }
   };
 
-  if (userPostData === undefined) return <p>에러페이지</p>;
-
   const { SearchBar, filteredData } = useSearchBar({ dataList: userPostData, type: "post", isUseMypage: true });
-
-  if (filteredData === undefined) return <p>에러페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
     data: filteredData,
-    dataLength: filteredData.length,
+    dataLength: filteredData === undefined ? 0 : filteredData.length,
     postPerPage: 8,
   });
 
@@ -49,7 +45,7 @@ export const MyPost = () => {
       <MypageTitle />
       <MypageSubTitle type="post" />
       {/* 글 목록 */}
-      {userPostData.length === 0 ? (
+      {pageData.length === 0 ? (
         <EmptyData type="post" />
       ) : (
         <ul className="w-full">
@@ -76,7 +72,12 @@ export const MyPost = () => {
                   {post.title}
                 </Link>
                 <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />
-                <button className="w-[80px] h-[32px] border border-gray05 rounded-[8px] px-[24px]">수정</button>
+                <Link
+                  to={`/updatepost/${post.id as string}`}
+                  className="flex contents-center w-[80px] h-8 gray-outline-button rounded-lg"
+                >
+                  수정
+                </Link>
               </li>
             );
           })}

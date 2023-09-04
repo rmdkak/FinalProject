@@ -30,15 +30,11 @@ export const MyLike = () => {
     }
   };
 
-  if (userLikeData === undefined) return <p>에러페이지</p>;
-
   const { SearchBar, filteredData } = useSearchBar({ dataList: userLikeData, type: "like", isUseMypage: true });
-
-  if (filteredData === undefined) return <p>에러페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
     data: filteredData,
-    dataLength: filteredData.length,
+    dataLength: filteredData === undefined ? 0 : filteredData.length,
     postPerPage: 8,
   });
 

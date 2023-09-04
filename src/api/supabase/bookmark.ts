@@ -17,7 +17,7 @@ export const fetchBookmark = async (bookmark: BookmarkType) => {
     .eq("rightWallpaperId", rightWallpaperId)
     .eq("userId", userId);
   if (error !== null) {
-    console.log("error :", error);
+    console.error("error :", error);
     return;
   }
   return data;

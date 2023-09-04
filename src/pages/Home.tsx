@@ -1,3 +1,4 @@
+import mainPreview from "assets/mainpreviewImg.jpg";
 import thumnail1 from "assets/thumbnail1.png";
 import thumnail2 from "assets/thumbnail2.png";
 import { FlickingForm, HomeContentsTitle, HomeKvBanner } from "components/home";
@@ -9,7 +10,8 @@ export const Home = () => {
 
   const filterdPostList = postList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 3);
 
-  const testArr = [1, 2, 3, 4, 5, 6, 7, 8];
+  // const testArr = [1, 2, 3, 4, 5, 6, 7, 8];
+
   return (
     <div className="items-center flex-column gap-[120px] mt-16">
       <div className="flex w-full">
@@ -33,8 +35,8 @@ export const Home = () => {
       </div>
       <div className="home-section">
         <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} page={"service"} />
-        <div className="w-full h-[740px] bg-gray-400"></div>
-        <div className="flex gap-10">
+        <img src={mainPreview} alt="preview" className="w-full h-[740px]" />
+        {/* <div className="flex gap-10">
           {testArr.map((_, idx) => (
             <div className="items-center gap-4 flex-column w-[125px]" key={idx}>
               <p className="w-6 h-6 text-center rounded-full bg-point">{idx + 1}</p>
@@ -45,7 +47,7 @@ export const Home = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
       <div className="home-section">
         <HomeContentsTitle title={"EVENT"} page={"event"} />

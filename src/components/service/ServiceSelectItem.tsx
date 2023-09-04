@@ -20,7 +20,6 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
     setTile,
     onClickItemBorder,
   } = useServiceStore((state) => state);
-  console.log(onClickItemBorder);
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
   /**
    *

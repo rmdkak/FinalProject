@@ -19,7 +19,7 @@ export const PreviewPost = ({ postData }: Props) => {
         return (
           <li key={post.id} className={innerBoxStyle}>
             <Link to={`/detail/${post.id}`} className={linkStyle}>
-              {post.content}
+              {post.title}
             </Link>
             <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
           </li>

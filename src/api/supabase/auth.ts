@@ -74,7 +74,7 @@ export const findEmail = async ({ name, idQuestion, idAnswer }: Omit<FindAuth, "
     .eq("idQuestion", idQuestion)
     .eq("idAnswer", idAnswer)
     .single();
-  console.log("error.message :", error?.message);
+  console.error("error.message :", error?.message);
   if (error !== null) throw new Error(error.message);
   return data;
 };
@@ -88,7 +88,7 @@ export const findPassword = async ({ name, email, idQuestion, idAnswer }: FindAu
     .eq("idQuestion", idQuestion)
     .eq("idAnswer", idAnswer)
     .single();
-  console.log("error.message :", error?.message);
+  console.error("error.message :", error?.message);
   if (error !== null) throw new Error(error.message);
   return data;
 };

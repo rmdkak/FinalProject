@@ -22,7 +22,7 @@ export const Header = () => {
     try {
       await logout();
       setStayLoggedInStatus(false);
-      await Alert("로그아웃 완료");
+      await Alert("로그아웃 되었습니다.");
     } catch (error) {
       await Alert("로그아웃 실패");
       console.error(error);

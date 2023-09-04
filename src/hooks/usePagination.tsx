@@ -7,7 +7,7 @@ import {
 } from "react-icons/md";
 
 interface PaginationProps {
-  data: any[];
+  data: any[] | undefined;
   dataLength: number;
   postPerPage: number;
 }
@@ -28,7 +28,7 @@ export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps
 
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const pageData = data.slice(indexOfFirstPost, indexOfLastPost);
+  const pageData = data === undefined ? [] : data.slice(indexOfFirstPost, indexOfLastPost);
 
   useEffect(() => {
     setCurrentPage(1);
