@@ -1,7 +1,7 @@
 import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/bgSizeMinusControlBtn.svg";
 import bgSizePlusControlBtn from "assets/BgSizeControlBtns/bgSizePlusControlBtn.svg";
-import bgSizeTileControlBtn from "assets/BgSizeControlBtns/BgSizeTileControlBtn.svg";
-import BgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/BgSizeWallpaperControlBtn.svg";
+import bgSizeTileControlBtn from "assets/BgSizeControlBtns/bgSizeTileControlBtn.svg";
+import bgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/bgSizeWallpaperControlBtn.svg";
 import { useServiceStore } from "store";
 
 export const InteriorBgSizeController = (): JSX.Element => {
@@ -19,7 +19,7 @@ export const InteriorBgSizeController = (): JSX.Element => {
           }}
           className={`flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060] ${SELECT_BG_LEFT}`}
         >
-          <img className="w-[10px]" src={BgSizeWallpaperControlBtn} alt="왼쪽 벽지 이미지" />
+          <img className="w-[10px]" src={bgSizeWallpaperControlBtn} alt="왼쪽 벽지 이미지" />
         </button>
         {/* 오른쪽 벽지 */}
         <button
@@ -28,7 +28,7 @@ export const InteriorBgSizeController = (): JSX.Element => {
           }}
           className={`flex bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060] ${SELECT_BG_RIGHT}`}
         >
-          <img className="w-[10px] scale-x-[-1]" src={BgSizeWallpaperControlBtn} alt="오른쪽 벽지 이미지" />
+          <img className="w-[10px] scale-x-[-1]" src={bgSizeWallpaperControlBtn} alt="오른쪽 벽지 이미지" />
         </button>
         {/* 타일 */}
         <button
@@ -46,7 +46,7 @@ export const InteriorBgSizeController = (): JSX.Element => {
           }}
           className="flex  bg-[#00000040] w-6 h-6 mr-2 rounded contents-center active:bg-[#00000060]"
         >
-          <img className="w-[10px]" src={bgSizePlusControlBtn} alt="추가 버튼이미지" />
+          <img className="w-[10px]" src={bgSizePlusControlBtn} alt="증가 버튼이미지" />
         </button>
         {/* 크기 축소 버튼 */}
         <button
