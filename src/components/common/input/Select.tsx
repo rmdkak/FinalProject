@@ -12,7 +12,6 @@ interface Props {
     email: boolean;
     name: boolean;
   };
-  // setCheckedDuplicate?: ({email,name}: {email:boolean; name:boolean;}) => void;
   setCheckedDuplicate?: React.Dispatch<{ email: boolean; name: boolean }>;
 }
 
