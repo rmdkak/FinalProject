@@ -134,7 +134,6 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
             className="w-[100px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
           >
             <option value={"title"}>제목</option>
-            {/* {type === "post" ? <option value={"title"}>제목</option> : <option value={"title"}>글 제목</option>} */}
 
             {type === "post" && isUseMypage ? null : <option value={"nickname"}>작성자</option>}
 

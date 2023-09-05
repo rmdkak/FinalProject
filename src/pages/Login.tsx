@@ -57,8 +57,8 @@ export const Login = () => {
   }, []);
 
   return (
-    <div className="w-[560px] flex-column items-center mx-auto">
-      <h2 className="w-full text-center mt-[80px] pb-[24px] border-b border-black title-3">로그인</h2>
+    <div className="w-[560px] flex-column my-20 items-center mx-auto">
+      <h2 className="w-full text-center pb-[24px] border-b border-black title-3">로그인</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-[40px]">
         <label htmlFor="email" className="text-[12px] font-normal leading-[110%] text-gray01">
           이메일
@@ -122,7 +122,6 @@ export const Login = () => {
               ) : (
                 <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
               )}
-              {/* <CheckBoxIcon checkState={stayLoggedInStatus} changeCheckState={setStayLoggedInStatus} size={20} /> */}
               로그인 유지
             </label>
           </div>

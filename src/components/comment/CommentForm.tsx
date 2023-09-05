@@ -16,7 +16,6 @@ interface CommentFormProps {
 }
 
 export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps) => {
-  // const {register,handleSubmit,reset,formState:{errors}} = useForm({mode:"all"})
   const { currentSession } = useAuthStore();
   const { createCommentMutation, createReplyMutation } = useComments();
   const [content, setContent] = useState<string>("");
@@ -75,7 +74,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
       if (commentStatus) createCommentMutation.mutate({ id, userId, content, postId, commentImg });
       if (replyStatus) createReplyMutation.mutate({ userId, content, commentId });
     } catch (error) {
-      console.log("error", error);
+      console.error("error", error);
     }
     setContent("");
     setCommentImgFile(null);
@@ -106,7 +105,6 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
           <div className="flex items-end text-gray03">
             {content.length}/{textAreaMaxLength}자
           </div>
-
           {/* 대댓글 취소 버튼 */}
           <div className="flex items-end gap-5">
             {replyStatus && (

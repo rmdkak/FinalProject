@@ -121,12 +121,12 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   }, []);
 
   return (
-    <div className="items-center flex-column mt-[80px] w-[560px] mx-auto">
+    <div className="items-center flex-column my-20 w-[560px] mx-auto">
       <div className="w-full text-center underline-pb">
         <p className="title-3 mt-[40px]">회원가입</p>
       </div>
       <SignupStep step={1} />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px] mb-[20px]">
         {/* 이메일 */}
         <label htmlFor="email" className="self-start body-4 my-[8px]">
           이메일

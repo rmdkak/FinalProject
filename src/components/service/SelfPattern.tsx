@@ -51,12 +51,7 @@ export const SelfPattern = (): JSX.Element => {
     [customSelfWallPaper, customSelfTile, setCustomSelfWallPaper, setCustomSelfTile, checkType],
   );
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: {
-      "image/*": [],
-    },
-    onDrop,
-  });
+  const { getRootProps, getInputProps } = useDropzone({ accept: { "image/*": [] }, onDrop });
 
   return (
     <>

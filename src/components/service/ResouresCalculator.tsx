@@ -27,21 +27,11 @@ export const ResouresCalculator = (): JSX.Element => {
   });
   const [selectItem, setSelectItem] = useState<number>(0);
 
-  /**
-   * 폼 서브밋 시 작동하는 이벤트입니다.
-   * e.preventDefault();
-   * setVisible(true); 예산 소모량 visible 컨트롤러
-   * handleCalculrator();  계산 함수
-   */
   const onSubmitResouresCalculator = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setVisible(true);
     handleCalculrator();
   };
 
-  /**
-   * 자재 사이즈와 작업 면적을 계산하는 함수입니다.
-   */
   const handleCalculrator = useCallback(() => {
     const RESULT_AREA: number = +((+workingArea.width / 100) * (+workingArea.height / 100));
     let RESULT_CONSUMPTION: number = 0;
@@ -62,17 +52,10 @@ export const ResouresCalculator = (): JSX.Element => {
     });
   }, [workingArea, resoures]);
 
-  /**
-   * 예산 소모량 섹션을 보이게할지 보이지 않게끔할지 컨트롤합니다.
-   */
   const onVisibleBtn = useCallback(() => {
     setVisible(false);
   }, []);
 
-  /**
-   * 자재 소모량 계산기 헤더 부분 클릭 함수입니다.
-   * 이 클릭시
-   */
   const onSelectItem = useCallback((index: number) => {
     setSelectItem(index);
     setResoures({
@@ -83,7 +66,6 @@ export const ResouresCalculator = (): JSX.Element => {
       width: "",
       height: "",
     });
-    // setVisible(false);
   }, []);
 
   return (
@@ -106,7 +88,6 @@ export const ResouresCalculator = (): JSX.Element => {
                   <img
                     className={`mr-1 ${selectItem === index ? "" : "opacity-40"}`}
                     src={IMG_LIST[index]}
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                     alt={`${item} 아이콘`}
                   />
                   {item}
@@ -142,7 +123,7 @@ export const ResouresCalculator = (): JSX.Element => {
         {visible && (
           <section>
             {/* 결과값 헤더 */}
-            <div className="flex items-center justify-between pb-6 mb-10 border border-b-black">
+            <div className="flex items-center justify-between pb-6 mb-10 border-b border-b-black">
               <h2 className="text-[18px]">예상 소모량</h2>
               <button className="w-[18px] h-[18px]" onClick={onVisibleBtn}>
                 <img className="block w-[18px] h-[18px]" src={CloseBtn} alt="엑스모양 사진" />

@@ -27,7 +27,7 @@ export const EmptyData = ({ type }: Props) => {
       case "comment":
         return "/community";
       case "bookmark":
-        return "/service";
+        return "/interior-preview";
       case "like":
         return "/community";
     }

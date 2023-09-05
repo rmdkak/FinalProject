@@ -95,7 +95,7 @@ export const findPassword = async ({ name, email, idQuestion, idAnswer }: FindAu
 
 export const sendEmailForFindPassword = async (email: string) => {
   const { error } = await auth.resetPasswordForEmail(email, {
-    redirectTo: "http://www.stile.kr/update-password",
+    redirectTo: "https://www.stile.kr/update-password",
   });
 
   if (error !== null) throw new Error(error.message);

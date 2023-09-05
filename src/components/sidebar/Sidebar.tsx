@@ -77,7 +77,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
         <div>
           <ul>
             <li className="mb-4 cursor-pointer text-[#1a1a1a]">
-              <Link onClick={closeSideBarHandler} to="/service">
+              <Link onClick={closeSideBarHandler} to="/interior-preview">
                 인테리어 조합
               </Link>
             </li>

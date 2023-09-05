@@ -11,10 +11,7 @@ const CalculatorResult = ({ resultName, result, meter }: Props): JSX.Element => 
       <div className="flex items-center justify-between">
         <h3>{resultName}</h3>
         <span>
-          {/* 결과값 */}
-          {/* //FIX 오류 설정 어캐할건지 */}
           <span>{result !== "NaN" ? result : "정상적인 수치를 입력해주세요"}</span>
-          {/* 오른쪽 평방미터 */}
           {meter !== true && (
             <>
               <span>

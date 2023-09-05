@@ -10,7 +10,7 @@ export const fetchComments = async (postId: string) => {
     .eq("postId", postId)
     .order("created_at", { ascending: false });
   if (error !== null) {
-    console.log("errorMessage", error);
+    console.error("errorMessage", error);
     return;
   }
   return data;

@@ -1,10 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 import { useEffect, useState } from "react";
 import { BsShare, BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-// import { AutoPlay } from "@egjs/flicking-plugins";
-// import Flicking from "@egjs/react-flicking";
 import calcArrow from "assets/calcArrow.svg";
 import {
   GetColor,
@@ -29,10 +26,7 @@ interface FetchItemBookmark {
   rightWallpaperId: string;
 }
 
-// const plugins = [new AutoPlay({ animationDuration: 2000, direction: "NEXT", stopOnHover: false })];
-
-export const Service = () => {
-  // 타일/ 벽지를 담는 겟터셋터함수
+export const InteriorPreview = () => {
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");
@@ -80,7 +74,6 @@ export const Service = () => {
 
   const { bookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = useBookmark();
 
-  // TODO IsLoading, IsError 구현하기
   const { data: currentBookmarkData } = bookmarkResponse;
 
   useEffect(() => {
@@ -169,7 +162,6 @@ export const Service = () => {
     navigate("/post");
   };
 
-  // const testArr = [1, 2, 3, 4, 5, 6, 7, 8];
   const LEFT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.leftWall]) / 100;
   const RIFHT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.rightWall]) / 100;
   const TILE_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.tile]) / 100;
@@ -282,20 +274,6 @@ export const Service = () => {
             </div>
           </div>
         </div>
-        {/* <div className="w-full">
-          <h1 className="mt-20 mb-10 text-2xl font-semibold">지금 뜨고있는 베스트조합</h1>
-          <Flicking align={"prev"} circular={true} panelsPerView={5} plugins={plugins}>
-            {testArr.map((_, idx) => (
-              <div key={idx} className="inline-flex mb-24">
-                <div className="relative inline-flex w-[220px] h-20 mr-10">
-                  <div className="absolute top-0 left-[0px] interior-item bg-gray01"></div>
-                  <div className="absolute top-0 left-[70px] interior-item bg-gray02"></div>
-                  <div className="absolute top-0 left-[140px] interior-item bg-gray03"></div>
-                </div>
-              </div>
-            ))}
-          </Flicking>
-        </div> */}
       </div>
     </>
   );

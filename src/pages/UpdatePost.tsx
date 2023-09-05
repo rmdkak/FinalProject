@@ -209,7 +209,7 @@ export const UpdatePost = () => {
           </label>
           <input
             type="file"
-            accept="image/*"
+            accept="image/png, image/jpeg, image/gif"
             className="w-full text-[14px] focus:outline-none"
             {...register("file", {
               onChange: (event) => {

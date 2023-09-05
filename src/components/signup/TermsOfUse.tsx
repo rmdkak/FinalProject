@@ -6,7 +6,6 @@ import arrowIcon from "assets/arrowIcon.svg";
 import { TERMS_1, TERMS_2 } from "./constant";
 import { SignupStep } from "./SignupStep";
 
-// 이용약관 컴포넌트
 interface Props {
   nextStep: () => void;
 }
@@ -15,6 +14,9 @@ const FLEX_CENTER = "flex items-center";
 const TEXTAREA_STYLE =
   "w-full h-[300px] p-[24px] mt-[10px] bg-white border border-gray05 text-gray03 rounded-[4px] resize-none focus:outline-none";
 
+/**
+ * 이용약관 컴포넌트
+ */
 export const TermsOfUse = ({ nextStep }: Props) => {
   const initialValue = { terms1: false, terms2: false };
 
@@ -30,7 +32,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
   };
 
   return (
-    <div className="items-center flex-column mt-[80px] w-[560px] mx-auto">
+    <div className="items-center flex-column my-20 w-[560px] mx-auto">
       <div className="w-full text-center underline-pb">
         <p className="title-3 mt-[40px]">회원가입</p>
       </div>
@@ -99,7 +101,6 @@ export const TermsOfUse = ({ nextStep }: Props) => {
         </li>
         <button
           disabled={!termsInputIsCheck.terms1 || !termsInputIsCheck.terms2}
-          // className="w-full h-[48px] text-black rounded-[8px] bg-point mt-[24px] disabled:bg-[#FFF5D7] text-[14px] font-medium leading-[130%]"
           className="auth-button auth-button-text text-black mt-[24px] point-button"
           onClick={nextStep}
         >

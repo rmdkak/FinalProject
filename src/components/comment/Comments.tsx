@@ -43,7 +43,7 @@ export const Comments = () => {
       const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
       if (checkDelete) type === "comment" ? deleteCommentMutation.mutate(id) : deleteReplyMutation.mutate(id);
     } catch (error) {
-      console.log("error :", error);
+      console.error("error :", error);
     }
   };
 

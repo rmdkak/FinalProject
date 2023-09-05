@@ -5,42 +5,36 @@
 @import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap");
 body {
-  font-family: "Red Hat Display", "Pretendard", "sans-serif";
-  /* font-family: "audiowide"; */
+  font-family: "Red+Hat+Display", "Pretendard", "sans-serif";
 }
 
-/* 한글폰트 */
 @font-face {
   font-family: "Pretendard-Regular";
-  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff2");
   font-weight: 400;
   font-style: normal;
 }
 
-/* 이미지 드래그 방지 */
 .drag-none {
   -webkit-user-drag: none;
 }
 
-/* 스크롤바 */
-/* 스크롤바 전체 */
 ::-webkit-scrollbar {
   width: 2px;
   height: 2px;
   background-color: #e5e5e5;
 }
-/* 스크롤 막대 */
+
 ::-webkit-scrollbar-thumb {
   border-radius: 2px;
   background-color: #1a1a1a;
 }
-/* 스크롤 막대 외부 */
+
 ::-webkit-scrollbar-track {
   border-radius: 2px;
   background-color: #e5e5e5;
 }
 
-/* tailwind로 appearance 속성이 먹지 않아 css로 넣었습니다. */
 .inputNumberArrow {
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -65,7 +59,6 @@ body {
   background-color: #1a1a1a !important;
 }
 
-/* 영문폰트 */
 @font-face {
   font-family: "Red Hat Display";
   src: url("https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;700&display=swap");
@@ -109,14 +102,12 @@ body {
   background-color: #bcbcbc;
 }
 
-/* 보더 배경 */
 .border-dashed {
   border: 30px solid #000;
   border-image: url("assets/border.svg") 30 round;
 }
 
 @layer components {
-  /* home page */
   .flex-column {
     @apply flex flex-col;
   }
@@ -154,7 +145,6 @@ body {
     @apply w-[520px] h-[254px] bg-gray-200 mx-5;
   }
 
-  /* 피그마에 나온 공용 텍스트*/
   .title-1 {
     @apply text-[56px] font-medium leading-[130%];
   }
@@ -211,7 +201,6 @@ body {
     @apply text-[18px] title-text;
   }
 
-  /* 김진수 */
   .font-large {
     @apply text-[30px] font-[700];
   }
@@ -231,7 +220,6 @@ body {
     @apply bg-[#5D5D5D] h-[48px] px-[24px] text-white;
   }
 
-  /* 홍민~ */
   .interior-item {
     @apply w-[80px] h-[80px] rounded-full;
   }
