@@ -20,12 +20,12 @@ export const Footer = () => {
               <ul className="flex self-center justify-end">
                 <li>
                   <a className="mr-[8px] block w-6 h-6 self-start" href="#외부경로" target="_blink">
-                    <img className="block w-6 h-6" src={blog} alt="blog ci" />
+                    <img className="block w-6 h-6" src={github} alt="blog ci" />
                   </a>
                 </li>
                 <li>
                   <a className="mr-[8px] block w-6 h-6" href="#외부경로" target="_blink">
-                    <img className="block w-6 h-6" src={github} alt="github ci" />
+                    <img className="block w-6 h-6" src={blog} alt="github ci" />
                   </a>
                 </li>
                 <li>
@@ -41,7 +41,7 @@ export const Footer = () => {
             <div className="mb-3">
               <ul className="flex items-center first-line:">
                 <li className="mr-[18px] text-[#888] text-[12px]">이용약관</li>
-                <li>개인정보 처리방침</li>
+                <li className="text-[13px]">개인정보 처리방침</li>
               </ul>
             </div>
           </div>

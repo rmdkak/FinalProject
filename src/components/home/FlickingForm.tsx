@@ -36,17 +36,17 @@ export const FlickingForm = ({ post }: props) => {
               <img
                 src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
                 alt="벽지"
-                className="relative w-[48px] h-[48px] left-[76px] rounded-full"
+                className="relative w-[48px] h-[48px] left-[76px] rounded-full border border-gray05"
               />
               <img
                 src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
                 alt="벽지"
-                className="relative w-[48px] h-[48px] left-[66px] rounded-full"
+                className="relative w-[48px] h-[48px] left-[66px] rounded-full border border-gray05"
               />
               <img
                 src={`${storageUrl}/tile/${post.tileId as string}`}
                 alt="바닥"
-                className="relative w-[48px] h-[48px] left-[56px] rounded-full"
+                className="relative w-[48px] h-[48px] left-[56px] rounded-full border border-gray05"
               />
             </div>
           )}

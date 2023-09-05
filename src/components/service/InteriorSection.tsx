@@ -18,9 +18,14 @@ interface Props {
 export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
   const [taleData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
-  const { checkType, setTypeCheck, interiorSelectX, setLeftInteriorSelectX, setRightInteriorSelectX } = useServiceStore(
-    (state) => state,
-  );
+  const {
+    checkType,
+    setTypeCheck,
+    interiorSelectX,
+    interiorSelecteIndex,
+    setLeftInteriorSelectX,
+    setRightInteriorSelectX,
+  } = useServiceStore((state) => state);
 
   /**
    *  서버에서 타일 리스트 데이터, 벽지 리스트 데이터를 가져오는 함수입니다.
@@ -87,24 +92,20 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
             />
             <div className="flex gap-4">
               <span
-                className={
-                  interiorSelectX ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
-                }
+                className={interiorSelectX ? "selected-wall-point" : "hover:cursor-pointer text-gray03"}
                 onClick={() => {
                   setLeftInteriorSelectX();
                 }}
               >
-                왼쪽 벽
+                좌측 벽지
               </span>
               <span
-                className={
-                  !interiorSelectX ? "hover:cursor-pointer text-black border-b-2 border-black" : "hover:cursor-pointer"
-                }
+                className={!interiorSelectX ? "selected-wall-point" : "hover:cursor-pointer text-gray03"}
                 onClick={() => {
                   setRightInteriorSelectX();
                 }}
               >
-                오른쪽 벽
+                우측 벽지
               </span>
             </div>
           </div>
@@ -120,7 +121,11 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
 
       {/* 인테리어 바디 */}
       <div>
-        <ul className="flex flex-wrap w-full gap-x-4 gap-y-4 h-[176px] overflow-y-auto">
+        <ul
+          className={`flex flex-wrap w-full gap-x-4 gap-y-4 ${
+            interiorSelecteIndex === 4 && checkType === "wallPaper" ? "" : "h-[176px]"
+          } overflow-y-auto`}
+        >
           {checkType === "wallPaper" ? (
             <ServiceItem data={wallData} />
           ) : (

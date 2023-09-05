@@ -42,7 +42,7 @@ export const patchCommentsHandler = async ({
 }: {
   commentId: string;
   newComment: string;
-  newCommentImg: string;
+  newCommentImg: string | null;
 }) => {
   const { error } = await supabase
     .from("COMMENTS")

@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { useEffect, useState } from "react";
-import { BsShare, BsPencilSquare, BsSuitHeartFill } from "react-icons/bs";
+import { BsPencilSquare } from "react-icons/bs";
 import { FaRegHeart } from "react-icons/fa6";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { storageUrl } from "api/supabase";
+import fillHeart from "assets/svgs/Heart.svg";
+import lineHeart from "assets/svgs/lineheart.svg";
+import share from "assets/svgs/share.svg";
 import { Comments, DateConvertor, useDialog } from "components";
 import { usePosts, usePostsLike } from "hooks";
 import { useAuthStore, useLikeStore } from "store";
@@ -136,7 +139,14 @@ export const Detail = () => {
     // 상위 배너 영역
     <div className="w-[1280px] mx-auto mt-[30px]">
       <div className="items-center flex-column">
-        <p className="font-medium text-[32px]">커뮤니티</p>
+        <p
+          className="font-medium text-[32px]"
+          onClick={() => {
+            navigate("/community");
+          }}
+        >
+          커뮤니티
+        </p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
@@ -159,7 +169,7 @@ export const Detail = () => {
           <div className="flex gap-4">
             <div>
               <img
-                className="w-16 h-16 rounded-full bg-gray06"
+                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
                 src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
                 alt="왼쪽 벽지"
               />
@@ -167,7 +177,7 @@ export const Detail = () => {
             </div>
             <div>
               <img
-                className="w-16 h-16 rounded-full bg-gray06"
+                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
                 src={`${storageUrl}/wallpaper/${postData?.rightWallpaperId}`}
                 alt="오른쪽 벽지"
               />
@@ -175,7 +185,7 @@ export const Detail = () => {
             </div>
             <div>
               <img
-                className="w-16 h-16 rounded-full bg-gray06"
+                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
                 src={`${storageUrl}/tile/${postData?.tileId}`}
                 alt="바닥재"
               />
@@ -229,7 +239,7 @@ export const Detail = () => {
 
       <div className="flex justify-between mt-[40px]">
         <button
-          className="h-[48px] px-[30px] rounded-lg border-[1px] border-gray05"
+          className="h-[48px] px-[30px] rounded-lg border border-gray05"
           onClick={() => {
             movePageHandler("community");
           }}
@@ -268,7 +278,7 @@ export const Detail = () => {
           >
             <SlArrowUp className="fill-gray02" />
             <label className="text-gray02">이전글 보기</label>
-            <span className="h-[8px] border-[1px] border-gray08"></span>
+            <span className="h-[8px] border border-gray08"></span>
             <p>{postList !== undefined ? postList[(findCurrentIdx as number) - 1].title : ""}</p>
           </div>
         )}
@@ -281,26 +291,26 @@ export const Detail = () => {
           >
             <SlArrowDown className="fill-gray02" />
             <label className="text-gray02">다음글 보기</label>
-            <span className="h-[8px] border-[1px] border-gray08"></span>
+            <span className="h-[8px] border border-gray08"></span>
             <p>{postList !== undefined ? postList[(findCurrentIdx as number) + 1].title : ""}</p>
           </div>
         )}
       </div>
       <div className="sticky gap-4 bottom-[50%] translate-x-[1350px] inline-flex flex-col">
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
-          <BsPencilSquare className="w-6 h-6 mx-auto fill-gray01" />
+          <BsPencilSquare className="w-5 h-5 mx-auto fill-gray01" />
         </button>
         {isHaveBookmark ? (
           <button onClick={deleteBookmark} className="w-12 h-12 border rounded-full border-gray06">
-            <BsSuitHeartFill className="w-[24px] h-[24px] mx-auto  text-point" />
+            <img src={fillHeart} className="mx-auto text-point" />
           </button>
         ) : (
           <button onClick={addBookmark} className="w-12 h-12 border rounded-full border-gray06">
-            <BsSuitHeartFill className="w-[24px] h-[24px] mx-auto text-gray01 " />
+            <img src={lineHeart} className="mx-auto text-gray01 " />
           </button>
         )}
-        <button className="w-12 h-12 rounded-full border-[1px] border-gray06">
-          <BsShare className="w-6 h-6 mx-auto fill-gray01" />
+        <button className="w-12 h-12 border rounded-full border-gray06">
+          <img src={share} className="mx-auto fill-gray01" />
         </button>
       </div>
     </div>

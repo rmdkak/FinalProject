@@ -62,7 +62,6 @@ export const DateConvertor = ({ datetime, type, className }: DateConvertorProps)
           }
           setFormattedDate(`${formattedHours}:${formattedMinutes}`);
         }
-
         break;
 
       default:

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import closeBtn from "assets/close.svg";
+import closeBtn from "assets/svgs/close.svg";
 import { useModalStore } from "store";
 
 interface Props {

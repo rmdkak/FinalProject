@@ -22,11 +22,6 @@ export const UpdatePost = () => {
 
   const [previewImg, setPreviewImg] = useState<string | null>(null);
 
-  if (postData === undefined) return <p>데이터를 불러올 수 없습니다.</p>;
-  if (postData.postImage === null) return <p>데이터를 불러올 수 없습니다.</p>;
-
-  const { id, title, content, tileId, leftWallpaperId, rightWallpaperId } = postData;
-
   const {
     register,
     handleSubmit,
@@ -41,6 +36,7 @@ export const UpdatePost = () => {
   const { wallPaper, tile, wallpaperPaint } = useServiceStore();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (postData === undefined) return;
     const postImgFile = data.file[0];
     const fileUuid = uuid();
     const postImage = postImgFile === undefined ? postData.postImage : `/postImg/${fileUuid}`;
@@ -52,7 +48,7 @@ export const UpdatePost = () => {
     const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
 
     const updateData = {
-      id,
+      id: postData.id,
       title: data.title,
       content: data.content,
       postImage,
@@ -81,9 +77,12 @@ export const UpdatePost = () => {
   };
 
   useEffect(() => {
-    setValue("title", title);
-    setValue("content", content);
+    if (postData === undefined) return;
+    setValue("title", postData.title);
+    setValue("content", postData.content);
   }, []);
+
+  if (postData === undefined) return <p>데이터를 불러올 수 없습니다.</p>;
 
   return (
     <div className="w-[1600px] mx-auto mt-[40px]">
@@ -123,11 +122,11 @@ export const UpdatePost = () => {
               alt="왼쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
-          ) : leftWallpaperId === null ? (
+          ) : postData.leftWallpaperId === null ? (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${leftWallpaperId}`}
+              src={`${storageUrl}/wallpaper/${postData.leftWallpaperId}`}
               alt="왼쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
@@ -144,11 +143,11 @@ export const UpdatePost = () => {
               alt="오른쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
             />
-          ) : rightWallpaperId === null ? (
+          ) : postData.rightWallpaperId === null ? (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${rightWallpaperId}`}
+              src={`${storageUrl}/wallpaper/${postData.rightWallpaperId}`}
               alt="오른쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
@@ -160,11 +159,11 @@ export const UpdatePost = () => {
               alt="바닥재"
               className="w-[40px] h-[40px] rounded-full absolute right-[140px]"
             />
-          ) : tileId === null ? (
+          ) : postData.tileId === null ? (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${tileId}`}
+              src={`${storageUrl}/wallpaper/${postData.tileId}`}
               alt="바닥재"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
             />
@@ -184,7 +183,7 @@ export const UpdatePost = () => {
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="h-[449px] border-[1px] border-[#a7a7a7] focus:outline-none p-[20px] text-[25px] resize-none"
+          className="h-[449px] border border-[#a7a7a7] focus:outline-none p-[20px] text-[25px] resize-none"
           {...register("content", {
             required: "내용을 입력해주세요.",
             maxLength: { value: 1000, message: "내용은 1000자 이내로 작성해 주세요!" },

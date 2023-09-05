@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { logout } from "api/supabase";
-import close from "assets/close.svg";
+import close from "assets/svgs/close.svg";
 import { useDialog } from "components/common";
 import { useAuthStore } from "store";
 

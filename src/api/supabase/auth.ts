@@ -137,7 +137,6 @@ export const changeMetaName = async (name: string) => {
  * @Authentication deleteUser
  */
 export const deleteUser = async (userUid: string) => {
-  await deleteImage(userUid);
   await auth.admin.deleteUser(userUid);
 };
 

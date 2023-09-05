@@ -104,7 +104,7 @@ body {
 
 .border-dashed {
   border: 30px solid #000;
-  border-image: url("assets/border.svg") 30 round;
+  border-image: url("assets/svgs/border.svg") 30 round;
 }
 
 @layer components {
@@ -124,10 +124,10 @@ body {
     @apply w-[800px] h-[450px] rounded-xl mx-5;
   }
   .section-title {
-    @apply text-3xl font-semibold;
+    @apply text-[32px] font-medium;
   }
   .view-more-icon {
-    @apply text-xl translate-y-1;
+    @apply text-xl translate-y-[6px];
   }
   .service-item {
     @apply w-[120px] h-[120px] rounded-full bg-gray-200;
@@ -143,6 +143,9 @@ body {
   }
   .flicking-slide-item {
     @apply w-[520px] h-[254px] bg-gray-200 mx-5;
+  }
+  .selected-wall-point {
+    @apply relative hover:cursor-pointer text-black after:content-[''] after:absolute after:w-1 after:h-1 after:block after:top-[-10px] after:left-[50%] after:bg-point after:rounded-full after:-translate-x-[50%];
   }
 
   .title-1 {

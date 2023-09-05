@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from "react";
 
-import CloseBtn from "assets/close.svg";
-import tileIMG from "assets/tileCalculator.svg";
-import wallPaperIMG from "assets/wallpaperCalculator.svg";
+import CloseBtn from "assets/svgs/close.svg";
+import tileIMG from "assets/svgs/tileCalculator.svg";
+import wallPaperIMG from "assets/svgs/wallpaperCalculator.svg";
 import { type ResultCalculator, type WidthHeight } from "types/calculator";
 
 import CalculatorArticle from "./CalculatorArticle";
@@ -13,6 +13,8 @@ const IMG_LIST: string[] = [wallPaperIMG, tileIMG];
 
 export const ResouresCalculator = (): JSX.Element => {
   const [visible, setVisible] = useState<boolean>(false);
+  const [selectItem, setSelectItem] = useState<number>(0);
+
   const [resoures, setResoures] = useState<WidthHeight>({
     width: "",
     height: "",
@@ -25,10 +27,12 @@ export const ResouresCalculator = (): JSX.Element => {
     resultArea: "",
     result_consumption: "",
   });
-  const [selectItem, setSelectItem] = useState<number>(0);
 
   const onSubmitResouresCalculator = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (resoures.width === "" || resoures.height === "") return;
+    if (workingArea.width === "" || workingArea.height === "") return;
+    setVisible(true);
     handleCalculrator();
   };
 
@@ -54,6 +58,10 @@ export const ResouresCalculator = (): JSX.Element => {
 
   const onVisibleBtn = useCallback(() => {
     setVisible(false);
+    setResult({
+      resultArea: "",
+      result_consumption: "",
+    });
   }, []);
 
   const onSelectItem = useCallback((index: number) => {
@@ -68,6 +76,14 @@ export const ResouresCalculator = (): JSX.Element => {
     });
   }, []);
 
+  const handleTapClick = (index: number) => {
+    onSelectItem(index);
+    setVisible(false);
+    setWorkingArea({
+      width: "",
+      height: "",
+    });
+  };
   return (
     <>
       <div>
@@ -78,7 +94,7 @@ export const ResouresCalculator = (): JSX.Element => {
               return (
                 <li
                   onClick={() => {
-                    onSelectItem(index);
+                    handleTapClick(index);
                   }}
                   key={item}
                   className={`flex contents-center w-full px-6 py-3 mr-4 border rounded-lg cursor-pointer ${

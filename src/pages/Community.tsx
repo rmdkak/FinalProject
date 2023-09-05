@@ -30,11 +30,8 @@ export const Community = () => {
     switch (type) {
       case "all":
         return (
-          post.tileId !== null &&
-          post.leftWallpaperId !== null &&
-          post.rightWallpaperId !== null &&
-          post.leftColorCode !== null &&
-          post.rightColorCode !== null
+          (post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null) ||
+          (post.tileId !== null && post.leftColorCode !== null && post.rightColorCode !== null)
         );
       case "interior":
         return post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null;
@@ -89,7 +86,7 @@ export const Community = () => {
   return (
     <div className="flex-column w-[1280px] mx-auto mt-20 gap-10">
       <div className="text-center border-b border-gray-400 drop-shadow-xl">
-        <p className="text-[32px] pb-6">커뮤니티</p>
+        <p className="text-[32px] pb-6 font-medium">커뮤니티</p>
       </div>
       <div className="gap-4 flex-column">
         <div className="flex items-center gap-3">
@@ -97,7 +94,7 @@ export const Community = () => {
           <p className="text-gray01">현재 가장 인기있는 글을 먼저 만나보세요!</p>
         </div>
         {/* 슬라이더 영역 */}
-        <Flicking align={"prev"} circular={true} panelsPerView={3} plugins={plugins}>
+        <Flicking align={"prev"} circular={true} panelsPerView={3} moveType={"strict"} plugins={plugins}>
           {flickingPostList?.map((post) => (
             <div
               key={post.id}
@@ -123,17 +120,17 @@ export const Community = () => {
                       <img
                         src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
                         alt="벽지"
-                        className="relative w-[48px] h-[48px] left-[76px] rounded-full"
+                        className="relative w-[48px] h-[48px] left-[76px] rounded-full border border-gray05"
                       />
                       <img
                         src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
                         alt="벽지"
-                        className="relative w-[48px] h-[48px] left-[66px] rounded-full"
+                        className="relative w-[48px] h-[48px] left-[66px] rounded-full border border-gray05"
                       />
                       <img
                         src={`${storageUrl}/tile/${post.tileId as string}`}
                         alt="바닥"
-                        className="relative w-[48px] h-[48px] left-[56px] rounded-full"
+                        className="relative w-[48px] h-[48px] left-[56px] rounded-full border border-gray05"
                       />
                     </div>
                   )}
@@ -219,17 +216,17 @@ export const Community = () => {
                       <img
                         src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
                         alt="벽지"
-                        className="w-12 h-12 rounded-full relative top-[10px]"
+                        className="w-12 h-12 rounded-full relative top-[10px] border border-gray05"
                       />
                       <img
                         src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
                         alt="벽지"
-                        className="relative w-12 h-12 rounded-full"
+                        className="relative w-12 h-12 border rounded-full border-gray05"
                       />
                       <img
                         src={`${storageUrl}/tile/${post.tileId as string}`}
                         alt="바닥"
-                        className="w-12 h-12 rounded-full relative bottom-[10px]"
+                        className="w-12 h-12 rounded-full relative bottom-[10px] border border-gray05"
                       />
                     </div>
                   )}
