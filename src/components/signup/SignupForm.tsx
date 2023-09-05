@@ -72,7 +72,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         : setError("id", { message: "이미 존재하는 이메일입니다." });
     }
   };
-  console.log(errors.id?.message);
+
   const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
     const { id } = data;
 
