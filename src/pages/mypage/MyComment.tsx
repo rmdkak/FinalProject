@@ -2,7 +2,7 @@ import { type ChangeEvent, useState } from "react";
 import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import arrowIcon from "assets/arrowIcon.svg";
+import arrowIcon from "assets/svgs/arrowIcon.svg";
 import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData } from "components";
 import { useMypage, usePagination, useSearchBar } from "hooks";
 

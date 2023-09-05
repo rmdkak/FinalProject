@@ -169,28 +169,28 @@ export const Post = () => {
         <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
           {wallpaperPaint.left !== null ? (
             <div
-              className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
+              className="w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray05"
               style={{ backgroundColor: wallpaperPaint.left }}
             />
           ) : wallPaper.left.image !== null ? (
             <img
               src={`${storageUrl}${wallPaper.left.image}`}
               alt="왼쪽벽지"
-              className="w-[40px] h-[40px] rounded-full absolute right-[200px]"
+              className="w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray05"
             />
           ) : (
             <div className="bg-gray06 w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray01" />
           )}
           {wallpaperPaint.right !== null ? (
             <div
-              className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
+              className="w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray05"
               style={{ backgroundColor: wallpaperPaint.right }}
             />
           ) : wallPaper.right.image !== null ? (
             <img
               src={`${storageUrl}${wallPaper.right.image}`}
               alt="오른쪽벽지"
-              className="w-[40px] h-[40px] rounded-full absolute right-[170px]"
+              className="w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray05"
             />
           ) : (
             <div className="bg-gray07 w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray01" />
@@ -199,7 +199,7 @@ export const Post = () => {
             <img
               src={`${storageUrl}${tile.image}`}
               alt="바닥재"
-              className="w-[40px] h-[40px] rounded-full absolute right-[140px]"
+              className="w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray05"
             />
           ) : (
             <div className="bg-gray08 w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray01" />
@@ -222,7 +222,7 @@ export const Post = () => {
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="h-[449px] border-[1px] border-[#a7a7a7] focus:outline-none p-[20px] text-[25px] resize-none"
+          className="h-[449px] border border-[#a7a7a7] focus:outline-none p-[20px] text-[18px] resize-none"
           {...register("textarea", { required: true, maxLength: 1000 })}
         />
         <div className="mt-2 contents-between">

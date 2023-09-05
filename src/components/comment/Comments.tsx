@@ -16,7 +16,7 @@ export const Comments = () => {
   const sessionId = currentSession?.user.id;
   const [openReply, setOpenReply] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string>("");
-  const [currentImg, setCurrentImg] = useState<string>("");
+  const [currentImg, setCurrentImg] = useState<string | null>(null);
   const [newComment, setNewComment] = useState<string>("");
   const [selectedCommentImgFile, setSelectedCommentImgFile] = useState<File | null>(null);
 
@@ -62,7 +62,7 @@ export const Comments = () => {
     const newCommentImg = selectedCommentImgFile === null ? currentImg : `/commentImg/${UUID}`;
     if (selectedCommentImgFile !== null) {
       await saveCommentImageHandler({ id: UUID, commentImgFile: selectedCommentImgFile });
-      await deleteCommentImageHandler(currentImg);
+      await deleteCommentImageHandler(currentImg as string);
     }
     if (type === "comment") updateCommentMutation.mutate({ commentId: id, newComment, newCommentImg });
     if (type === "reply") updateReplyMutation.mutate({ replyId: id, newReply: newComment });

@@ -1,6 +1,6 @@
 import React from "react";
 
-import CloseBtn from "assets/close.svg";
+import CloseBtn from "assets/svgs/close.svg";
 import { type Wallpaper, useServiceStore } from "store";
 interface Props {
   item: Wallpaper;

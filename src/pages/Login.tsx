@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { type SubmitHandler } from "react-hook-form";
-import { FaRegSquareCheck } from "react-icons/fa6";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
 import { login, githubLogin, googleLogin, kakaoLogin } from "api/supabase";
-import githubLogo from "assets/githubLogo.svg";
-import googleLogo from "assets/googleLogo.svg";
-import kakaoLogo from "assets/kakaoLogo.svg";
+import checkboxtrue from "assets/svgs/checkboxtrue.svg";
+import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
+import githubLogo from "assets/svgs/githubLogo.svg";
+import googleLogo from "assets/svgs/googleLogo.svg";
+import kakaoLogo from "assets/svgs/kakaoLogo.svg";
 import { PasswordVisibleButton, InvalidText, useDialog } from "components";
 import { useAuthStore } from "store";
 
@@ -57,7 +58,7 @@ export const Login = () => {
   }, []);
 
   return (
-    <div className="w-[560px] flex-column my-20 items-center mx-auto">
+    <div className="w-[560px] flex-column my-10 items-center mx-auto">
       <h2 className="w-full text-center pb-[24px] border-b border-black title-3">로그인</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-[40px]">
         <label htmlFor="email" className="text-[12px] font-normal leading-[110%] text-gray01">
@@ -104,7 +105,7 @@ export const Login = () => {
         <InvalidText errorsMessage={errors.password?.message} />
 
         <p>{errors.password?.message}</p>
-        <div className="flex items-center justify-between h-[20px] mt-[24px] text-gray02">
+        <div className="flex items-center justify-between h-[20px] mt-[16px] text-gray02">
           <div className="flex items-center h-full">
             <input
               id="logging"
@@ -118,9 +119,9 @@ export const Login = () => {
               className="flex contents-center gap-[8px] text-[12px] leading-[110%] self-center cursor-pointer hover:text-black"
             >
               {stayLoggedInStatus ? (
-                <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
+                <img src={checkboxtrue} alt="checkbox" />
               ) : (
-                <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
+                <img src={ckeckboxfalse} alt="checkbox" />
               )}
               로그인 유지
             </label>
@@ -142,7 +143,7 @@ export const Login = () => {
         <button className="auth-button mt-[24px] text-black auth-button-text point-button">로그인</button>
         <InvalidText errorsMessage={errors.root?.message} />
 
-        <div className="w-full mt-[40px] h-[120px]">
+        <div className="w-full mt-[30px] h-[120px]">
           <div className="relative flex contents-center h-[48px]">
             <div className="absolute w-full h-[1px] bg-[#D9D9D9] z-0" />
             <h3 className="w-[413] p-[12px] text-[14px] font-normal leading-[24px] z-10 bg-white">
@@ -153,7 +154,7 @@ export const Login = () => {
             <button
               onClick={kakaoLogin}
               type="button"
-              className="flex w-full contents-center gap-[8px] border-[1px] rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
+              className="flex w-full contents-center gap-[8px] border rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
             >
               <img src={kakaoLogo} />
               <p>Kakao</p>
@@ -161,7 +162,7 @@ export const Login = () => {
             <button
               onClick={googleLogin}
               type="button"
-              className="flex w-full contents-center gap-[8px] border-[1px] rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
+              className="flex w-full contents-center gap-[8px] border rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
             >
               <img src={googleLogo} />
               Google
@@ -169,7 +170,7 @@ export const Login = () => {
             <button
               onClick={githubLogin}
               type="button"
-              className="flex w-full contents-center gap-[8px] border-[1px] rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
+              className="flex w-full contents-center gap-[8px] border rounded-[8px] text-gray01 h-[48px] px-[24px] py-[12px]"
             >
               <img src={githubLogo} />
               Github
@@ -177,9 +178,9 @@ export const Login = () => {
           </div>
         </div>
 
-        <div className="flex-column contents-center gap-[24px] mt-[64px]">
+        <div className="flex-column contents-center gap-[24px] mt-[24px]">
           <p className="text-gray03 text-[14px] text-center mb-[16px]">
-            회원가입하고 더 많은 인터레어 조합을 확인해보세요!
+            회원가입하고 더 많은 인테리어 조합을 확인해보세요!
           </p>
           <Link
             to={"/signup"}

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { BsShare, BsCalculator } from "react-icons/bs";
+import { BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
-import calcArrow from "assets/calcArrow.svg";
+import calcArrow from "assets/svgs/calcArrow.svg";
+import share from "assets/svgs/icon_share.svg";
 import {
   GetColor,
   InteriorSection,
@@ -169,7 +170,7 @@ export const InteriorPreview = () => {
   return (
     <>
       <div className="mx-auto flex-column w-[1280px] gap-10">
-        <h1 className="mt-20 text-3xl font-bold ">Interior Design</h1>
+        <h1 className="mt-20 text-3xl font-medium">인테리어 조합</h1>
         <div className="gap-40 flex-column">
           {/* 벽지/ 타일 비교 박스 */}
           <div className="flex w-full gap-20 mb-20">
@@ -185,7 +186,9 @@ export const InteriorPreview = () => {
                     <div
                       style={{
                         backgroundImage: `url(${
-                          interiorSelecteIndex !== 5 ? leftWallPaperBg : (wallPaper.left.image as string)
+                          interiorSelecteIndex !== SELECT_CUSTOM_INDEX
+                            ? leftWallPaperBg
+                            : (wallPaper.left.image as string)
                         })`,
                         backgroundSize: `${LEFT_WALLPAPER_BGSIZE}px, ${LEFT_WALLPAPER_BGSIZE}px`,
                       }}
@@ -194,7 +197,9 @@ export const InteriorPreview = () => {
                     <div
                       style={{
                         backgroundImage: `url(${
-                          interiorSelecteIndex !== 5 ? RightWallPaperBg : (wallPaper.right.image as string)
+                          interiorSelecteIndex !== SELECT_CUSTOM_INDEX
+                            ? RightWallPaperBg
+                            : (wallPaper.right.image as string)
                         })`,
                         backgroundSize: `${RIFHT_WALLPAPER_BGSIZE}px, ${RIFHT_WALLPAPER_BGSIZE}px`,
                       }}
@@ -262,12 +267,12 @@ export const InteriorPreview = () => {
                   )}
                   <button
                     onClick={recommendDesign}
-                    className="flex-auto h-[64px] border-[1px] rounded-xl border-gray05 outline-button-hover"
+                    className="flex-auto h-[64px] border rounded-xl border-gray05 outline-button-hover"
                   >
                     추천하기
                   </button>
-                  <button className="w-[64px] h-[64px] rounded-xl border-[1px] border-gray05 outline-button-hover">
-                    <BsShare className="mx-auto w-7 h-7 fill-black" />
+                  <button className="w-[64px] h-[64px] rounded-xl border border-gray05 outline-button-hover">
+                    <img src={share} className="mx-auto" />
                   </button>
                 </div>
               </div>

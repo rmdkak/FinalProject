@@ -8,6 +8,11 @@ interface Props {
   placeholder?: string;
   defaultValue?: string;
   selfEnterOption: boolean;
+  checkedDuplicate?: {
+    email: boolean;
+    name: boolean;
+  };
+  setCheckedDuplicate?: React.Dispatch<{ email: boolean; name: boolean }>;
 }
 
 export const Select = ({
@@ -17,6 +22,8 @@ export const Select = ({
   placeholder = "선택해주세요.",
   defaultValue,
   selfEnterOption,
+  checkedDuplicate,
+  setCheckedDuplicate,
 }: Props) => {
   const [toggleIsOpen, setToggleIsOpen] = useState(false);
   const [selfEnterIsOpen, setSelfEnterIsOpen] = useState(false);
@@ -41,6 +48,9 @@ export const Select = ({
           <input
             onChange={(event) => {
               setSelectedValue(event?.target.value);
+              if (checkedDuplicate !== undefined && setCheckedDuplicate !== undefined) {
+                setCheckedDuplicate({ ...checkedDuplicate, email: false });
+              }
             }}
             value={selectedValue ?? defaultValue}
             className="w-full auth-input"

@@ -1,7 +1,8 @@
 import { useState, type ChangeEvent } from "react";
-import { FaRegSquareCheck } from "react-icons/fa6";
 
-import arrowIcon from "assets/arrowIcon.svg";
+import arrowIcon from "assets/svgs/arrowIcon.svg";
+import checkboxtrue from "assets/svgs/checkboxtrue.svg";
+import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
 
 import { TERMS_1, TERMS_2 } from "./constant";
 import { SignupStep } from "./SignupStep";
@@ -48,11 +49,11 @@ export const TermsOfUse = ({ nextStep }: Props) => {
             id="allCheck"
             type="checkbox"
           />
-          <label htmlFor="allCheck" className="flex contents-center body-3">
+          <label htmlFor="allCheck" className="flex gap-3 contents-center body-3 cursor-pointer">
             {termsInputIsCheck.terms1 && termsInputIsCheck.terms2 ? (
-              <FaRegSquareCheck className="w-[24px] h-[24px] mr-[12px] text-black" />
+              <img src={checkboxtrue} alt="checkbox" />
             ) : (
-              <FaRegSquareCheck className="w-[24px] h-[24px] mr-[12px] text-gray05" />
+              <img src={ckeckboxfalse} alt="checkbox" />
             )}
             전체 동의
           </label>
@@ -60,11 +61,11 @@ export const TermsOfUse = ({ nextStep }: Props) => {
         <li className={`relative w-full py-[16px]`}>
           <div className="flex items-center justify-between w-full">
             <input onChange={termsCheckHandler} className="hidden" id="terms1" name="terms1" type="checkbox" />
-            <label htmlFor="terms1" className="flex contents-center body-3">
+            <label htmlFor="terms1" className="flex gap-3 contents-center body-3 cursor-pointer">
               {termsInputIsCheck.terms1 ? (
-                <FaRegSquareCheck className="w-[24px] h-[24px] mr-[12px] text-black" />
+                <img src={checkboxtrue} alt="checkbox" />
               ) : (
-                <FaRegSquareCheck className="w-[24px] h-[24px] mr-[12px] text-gray05" />
+                <img src={ckeckboxfalse} alt="checkbox" />
               )}
               [필수] <span className="text-gray02 ml-[4px]">이용약관 동의</span>
             </label>
@@ -81,11 +82,11 @@ export const TermsOfUse = ({ nextStep }: Props) => {
         <li className={`relative w-full py-[16px]`}>
           <div className="flex items-center justify-between w-full">
             <input onChange={termsCheckHandler} className="hidden" id="terms2" name="terms2" type="checkbox" />
-            <label htmlFor="terms2" className="flex contents-center body-3">
+            <label htmlFor="terms2" className="flex gap-3 contents-center body-3 cursor-pointer">
               {termsInputIsCheck.terms2 ? (
-                <FaRegSquareCheck className="w-[24px] h-[24px] mr-[12px] text-black" />
+                <img src={checkboxtrue} alt="checkbox" />
               ) : (
-                <FaRegSquareCheck className="w-[24px] h-[24px] mr-[12px] text-gray05" />
+                <img src={ckeckboxfalse} alt="checkbox" />
               )}
               [필수] <span className="text-gray02 ml-[4px]">개인정보 수집 및 이용 동의</span>
             </label>

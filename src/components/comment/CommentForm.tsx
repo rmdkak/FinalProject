@@ -97,7 +97,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
             await handleTextAreaChange(e);
             autoResizeTextArea(e.target);
           }}
-          placeholder={placeHolder}
+          placeholder={currentSession !== null ? placeHolder : ""}
           className="w-full text-[20px] py-[12px] resize-none focus:outline-none"
           disabled={currentSession === null}
         />

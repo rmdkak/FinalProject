@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import checkCircle from "assets/checkCircle.svg";
+import checkCircle from "assets/svgs/checkCircle.svg";
 import { useAuthStore } from "store";
 
 import { SignupStep } from "./SignupStep";
