@@ -3,7 +3,7 @@ import { BiCommentDetail } from "react-icons/bi";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
-import viewMore from "assets/viewMore.svg";
+import viewMore from "assets/svgs/viewMore.svg";
 import { PreviewBookmark, PreviewComment, PreviewLike, PreviewPost, MypageTitle } from "components";
 import { useAuth, useMypage } from "hooks";
 import { useAuthStore } from "store";

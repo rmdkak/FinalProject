@@ -14,8 +14,8 @@ import {
   storageUrl,
   uploadImage,
 } from "api/supabase";
-import photoCamera from "assets/photoCamera.svg";
-import xmark from "assets/xmark.svg";
+import photoCamera from "assets/svgs/photoCamera.svg";
+import xmark from "assets/svgs/xmark.svg";
 import {
   type PasswordVisible,
   PasswordVisibleButton,
@@ -41,7 +41,7 @@ const defaultProfileImgUrl =
 
 export const UpdateUser = () => {
   const navigate = useNavigate();
-  const { Alert } = useDialog();
+  const { Alert, Confirm } = useDialog();
 
   const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
@@ -142,9 +142,20 @@ export const UpdateUser = () => {
   };
 
   const deleteAuth = async () => {
-    await deleteUser(userId);
-    await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
-    await deleteImage(prevProfileImg);
+    if (
+      await Confirm(
+        <>
+          <p>회원탈퇴를 하시겠습니까?</p>
+          <p>탈퇴 후에는 되돌릴 수 없습니다.</p>
+        </>,
+      )
+    ) {
+      await deleteUser(userId);
+      await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
+      if (prevProfileImg !== "defaultImg") {
+        await deleteImage(prevProfileImg);
+      }
+    }
   };
 
   if (currentUser === undefined) {
@@ -152,7 +163,10 @@ export const UpdateUser = () => {
     return <p>에러페이지</p>;
   }
   const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
-  const prevProfileImg = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
+  const prevProfileImg =
+    currentProfileImg === `${storageUrl}/profileImg/defaultImg`
+      ? "defaultImg"
+      : currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">

@@ -12,12 +12,6 @@ interface Props {
   data: Array<Tables<"WALLPAPER", "Row">>;
 }
 
-/**
- *
- * @param data
- * @param type
- * @returns
- */
 export const ServiceItem = ({ data }: Props): JSX.Element => {
   const { checkType, resetWallPaper, setWallpaperPaint, interiorSelecteIndex, interiorSelectX } = useServiceStore(
     (state) => state,
@@ -32,7 +26,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
 
   // type 에 따라 CHECK_DATA의 값이 바뀝니다.
   // 이 값은 벽지 타이틀이름 배열과, 바닥재 타이틀이름 배열입니다.
-  const CHECK_DATA = checkType === "wallPaper" ? TILE_TEXTURE_LIST : WALLPAPER_TEXTURE_LIST;
+  const CHECK_DATA = checkType === "wallPaper" ? WALLPAPER_TEXTURE_LIST : TILE_TEXTURE_LIST;
 
   // 클릭시 스위치에서 보내준 값으로 필터를 돌리는 함수입니다.
   // 그 함수는 변수에 저장됩니다. (useState를 사용하면 무한 렌더링에 걸립니다.)
@@ -52,24 +46,20 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
   // 값이 없을경우 filterDate = data(전체데이터) 로 할당됩니다.
   let changeName: string = "";
   switch (CHECK_DATA[interiorSelecteIndex]) {
-    case CHECK_DATA[0]:
-      changeName = CHECK_DATA[0] === "전체" ? "All" : "All";
-      filterDate(changeName);
-      break;
     case CHECK_DATA[1]:
-      changeName = CHECK_DATA[1] === "장판" ? "wallPaper" : "floorMat";
+      changeName = CHECK_DATA[1] === "장판" ? "장판" : "벽지";
       filterDate(changeName);
       break;
     case CHECK_DATA[2]:
-      changeName = CHECK_DATA[2] === "마루" ? "tile" : "floor";
+      changeName = CHECK_DATA[2] === "마루" ? "마루" : "타일";
       filterDate(changeName);
       break;
     case CHECK_DATA[3]:
-      changeName = CHECK_DATA[3] === "데코타일" ? "poserin" : "decorationtile";
+      changeName = CHECK_DATA[3] === "포세린" ? "포세린" : "포세린";
       filterDate(changeName);
       break;
     case CHECK_DATA[4]:
-      changeName = CHECK_DATA[4] === "포세린" ? "paint" : "poserin";
+      changeName = CHECK_DATA[4] === "데코타일" ? "데코타일" : "페인트";
       filterDate(changeName);
       break;
     case CHECK_DATA[5]:
@@ -93,7 +83,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
           changeColorPicker(color);
         }}
         disableAlpha={true}
-        width="400"
+        width="1"
       />
     );
   } else {

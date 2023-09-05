@@ -71,7 +71,7 @@ export const useServiceStore = create<Store>()((set) => ({
   },
 
   // 인테리어 헤더
-  interiorSelecteIndex: -1,
+  interiorSelecteIndex: 0,
   setInteriorSelecteIndex: (index) => {
     set((state) => ({ interiorSelecteIndex: (state.interiorSelecteIndex = index) }));
   },

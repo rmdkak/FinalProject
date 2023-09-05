@@ -50,28 +50,20 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           <div className="flex items-center gap-3 my-6">
             <h2 className="text-lg font-medium">현재 색상 코드</h2>
             <span
-              className={
-                colorSide
-                  ? "text-gray-300 hover:cursor-pointer"
-                  : "text-black border-b-2 border-black hover:cursor-pointer"
-              }
+              className={colorSide ? "text-gray-03 hover:cursor-pointer" : "selected-wall-point"}
               onClick={() => {
                 setColorSide(false);
               }}
             >
-              왼쪽 벽
+              좌측 벽
             </span>
             <span
-              className={
-                colorSide
-                  ? "text-black border-b-2 border-black hover:cursor-pointer"
-                  : "text-gray-300 hover:cursor-pointer"
-              }
+              className={colorSide ? "selected-wall-point" : "text-gray03 hover:cursor-pointer"}
               onClick={() => {
                 setColorSide(true);
               }}
             >
-              오른쪽 벽
+              우측 벽
             </span>
           </div>
 
@@ -100,7 +92,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           <div>
             <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
             <ul className="flex flex-wrap gap-4">
-              <li className="text-xl font-bold">색을 추출 중입니다.</li>
+              <li className="text-gray02">색을 추출 중입니다.</li>
             </ul>
           </div>
           <div>
@@ -118,7 +110,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           <div>
             <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
             <ul className="flex flex-wrap gap-4">
-              <li className="text-xl font-bold text-gray01">색을 선택해주세요.</li>
+              <li className="text-gray02">색을 선택해주세요.</li>
             </ul>
           </div>
           <div>
@@ -136,7 +128,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           <div>
             <h2 className="mb-6 pt-6 text-lg font-medium border-t-[1px] border-gray05">현재 색상 코드</h2>
             <ul className="flex flex-wrap gap-4">
-              <li className="text-xl font-bold">색을 추출하는데 실패했습니다.</li>
+              <li className="text-gray02">색을 추출하는데 실패했습니다.</li>
             </ul>
           </div>
           <div>
@@ -155,28 +147,20 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
             <div className="flex items-center gap-3 pt-2 my-6">
               <h2 className="text-lg font-medium">현재 색상 코드</h2>
               <span
-                className={
-                  colorSide
-                    ? "text-gray-300 hover:cursor-pointer"
-                    : "text-black border-b-2 border-black hover:cursor-pointer"
-                }
+                className={colorSide ? "text-gray-03 hover:cursor-pointer" : "selected-wall-point"}
                 onClick={() => {
                   setColorSide(false);
                 }}
               >
-                왼쪽 벽
+                좌측 벽
               </span>
               <span
-                className={
-                  colorSide
-                    ? "text-black border-b-2 border-black hover:cursor-pointer"
-                    : "text-gray-300 hover:cursor-pointer"
-                }
+                className={colorSide ? "selected-wall-point" : "text-gray03 hover:cursor-pointer"}
                 onClick={() => {
                   setColorSide(true);
                 }}
               >
-                오른쪽 벽
+                우측 벽
               </span>
             </div>
 

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { logout } from "api/supabase";
-import hambergerMenu from "assets/hamburgerMenu.svg";
-import logOutIcon from "assets/logout.svg";
-import userIcon from "assets/user.svg";
+import hambergerMenu from "assets/headersvg/cate.svg";
+import logOutIcon from "assets/headersvg/LogoutOutline.svg";
+import userIcon from "assets/headersvg/user.svg";
 import { Sidebar, useDialog } from "components";
 import { useAuthStore } from "store";
 
@@ -35,6 +35,11 @@ export const Header = () => {
     navigate("/mypage");
   };
 
+  // 로그인페이지 이동
+  const goToLogin = () => {
+    navigate("/login");
+  };
+
   const openSideBarHandler = (): void => {
     setIsOpen(true);
   };
@@ -50,29 +55,35 @@ export const Header = () => {
           {currentSession === null ? (
             <>
               {/* 로그인 안되어있는 메뉴 */}
-              <button onClick={openSideBarHandler}>
-                <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]"></span>
-                <img src={hambergerMenu} alt="햄버거메뉴 이미지" />
-              </button>
+              <div className="flex gap-2 contents-center">
+                <button onClick={goToLogin}>
+                  <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그인</span>
+                  <img src={logOutIcon} alt="로그인 메뉴 이미지" className="rotate-180" />
+                </button>
+                <button onClick={openSideBarHandler}>
+                  <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
+                  <img src={hambergerMenu} alt="햄버거 메뉴" />
+                </button>
+              </div>
             </>
           ) : (
             <>
               {/* 로그인 되어있는 메뉴 */}
               {/* 로그아웃 */}
-              <div className="flex contents-center">
-                <button className="mr-2" onClick={logoutHandler}>
+              <div className="flex gap-2 contents-center">
+                <button onClick={logoutHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
                   <img src={logOutIcon} alt="로그아웃" />
                 </button>
 
                 {/* 마이페이지 */}
-                <button className="mr-2" onClick={goToMypage}>
+                <button onClick={goToMypage}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">마이페이지버튼</span>
                   <img src={userIcon} alt="마이 페이지" />
                 </button>
 
                 {/* 햄버거 */}
-                <button onClick={openSideBarHandler} className="">
+                <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
                   <img src={hambergerMenu} alt="햄버거 메뉴" />
                 </button>

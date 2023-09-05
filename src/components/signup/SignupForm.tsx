@@ -72,7 +72,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         : setError("id", { message: "이미 존재하는 이메일입니다." });
     }
   };
-
+  console.log(errors.id?.message);
   const onSubmit: SubmitHandler<SignupInputs> = async (data) => {
     const { id } = data;
 
@@ -84,6 +84,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       setError("idAnswer", { message: "본인확인 질문을 선택해주세요." });
       return;
     }
+
     if (!checkedDuplicate.email) {
       setError("id", { message: "중복 체크를 해주세요." });
       return;
@@ -93,7 +94,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
       return;
     }
 
-    const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const emailPattern = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
     const email = `${id}@${selectEmail}`;
     if (!emailPattern.test(email)) {
       setError("id", { message: "이메일 형식이 올바르지 않습니다." });
@@ -152,6 +153,8 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             selectedValue={selectEmail}
             setSelectedValue={setSelectEmail}
             selfEnterOption={true}
+            checkedDuplicate={checkedDuplicate}
+            setCheckedDuplicate={setCheckedDuplicate}
           />
           <button
             type="button"
@@ -160,13 +163,18 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
               duplicateCheck("email");
             }}
           >
-            중복 체크
+            중복확인
           </button>
         </div>
+
         {checkedDuplicate.email ? (
-          <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
-            사용 가능한 이메일입니다.
-          </p>
+          errors.id?.message !== undefined ? (
+            <InvalidText errorsMessage={errors.id?.message} size={30} />
+          ) : (
+            <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
+              사용 가능한 이메일입니다.
+            </p>
+          )
         ) : (
           <InvalidText errorsMessage={errors.id?.message} size={30} />
         )}
@@ -195,7 +203,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
               duplicateCheck("name");
             }}
           >
-            중복 체크
+            중복확인
           </button>
         </div>
         {checkedDuplicate.name ? (

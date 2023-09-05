@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import img01 from "assets/img01.png";
-import img02 from "assets/img02.png";
-import img03 from "assets/img03.png";
+import img01 from "assets/kv_img01.png";
+import img02 from "assets/kv_img02.png";
+import img03 from "assets/kv_img03.png";
 
 export const HomeKvBanner = () => {
   const initialWidths = ["w-[70%]", "w-[10%]", "w-[10%]"];

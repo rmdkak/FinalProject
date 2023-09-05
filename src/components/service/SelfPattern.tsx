@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
-import photoImage from "assets/photoImage.svg";
+import photoImage from "assets/svgs/photoImage.svg";
 import { type Wallpaper, useServiceStore } from "store";
 
 import { SelfItem } from "./SelfItem";
@@ -59,7 +59,7 @@ export const SelfPattern = (): JSX.Element => {
 
       <div
         {...getRootProps()}
-        className="w-full cursor-pointer flex-column contents-center text-center border-dashed h-[180px] box-border opacity-80 hover:opacity-100 transition-all"
+        className="w-[99%] mx-auto cursor-pointer flex-column contents-center text-center border-dashed h-[100px] box-border opacity-80 hover:opacity-100 transition-all"
       >
         <img src={photoImage} alt="사진모양 이미지" />
         <p>이미지를 드래그 & 드롭</p>

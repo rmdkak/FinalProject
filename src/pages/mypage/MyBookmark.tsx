@@ -1,8 +1,9 @@
 import { type ChangeEvent, useState } from "react";
-import { FaRegSquareCheck } from "react-icons/fa6";
 
 import { storageUrl } from "api/supabase";
-import { EmptyData, Modal, MypageSubTitle, MypageTitle } from "components";
+import checkboxtrue from "assets/svgs/checkboxtrue.svg";
+import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
+import { EmptyData, Modal, MypageSubTitle, MypageTitle, BookmarkItem } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useMypage, usePagination } from "hooks";
 import { useModalStore } from "store";
@@ -58,11 +59,13 @@ export const MyBookmark = () => {
             return (
               <li
                 key={bookmark.id}
-                className="relative border border-gray05 rounded-[12px] w-[400px] gap-[16px] h-[200px]"
+                className={`relative border ${
+                  bookmarkIdsToDelete.find((id) => id === bookmark.id) === undefined ? "border-gray05" : "border-black"
+                } rounded-[12px] w-[400px] gap-[16px] h-[200px]`}
               >
                 {/* 체크박스 */}
                 {isDeleteMode ? (
-                  <div className="absolute bg-white left-[16px] top-[16px] ">
+                  <div className="w-full h-full">
                     <input
                       id={bookmark.id}
                       type="checkbox"
@@ -71,39 +74,39 @@ export const MyBookmark = () => {
                         onChange(event, bookmark.id);
                       }}
                     />
-                    <label htmlFor={bookmark.id}>
+                    <label
+                      className={`relative flex w-full h-full ${isDeleteMode ? "z-[1]" : ""}`}
+                      htmlFor={bookmark.id}
+                    >
                       {bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined ? (
-                        <FaRegSquareCheck className="w-[20px] h-[20px] text-black" />
+                        <img className="absolute bg-white left-[16px] top-[16px]" src={checkboxtrue} alt="checkbox" />
                       ) : (
-                        <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
+                        <img className="absolute bg-white left-[16px] top-[16px]" src={ckeckboxfalse} alt="checkbox" />
                       )}
                     </label>
                   </div>
                 ) : null}
 
                 {/* 조합 이미지 */}
+
                 <button
                   onMouseUp={() => {
+                    if (isDeleteMode) return;
                     onOpenModal();
                   }}
                   onMouseDown={() => {
+                    if (isDeleteMode) return;
                     setTargetModal(bookmark.id);
                   }}
-                  className="relative flex w-[300px] mx-auto h-full contents-center"
+                  className={`absolute top-0 flex w-full h-full mx-auto contents-center ${isDeleteMode ? "z-[0]" : ""}`}
                 >
-                  <img
-                    src={`${storageUrl}/wallpaper/${bookmark.leftWallpaperId as string}`}
-                    className={`absolute translate-x-[-40%] translate-y-[-30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-blue-500`}
-                  />
-                  <img
-                    src={`${storageUrl}/wallpaper/${bookmark.rightWallpaperId as string}`}
-                    className={`absolute translate-x-[40%] translate-y-[-30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-blue-500`}
-                  />
-                  <img
-                    src={`${storageUrl}/tile/${bookmark.tileId as string}`}
-                    className={`absolute translate-y-[30%] w-[96px] border-[4px] border-white h-[96px] rounded-full bg-green-500`}
+                  <BookmarkItem
+                    leftWallpaperId={bookmark.leftWallpaperId}
+                    rightWallpaperId={bookmark.rightWallpaperId}
+                    tileId={bookmark.tileId}
                   />
                 </button>
+
                 {targetModal === bookmark.id && (
                   <Modal title="">
                     <ShowRoom

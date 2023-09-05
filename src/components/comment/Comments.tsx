@@ -16,7 +16,7 @@ export const Comments = () => {
   const sessionId = currentSession?.user.id;
   const [openReply, setOpenReply] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string>("");
-  const [currentImg, setCurrentImg] = useState<string>("");
+  const [currentImg, setCurrentImg] = useState<string | null>(null);
   const [newComment, setNewComment] = useState<string>("");
   const [selectedCommentImgFile, setSelectedCommentImgFile] = useState<File | null>(null);
 
@@ -58,11 +58,13 @@ export const Comments = () => {
       await Alert("댓글은 1글자 이상 입력해주세요.");
       return;
     }
+    console.log("currentImg", currentImg);
+    console.log("currentImg", typeof currentImg);
     const UUID = uuid();
     const newCommentImg = selectedCommentImgFile === null ? currentImg : `/commentImg/${UUID}`;
     if (selectedCommentImgFile !== null) {
       await saveCommentImageHandler({ id: UUID, commentImgFile: selectedCommentImgFile });
-      await deleteCommentImageHandler(currentImg);
+      await deleteCommentImageHandler(currentImg as string);
     }
     if (type === "comment") updateCommentMutation.mutate({ commentId: id, newComment, newCommentImg });
     if (type === "reply") updateReplyMutation.mutate({ replyId: id, newReply: newComment });

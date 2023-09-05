@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
-import arrowIcon from "assets/arrowIcon.svg";
+import arrowIcon from "assets/svgs/arrowIcon.svg";
 import { DateConvertor } from "components/common";
 import { type Tables } from "types/supabase";
 

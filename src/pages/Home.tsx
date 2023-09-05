@@ -13,14 +13,14 @@ export const Home = () => {
   return (
     <div className="items-center flex-column gap-[120px] mt-16">
       <div className="flex w-full">
-        <div className="flex-column w-[30%] min-w-[560px] mx-[5%] mb-20 mt-[100px]">
+        <div className="flex-column w-[30%] min-w-[561px] mx-[5%] mb-20 mt-[100px]">
           <div className="mx-auto my-auto">
-            <h1 className="text-[56px]">
+            <h1 className="text-[56px] leading-[130%]">
               내 스타일 그대로,
               <br />
               인테리어를 완성해보세요!
             </h1>
-            <p className="text-xl text-gray01">
+            <p className="mt-4 text-xl text-gray01 leading-[30px]">
               나만의 조합으로 완성되는, 소중한 우리 공간!
               <br />
               당신의 취향이 만들어가는 따뜻한 인테리어 세상에 오세요.
