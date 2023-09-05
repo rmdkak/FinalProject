@@ -103,7 +103,7 @@ export const Post = () => {
         await savePostImageHandler({ UUID, postImgFile });
         createPostMutation.mutate(postData);
       } catch (error) {
-        console.log("error", error);
+        console.error("error", error);
       }
     } else {
       if (tile.id === null) {
@@ -241,7 +241,12 @@ export const Post = () => {
           <label htmlFor="img" className="w-[128px] text-[14px] font-normal">
             첨부파일
           </label>
-          <input type="file" className="w-full text-[14px] focus:outline-none" {...register("file")} />
+          <input
+            type="file"
+            accept="image/png, image/jpeg, image/gif"
+            className="w-full text-[14px] focus:outline-none"
+            {...register("file")}
+          />
         </div>
         <div className="my-[60px] contents-between">
           <button

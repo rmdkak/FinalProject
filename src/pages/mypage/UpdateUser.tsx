@@ -177,7 +177,7 @@ export const UpdateUser = () => {
               <input
                 id="profileImgButton"
                 type="file"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/gif"
                 onChange={changeProfileImgHandler}
                 className="hidden"
               />

@@ -10,7 +10,7 @@ export const SignupComplete = () => {
   const name = currentSession?.user.user_metadata.name as string;
 
   return (
-    <div className="items-center flex-column mt-[80px] w-[560px] mx-auto">
+    <div className="items-center flex-column my-20 w-[560px] mx-auto">
       <div className="w-full text-center underline-pb">
         <p className="title-3 mt-[40px]">회원가입</p>
       </div>

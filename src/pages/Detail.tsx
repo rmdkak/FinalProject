@@ -31,10 +31,8 @@ export const Detail = () => {
   }
 
   useEffect(() => {
-    // useQuery에서 북마크 조회 할 아이디 값
     setDetailPostId(paramsId);
     return () => {
-      // 조회 아이디 리셋
       resetDetailPostId();
     };
   }, [paramsId]);
@@ -130,7 +128,7 @@ export const Detail = () => {
         navigate("/community");
       }
     } catch (error) {
-      console.log("error :", error);
+      console.error("error :", error);
     }
   };
 
