@@ -105,7 +105,6 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
           <div className="flex items-end text-gray03">
             {content.length}/{textAreaMaxLength}자
           </div>
-
           {/* 대댓글 취소 버튼 */}
           <div className="flex items-end gap-5">
             {replyStatus && (

@@ -16,24 +16,20 @@ export const Footer = () => {
                 STILE
               </Link>
             </h2>
-            {/* 이미지 추가해야합니다. */}
             <div>
               <ul className="flex self-center justify-end">
                 <li>
                   <a className="mr-[8px] block w-6 h-6 self-start" href="#외부경로" target="_blink">
-                    {/* 이미지 추가해야합니다. */}
                     <img className="block w-6 h-6" src={blog} alt="blog ci" />
                   </a>
                 </li>
                 <li>
                   <a className="mr-[8px] block w-6 h-6" href="#외부경로" target="_blink">
-                    {/* 이미지 추가해야합니다. */}
                     <img className="block w-6 h-6" src={github} alt="github ci" />
                   </a>
                 </li>
                 <li>
                   <a className="block w-6 h-6" href="외부경로" target="_blink">
-                    {/* 이미지 추가해야합니다. */}
                     <img className="block w-6 h-6" src={notion} alt="notion ci" />
                   </a>
                 </li>

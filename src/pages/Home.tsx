@@ -10,8 +10,6 @@ export const Home = () => {
 
   const filterdPostList = postList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 3);
 
-  // const testArr = [1, 2, 3, 4, 5, 6, 7, 8];
-
   return (
     <div className="items-center flex-column gap-[120px] mt-16">
       <div className="flex w-full">
@@ -34,20 +32,8 @@ export const Home = () => {
         </div>
       </div>
       <div className="home-section">
-        <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} page={"service"} />
+        <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} page={"interior-preview"} />
         <img src={mainPreview} alt="preview" className="w-full h-[740px]" />
-        {/* <div className="flex gap-10">
-          {testArr.map((_, idx) => (
-            <div className="items-center gap-4 flex-column w-[125px]" key={idx}>
-              <p className="w-6 h-6 text-center rounded-full bg-point">{idx + 1}</p>
-              <div className="relative inline-flex">
-                <div className="absolute top-0 right-[13px] w-12 h-12 rounded-full bg-gray01"></div>
-                <div className="absolute top-0 left-[-30.5px] w-12 h-12 rounded-full bg-gray02"></div>
-                <div className="absolute top-0 left-[15px]-0 w-12 h-12 rounded-full bg-gray03"></div>
-              </div>
-            </div>
-          ))}
-        </div> */}
       </div>
       <div className="home-section">
         <HomeContentsTitle title={"EVENT"} page={"event"} />

@@ -12,7 +12,6 @@ export const HomeKvBanner = () => {
   const [widths, setWidths] = useState<string[]>(initialWidths);
   const [currentIdx, setCurrentIdx] = useState<number>(0);
 
-  //  5초마다 KV배너 이미지 크기 변화
   useEffect(() => {
     const intervalId = setInterval(() => {
       const updatedWidths = initialWidths.map((_, index) => {

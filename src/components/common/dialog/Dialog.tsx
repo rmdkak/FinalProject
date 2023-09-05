@@ -23,7 +23,7 @@ export const Dialog = ({ onClose, onSucess, type, children }: Props) => {
       onClick={close}
     >
       <div className="absolute max-w-[500px] min-w-[400px] min-h-[200px] text-center p-10 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg left-1/2 top-1/2">
-        <p>{children}</p>
+        <div>{children}</div>
         {type === "Confirm" ? (
           <div className="mt-8">
             <Button onClick={onSucess}>확인</Button>

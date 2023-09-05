@@ -21,4 +21,4 @@
 
 ## 4. Database Table Schema Visualizer
 
-![Schema](https://github.com/rmdkak/Stile/assets/131266433/75117180-4af9-4c8d-bea1-bb4308861246)
+![Schema](https://github.com/rmdkak/Stile/assets/131266433/d2ecb6a3-b99c-4040-9d81-3e06ab1f4ce2)

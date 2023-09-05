@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React from "react";
-
 import { useServiceStore } from "store";
 
 import { SELECT_BORDER_COLOR } from "./data";

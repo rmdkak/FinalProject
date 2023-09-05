@@ -1,11 +1,3 @@
-// NOTE:
-// 사용방법
-// Modal 을 import 합니다.
-// Modal 안에 내용을 입력합니다
-// ex <Modal><div><p>예시입니다.</p></div></Modal>
-// title props로 모달의 제목을 컨트롤 할 수 있습니다.
-// ex <Modal title='반달짐승의 표효'><p>어흥</p></Modal>
-
 import React, { useEffect } from "react";
 
 import closeBtn from "assets/close.svg";
@@ -16,10 +8,6 @@ interface Props {
   title?: string;
 }
 
-//
-// size, css 등은 추후 디자인이 나오면 바꾸겠습니다.
-//
-
 export const Modal = ({ children, title }: Props): JSX.Element => {
   const { modalState, onCloseModal } = useModalStore((state) => state);
 
@@ -28,10 +16,6 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
     onCloseModal();
     return onCloseModal;
   }, []);
-
-  // 모달창 띄워질시 스크롤 없앰
-  // NOTE: 추후 논의
-  // modalState ? (document.body.style.overflowY = "hidden") : (document.body.style.overflowY = "auto");
 
   //   modalState값이 false라면 빈태그를 반환
   if (!modalState) return <></>;

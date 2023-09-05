@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-case-declarations */
 import { useEffect, useState } from "react";
 
 interface DateConvertorProps {
@@ -8,7 +6,7 @@ interface DateConvertorProps {
   className?: string;
 }
 
-export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type, className }) => {
+export const DateConvertor = ({ datetime, type, className }: DateConvertorProps) => {
   const [formattedDate, setFormattedDate] = useState<string>("");
 
   const currentTime = new Date();
@@ -41,26 +39,30 @@ export const DateConvertor: React.FC<DateConvertorProps> = ({ datetime, type, cl
         }
         break;
 
-      case "dotDate":
+      case "dotDate": {
         const year = date.getFullYear();
         const month = date.getMonth() + 1;
         const day = date.getDate();
         const dotDate = `${year}.${month}.${day}`;
         setFormattedDate(dotDate);
         break;
+      }
 
       case "hourMinute":
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        let formattedHours = hours.toString();
-        let formattedMinutes = minutes.toString();
-        if (hours < 10) {
-          formattedHours = hours.toString().padStart(2, "0");
+        {
+          const hours = date.getHours();
+          const minutes = date.getMinutes();
+          let formattedHours = hours.toString();
+          let formattedMinutes = minutes.toString();
+          if (hours < 10) {
+            formattedHours = hours.toString().padStart(2, "0");
+          }
+          if (minutes < 10) {
+            formattedMinutes = minutes.toString().padStart(2, "0");
+          }
+          setFormattedDate(`${formattedHours}:${formattedMinutes}`);
         }
-        if (minutes < 10) {
-          formattedMinutes = minutes.toString().padStart(2, "0");
-        }
-        setFormattedDate(`${formattedHours}:${formattedMinutes}`);
+
         break;
 
       default:

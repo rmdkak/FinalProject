@@ -1,6 +1,3 @@
-// NOTE 전체 탭 기능 수정해야합니다.  지금 뭔가 두루뭉실해가지고 확실히 틀을 잡읍시다.
-import React from "react";
-
 import { useServiceStore } from "store";
 
 interface Props {
@@ -28,7 +25,7 @@ const TextureTitle = ({ data }: Props): JSX.Element => {
             onTextureTitleHandler(index);
           }}
           key={item}
-          className={` hover:cursor-pointer ${interiorSelecteIndex === index ? "text-[#222]" : ""} `}
+          className={`hover:cursor-pointer ${interiorSelecteIndex === index ? "text-[#222]" : ""}`}
         >
           {item}
         </span>

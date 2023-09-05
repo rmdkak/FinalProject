@@ -122,7 +122,6 @@ export const Login = () => {
               ) : (
                 <FaRegSquareCheck className="w-[20px] h-[20px] text-gray05" />
               )}
-              {/* <CheckBoxIcon checkState={stayLoggedInStatus} changeCheckState={setStayLoggedInStatus} size={20} /> */}
               로그인 유지
             </label>
           </div>
