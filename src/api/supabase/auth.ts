@@ -95,8 +95,7 @@ export const findPassword = async ({ name, email, idQuestion, idAnswer }: FindAu
 
 export const sendEmailForFindPassword = async (email: string) => {
   const { error } = await auth.resetPasswordForEmail(email, {
-    // FIXME 배포되면 변경되어야 함
-    redirectTo: "http://localhost:3000/update-password",
+    redirectTo: "http://www.stile.kr/update-password",
   });
 
   if (error !== null) throw new Error(error.message);
