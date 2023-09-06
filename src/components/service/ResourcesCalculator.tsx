@@ -7,15 +7,15 @@ import { type ResultCalculator, type WidthHeight } from "types/calculator";
 
 import CalculatorArticle from "./CalculatorArticle";
 import CalculatorResult from "./CalculatorResult";
-import { RESOURES_CALCULATOR_LIST } from "./data";
+import { RESOURCES_CALCULATOR_LIST } from "./data";
 
 const IMG_LIST: string[] = [wallPaperIMG, tileIMG];
 
-export const ResouresCalculator = (): JSX.Element => {
+export const ResourcesCalculator = (): JSX.Element => {
   const [visible, setVisible] = useState<boolean>(false);
   const [selectItem, setSelectItem] = useState<number>(0);
 
-  const [resoures, setResoures] = useState<WidthHeight>({
+  const [resources, setResources] = useState<WidthHeight>({
     width: "",
     height: "",
   });
@@ -28,9 +28,9 @@ export const ResouresCalculator = (): JSX.Element => {
     result_consumption: "",
   });
 
-  const onSubmitResouresCalculator = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitResourcesCalculator = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (resoures.width === "" || resoures.height === "") return;
+    if (resources.width === "" || resources.height === "") return;
     if (workingArea.width === "" || workingArea.height === "") return;
     setVisible(true);
     handleCalculrator();
@@ -41,20 +41,21 @@ export const ResouresCalculator = (): JSX.Element => {
     let RESULT_CONSUMPTION: number = 0;
     if (selectItem === 0)
       RESULT_CONSUMPTION = Math.ceil(
-        +RESULT_AREA / (+resoures.width * +resoures.height) + +RESULT_AREA / (+resoures.width * +resoures.height) / 10,
+        +RESULT_AREA / (+resources.width * +resources.height) +
+          +RESULT_AREA / (+resources.width * +resources.height) / 10,
       );
 
     if (selectItem === 1)
       RESULT_CONSUMPTION = Math.ceil(
-        (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) +
-          (+RESULT_AREA * 10000) / (+resoures.width * +resoures.height) / 10,
+        (+RESULT_AREA * 10000) / (+resources.width * +resources.height) +
+          (+RESULT_AREA * 10000) / (+resources.width * +resources.height) / 10,
       );
 
     setResult({
       resultArea: `${RESULT_AREA}`,
       result_consumption: `${RESULT_CONSUMPTION}`,
     });
-  }, [workingArea, resoures]);
+  }, [workingArea, resources]);
 
   const onVisibleBtn = useCallback(() => {
     setVisible(false);
@@ -66,7 +67,7 @@ export const ResouresCalculator = (): JSX.Element => {
 
   const onSelectItem = useCallback((index: number) => {
     setSelectItem(index);
-    setResoures({
+    setResources({
       width: "",
       height: "",
     });
@@ -90,7 +91,7 @@ export const ResouresCalculator = (): JSX.Element => {
         {/* 계산기 헤더 */}
         <div className="mb-10">
           <ul className="flex items-center justify-between">
-            {RESOURES_CALCULATOR_LIST.map((item, index) => {
+            {RESOURCES_CALCULATOR_LIST.map((item, index) => {
               return (
                 <li
                   onClick={() => {
@@ -114,11 +115,11 @@ export const ResouresCalculator = (): JSX.Element => {
         </div>
 
         {/* 계산기 바디 */}
-        <form className="mb-10" onSubmit={onSubmitResouresCalculator}>
+        <form className="mb-10" onSubmit={onSubmitResourcesCalculator}>
           <CalculatorArticle
-            state={resoures}
-            setState={setResoures}
-            propId="resoures"
+            state={resources}
+            setState={setResources}
+            propId="resources"
             label="자재 사이즈"
             firstPlaceholder="폭"
             secondPlaceholder="길이"

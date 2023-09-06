@@ -33,7 +33,7 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
         className="fixed top-0 bottom-0 left-0 right-0 block w-full h-full bg-[#00000040] z-[9998]"
       ></div>
       {/* 모달 */}
-      <div className="fixed z-[9999] top-[50%] left-[50%] p-10 bg-white  translate-x-[-50%] translate-y-[-50%]">
+      <div className="fixed z-[9999] top-1/2 left-1/2 rounded-[10px] p-10 bg-white  translate-x-[-50%] translate-y-[-50%]">
         {/* 모달 헤더 */}
         <div className={`flex items-center justify-between pb-3 mb-8 ${titleBorder}`}>
           <h2 className="font-semibold">{title}</h2>

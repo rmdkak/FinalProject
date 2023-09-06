@@ -68,14 +68,17 @@ export const Login = () => {
             id="email"
             type="email"
             placeholder="이메일을 입력해주세요."
-            className={`auth-input ${errors.email?.message === undefined ? "" : "border-error"}`}
+            className={`auth-input ${errors.email?.message === undefined ? "" : "border-error"} pr-12`}
           />
-          <IoMdCloseCircle
-            className="h-[16px] absolute right-[24px] top-1/2 -translate-y-1/2 text-[25px] text-gray04 cursor-pointer"
+          <button
+            className="absolute right-6 top-1/2 -translate-y-1/2 text-[25px] text-gray04 cursor-pointer"
+            type="button"
             onClick={() => {
               resetField("email");
             }}
-          />
+          >
+            <IoMdCloseCircle className="h-4" />
+          </button>
         </div>
         <InvalidText errorsMessage={errors.email?.message} />
 
@@ -91,7 +94,7 @@ export const Login = () => {
             id="password"
             type={showPassword.password ? "text" : "password"}
             placeholder="비밀번호"
-            className={`auth-input ${errors.password?.message === undefined ? "" : "border-error"}`}
+            className={`auth-input ${errors.password?.message === undefined ? "" : "border-error"} pr-12`}
           />
           <PasswordVisibleButton
             passwordType={"password"}

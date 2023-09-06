@@ -1,9 +1,8 @@
 import { type ChangeEvent, useState } from "react";
 
-import { STORAGE_URL } from "api/supabase";
 import checkboxtrue from "assets/svgs/checkboxtrue.svg";
 import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
-import { EmptyData, Modal, MypageSubTitle, MypageTitle, BookmarkItem } from "components";
+import { EmptyData, Modal, MypageSubTitle, MypageTitle, PreviewItem } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useMypageQuery, usePagination } from "hooks";
 import { useModalStore } from "store";
@@ -35,10 +34,6 @@ export const MyBookmark = () => {
     if (!event.target.checked) {
       setBookmarkIdsToDelete(filteredBookmarkIds);
     }
-  };
-
-  const createUrl = (type: "tile" | "wallpaper", interiorId: string) => {
-    return `${STORAGE_URL}/${type}/${interiorId}`;
   };
 
   const { pageData, showPageComponent } = usePagination({
@@ -100,7 +95,7 @@ export const MyBookmark = () => {
                   }}
                   className={`absolute top-0 flex w-full h-full mx-auto contents-center ${isDeleteMode ? "z-[0]" : ""}`}
                 >
-                  <BookmarkItem
+                  <PreviewItem
                     leftWallpaperId={bookmark.leftWallpaperId}
                     rightWallpaperId={bookmark.rightWallpaperId}
                     tileId={bookmark.tileId}
@@ -110,9 +105,10 @@ export const MyBookmark = () => {
                 {targetModal === bookmark.id && (
                   <Modal title="">
                     <ShowRoom
-                      leftWallpaperBg={createUrl("wallpaper", bookmark.leftWallpaperId)}
-                      rightWallpaperBg={createUrl("wallpaper", bookmark.rightWallpaperId)}
-                      tileBg={createUrl("tile", bookmark.tileId)}
+                      leftWallpaperBg={bookmark.leftWallpaperId}
+                      rightWallpaperBg={bookmark.rightWallpaperId}
+                      tileBg={bookmark.tileId}
+                      page={"mypage"}
                     />
                   </Modal>
                 )}

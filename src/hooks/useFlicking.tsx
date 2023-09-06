@@ -23,7 +23,7 @@ export const useFlicking = () => {
     }
   };
 
-  const flickingForm = (post: postData) => {
+  const bestPostList = (post: postData) => {
     return (
       <div
         key={post.id}
@@ -90,5 +90,5 @@ export const useFlicking = () => {
       </div>
     );
   };
-  return { flickingForm, isExistCombination };
+  return { bestPostList, isExistCombination };
 };

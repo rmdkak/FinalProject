@@ -9,7 +9,8 @@ import { STORAGE_URL } from "api/supabase";
 import fillHeart from "assets/svgs/Heart.svg";
 import lineHeart from "assets/svgs/lineheart.svg";
 import share from "assets/svgs/share.svg";
-import { Comments, DateConvertor, useDialog } from "components";
+import { Comments, DateConvertor, useDialog, DetailSkeleton } from "components";
+import { ShowRoom } from "components/service/ShowRoom";
 import { usePostsQuery, usePostsLikeQuery } from "hooks";
 import { useAuthStore, useLikeStore } from "store";
 
@@ -18,14 +19,16 @@ export const Detail = () => {
   const navigate = useNavigate();
   const { resetDetailPostId, setDetailPostId } = useLikeStore();
   const { currentSession } = useAuthStore();
-  const { Confirm } = useDialog();
+  const { Confirm, Alert } = useDialog();
   const [isHaveBookmark, setIsHaveBookmark] = useState(false);
+  const [previewModal, setPreviewModal] = useState<boolean>(false);
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLikeQuery();
-  const { data: currentBookmarkData } = postLikeResponse;
   const { fetchPostsMutation, fetchDetailMutation, deletePostMutation, wholeChangePostLikeMutation } = usePostsQuery();
-  const { data: postData } = fetchDetailMutation;
-  const { data: postList } = fetchPostsMutation;
+  const { data: currentBookmarkData } = postLikeResponse;
+  const { data: postData, isError: detailError } = fetchDetailMutation;
+  const { data: postList, isError: postError } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
+  const { detailContents } = DetailSkeleton();
   let prevPage = "";
   let nextPage = "";
   if (postList !== undefined) {
@@ -135,6 +138,11 @@ export const Detail = () => {
     }
   };
 
+  if (detailError || postError) {
+    void Alert("삭제된 게시글 입니다.");
+    navigate("/community");
+  }
+
   return (
     // 상위 배너 영역
     <div className="w-[1280px] mx-auto mt-[30px]">
@@ -150,6 +158,7 @@ export const Detail = () => {
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
       {/* 게시물 헤더 영역 */}
+      {postData === undefined && detailContents}
       <div className="contents-between border-b border-gray06 my-[10px] py-[20px] items-center">
         <div className="w-[1000px] my-[10px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
@@ -161,12 +170,20 @@ export const Detail = () => {
             <DateConvertor datetime={postData?.created_at as string} type="hourMinute" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
-              <p>좋아요: {postData?.bookmark}</p>
+              <p>좋아요 {postData?.bookmark}</p>
             </div>
           </div>
         </div>
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
-          <div className="flex gap-4">
+          <div
+            className="flex gap-4"
+            onMouseEnter={() => {
+              setPreviewModal(true);
+            }}
+            onMouseLeave={() => {
+              setPreviewModal(false);
+            }}
+          >
             <div>
               <img
                 className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
@@ -191,6 +208,18 @@ export const Detail = () => {
               />
               <p className="text-[14px] text-center">바닥재</p>
             </div>
+          </div>
+        )}
+        {previewModal && (
+          <div className="absolute top-[380px] translate-x-[780px]">
+            <ShowRoom
+              leftWallpaperBg={postData?.leftWallpaperId}
+              rightWallpaperBg={postData?.rightWallpaperId}
+              leftWallpaperPaintBg={postData?.leftColorCode}
+              rightWallpaperPaintBg={postData?.rightColorCode}
+              tileBg={postData?.tileId}
+              page={"detail"}
+            />
           </div>
         )}
         {postData?.leftColorCode !== null &&
@@ -228,7 +257,7 @@ export const Detail = () => {
           )}
       </div>
       {/* 컨텐츠 영역 */}
-      <div className="flex-column gap-5 my-[60px]">
+      <div className="flex-column gap-5 mt-[15px] mb-[50px]">
         {postData?.postImage !== null && postData?.postImage !== undefined && (
           <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
         )}

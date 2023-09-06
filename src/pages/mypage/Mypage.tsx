@@ -1,7 +1,7 @@
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import defaultImg from "assets/defaultImg.jpg";
 import { MypageTitle, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
@@ -9,9 +9,10 @@ import { useAuthQuery, useMypageQuery } from "hooks";
 import { useAuthStore } from "store";
 
 export const Mypage = () => {
+  const navigate = useNavigate();
   const { currentSession } = useAuthStore();
   const { currentUserResponse } = useAuthQuery();
-  const { data: currentUser, isError } = currentUserResponse;
+  const { data: currentUser, isLoading, isError } = currentUserResponse;
 
   const {
     userPostsResponse: { data: postData },
@@ -44,10 +45,14 @@ export const Mypage = () => {
     { title: "좋아요", link: "/mypage/like", icon: <AiOutlineHeart className="w-6 h-6" />, data: likeData },
   ];
 
-  const isLoading = true;
   if (currentUser === undefined || isLoading) return <MypageSkeleton />;
 
-  if (isError) return <p>에러페이지</p>;
+  if (isError) return <MypageSkeleton />;
+
+  if (currentSession === null) {
+    navigate("/");
+    return;
+  }
 
   const { name, avatar_url: profileImg } = currentUser;
   return (
@@ -69,7 +74,7 @@ export const Mypage = () => {
               className="w-[60px] h-[60px] rounded-full text-center justify-center"
             />
           )}
-          <div className="flex-column contents-center gap-2">
+          <div className="gap-2 flex-column contents-center">
             <p className="text-black text-[18px] font-normal leading-[145%]">{`${name}님`}</p>
             {currentSession?.user.app_metadata.provider === "email" && (
               <Link

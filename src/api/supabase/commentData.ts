@@ -18,7 +18,8 @@ export const fetchComments = async (postId: string) => {
 
 // post(comments)
 export const createCommentsHandler = async (commentData: Tables<"COMMENTS", "Insert">) => {
-  await supabase.from("COMMENTS").insert(commentData).select();
+  const { error } = await supabase.from("COMMENTS").insert(commentData).select();
+  if (error !== null) throw new Error();
 };
 
 // post(스토리지 저장)

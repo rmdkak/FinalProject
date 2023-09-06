@@ -20,7 +20,7 @@ const plugins = [
 
 export const Community = () => {
   const [selectedOption, setSelectedOption] = useState<string>("whole");
-  const { flickingForm, isExistCombination } = useFlicking();
+  const { bestPostList, isExistCombination } = useFlicking();
   const navigate = useNavigate();
   const { flickingSkeleton, postListSkeleton } = CommunitySkeleton();
 
@@ -79,7 +79,7 @@ export const Community = () => {
         {/* 슬라이더 영역 */}
         <Flicking align={"prev"} circular={true} panelsPerView={3} moveType={"strict"} plugins={plugins}>
           {flickingPostList.length === 0 && flickingSkeleton}
-          {flickingPostList?.map((post) => flickingForm(post))}
+          {flickingPostList?.map((post) => bestPostList(post))}
           <ViewportSlot>
             <div className="flicking-pagination"></div>
           </ViewportSlot>

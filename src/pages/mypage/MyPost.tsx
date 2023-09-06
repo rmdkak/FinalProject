@@ -1,8 +1,7 @@
 import { type ChangeEvent, useState } from "react";
-import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
+import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
 import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
 export const MyPost = () => {
@@ -61,11 +60,7 @@ export const MyPost = () => {
                   }}
                 />
                 <label htmlFor={post.id}>
-                  {postIdsToDelete.find((id) => id === post.id) !== undefined ? (
-                    <FaRegSquareCheck className="text-black" />
-                  ) : (
-                    <FaRegSquareCheck className="text-gray05" />
-                  )}
+                  <CheckBoxIcon checkState={postIdsToDelete.find((id) => id === post.id) !== undefined} />
                 </label>
                 <p className="w-[80px]">{index + 1}</p>
                 <Link to={`/detail/${post.id as string}`} className="w-[830px]">

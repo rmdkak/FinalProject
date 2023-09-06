@@ -8,7 +8,7 @@ const WALLPAPER_TEXTURE_LIST: string[] = ["전체", "벽지", "타일", "포세�
  */
 const TILE_TEXTURE_LIST: string[] = ["전체", "장판", "마루", "포세린", "데코타일", "셀프조합"];
 
-const RESOURES_CALCULATOR_LIST: string[] = ["벽지", "타일"];
+const RESOURCES_CALCULATOR_LIST: string[] = ["벽지", "타일"];
 
 const SELECT_PAINT_INDEX: number = 4;
 
@@ -42,7 +42,7 @@ export {
   BG_MAGNIFICATION,
   WALLPAPER_TEXTURE_LIST,
   TILE_TEXTURE_LIST,
-  RESOURES_CALCULATOR_LIST,
+  RESOURCES_CALCULATOR_LIST,
   SELECT_PAINT_INDEX,
   SELECT_CUSTOM_INDEX,
 };

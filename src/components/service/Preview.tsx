@@ -10,7 +10,6 @@ interface Props {
 export const Preview = ({ leftWallPaperBg, RightWallPaperBg, tileBg }: Props) => {
   const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex, selectBgSize } = useServiceStore((state) => state);
   const isWallPaperPaintSeleted = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
-  console.log(wallPaper);
   const leftWallpaperBgsize: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.leftWall]) / 100;
   const rightWallpaperBgsize: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.rightWall]) / 100;
   const tileBgsize: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.tile]) / 100;

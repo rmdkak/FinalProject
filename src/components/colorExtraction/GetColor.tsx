@@ -19,7 +19,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
   const { wallpaperPaint, interiorSelectX } = useServiceStore((state) => state);
   const { Alert } = useDialog();
 
-  const isPaintSeleted = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
+  const isPaintSelected = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
   const changeSidePaint = interiorSelectX ? wallpaperPaint.left : wallpaperPaint.right;
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
     crossOrigin: "anonymous",
   });
 
-  if (isPaintSeleted && changeSidePaint !== null) {
+  if (isPaintSelected && changeSidePaint !== null) {
     return (
       // 페인트가 선택 됐을 경우
       <GetColorForm wallpaperColor={changeSidePaint}>
@@ -58,7 +58,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         </ul>
       </GetColorForm>
     );
-  } else if (!isPaintSeleted && data !== null) {
+  } else if (!isPaintSelected && data !== null) {
     if (loading) {
       return (
         // 이미지 클릭시 로딩
@@ -105,5 +105,5 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         </GetColorForm>
       );
     }
-  }
+  } else return <></>;
 };

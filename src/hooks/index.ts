@@ -1,5 +1,6 @@
 export * from "./useAuthQuery";
 export * from "./useBookmarkQuery";
+export * from "./useBookmark";
 export * from "./useMypageQuery";
 export * from "./usePostsLikeQuery";
 export * from "./useCommentsQuery";

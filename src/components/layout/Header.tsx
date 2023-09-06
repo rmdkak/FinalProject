@@ -58,7 +58,7 @@ export const Header = () => {
               <div className="flex gap-2 contents-center">
                 <button onClick={goToLogin}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그인</span>
-                  <img src={logOutIcon} alt="로그인 메뉴 이미지" className="rotate-180" />
+                  <img src={logOutIcon} alt="로그인 메뉴 이미지" />
                 </button>
                 <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
@@ -73,7 +73,7 @@ export const Header = () => {
               <div className="flex gap-2 contents-center">
                 <button onClick={logoutHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
-                  <img src={logOutIcon} alt="로그아웃" />
+                  <img src={logOutIcon} alt="로그아웃" className="rotate-180" />
                 </button>
 
                 {/* 마이페이지 */}

@@ -50,7 +50,6 @@ export const Post = () => {
     setWallpaperPaint,
     setTile,
   } = useServiceStore();
-
   useEffect(() => {
     const data: SelectedData | null =
       localStorage.getItem("selectedData") !== null ? JSON.parse(localStorage.getItem("selectedData") ?? "") : null;
@@ -126,7 +125,7 @@ export const Post = () => {
       localStorage.removeItem("selectedData");
       navigate("/community");
     }, 500),
-    [],
+    [tile.id, wallPaper.left.id, wallPaper.right.id, wallpaperPaint.left, wallpaperPaint.right],
   );
 
   useEffect(() => {

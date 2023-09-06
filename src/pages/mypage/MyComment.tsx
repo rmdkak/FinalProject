@@ -1,9 +1,8 @@
 import { type ChangeEvent, useState } from "react";
-import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 import arrowIcon from "assets/svgs/arrowIcon.svg";
-import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData } from "components";
+import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData, CheckBoxIcon } from "components";
 import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
 export const MyComment = () => {
@@ -73,11 +72,7 @@ export const MyComment = () => {
 
                   {/* 체크 박스 */}
                   <label htmlFor={comment.id}>
-                    {commentIdsToDelete.find((id) => id === comment.id) !== undefined ? (
-                      <FaRegSquareCheck className="text-black" />
-                    ) : (
-                      <FaRegSquareCheck className="text-gray05" />
-                    )}
+                    <CheckBoxIcon checkState={commentIdsToDelete.find((id) => id === comment.id) !== undefined} />
                   </label>
                   <div
                     className="flex contents-center gap-[24px] w-full h-full cursor-pointer"
