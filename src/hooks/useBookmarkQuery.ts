@@ -4,7 +4,7 @@ import { useAuthStore, useServiceStore } from "store";
 
 const queryKey = ["bookmark"];
 
-export const useBookmark = () => {
+export const useBookmarkQuery = () => {
   const queryClient = useQueryClient();
 
   const { currentSession } = useAuthStore();

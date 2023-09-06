@@ -8,3 +8,4 @@ export * from "./TextureTitle";
 export * from "./SelfPattern";
 export * from "./ServiceSelectItem";
 export * from "./InteriorBgSizeController";
+export * from "./Preview";

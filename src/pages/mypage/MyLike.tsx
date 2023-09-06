@@ -3,7 +3,7 @@ import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypage, usePagination, useSearchBar } from "hooks";
+import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
 export const MyLike = () => {
   const [likeIdsToDelete, setLikeIdsToDelete] = useState<string[]>([]);
@@ -12,7 +12,7 @@ export const MyLike = () => {
     return likeIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userLikesResponse, deleteUserLikeMutation } = useMypage();
+  const { userLikesResponse, deleteUserLikeMutation } = useMypageQuery();
   const { data: userLikeData } = userLikesResponse;
 
   const deleteLikes = () => {

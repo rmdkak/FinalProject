@@ -10,7 +10,7 @@ import {
   wholeChangePostLike,
 } from "api/supabase";
 
-export const usePosts = () => {
+export const usePostsQuery = () => {
   const { id: postId } = useParams();
   const queryClient = useQueryClient();
 

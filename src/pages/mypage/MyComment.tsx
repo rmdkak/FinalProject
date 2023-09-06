@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import arrowIcon from "assets/svgs/arrowIcon.svg";
 import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData } from "components";
-import { useMypage, usePagination, useSearchBar } from "hooks";
+import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
 export const MyComment = () => {
   const [isOpenComment, setIsOpenComment] = useState<string>();
@@ -18,7 +18,7 @@ export const MyComment = () => {
     return commentIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userCommentsResponse, deleteUserCommentMutation } = useMypage();
+  const { userCommentsResponse, deleteUserCommentMutation } = useMypageQuery();
   const { data: userCommentData } = userCommentsResponse;
 
   // 선택 된 아이디 배열 삭제

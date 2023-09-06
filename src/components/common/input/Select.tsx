@@ -57,7 +57,7 @@ export const Select = ({
           />
           <FaAngleDown
             onClick={changeToggleHandler}
-            className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer"
+            className="absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"
           />
         </>
       ) : (
@@ -65,10 +65,10 @@ export const Select = ({
           <p className="text-center whitespace-nowrap body-3">
             {selectedValue !== undefined ? selectedValue : placeholder}
           </p>
-          <FaAngleDown className="absolute w-[16px] h-[16px] right-[24px] top-1/2 text-gray02 translate-y-[-50%] cursor-pointer" />
+          <FaAngleDown className="absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer" />
         </button>
       )}
-      <div className={`absolute w-full top-[50px] bg-white z-50 shadow-lg body-3`}>
+      <div className="absolute w-full top-[50px] bg-white z-50 shadow-lg body-3">
         {toggleIsOpen &&
           option.map((el) => (
             <div key={el} onClick={onChangeHandler} className={`${commonStyle}`}>

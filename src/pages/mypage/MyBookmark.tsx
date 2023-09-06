@@ -1,11 +1,11 @@
 import { type ChangeEvent, useState } from "react";
 
-import { storageUrl } from "api/supabase";
+import { STORAGE_URL } from "api/supabase";
 import checkboxtrue from "assets/svgs/checkboxtrue.svg";
 import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
 import { EmptyData, Modal, MypageSubTitle, MypageTitle, BookmarkItem } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
-import { useMypage, usePagination } from "hooks";
+import { useMypageQuery, usePagination } from "hooks";
 import { useModalStore } from "store";
 
 export const MyBookmark = () => {
@@ -17,7 +17,7 @@ export const MyBookmark = () => {
     return bookmarkIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userBookmarksResponse, deleteUserBookmarkMutation } = useMypage();
+  const { userBookmarksResponse, deleteUserBookmarkMutation } = useMypageQuery();
   const { data: userBookmarkData } = userBookmarksResponse;
 
   // 선택 된 아이디 배열 삭제
@@ -38,7 +38,7 @@ export const MyBookmark = () => {
   };
 
   const createUrl = (type: "tile" | "wallpaper", interiorId: string) => {
-    return `${storageUrl}/${type}/${interiorId}`;
+    return `${STORAGE_URL}/${type}/${interiorId}`;
   };
 
   const { pageData, showPageComponent } = usePagination({

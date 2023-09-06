@@ -3,12 +3,11 @@ import { AiOutlineCamera } from "react-icons/ai";
 import { PiArrowBendDownRightThin } from "react-icons/pi";
 import uuid from "react-uuid";
 
-import { deleteCommentImageHandler, saveCommentImageHandler, storageUrl } from "api/supabase";
+import { deleteCommentImageHandler, saveCommentImageHandler, STORAGE_URL } from "api/supabase";
 import comment_no_img from "assets/comment_no_img.png";
 import defaultImg from "assets/defaultImg.jpg";
 import { useDialog, DateConvertor } from "components";
-import { useComments } from "hooks";
-import { usePosts } from "hooks/usePosts";
+import { useCommentsQuery, usePostsQuery } from "hooks";
 import { useAuthStore } from "store";
 
 import { CommentForm } from "./CommentForm";
@@ -24,13 +23,13 @@ export const Comments = () => {
 
   const { Confirm, Alert } = useDialog();
 
-  const { fetchCommentsMutation } = useComments();
+  const { fetchCommentsMutation } = useCommentsQuery();
   const { data: commentsData } = fetchCommentsMutation;
 
-  const { fetchDetailMutation } = usePosts();
+  const { fetchDetailMutation } = usePostsQuery();
   const { data: detailData } = fetchDetailMutation;
 
-  const { deleteCommentMutation, deleteReplyMutation, updateCommentMutation, updateReplyMutation } = useComments();
+  const { deleteCommentMutation, deleteReplyMutation, updateCommentMutation, updateReplyMutation } = useCommentsQuery();
 
   const handleReplyClick = (commentId: string) => {
     if (openReply === commentId) {
@@ -149,15 +148,15 @@ export const Comments = () => {
                     <img
                       src={
                         selectedCommentImgFile === null
-                          ? `${storageUrl}${comment.commentImg}`
+                          ? `${STORAGE_URL}${comment.commentImg}`
                           : selectedId === comment.id
                           ? URL.createObjectURL(selectedCommentImgFile)
-                          : `${storageUrl}${comment.commentImg}`
+                          : `${STORAGE_URL}${comment.commentImg}`
                       }
                       className="my-[20px] w-[300px] h-[250px]"
                     />
                   ) : (
-                    <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px] w-[300px] h-[250px]" />
+                    <img src={`${STORAGE_URL}${comment.commentImg}`} className="my-[20px] w-[300px] h-[250px]" />
                   )}
                   <div className="flex gap-2 text-gray02 text-[14px]">
                     <DateConvertor datetime={comment.created_at} type="timeAgo" />

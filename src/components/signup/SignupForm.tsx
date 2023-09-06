@@ -4,7 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
-import { type PasswordVisible, PasswordVisibleButton, Select, useDialog } from "components";
+import { type PasswordVisible, PasswordVisibleButton, Select, useDialog, SignupTitle } from "components";
 import { useAuthStore } from "store";
 
 import { emailOptions, idQuestionOptions, idAnswerValid, idValid, nameValid, passwordValid } from "./constant";
@@ -25,8 +25,8 @@ interface Props {
 }
 
 const DUPLICATE_CHECK_BUTTON =
-  "auth-button-text h-[48px] text-black px-[20px] whitespace-nowrap rounded-[8px] white-outline-button";
-const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]";
+  "auth-button-text h-12 text-black px-5 whitespace-nowrap rounded-lg white-outline-button";
+const SIGNUP_BUTTON = "auth-button auth-button-text text-black my-3";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
@@ -122,17 +122,15 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   }, []);
 
   return (
-    <div className="items-center flex-column my-20 w-[560px] mx-auto">
-      <div className="w-full text-center underline-pb">
-        <p className="title-3 mt-[40px]">회원가입</p>
-      </div>
+    <div className="items-center flex-column m-5 w-[560px] mx-auto">
+      <SignupTitle />
       <SignupStep step={1} />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px] mb-[20px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center my-5">
         {/* 이메일 */}
-        <label htmlFor="email" className="self-start body-4 my-[8px]">
+        <label htmlFor="email" className="self-start my-2 body-4">
           이메일
         </label>
-        <div className="flex items-center gap-[8px] w-full">
+        <div className="flex items-center w-full gap-2">
           <div className="flex-column w-[610px]">
             <input
               {...register("id", {
@@ -180,10 +178,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         )}
 
         {/* 닉네임 */}
-        <label htmlFor="nickname" className="self-start body-4 my-[8px]">
+        <label htmlFor="nickname" className="self-start my-2 body-4">
           닉네임
         </label>
-        <div className="flex items-center gap-[8px] w-full">
+        <div className="flex items-center w-full gap-2">
           <input
             id="nickname"
             type="text"
@@ -215,10 +213,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         )}
 
         {/* 비밀번호 */}
-        <label htmlFor="password" className="self-start body-4 my-[8px]">
+        <label htmlFor="password" className="self-start my-2 body-4">
           비밀번호
         </label>
-        <div className="relative flex items-center gap-[8px] w-full">
+        <div className="relative flex items-center w-full gap-2">
           <input
             type={showPassword.password ? "text" : "password"}
             id="password"
@@ -267,8 +265,8 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         </div>
         <InvalidText errorsMessage={errors.idAnswer?.message} size={30} />
 
-        <button className={`${NEXT_PREV_BUTTON} point-button`}>회원가입</button>
-        <button className={`${NEXT_PREV_BUTTON} white-outline-button`} type="button" onClick={prevStep}>
+        <button className={`${SIGNUP_BUTTON} point-button`}>회원가입</button>
+        <button className={`${SIGNUP_BUTTON} white-outline-button`} type="button" onClick={prevStep}>
           이전
         </button>
       </form>

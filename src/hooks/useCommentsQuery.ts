@@ -11,7 +11,7 @@ import {
   fetchComments,
 } from "api/supabase";
 
-export const useComments = () => {
+export const useCommentsQuery = () => {
   const queryClient = useQueryClient();
   const { id: postId } = useParams();
 

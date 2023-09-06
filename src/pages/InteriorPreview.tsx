@@ -2,30 +2,13 @@ import { useEffect, useState } from "react";
 import { BsCalculator } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
+import { STORAGE_URL } from "api/supabase";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import share from "assets/svgs/icon_share.svg";
-import {
-  GetColor,
-  InteriorSection,
-  ResouresCalculator,
-  Modal,
-  useDialog,
-  SELECT_CUSTOM_INDEX,
-  InteriorBgSizeController,
-  BG_DEFAULT_SIZE,
-  BG_MAGNIFICATION,
-} from "components";
-import { useBookmark } from "hooks";
+import { GetColor, InteriorSection, ResouresCalculator, Modal, useDialog, Preview } from "components";
+import { useBookmarkQuery } from "hooks";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
-
-const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
-interface FetchItemBookmark {
-  id: string;
-  userId: string;
-  tileId: string;
-  leftWallpaperId: string;
-  rightWallpaperId: string;
-}
+import { type FetchItemBookmark } from "types/service";
 
 export const InteriorPreview = () => {
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
@@ -35,19 +18,12 @@ export const InteriorPreview = () => {
   const { Alert, Confirm } = useDialog();
 
   const { onOpenModal } = useModalStore((state) => state);
-  const {
-    wallPaper,
-    tile,
-    wallpaperPaint,
-    interiorSelecteIndex,
-    resetWallpaperPaint,
-    resetWallPaper,
-    resetTile,
-    resetClickItemBorder,
-    selectBgSize,
-  } = useServiceStore((state) => state);
+  const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile, resetClickItemBorder } =
+    useServiceStore((state) => state);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const { currentSession } = useAuthStore();
+  const { bookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = useBookmarkQuery();
+  const { data: currentBookmarkData } = bookmarkResponse;
 
   const isWallPaperPaintSeleted = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
 
@@ -72,10 +48,6 @@ export const InteriorPreview = () => {
         : setLeftWallPaperBg("");
     }
   }, [wallPaper, tile, wallpaperPaint]);
-
-  const { bookmarkResponse, addBookmarkMutation, deleteBookmarkMutation } = useBookmark();
-
-  const { data: currentBookmarkData } = bookmarkResponse;
 
   useEffect(() => {
     if (currentBookmarkData == null) return;
@@ -163,123 +135,59 @@ export const InteriorPreview = () => {
     navigate("/post");
   };
 
-  const LEFT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.leftWall]) / 100;
-  const RIFHT_WALLPAPER_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.rightWall]) / 100;
-  const TILE_BGSIZE: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.tile]) / 100;
-
   return (
-    <>
-      <div className="mx-auto flex-column w-[1280px] gap-10">
-        <h1 className="mt-20 text-3xl font-medium">인테리어 조합</h1>
-        <div className="gap-40 flex-column">
-          {/* 벽지/ 타일 비교 박스 */}
-          <div className="flex w-full gap-20 mb-20">
-            {/* 왼쪽 인터렉션 박스 */}
-            <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[600px] h-[400px] overflow-hidden rounded-xl">
-              {/* 배경크기 컨트롤 박스 */}
-              <InteriorBgSizeController />
-
-              <div className="cube">
-                {/* 벽지 */}
-                {!isWallPaperPaintSeleted ? (
-                  <>
-                    <div
-                      style={{
-                        backgroundImage: `url(${
-                          interiorSelecteIndex !== SELECT_CUSTOM_INDEX
-                            ? leftWallPaperBg
-                            : (wallPaper.left.image as string)
-                        })`,
-                        backgroundSize: `${LEFT_WALLPAPER_BGSIZE}px, ${LEFT_WALLPAPER_BGSIZE}px`,
-                      }}
-                      className="left-wall"
-                    ></div>
-                    <div
-                      style={{
-                        backgroundImage: `url(${
-                          interiorSelecteIndex !== SELECT_CUSTOM_INDEX
-                            ? RightWallPaperBg
-                            : (wallPaper.right.image as string)
-                        })`,
-                        backgroundSize: `${RIFHT_WALLPAPER_BGSIZE}px, ${RIFHT_WALLPAPER_BGSIZE}px`,
-                      }}
-                      className="right-wall"
-                    ></div>
-                  </>
-                ) : (
-                  <>
-                    <div
-                      style={{
-                        backgroundColor: leftWallPaperBg,
-                      }}
-                      className="left-wall"
-                    ></div>
-                    <div
-                      style={{
-                        backgroundColor: RightWallPaperBg,
-                      }}
-                      className="right-wall"
-                    ></div>
-                  </>
-                )}
-                {/* 타일 */}
-                <div
-                  style={{
-                    backgroundImage: `url(${
-                      interiorSelecteIndex !== SELECT_CUSTOM_INDEX ? tileBg : (tile.image as string)
-                    })`,
-                    backgroundSize: `${TILE_BGSIZE}px, ${TILE_BGSIZE}px`,
-                  }}
-                  className="floor"
-                ></div>
+    <div className="mx-auto flex-column w-[1280px] gap-10">
+      <h1 className="mt-20 text-3xl font-medium">인테리어 조합</h1>
+      <div className="gap-40 flex-column">
+        {/* 벽지/ 타일 비교 박스 */}
+        <div className="flex w-full gap-20 mb-20">
+          {/* 왼쪽 인터렉션 박스 */}
+          <Preview leftWallPaperBg={leftWallPaperBg} RightWallPaperBg={RightWallPaperBg} tileBg={tileBg} />
+          <div className="flex-column w-[600px] gap-10">
+            {/* 인테리어 섹션 */}
+            <InteriorSection onCheckCustom={true} />
+            {/* 컬러 추출 */}
+            <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
+            <div>
+              <div className="flex mb-6">
+                <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
+                <label className="hover:cursor-pointer text-gray02" htmlFor="calc">
+                  자재 소모량 계산기
+                </label>
+                <button className="h-6 ml-2" id="calc" onClick={onOpenModal}>
+                  <img src={calcArrow} alt="" />
+                </button>
               </div>
-            </div>
-            <div className="flex-column w-[600px] gap-10">
-              {/* 인테리어 섹션 */}
-              <InteriorSection onCheckCustom={true} />
-              {/* 컬러 추출 */}
-              <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
-              <div>
-                <div className="flex mb-6">
-                  <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
-                  <label className="hover:cursor-pointer text-gray02" htmlFor="calc">
-                    자재 소모량 계산기
-                  </label>
-                  <button className="h-6 ml-2" id="calc" onClick={onOpenModal}>
-                    <img src={calcArrow} alt="" />
-                  </button>
-                </div>
 
-                {/* 자재량 소모 계산기 모달 */}
-                <Modal title="자재 소모량 계산기">
-                  <ResouresCalculator />
-                </Modal>
+              {/* 자재량 소모 계산기 모달 */}
+              <Modal title="자재 소모량 계산기">
+                <ResouresCalculator />
+              </Modal>
 
-                <div className="flex gap-4 mt-6">
-                  {isItemBookmarkedData != null ? (
-                    <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">
-                      삭제하기
-                    </button>
-                  ) : (
-                    <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl point-button">
-                      저장하기
-                    </button>
-                  )}
-                  <button
-                    onClick={recommendDesign}
-                    className="flex-auto h-[64px] border rounded-xl border-gray05 outline-button-hover"
-                  >
-                    추천하기
+              <div className="flex gap-4 mt-6">
+                {isItemBookmarkedData != null ? (
+                  <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">
+                    삭제하기
                   </button>
-                  <button className="w-[64px] h-[64px] rounded-xl border border-gray05 outline-button-hover">
-                    <img src={share} className="mx-auto" />
+                ) : (
+                  <button onClick={addBookmark} className="flex-auto h-[64px] rounded-xl point-button">
+                    저장하기
                   </button>
-                </div>
+                )}
+                <button
+                  onClick={recommendDesign}
+                  className="flex-auto h-[64px] border rounded-xl border-gray05 outline-button-hover"
+                >
+                  추천하기
+                </button>
+                <button className="w-[64px] h-[64px] rounded-xl border border-gray05 outline-button-hover">
+                  <img src={share} className="mx-auto" />
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };

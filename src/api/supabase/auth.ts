@@ -2,13 +2,11 @@ import { AuthError } from "@supabase/supabase-js";
 import { type LoginInputs } from "pages";
 import { type Tables } from "types/supabase";
 
-import { auth, storageUrl, supabase } from "./supabaseClient";
+import { auth, supabase } from "./supabaseClient";
 
 const TABLE = "USERS";
 const STORAGE = "Images";
 const PATH = "profileImg/";
-
-const defaultProfileImg = `${storageUrl}/profileImg/defaultImg`;
 
 interface SignupInputs {
   email: string;
@@ -51,14 +49,14 @@ export const signup = async (inputValue: SignupInputs) => {
   const { data, error } = await auth.signUp({
     email,
     password,
-    options: { data: { name, avatar_url: defaultProfileImg } },
+    options: { data: { name, avatar_url: "" } },
   });
   if (data.user != null) {
     await addUser({
       id: data.user.id,
       email,
       name,
-      avatar_url: defaultProfileImg,
+      avatar_url: "",
       idAnswer,
       idQuestion: selectIdQuestion,
     });

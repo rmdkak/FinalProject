@@ -177,13 +177,13 @@ pre {
     @apply text-[12px] font-normal leading-[150%];
   }
   .underline-pb {
-    @apply pb-[24px] border-b border-b-black;
+    @apply pb-6 border-b border-b-black;
   }
   .auth-input {
-    @apply w-full h-[48px] px-[24px] py-[12px] border border-gray05 rounded-[8px] disabled:bg-gray05 focus:outline-none text-[14px] font-normal leading-[130%] placeholder:text-gray02;
+    @apply w-full h-12 px-6 py-2 border border-gray05 rounded-lg disabled:bg-gray05 focus:outline-none text-[14px] font-normal leading-[130%] placeholder:text-gray02;
   }
   .auth-button {
-    @apply w-full h-[48px] px-[24px] py-[12px] rounded-[8px];
+    @apply w-full h-12 px-6 py-2 rounded-lg;
   }
   .auth-button-text {
     @apply text-[14px] font-medium leading-[130%];
@@ -195,7 +195,7 @@ pre {
     @apply bg-point border border-point hover:bg-[#FFFBF0] hover:border hover:border-point disabled:bg-white disabled:border disabled:border-black;
   }
   .gray-outline-button {
-    @apply text-gray03 bg-white border border-gray05 hover:border-black hover:text-black;
+    @apply bg-white border text-gray03 border-gray05 hover:border-black hover:text-black;
   }
   .gray-button-hover {
     @apply hover:border hover:border-black;
