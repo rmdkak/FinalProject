@@ -3,6 +3,7 @@ import { BiCommentDetail } from "react-icons/bi";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 
+import defaultImg from "assets/defaultImg.jpg";
 import viewMore from "assets/svgs/viewMore.svg";
 import { PreviewBookmark, PreviewComment, PreviewLike, PreviewPost, MypageTitle } from "components";
 import { useAuth, useMypage } from "hooks";
@@ -88,8 +89,12 @@ export const Mypage = () => {
       {/* 프로필 박스 */}
       <div className="flex gap-[24px] mt-[40px]">
         <div className="relative flex-column contents-center gap-[40px] w-[240px] h-[320px] px-[24px] bg-gray08 rounded-[12px] border border-gray05">
-          {isLoading ? (
-            <p>로딩중</p>
+          {profileImg === "" ? (
+            <img
+              src={defaultImg}
+              alt="프로필 이미지"
+              className="w-[120px] h-[120px] rounded-full text-center justify-center"
+            />
           ) : (
             <img
               src={profileImg}

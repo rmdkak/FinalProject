@@ -15,6 +15,7 @@ import {
   storageUrl,
   uploadImage,
 } from "api/supabase";
+import defaultImg from "assets/defaultImg.jpg";
 import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
 import {
@@ -27,7 +28,6 @@ import {
   useDialog,
 } from "components";
 import { useAuth } from "hooks";
-import { useAuthStore } from "store";
 
 interface UpdateInput {
   name: string;
@@ -37,9 +37,6 @@ interface UpdateInput {
 
 const LABEL_STYLE = "self-center w-[136px] px-[24px] text-[14px] font-normal leading-[130%]";
 
-const defaultProfileImgUrl =
-  "https://aiqrtjdvdlzhtyadyqnh.supabase.co/storage/v1/object/public/Images/profileImg/defaultImg";
-
 export const UpdateUser = () => {
   const navigate = useNavigate();
   const { Alert, Confirm } = useDialog();
@@ -48,9 +45,8 @@ export const UpdateUser = () => {
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
 
-  const { previewProfileUrl, setPreviewProfileUrl } = useAuthStore();
   const { currentUserResponse, patchUserMutation } = useAuth();
-  const { data: currentUser, isLoading } = currentUserResponse;
+  const { data: currentUser } = currentUserResponse;
 
   const {
     register,
@@ -67,9 +63,6 @@ export const UpdateUser = () => {
     const imgFile = event.target.files[0];
     if (imgFile === undefined) return;
 
-    // 미리보기 URL 생성
-    setPreviewProfileUrl(URL.createObjectURL(imgFile));
-
     const profileImg = `${storageUrl}/profileImg/${uid}`;
     await deleteImage(prevProfileImg);
     patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
@@ -79,10 +72,11 @@ export const UpdateUser = () => {
 
   // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
   const resetImgFile = async () => {
-    if (currentProfileImg !== defaultProfileImgUrl) {
-      await changeMetaAvatar(defaultProfileImgUrl);
-      patchUserMutation.mutate({ inputValue: { avatar_url: defaultProfileImgUrl }, userId });
-      setPreviewProfileUrl("");
+    if (currentProfileImg !== "") {
+      const getImgId = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
+      await deleteImage(getImgId);
+      await changeMetaAvatar("");
+      patchUserMutation.mutate({ inputValue: { avatar_url: "" }, userId });
     }
   };
 
@@ -178,12 +172,8 @@ export const UpdateUser = () => {
         {/* 프로필 이미지 */}
         <div className="flex-column items-center w-[328px] gap-[36px]">
           <div className="relative w-[120px]">
-            {previewProfileUrl === "" ? (
-              isLoading ? (
-                <p>로딩중</p>
-              ) : (
-                <img src={previewProfileUrl} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
-              )
+            {currentProfileImg === "" ? (
+              <img src={defaultImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
             ) : (
               <img src={currentProfileImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
             )}
