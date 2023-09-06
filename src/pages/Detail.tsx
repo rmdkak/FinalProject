@@ -232,7 +232,7 @@ export const Detail = () => {
         {postData?.postImage !== null && postData?.postImage !== undefined && (
           <img src={`${storageUrl}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
         )}
-        <p>{postData?.content}</p>
+        <pre className="w-full break-words whitespace-pre-wrap ">{postData?.content}</pre>
       </div>
       {/* 댓글 컴포넌트 */}
       <Comments />

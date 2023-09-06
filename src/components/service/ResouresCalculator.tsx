@@ -99,7 +99,7 @@ export const ResouresCalculator = (): JSX.Element => {
                   key={item}
                   className={`flex contents-center w-full px-6 py-3 mr-4 border rounded-lg cursor-pointer ${
                     selectItem === index ? "border-black" : "border-gray05 opacity-40"
-                  } `}
+                  } last:mr-0 `}
                 >
                   <img
                     className={`mr-1 ${selectItem === index ? "" : "opacity-40"}`}
