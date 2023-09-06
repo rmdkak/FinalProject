@@ -4,6 +4,8 @@ import { PiArrowBendDownRightThin } from "react-icons/pi";
 import uuid from "react-uuid";
 
 import { deleteCommentImageHandler, saveCommentImageHandler, storageUrl } from "api/supabase";
+import comment_no_img from "assets/comment_no_img.png";
+import defaultImg from "assets/defaultImg.jpg";
 import { useDialog, DateConvertor } from "components";
 import { useComments } from "hooks";
 import { usePosts } from "hooks/usePosts";
@@ -95,7 +97,12 @@ export const Comments = () => {
           return (
             <div key={comment.id}>
               <div className="flex py-5 border-b border-gray06 ">
-                <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
+                {comment.USERS?.avatar_url === "" ? (
+                  <img src={defaultImg} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
+                ) : (
+                  <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
+                )}
+
                 <div className="flex flex-col justify-between w-full gap-2 ml-3">
                   <div className="flex items-center gap-2">
                     <p className="font-semibold">{comment.USERS?.name}</p>
@@ -106,42 +113,51 @@ export const Comments = () => {
                     )}
                   </div>
                   {selectedId === comment.id ? (
-                    <textarea
-                      autoFocus={selectedId === comment.id}
-                      rows={3}
-                      maxLength={500}
-                      defaultValue={comment.content}
-                      onChange={(e) => {
-                        autoResizeTextArea(e.target);
-                      }}
-                      className="p-1 rounded-[4px] border border-black text-[14px] outline-none resize-none"
-                    />
+                    <>
+                      <textarea
+                        autoFocus={selectedId === comment.id}
+                        rows={3}
+                        maxLength={500}
+                        defaultValue={comment.content}
+                        onChange={(e) => {
+                          autoResizeTextArea(e.target);
+                        }}
+                        className="p-1 rounded-[4px] border border-black text-[14px] outline-none resize-none"
+                      />
+                      <div className="relative">
+                        <label htmlFor="inputImg">
+                          <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute top-[245px] left-[305px]" />
+                          <input type="file" id="inputImg" className="hidden" onChange={handleImageChange} />
+                        </label>
+                      </div>
+                    </>
                   ) : (
                     <p className="text-[14px]">{comment.content}</p>
                   )}
-                  {comment.commentImg !== null && (
-                    <>
+                  {comment.commentImg === null ? (
+                    selectedId === comment.id ? (
                       <img
                         src={
-                          selectedCommentImgFile === null
-                            ? `${storageUrl}${comment.commentImg}`
-                            : selectedId === comment.id
-                            ? URL.createObjectURL(selectedCommentImgFile)
-                            : `${storageUrl}${comment.commentImg}`
+                          selectedCommentImgFile === null ? comment_no_img : URL.createObjectURL(selectedCommentImgFile)
                         }
-                        className={`my-[20px] w-[300px] h-[250px] ${
-                          selectedId === comment.id ? "border border-gray03" : ""
-                        }`}
+                        className="my-[20px] w-[300px] h-[250px]"
                       />
-                      {selectedId === comment.id && (
-                        <div className="relative">
-                          <label htmlFor="inputImg">
-                            <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute bottom-[20px] left-[305px]" />
-                            <input type="file" id="inputImg" className="hidden" onChange={handleImageChange} />
-                          </label>
-                        </div>
-                      )}
-                    </>
+                    ) : (
+                      <></>
+                    )
+                  ) : selectedId === comment.id ? (
+                    <img
+                      src={
+                        selectedCommentImgFile === null
+                          ? `${storageUrl}${comment.commentImg}`
+                          : selectedId === comment.id
+                          ? URL.createObjectURL(selectedCommentImgFile)
+                          : `${storageUrl}${comment.commentImg}`
+                      }
+                      className="my-[20px] w-[300px] h-[250px]"
+                    />
+                  ) : (
+                    <img src={`${storageUrl}${comment.commentImg}`} className="my-[20px] w-[300px] h-[250px]" />
                   )}
                   <div className="flex gap-2 text-gray02 text-[14px]">
                     <DateConvertor datetime={comment.created_at} type="timeAgo" />
@@ -188,11 +204,11 @@ export const Comments = () => {
                             <button
                               type="button"
                               className="text-black"
-                              onClick={async () => {
-                                await updateCommentHandler(comment.id, "comment");
+                              onClick={() => {
+                                setSelectedId("");
                               }}
                             >
-                              완료
+                              취소
                             </button>
                             <div className="relative">
                               <div className="absolute w-[1px] h-[10px] bg-gray06 left-[-1px] top-1/2 translate-y-[-50%]"></div>
@@ -200,11 +216,11 @@ export const Comments = () => {
                             <button
                               type="button"
                               className="text-black"
-                              onClick={() => {
-                                setSelectedId("");
+                              onClick={async () => {
+                                await updateCommentHandler(comment.id, "comment");
                               }}
                             >
-                              취소
+                              완료
                             </button>
                           </>
                         )}
