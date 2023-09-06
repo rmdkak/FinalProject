@@ -16,7 +16,7 @@ export const fetchDetailData = async (postId: string) => {
 export const fetchPostData = async () => {
   const { data, error } = await supabase
     .from("POSTS")
-    .select("*,POSTLIKES (*)")
+    .select("*,USERS (*),POSTLIKES (*)")
     .order("created_at", { ascending: false });
   if (error != null) {
     console.error("error.message :", error.message);
