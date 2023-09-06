@@ -4,15 +4,18 @@ import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
 import { deletePostImage, savePostImageHandler, storageUrl } from "api/supabase";
-import { Button, InteriorSection, InvalidText, Modal } from "components";
+import { Button, InteriorSection, InvalidText, Modal, useDialog } from "components";
 import { usePosts } from "hooks";
 import { useModalStore, useServiceStore } from "store";
+
 interface Inputs {
   title: string;
   content: string;
   file: FileList;
 }
+
 export const UpdatePost = () => {
+  const { Alert } = useDialog();
   const navigate = useNavigate();
   const { fetchDetailMutation, updatePostMutation } = usePosts();
   const { data: postData } = fetchDetailMutation;
@@ -27,30 +30,37 @@ export const UpdatePost = () => {
   const titleValue = watch("title") ?? 0;
   const contentValue = watch("content") ?? 0;
   const { onOpenModal, onCloseModal } = useModalStore();
-  const { wallPaper, tile, wallpaperPaint } = useServiceStore();
+  const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
+
+  const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
+  const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
+
+  const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
+  const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (postData === undefined) return;
     const postImgFile = data.file[0];
     const fileUuid = uuid();
     const postImage = postImgFile === undefined ? postData.postImage : `/postImg/${fileUuid}`;
-    const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
-    const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
-    const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
-    const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
-    const updateData = {
-      id: postData.id,
-      title: data.title,
-      content: data.content,
-      postImage,
-      tileId: tile.id,
-      leftWallpaperId: wallPaper.left.id,
-      rightWallpaperId: wallPaper.right.id,
-    };
+
     if (
       (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
       (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted) ||
       (tile.id === null && isNotInteriorSelected && isNotColorCodeSeleted)
     ) {
+      const updateData = {
+        id: postData.id,
+        title: data.title,
+        content: data.content,
+        postImage,
+        tileId: tile.id === null ? postData?.tileId : tile.id,
+        leftWallpaperId: wallPaper.left.id === null ? postData?.leftWallpaperId : wallPaper.left.id,
+        rightWallpaperId: wallPaper.right.id === null ? postData?.rightWallpaperId : wallPaper.right.id,
+        leftColorCode: wallpaperPaint.left === null ? postData?.leftColorCode : wallpaperPaint.left,
+        rightColorCode: wallpaperPaint.right === null ? postData?.rightColorCode : wallpaperPaint.right,
+      };
+
       try {
         if (postData.postImage !== null) {
           await deletePostImage(postData.postImage);
@@ -59,12 +69,27 @@ export const UpdatePost = () => {
           await savePostImageHandler({ UUID: fileUuid, postImgFile });
         }
         updatePostMutation.mutate(updateData);
-        navigate(-1);
+        navigate("/community");
       } catch (error) {
         console.error("error :", error);
       }
+    } else {
+      if (tile.id === null) {
+        await Alert("타일이 선택되지 않았습니다.");
+        return;
+      } else if (wallPaper.left.id === null && wallpaperPaint.left === "") {
+        await Alert(`왼쪽 벽이 선택되지 않았습니다.`);
+        return;
+      } else if (wallPaper.right.id === null && wallpaperPaint.right === "") {
+        await Alert(`오른쪽 벽이 선택되지 않았습니다.`);
+        return;
+      }
     }
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
   };
+
   useEffect(() => {
     if (postData === undefined) return;
     setValue("title", postData.title);
@@ -136,7 +161,7 @@ export const UpdatePost = () => {
             <img
               src={`${storageUrl}/wallpaper/${postData.rightWallpaperId}`}
               alt="오른쪽벽지"
-              className="w-10 h-10 rounded-full absolute right-[200px] border border-gray05"
+              className="w-10 h-10 rounded-full absolute right-[170px] border border-gray05"
             />
           )}
           {/* 타일 */}
@@ -150,9 +175,9 @@ export const UpdatePost = () => {
             <div className="bg-gray06 w-10 h-10 rounded-full absolute right-[140px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${postData.tileId}`}
+              src={`${storageUrl}/tile/${postData.tileId}`}
               alt="바닥재"
-              className="w-10 h-10 rounded-full absolute right-[200px] border border-gray05"
+              className="w-10 h-10 rounded-full absolute right-[140px] border border-gray05"
             />
           )}
           <button

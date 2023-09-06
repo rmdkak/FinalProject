@@ -23,7 +23,8 @@ export const Community = () => {
   const navigate = useNavigate();
 
   const { fetchPostsMutation } = usePosts();
-  const { data: postList } = fetchPostsMutation;
+  const { data: postList, isLoading } = fetchPostsMutation;
+
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
 
   const isExistCombination = (post: Tables<"POSTS", "Row">, type: "all" | "interior" | "paint") => {
@@ -66,11 +67,7 @@ export const Community = () => {
     setSelectedOption(event.target.value);
   };
 
-  if (filteredPosts === undefined) return <p>에러 페이지</p>;
-
   const { SearchBar, filteredData } = useSearchBar({ dataList: filteredPosts, type: "post" });
-
-  if (filteredData === undefined) return <p>에러 페이지</p>;
 
   const { pageData, showPageComponent } = usePagination({
     data: filteredData,
@@ -107,7 +104,7 @@ export const Community = () => {
                 <img
                   src={post.postImage !== null ? `${storageUrl}${post.postImage}` : noImage}
                   alt="postImg"
-                  className={"rounded-[8px] w-full h-[400px] object-cover"}
+                  className={`rounded-[8px] w-full h-[400px] object-cover ${isLoading ? "skeleton-effect" : ""}`}
                 />
               </div>
 
