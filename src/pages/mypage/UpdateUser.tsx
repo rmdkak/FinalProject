@@ -10,6 +10,7 @@ import {
   deleteImage,
   deleteUser,
   fetchUserCheckData,
+  logout,
   patchUser,
   storageUrl,
   uploadImage,
@@ -152,6 +153,8 @@ export const UpdateUser = () => {
     ) {
       await deleteUser(userId);
       await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
+      await logout();
+      navigate("/");
       if (prevProfileImg !== "defaultImg") {
         await deleteImage(prevProfileImg);
       }
