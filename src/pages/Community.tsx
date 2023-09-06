@@ -198,7 +198,7 @@ export const Community = () => {
                     <p className="text-[16px] h-[52px] overflow-hidden text-[#888888]">{post.content}</p>
                   </div>
                   <div className="flex text-[#888888] text-[12px] gap-2">
-                    <p>{post.nickname}</p>
+                    <p>{post.USERS?.name}</p>
                     <DateConvertor datetime={post.created_at} type="dotDate" />
                     <DateConvertor datetime={post.created_at} type={"hourMinute"} />
                     <p>좋아요 {post.bookmark}</p>

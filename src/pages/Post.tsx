@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
@@ -6,6 +6,7 @@ import uuid from "react-uuid";
 import { savePostImageHandler, storageUrl } from "api/supabase";
 import { Button, InteriorSection, Modal, useDialog } from "components";
 import { usePosts } from "hooks";
+import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
 interface Inputs {
@@ -75,55 +76,58 @@ export const Post = () => {
   const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
   const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const UUID = uuid();
-    const postImgFile = data.file[0];
-    const postImage = data.file[0] == null ? null : `/postImg/${UUID}`;
+  const onSubmit: SubmitHandler<Inputs> = useCallback(
+    debounce(async (data) => {
+      const UUID = uuid();
+      const postImgFile = data.file[0];
+      const postImage = data.file[0] == null ? null : `/postImg/${UUID}`;
 
-    if (
-      (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
-      (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted) ||
-      (tile.id === null && isNotInteriorSelected && isNotColorCodeSeleted)
-    ) {
-      const postData = {
-        id: UUID,
-        title: data.title,
-        content: data.textarea,
-        bookmark: 0,
-        nickname,
-        postImage,
-        userId,
-        tileId: tile.id,
-        leftWallpaperId: wallPaper.left.id,
-        rightWallpaperId: wallPaper.right.id,
-        leftColorCode: wallpaperPaint.left,
-        rightColorCode: wallpaperPaint.right,
-      };
-      try {
-        await savePostImageHandler({ UUID, postImgFile });
-        createPostMutation.mutate(postData);
-      } catch (error) {
-        console.error("error", error);
+      if (
+        (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
+        (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted) ||
+        (tile.id === null && isNotInteriorSelected && isNotColorCodeSeleted)
+      ) {
+        const postData = {
+          id: UUID,
+          title: data.title,
+          content: data.textarea,
+          bookmark: 0,
+          nickname,
+          postImage,
+          userId,
+          tileId: tile.id,
+          leftWallpaperId: wallPaper.left.id,
+          rightWallpaperId: wallPaper.right.id,
+          leftColorCode: wallpaperPaint.left,
+          rightColorCode: wallpaperPaint.right,
+        };
+        try {
+          await savePostImageHandler({ UUID, postImgFile });
+          createPostMutation.mutate(postData);
+        } catch (error) {
+          console.error("error", error);
+        }
+      } else {
+        if (tile.id === null) {
+          await Alert("타일이 선택되지 않았습니다.");
+          return;
+        } else if (wallPaper.left.id === null && wallpaperPaint.left === "") {
+          await Alert(`왼쪽 벽이 선택되지 않았습니다.`);
+          return;
+        } else if (wallPaper.right.id === null && wallpaperPaint.right === "") {
+          await Alert(`오른쪽 벽이 선택되지 않았습니다.`);
+          return;
+        }
+        return;
       }
-    } else {
-      if (tile.id === null) {
-        await Alert("타일이 선택되지 않았습니다.");
-        return;
-      } else if (wallPaper.left.id === null && wallpaperPaint.left === "") {
-        await Alert(`왼쪽 벽이 선택되지 않았습니다.`);
-        return;
-      } else if (wallPaper.right.id === null && wallpaperPaint.right === "") {
-        await Alert(`오른쪽 벽이 선택되지 않았습니다.`);
-        return;
-      }
-      return;
-    }
-    resetWallPaper();
-    resetWallpaperPaint();
-    resetTile();
-    localStorage.removeItem("selectedData");
-    navigate("/community");
-  };
+      resetWallPaper();
+      resetWallpaperPaint();
+      resetTile();
+      localStorage.removeItem("selectedData");
+      navigate("/community");
+    }, 500),
+    [],
+  );
 
   useEffect(() => {
     if (currentSession === null) navigate("/login");

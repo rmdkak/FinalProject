@@ -42,7 +42,6 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
           setClickItemBorder(id, interiorSelectX, checkType);
         }}
         key={id}
-        className="interior-item rounded-[200px]"
       >
         <img
           src={`${STORAGE_URL}${image}`}

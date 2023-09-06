@@ -58,6 +58,7 @@ export const Comments = () => {
       await Alert("댓글은 1글자 이상 입력해주세요.");
       return;
     }
+
     const UUID = uuid();
     const newCommentImg = selectedCommentImgFile === null ? currentImg : `/commentImg/${UUID}`;
     if (selectedCommentImgFile !== null) {
