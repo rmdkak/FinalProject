@@ -147,7 +147,9 @@ body {
   .selected-wall-point {
     @apply relative hover:cursor-pointer text-black after:content-[''] after:absolute after:w-1 after:h-1 after:block after:top-[-10px] after:left-[50%] after:bg-point after:rounded-full after:-translate-x-[50%];
   }
-
+  .skeleton-effect {
+    @apply bg-gradient-to-r from-gray06 to-gray05 animate-pulse;
+  }
   .title-1 {
     @apply text-[56px] font-medium leading-[130%];
   }
@@ -172,7 +174,6 @@ body {
   .body-4 {
     @apply text-[12px] font-normal leading-[150%];
   }
-
   .underline-pb {
     @apply pb-[24px] border-b border-b-black;
   }
@@ -203,7 +204,6 @@ body {
   .mypage-tab-title {
     @apply text-[18px] title-text;
   }
-
   .font-large {
     @apply text-[30px] font-[700];
   }

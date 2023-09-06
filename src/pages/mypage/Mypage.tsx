@@ -87,7 +87,7 @@ export const Mypage = () => {
       <MypageTitle />
       {/* 프로필 박스 */}
       <div className="flex gap-[24px] mt-[40px]">
-        <div className="relative flex-column contents-center gap-[40px] w-[240px] h-[320px] px-[24px] bg-gray08 rounded-[12px] border-[1px] border-gray05">
+        <div className="relative flex-column contents-center gap-[40px] w-[240px] h-[320px] px-[24px] bg-gray08 rounded-[12px] border border-gray05">
           {isLoading ? (
             <p>로딩중</p>
           ) : (
@@ -102,7 +102,7 @@ export const Mypage = () => {
             {currentSession?.user.app_metadata.provider === "email" && (
               <Link
                 to="/mypage/update"
-                className="border-[1px] px-[24px] border-gray05 rounded-[8px] text-[12px] font-normal leading-[150%]"
+                className="border px-[24px] border-gray05 rounded-[8px] text-[12px] font-normal leading-[150%]"
               >
                 회원정보수정
               </Link>
@@ -110,7 +110,7 @@ export const Mypage = () => {
           </div>
         </div>
         {/* 카운트 박스 */}
-        <div className="flex items-start border-[1px] border-gray05 rounded-[12px]">{countBox}</div>
+        <div className="flex items-start border border-gray05 rounded-[12px]">{countBox}</div>
       </div>
       {/* 카테고리 */}
       <div className="flex-column w-[1280px]">{previewBox}</div>

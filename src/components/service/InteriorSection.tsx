@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 
 import { supabase } from "api/supabase";
+import { ServiceItemSkeleton } from "components/common/skeletonUI";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
@@ -17,7 +18,7 @@ interface Props {
  */
 export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
-  const [taleData, setTaleData] = useState<Array<Tables<"TILE", "Row">>>([]);
+  const [tileData, setTileData] = useState<Array<Tables<"TILE", "Row">>>([]);
   const {
     checkType,
     setTypeCheck,
@@ -35,7 +36,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
       const { data: wallPaper } = await supabase.from("WALLPAPER").select("*");
       const { data: tale } = await supabase.from("TILE").select("*");
       setWallData(wallPaper as Array<Tables<"WALLPAPER", "Row">>);
-      setTaleData(tale as Array<Tables<"TILE", "Row">>);
+      setTileData(tale as Array<Tables<"TILE", "Row">>);
     } catch (error) {
       console.error(error);
     }
@@ -54,6 +55,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   const onClickTypeSwitch = (type: "tile" | "wallPaper") => {
     setTypeCheck(type);
   };
+
   return (
     <>
       {/* 인테리어 헤더 */}
@@ -127,10 +129,15 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
           } overflow-y-auto`}
         >
           {checkType === "wallPaper" ? (
-            <ServiceItem data={wallData} />
+            wallData.length === 0 ? (
+              <ServiceItemSkeleton />
+            ) : (
+              <ServiceItem data={wallData} />
+            )
+          ) : tileData.length === 0 ? (
+            <ServiceItemSkeleton />
           ) : (
-            // sift
-            <ServiceItem data={taleData} />
+            <ServiceItem data={tileData} />
           )}
         </ul>
       </div>
