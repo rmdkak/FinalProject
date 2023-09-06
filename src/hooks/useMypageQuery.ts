@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as supabaseApi from "api/supabase";
 import { useAuthStore } from "store";
 
-export const useMypage = () => {
+export const useMypageQuery = () => {
   const queryClient = useQueryClient();
   const { currentSession } = useAuthStore();
   const userId = currentSession?.user.id;

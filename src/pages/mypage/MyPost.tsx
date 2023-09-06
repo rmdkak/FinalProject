@@ -3,7 +3,7 @@ import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypage, usePagination, useSearchBar } from "hooks";
+import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
 export const MyPost = () => {
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
@@ -12,7 +12,7 @@ export const MyPost = () => {
     return postIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userPostsResponse, deleteUserPostsMutation } = useMypage();
+  const { userPostsResponse, deleteUserPostsMutation } = useMypageQuery();
   const { data: userPostData } = userPostsResponse;
 
   // 선택 된 아이디 배열 삭제

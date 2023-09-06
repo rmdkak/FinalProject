@@ -1,0 +1,86 @@
+import { AiOutlineHeart } from "react-icons/ai";
+import { BiCommentDetail } from "react-icons/bi";
+import { RxBookmark, RxPencil2 } from "react-icons/rx";
+
+import viewMore from "assets/svgs/viewMore.svg";
+import { MypageTitle } from "components";
+
+const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 translate-y-[-50%]";
+const ICON_SIZE = "w-6 h-6";
+export const MypageSkeleton = () => {
+  const iconArr = [
+    { icon: <RxPencil2 className={ICON_SIZE} />, title: "내가 쓴 글" },
+    { icon: <BiCommentDetail className={ICON_SIZE} />, title: "내가 쓴 댓글" },
+    { icon: <RxBookmark className={ICON_SIZE} />, title: "북마크" },
+    { icon: <AiOutlineHeart className={ICON_SIZE} />, title: "좋아요" },
+  ];
+
+  const previewArr = [""];
+  // skeleton-effect
+  return (
+    <div className="flex-column items-center m-[60px] w-[1280px] h-[2000px] mx-auto">
+      <MypageTitle />
+      {/* 상단 박스 */}
+      <div className="flex gap-6 mt-8">
+        {/* 프로필 박스 */}
+        <div className="relative flex-column contents-center gap-4 w-[240px] h-[200px] rounded-[12px] border border-gray05">
+          {/* 프로필 이미지 */}
+          <div className="w-[60px] h-[60px] rounded-full text-center justify-center skeleton-effect" />
+          <div className="flex-column contents-center gap-2">
+            {/* 프로필 네임 */}
+            <p className="w-10 h-[18px] skeleton-effect rounded-lg"></p>
+            <button className="border px-2 py-1 border-gray05 rounded-lg text-[12px] font-normal leading-[150%]">
+              회원정보수정
+            </button>
+          </div>
+        </div>
+        {/* 숫자랑 아이콘 박스 */}
+        <div className="flex items-start border border-gray05 rounded-[12px]">
+          {iconArr.map((el, index) => (
+            <div key={index} className="relative flex-column contents-center h-full w-[254px] gap-6">
+              <div className="flex-column contents-center gap-3">
+                {el.icon}
+                <p className="text-[16px] font-normal leading-[150%]">{el.title}</p>
+              </div>
+              <div className={BR_STYLE} />
+              <div className="w-4 h-6 skeleton-effect rounded-lg" />
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* 미리보기  */}
+      <div className="flex-column w-[1280px]">
+        <div className="flex-column">
+          {previewArr.map((_, index) => {
+            return (
+              <>
+                <div
+                  key={index}
+                  className="flex items-center justify-between border-b border-black pb-[24px] mt-[80px]"
+                >
+                  {/* 타이틀 */}
+                  <p className="text-[18px] font-normal leading-[150%]"></p>
+                  {/* 뷰모어 버튼 */}
+                  <button className="flex contents-center gap-[12px] body-4 text-gray02">
+                    VIEW MORE
+                    <img src={viewMore} className="w-[24px] h-[24px]" />
+                  </button>
+                </div>
+                <ul className="flex-column h-[130px]">
+                  <li className="w-full h-[64px] flex justify-between items-center px-[24px]">
+                    <div className="text-black cursor-pointer body-3 hover:text-gray03 skeleton-effect"></div>
+                    <div className="text-gray02 body-3 skeleton-effect" />
+                  </li>
+                  <li className="w-full h-[64px] flex justify-between items-center px-[24px]">
+                    <div className="w-[200px] h-[14px] skeleton-effect"></div>
+                    <div className="w-[56px] h-[14px] skeleton-effect" />
+                  </li>
+                </ul>
+              </>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};

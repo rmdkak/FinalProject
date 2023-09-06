@@ -3,9 +3,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { savePostImageHandler, storageUrl } from "api/supabase";
+import { savePostImageHandler, STORAGE_URL } from "api/supabase";
 import { Button, InteriorSection, Modal, useDialog } from "components";
-import { usePosts } from "hooks";
+import { usePostsQuery } from "hooks";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -32,7 +32,7 @@ export const Post = () => {
   const nickname = currentSession?.user.user_metadata.name;
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
-  const { createPostMutation } = usePosts();
+  const { createPostMutation } = usePostsQuery();
   const {
     register,
     handleSubmit,
@@ -178,7 +178,7 @@ export const Post = () => {
             />
           ) : wallPaper.left.image !== null ? (
             <img
-              src={`${storageUrl}${wallPaper.left.image}`}
+              src={`${STORAGE_URL}${wallPaper.left.image}`}
               alt="왼쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray05"
             />
@@ -192,7 +192,7 @@ export const Post = () => {
             />
           ) : wallPaper.right.image !== null ? (
             <img
-              src={`${storageUrl}${wallPaper.right.image}`}
+              src={`${STORAGE_URL}${wallPaper.right.image}`}
               alt="오른쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray05"
             />
@@ -201,7 +201,7 @@ export const Post = () => {
           )}
           {tile.image !== null ? (
             <img
-              src={`${storageUrl}${tile.image}`}
+              src={`${STORAGE_URL}${tile.image}`}
               alt="바닥재"
               className="w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray05"
             />

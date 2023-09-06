@@ -5,12 +5,12 @@ import { FaRegHeart } from "react-icons/fa6";
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { storageUrl } from "api/supabase";
+import { STORAGE_URL } from "api/supabase";
 import fillHeart from "assets/svgs/Heart.svg";
 import lineHeart from "assets/svgs/lineheart.svg";
 import share from "assets/svgs/share.svg";
 import { Comments, DateConvertor, useDialog } from "components";
-import { usePosts, usePostsLike } from "hooks";
+import { usePostsQuery, usePostsLikeQuery } from "hooks";
 import { useAuthStore, useLikeStore } from "store";
 
 export const Detail = () => {
@@ -20,9 +20,9 @@ export const Detail = () => {
   const { currentSession } = useAuthStore();
   const { Confirm } = useDialog();
   const [isHaveBookmark, setIsHaveBookmark] = useState(false);
-  const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLike();
+  const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLikeQuery();
   const { data: currentBookmarkData } = postLikeResponse;
-  const { fetchPostsMutation, fetchDetailMutation, deletePostMutation, wholeChangePostLikeMutation } = usePosts();
+  const { fetchPostsMutation, fetchDetailMutation, deletePostMutation, wholeChangePostLikeMutation } = usePostsQuery();
   const { data: postData } = fetchDetailMutation;
   const { data: postList } = fetchPostsMutation;
   const findCurrentIdx: number | undefined = postList?.findIndex((item) => item.id === paramsId);
@@ -170,7 +170,7 @@ export const Detail = () => {
             <div>
               <img
                 className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
-                src={`${storageUrl}/wallpaper/${postData?.leftWallpaperId}`}
+                src={`${STORAGE_URL}/wallpaper/${postData?.leftWallpaperId}`}
                 alt="왼쪽 벽지"
               />
               <p className="text-[14px] text-center">좌측벽지</p>
@@ -178,7 +178,7 @@ export const Detail = () => {
             <div>
               <img
                 className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
-                src={`${storageUrl}/wallpaper/${postData?.rightWallpaperId}`}
+                src={`${STORAGE_URL}/wallpaper/${postData?.rightWallpaperId}`}
                 alt="오른쪽 벽지"
               />
               <p className="text-[14px] text-center">우측벽지</p>
@@ -186,7 +186,7 @@ export const Detail = () => {
             <div>
               <img
                 className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
-                src={`${storageUrl}/tile/${postData?.tileId}`}
+                src={`${STORAGE_URL}/tile/${postData?.tileId}`}
                 alt="바닥재"
               />
               <p className="text-[14px] text-center">바닥재</p>
@@ -219,7 +219,7 @@ export const Detail = () => {
               <div>
                 <img
                   className="w-16 h-16 rounded-full bg-gray06"
-                  src={`${storageUrl}/tile/${postData?.tileId}`}
+                  src={`${STORAGE_URL}/tile/${postData?.tileId}`}
                   alt="바닥재"
                 />
                 <p className="text-[14px] text-center">바닥재</p>
@@ -230,7 +230,7 @@ export const Detail = () => {
       {/* 컨텐츠 영역 */}
       <div className="flex-column gap-5 my-[60px]">
         {postData?.postImage !== null && postData?.postImage !== undefined && (
-          <img src={`${storageUrl}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
+          <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
         )}
         <pre className="w-full break-words whitespace-pre-wrap ">{postData?.content}</pre>
       </div>

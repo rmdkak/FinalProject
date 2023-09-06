@@ -1,8 +1,7 @@
 import { useState, type ChangeEvent } from "react";
 
 import arrowIcon from "assets/svgs/arrowIcon.svg";
-import checkboxtrue from "assets/svgs/checkboxtrue.svg";
-import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
+import { SignupTitle, CheckBoxIcon } from "components";
 
 import { TERMS_1, TERMS_2 } from "./constant";
 import { SignupStep } from "./SignupStep";
@@ -34,11 +33,9 @@ export const TermsOfUse = ({ nextStep }: Props) => {
 
   return (
     <div className="items-center flex-column my-20 w-[560px] mx-auto">
-      <div className="w-full text-center underline-pb">
-        <p className="title-3 mt-[40px]">회원가입</p>
-      </div>
+      <SignupTitle />
       <SignupStep step={0} />
-      <ul className={`w-[480px]`}>
+      <ul className="w-[480px]">
         <li className={`${FLEX_CENTER} border-b border-black w-full pb-[28px] pt-[16px]`}>
           <input
             onChange={(event) => {
@@ -49,24 +46,16 @@ export const TermsOfUse = ({ nextStep }: Props) => {
             id="allCheck"
             type="checkbox"
           />
-          <label htmlFor="allCheck" className="flex gap-3 contents-center body-3 cursor-pointer">
-            {termsInputIsCheck.terms1 && termsInputIsCheck.terms2 ? (
-              <img src={checkboxtrue} alt="checkbox" />
-            ) : (
-              <img src={ckeckboxfalse} alt="checkbox" />
-            )}
+          <label htmlFor="allCheck" className="flex gap-3 cursor-pointer contents-center body-3">
+            <CheckBoxIcon checkState={termsInputIsCheck.terms1 && termsInputIsCheck.terms2} />
             전체 동의
           </label>
         </li>
         <li className={`relative w-full py-[16px]`}>
           <div className="flex items-center justify-between w-full">
             <input onChange={termsCheckHandler} className="hidden" id="terms1" name="terms1" type="checkbox" />
-            <label htmlFor="terms1" className="flex gap-3 contents-center body-3 cursor-pointer">
-              {termsInputIsCheck.terms1 ? (
-                <img src={checkboxtrue} alt="checkbox" />
-              ) : (
-                <img src={ckeckboxfalse} alt="checkbox" />
-              )}
+            <label htmlFor="terms1" className="flex gap-3 cursor-pointer contents-center body-3">
+              <CheckBoxIcon checkState={termsInputIsCheck.terms1} />
               [필수] <span className="text-gray02 ml-[4px]">이용약관 동의</span>
             </label>
             <img
@@ -82,12 +71,8 @@ export const TermsOfUse = ({ nextStep }: Props) => {
         <li className={`relative w-full py-[16px]`}>
           <div className="flex items-center justify-between w-full">
             <input onChange={termsCheckHandler} className="hidden" id="terms2" name="terms2" type="checkbox" />
-            <label htmlFor="terms2" className="flex gap-3 contents-center body-3 cursor-pointer">
-              {termsInputIsCheck.terms2 ? (
-                <img src={checkboxtrue} alt="checkbox" />
-              ) : (
-                <img src={ckeckboxfalse} alt="checkbox" />
-              )}
+            <label htmlFor="terms2" className="flex gap-3 cursor-pointer contents-center body-3">
+              <CheckBoxIcon checkState={termsInputIsCheck.terms2} />
               [필수] <span className="text-gray02 ml-[4px]">개인정보 수집 및 이용 동의</span>
             </label>
             <img

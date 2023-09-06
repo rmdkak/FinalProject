@@ -5,7 +5,7 @@ import uuid from "react-uuid";
 
 import { saveCommentImageHandler } from "api/supabase";
 import { useDialog } from "components";
-import { useComments } from "hooks/useComments";
+import { useCommentsQuery } from "hooks";
 import { useAuthStore } from "store";
 
 const textAreaMaxLength = 500;
@@ -17,7 +17,7 @@ interface CommentFormProps {
 
 export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps) => {
   const { currentSession } = useAuthStore();
-  const { createCommentMutation, createReplyMutation } = useComments();
+  const { createCommentMutation, createReplyMutation } = useCommentsQuery();
   const [content, setContent] = useState<string>("");
   const [commentImgFile, setCommentImgFile] = useState<File | null>(null);
   const { id: postId } = useParams();

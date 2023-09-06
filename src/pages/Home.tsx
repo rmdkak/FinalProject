@@ -1,12 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
 import mainPreview from "assets/mainpreviewImg.jpg";
+import calcArrow from "assets/svgs/calcArrow.svg";
 import thumnail1 from "assets/thumbnail1.png";
 import thumnail2 from "assets/thumbnail2.png";
-import { FlickingForm, HomeContentsTitle, HomeKvBanner } from "components/home";
-import { usePosts } from "hooks";
+import { HomeContentsTitle, HomeKvBanner } from "components/home";
+import { usePostsQuery, useFlicking } from "hooks";
 
 export const Home = () => {
-  const { fetchPostsMutation } = usePosts();
+  const navigate = useNavigate();
+  const { fetchPostsMutation } = usePostsQuery();
   const { data: postList } = fetchPostsMutation;
+  const { flickingForm } = useFlicking();
 
   const filterdPostList = postList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 3);
 
@@ -20,11 +25,22 @@ export const Home = () => {
               <br />
               인테리어를 완성해보세요!
             </h1>
-            <p className="mt-4 text-xl text-gray01 leading-[30px]">
+            <p className="mt-4 mb-10 text-xl text-gray01 leading-[30px]">
               나만의 조합으로 완성되는, 소중한 우리 공간!
               <br />
               당신의 취향이 만들어가는 따뜻한 인테리어 세상에 오세요.
             </p>
+            <label htmlFor="toInteriorPreview" className="mr-3 text-[12px] text-gray02 hover:cursor-pointer">
+              VIEW MORE
+            </label>
+            <button
+              id="toInteriorPreview"
+              onClick={() => {
+                navigate("/interior-preview");
+              }}
+            >
+              <img src={calcArrow} className="view-more-icon" />
+            </button>
           </div>
         </div>
         <div className="flex w-[70%] gap-[5%]">
@@ -32,11 +48,11 @@ export const Home = () => {
         </div>
       </div>
       <div className="home-section">
-        <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} page={"interior-preview"} />
+        <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} navigation={false} />
         <img src={mainPreview} alt="preview" className="w-full h-[740px]" />
       </div>
       <div className="home-section">
-        <HomeContentsTitle title={"EVENT"} page={"event"} />
+        <HomeContentsTitle title={"EVENT"} page={"event"} navigation={true} />
         <div className="flex gap-10">
           <div className="w-full gap-6 flex-column">
             <img src={thumnail1} alt="thumnail" className="h-[400px] rounded-xl object-contain"></img>
@@ -55,12 +71,8 @@ export const Home = () => {
         </div>
       </div>
       <div className="mb-20 home-section">
-        <HomeContentsTitle title={"COMMUNITY"} page={"community"} />
-        <div className="flex w-full gap-10">
-          {filterdPostList?.map((post) => (
-            <FlickingForm key={post.id} post={post} />
-          ))}
-        </div>
+        <HomeContentsTitle title={"COMMUNITY"} page={"community"} navigation={true} />
+        <div className="flex w-full gap-10">{filterdPostList?.map((post) => flickingForm(post))}</div>
       </div>
     </div>
   );

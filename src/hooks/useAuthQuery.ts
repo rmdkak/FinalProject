@@ -4,7 +4,7 @@ import { useAuthStore } from "store";
 
 const queryKey = ["auth"];
 
-export const useAuth = () => {
+export const useAuthQuery = () => {
   const queryClient = useQueryClient();
   const { currentSession } = useAuthStore();
 

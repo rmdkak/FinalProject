@@ -5,7 +5,7 @@ import { type Tables } from "types/supabase";
 
 type Like = Tables<"POSTLIKES", "Insert"> | undefined;
 
-export const usePostsLike = () => {
+export const usePostsLikeQuery = () => {
   const queryClient = useQueryClient();
 
   const { currentSession } = useAuthStore();

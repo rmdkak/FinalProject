@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import checkCircle from "assets/svgs/checkCircle.svg";
+import { SignupTitle } from "components";
 import { useAuthStore } from "store";
 
 import { SignupStep } from "./SignupStep";
@@ -11,9 +12,7 @@ export const SignupComplete = () => {
 
   return (
     <div className="items-center flex-column my-20 w-[560px] mx-auto">
-      <div className="w-full text-center underline-pb">
-        <p className="title-3 mt-[40px]">회원가입</p>
-      </div>
+      <SignupTitle />
       <SignupStep step={2} />
       <p className="text-[24px] font-normal leading-[130%]">{`${name}님, 환영합니다!`}</p>
       <p className="text-[14px] font-light leading-[130%] mt-[12px]">

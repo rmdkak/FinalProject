@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 import { AutoPlay, Pagination } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
-import { storageUrl } from "api/supabase";
-import noImage from "assets/no_image.png";
+import { STORAGE_URL } from "api/supabase";
 import { DateConvertor } from "components";
+import { CommunitySkeleton } from "components/common/skeletonUI";
 import { Toolbar } from "components/sidebar";
-import { usePagination, usePosts, useSearchBar } from "hooks";
+import { usePagination, usePostsQuery, useSearchBar, useFlicking } from "hooks";
 import "@egjs/react-flicking/dist/flicking.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
 import { type Tables } from "types/supabase";
@@ -20,26 +20,14 @@ const plugins = [
 
 export const Community = () => {
   const [selectedOption, setSelectedOption] = useState<string>("whole");
+  const { flickingForm, isExistCombination } = useFlicking();
   const navigate = useNavigate();
+  const { flickingSkeleton, postListSkeleton } = CommunitySkeleton();
 
-  const { fetchPostsMutation } = usePosts();
-  const { data: postList, isLoading } = fetchPostsMutation;
+  const { fetchPostsMutation } = usePostsQuery();
+  const { data: postList } = fetchPostsMutation;
 
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
-
-  const isExistCombination = (post: Tables<"POSTS", "Row">, type: "all" | "interior" | "paint") => {
-    switch (type) {
-      case "all":
-        return (
-          (post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null) ||
-          (post.tileId !== null && post.leftColorCode !== null && post.rightColorCode !== null)
-        );
-      case "interior":
-        return post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null;
-      case "paint":
-        return post.leftColorCode !== null && post.rightColorCode !== null;
-    }
-  };
 
   useEffect(() => {
     if (postList !== undefined) {
@@ -75,9 +63,7 @@ export const Community = () => {
     postPerPage: 8,
   });
 
-  if (postList === undefined) return <p>에러 페이지</p>;
-
-  const newPostList = [...postList];
+  const newPostList = postList === undefined ? [] : [...postList];
   const flickingPostList = newPostList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 5);
 
   return (
@@ -92,71 +78,8 @@ export const Community = () => {
         </div>
         {/* 슬라이더 영역 */}
         <Flicking align={"prev"} circular={true} panelsPerView={3} moveType={"strict"} plugins={plugins}>
-          {flickingPostList?.map((post) => (
-            <div
-              key={post.id}
-              className="w-[400px] flex-column mr-10 cursor-pointer"
-              onClick={() => {
-                navigate(`/detail/${post.id}`);
-              }}
-            >
-              <div>
-                <img
-                  src={post.postImage !== null ? `${storageUrl}${post.postImage}` : noImage}
-                  alt="postImg"
-                  className={`rounded-[8px] w-full h-[400px] object-cover ${isLoading ? "skeleton-effect" : ""}`}
-                />
-              </div>
-
-              <div className="w-full gap-2 mt-3 flex-column">
-                <div className="flex h-12">
-                  <p className="text-[20px] my-auto font-semibold truncate w-1/2">{post.title}</p>
-
-                  {isExistCombination(post, "interior") && (
-                    <div className="inline-flex w-1/2">
-                      <img
-                        src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
-                        alt="벽지"
-                        className="relative w-[48px] h-[48px] left-[76px] rounded-full border border-gray05"
-                      />
-                      <img
-                        src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
-                        alt="벽지"
-                        className="relative w-[48px] h-[48px] left-[66px] rounded-full border border-gray05"
-                      />
-                      <img
-                        src={`${storageUrl}/tile/${post.tileId as string}`}
-                        alt="바닥"
-                        className="relative w-[48px] h-[48px] left-[56px] rounded-full border border-gray05"
-                      />
-                    </div>
-                  )}
-                  {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
-                    <div className="inline-flex w-1/2">
-                      <div
-                        className="relative w-[48px] h-[48px] left-[76px] rounded-full"
-                        style={{
-                          backgroundColor: post.leftColorCode,
-                        }}
-                      />
-                      <div
-                        className="relative w-[48px] h-[48px] left-[66px] rounded-full"
-                        style={{
-                          backgroundColor: post.rightColorCode,
-                        }}
-                      />
-                      <img
-                        src={`${storageUrl}/tile/${post.tileId as string}`}
-                        alt="바닥"
-                        className="relative w-[48px] h-[48px] left-[56px] rounded-full"
-                      />
-                    </div>
-                  )}
-                </div>
-                <p className="text-[16px] text-gray02 line-clamp-2 h-[46px]">{post.content}</p>
-              </div>
-            </div>
-          ))}
+          {flickingPostList.length === 0 && flickingSkeleton}
+          {flickingPostList?.map((post) => flickingForm(post))}
           <ViewportSlot>
             <div className="flicking-pagination"></div>
           </ViewportSlot>
@@ -179,7 +102,7 @@ export const Community = () => {
               총 <span className="font-semibold text-black">{filteredData?.length}</span>개의 게시물이 있습니다.
             </p>
           </div>
-
+          {pageData.length === 0 && postListSkeleton}
           {pageData.map((post) => {
             return (
               <div
@@ -204,24 +127,24 @@ export const Community = () => {
                 <div className="flex items-center justify-end gap-4">
                   {post.postImage !== null && (
                     <img
-                      src={`${storageUrl}${post.postImage as string}`}
+                      src={`${STORAGE_URL}${post.postImage as string}`}
                       className="h-[124px] w-[124px] rounded-[8px] object-cover mr-auto"
                     />
                   )}
                   {isExistCombination(post, "interior") && (
                     <div>
                       <img
-                        src={`${storageUrl}/wallpaper/${post.leftWallpaperId as string}`}
+                        src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
                         alt="벽지"
                         className="w-12 h-12 rounded-full relative top-[10px] border border-gray05"
                       />
                       <img
-                        src={`${storageUrl}/wallpaper/${post.rightWallpaperId as string}`}
+                        src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
                         alt="벽지"
                         className="relative w-12 h-12 border rounded-full border-gray05"
                       />
                       <img
-                        src={`${storageUrl}/tile/${post.tileId as string}`}
+                        src={`${STORAGE_URL}/tile/${post.tileId as string}`}
                         alt="바닥"
                         className="w-12 h-12 rounded-full relative bottom-[10px] border border-gray05"
                       />
@@ -242,7 +165,7 @@ export const Community = () => {
                         }}
                       />
                       <img
-                        src={`${storageUrl}/tile/${post.tileId as string}`}
+                        src={`${STORAGE_URL}/tile/${post.tileId as string}`}
                         alt="바닥"
                         className="w-12 h-12 rounded-full relative bottom-[10px]"
                       />

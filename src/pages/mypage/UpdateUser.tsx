@@ -12,7 +12,7 @@ import {
   fetchUserCheckData,
   logout,
   patchUser,
-  storageUrl,
+  STORAGE_URL,
   uploadImage,
 } from "api/supabase";
 import defaultImg from "assets/defaultImg.jpg";
@@ -27,7 +27,7 @@ import {
   nameValid,
   useDialog,
 } from "components";
-import { useAuth } from "hooks";
+import { useAuthQuery } from "hooks";
 
 interface UpdateInput {
   name: string;
@@ -45,7 +45,7 @@ export const UpdateUser = () => {
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
 
-  const { currentUserResponse, patchUserMutation } = useAuth();
+  const { currentUserResponse, patchUserMutation } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
 
   const {
@@ -63,8 +63,8 @@ export const UpdateUser = () => {
     const imgFile = event.target.files[0];
     if (imgFile === undefined) return;
 
-    const profileImg = `${storageUrl}/profileImg/${uid}`;
-    await deleteImage(prevProfileImg);
+    const profileImg = `${STORAGE_URL}/profileImg/${uid}`;
+    await deleteImage(prevProfileImageId);
     patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
     await uploadImage({ file: imgFile, userId: uid });
@@ -73,8 +73,7 @@ export const UpdateUser = () => {
   // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
   const resetImgFile = async () => {
     if (currentProfileImg !== "") {
-      const getImgId = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
-      await deleteImage(getImgId);
+      await deleteImage(prevProfileImageId);
       await changeMetaAvatar("");
       patchUserMutation.mutate({ inputValue: { avatar_url: "" }, userId });
     }
@@ -149,8 +148,8 @@ export const UpdateUser = () => {
       await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
       await logout();
       navigate("/");
-      if (prevProfileImg !== "defaultImg") {
-        await deleteImage(prevProfileImg);
+      if (prevProfileImageId !== "defaultImg") {
+        await deleteImage(prevProfileImageId);
       }
     }
   };
@@ -160,15 +159,13 @@ export const UpdateUser = () => {
     return <p>에러페이지</p>;
   }
   const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
-  const prevProfileImg =
-    currentProfileImg === `${storageUrl}/profileImg/defaultImg`
-      ? "defaultImg"
-      : currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
+  const prevProfileImageId =
+    currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
       <MypageTitle />
-      <div className="flex w-full mt-[40px]">
+      <div className="flex w-full mt-10">
         {/* 프로필 이미지 */}
         <div className="flex-column items-center w-[328px] gap-[36px]">
           <div className="relative w-[120px]">
@@ -177,9 +174,9 @@ export const UpdateUser = () => {
             ) : (
               <img src={currentProfileImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
             )}
-            <div className="absolute flex justify-center items-center gap-[8px] bottom-0 left-1/2 translate-x-[-50%] translate-y-[25%] rounded-[8px] border bg-white w-[80px] h-[32px]">
+            <div className="absolute bottom-0 flex items-center justify-center w-20 h-8 gap-2 -translate-x-1/2 bg-white border rounded-lg left-1/2 translate-y-1/4">
               <label htmlFor="profileImgButton">
-                <img src={photoCamera} className="w-[16px] h-[16px] cursor-pointer" />
+                <img src={photoCamera} className="w-4 h-4 cursor-pointer" />
               </label>
               <input
                 id="profileImgButton"
@@ -188,14 +185,14 @@ export const UpdateUser = () => {
                 onChange={changeProfileImgHandler}
                 className="hidden"
               />
-              <div className="h-[8px] bg-gray06 border" />
-              <img src={xmark} onClick={resetImgFile} className="w-[16px] h-[16px] cursor-pointer" />
+              <div className="h-2 border bg-gray06" />
+              <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
           <p className="text-[24px] font-normal leading-[145%]">{`${currentUser.name} 님`}</p>
         </div>
         <div className="flex contents-center w-[624px]">
-          <div className="flex-column w-full gap-[24px]">
+          <div className="w-full gap-6 flex-column">
             {/* 닉네임 form */}
             <div className="gap-2 border-b pb-7 flex-column border-b-gray06">
               <div className="flex gap-6">
@@ -328,19 +325,19 @@ export const UpdateUser = () => {
             <div className="relative flex items-center justify-center gap-4">
               <button
                 type="button"
-                className="flex contents-center w-[192px] h-[48px] rounded-[8px] bg-white gray-outline-button body-3"
+                className="flex contents-center w-[192px] h-12 rounded-lg bg-white gray-outline-button body-3"
                 onClick={() => {
                   navigate(-1);
                 }}
               >
                 취소
               </button>
-              <div className="right-[-33px] translate-x-full absolute flex items-center gap-[12px]">
+              <div className="right-[-33px] translate-x-full absolute flex items-center gap-3">
                 <p className="text-[14px] font-normal leading-[130%] text-gray02">더 이상 이용하지 않으시나요?</p>
                 <button
                   onClick={deleteAuth}
                   type="button"
-                  className="w-[120px] h-[48px] border border-gray05 text-gray02 rounded-[8px]"
+                  className="w-[120px] h-12 border border-gray05 text-gray02 rounded-lg"
                 >
                   회원탈퇴
                 </button>
