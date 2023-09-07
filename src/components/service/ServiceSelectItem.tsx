@@ -1,13 +1,14 @@
-import { useServiceStore } from "store";
+import React from "react";
 
-import { SELECT_BORDER_COLOR } from "./data";
+import { useServiceStore } from "store";
+import { handleCheckTypeItemBorder } from "utils/interiorSection";
 
 interface Props {
   image: string;
   id: string;
 }
 
-export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
+export const ServiceSelectItemMemoization = ({ image, id }: Props): JSX.Element => {
   const {
     checkType,
     resetWallpaperPaint,
@@ -29,10 +30,16 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
     }
   };
 
-  const checkLeftItemBorder = onClickItemBorder.left === id ? `4px solid ${SELECT_BORDER_COLOR}` : "1px solid #d5d5d5";
-  const checkRightItemBorder =
-    onClickItemBorder.right === id ? `4px solid ${SELECT_BORDER_COLOR}` : "1px solid #d5d5d5";
-  const checkTileItemBorder = onClickItemBorder.tile === id ? `4px solid ${SELECT_BORDER_COLOR}` : "1px solid #d5d5d5";
+  const checkLeftItemBorder = handleCheckTypeItemBorder(onClickItemBorder.left, id);
+  const checkRightItemBorder = handleCheckTypeItemBorder(onClickItemBorder.right, id);
+  const checkTileItemBorder = handleCheckTypeItemBorder(onClickItemBorder.tile, id);
+
+  const borderSelectStyle =
+    onClickItemBorder.left === id
+      ? { border: checkLeftItemBorder }
+      : onClickItemBorder.right === id
+      ? { border: checkRightItemBorder }
+      : { border: checkTileItemBorder };
 
   return (
     <>
@@ -42,20 +49,19 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
           setClickItemBorder(id, interiorSelectX, checkType);
         }}
         key={id}
+        style={borderSelectStyle}
+        className="overflow-hidden rounded-full interior-item"
       >
         <img
           src={`${STORAGE_URL}${image}`}
-          style={
-            onClickItemBorder.left === id
-              ? { border: checkLeftItemBorder }
-              : onClickItemBorder.right === id
-              ? { border: checkRightItemBorder }
-              : { border: checkTileItemBorder }
-          }
-          className={`interior-item drag-none cursor-pointer`}
-          alt={` ${checkType} 미리보기 이미지`}
+          width={80}
+          height={80}
+          className="cursor-pointer drag-none"
+          alt={`${checkType} 미리보기 이미지`}
         />
       </li>
     </>
   );
 };
+
+export const ServiceSelectItem = React.memo(ServiceSelectItemMemoization);

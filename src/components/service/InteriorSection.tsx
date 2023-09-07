@@ -3,11 +3,13 @@ import React, { useState, useCallback, useEffect } from "react";
 import { supabase } from "api/supabase";
 import { ServiceItemSkeleton } from "components/common/skeletonUI";
 import { useServiceStore } from "store";
+import { type WallOrTile } from "types/service";
 import { type Tables } from "types/supabase";
+import { handleCheckType } from "utils/interiorSection";
 
-import { TILE_TEXTURE_LIST, WALLPAPER_TEXTURE_LIST } from "./data";
+import { SELECT_PAINT_INDEX, TILE_TEXTURE_LIST, WALLPAPER_TEXTURE_LIST } from "./data";
 import { ServiceItem } from "./ServiceItem";
-import TextureTitle from "./TextureTitle";
+import { TextureTitle } from "./TextureTitle";
 
 interface Props {
   onCheckCustom?: boolean;
@@ -40,7 +42,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
     fetchData().catch((error) => error(error));
   }, []);
 
-  const onClickTypeSwitch = (type: "tile" | "wallPaper") => {
+  const onClickTypeSwitch = (type: WallOrTile) => {
     setTypeCheck(type);
   };
 
@@ -50,11 +52,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
       <div className="gap-8 text-gray-300 flex-column">
         <div className="flex gap-6">
           <span
-            className={
-              checkType === "wallPaper"
-                ? "rounded-3xl px-10 py-2 bg-point hover:cursor-pointer text-black"
-                : "rounded-3xl px-10 py-2 bg-gray07 text-gray03 hover:cursor-pointer "
-            }
+            className={handleCheckType(checkType, "wallPaper")}
             onClick={() => {
               onClickTypeSwitch("wallPaper");
             }}
@@ -62,11 +60,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
             벽지
           </span>
           <span
-            className={
-              checkType === "tile"
-                ? "rounded-3xl px-10 py-2 bg-point hover:cursor-pointer text-black"
-                : "rounded-3xl px-10 py-2 bg-gray07 text-gray03 hover:cursor-pointer"
-            }
+            className={handleCheckType(checkType, "tile")}
             onClick={() => {
               onClickTypeSwitch("tile");
             }}
@@ -113,7 +107,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
       <div>
         <ul
           className={`flex flex-wrap w-full gap-x-4 gap-y-4 ${
-            interiorSelecteIndex === 4 && checkType === "wallPaper" ? "" : "h-[176px]"
+            interiorSelecteIndex === SELECT_PAINT_INDEX && checkType === "wallPaper" ? "" : "h-[176px]"
           } overflow-y-auto`}
         >
           {checkType === "wallPaper" ? (

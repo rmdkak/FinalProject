@@ -2,7 +2,8 @@ import React, { useRef, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 import photoImage from "assets/svgs/photoImage.svg";
-import { type Wallpaper, useServiceStore } from "store";
+import { useServiceStore } from "store";
+import { type Wallpaper } from "types/service";
 
 import { SelfItem } from "./SelfItem";
 
