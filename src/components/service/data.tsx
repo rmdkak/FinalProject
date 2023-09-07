@@ -1,3 +1,33 @@
+import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/bgSizeMinusControlBtn.svg";
+import bgSizeMinusControlBtnActive from "assets/BgSizeControlBtns/bgSizeMinusControlBtnActive.svg";
+import bgSizePlusControlBtn from "assets/BgSizeControlBtns/bgSizePlusControlBtn.svg";
+import bgSizePlusControlBtnActive from "assets/BgSizeControlBtns/bgSizePlusControlBtnActive.svg";
+import bgSizeTileControlBtn from "assets/BgSizeControlBtns/bgSizeTileControlBtn.svg";
+import bgSizeTileControlBtnActive from "assets/BgSizeControlBtns/bgSizeTileControlBtnActive.svg";
+import bgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/bgSizeWallpaperControlBtn.svg";
+import bgSizeWallpaperControlBtnActive from "assets/BgSizeControlBtns/bgSizeWallpaperControlBtnActive.svg";
+
+interface BG_SIZE_CONTROL_BTN {
+  1: string;
+  2: string;
+  3: string;
+  4: string;
+  5: string;
+  6: string;
+  7: string;
+  8: string;
+}
+const BG_SIZE_CONTROL_BTN_IMAGE_MAPPER: BG_SIZE_CONTROL_BTN = {
+  1: bgSizeMinusControlBtn,
+  2: bgSizeMinusControlBtnActive,
+  3: bgSizePlusControlBtn,
+  4: bgSizePlusControlBtnActive,
+  5: bgSizeTileControlBtn,
+  6: bgSizeTileControlBtnActive,
+  7: bgSizeWallpaperControlBtn,
+  8: bgSizeWallpaperControlBtnActive,
+};
+
 /**
  * 여기에 벽지 카테고리가 추가되면 추가하면 됩니다.
  */
@@ -36,6 +66,7 @@ const BG_MAGNIFICATION: number[] = [25, 50, 75, 100, 125, 150, 200, 300];
 const BG_MAGNIFICATION_LANGTH: number = BG_MAGNIFICATION.length;
 
 export {
+  BG_SIZE_CONTROL_BTN_IMAGE_MAPPER,
   SELECT_BORDER_COLOR,
   BG_MAGNIFICATION_LANGTH,
   BG_DEFAULT_SIZE,
