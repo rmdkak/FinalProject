@@ -44,16 +44,18 @@ const App = () => {
         const matchUser = userData?.filter((user) => user.email === session?.user.email);
 
         if (matchUser == null || matchUser.length === 0) {
-          await addUser({
-            id: session?.user.id as string,
-            email: session?.user.email as string,
-            name: session?.user.user_metadata.name as string,
-            avatar_url: session?.user.user_metadata.avatar_url as string,
-          }).catch((error) => {
-            if (error.message === `duplicate key value violates unique constraint "USERS_pkey"`) {
+          try {
+            await addUser({
+              id: session?.user.id as string,
+              email: session?.user.email as string,
+              name: session?.user.user_metadata.name as string,
+              avatar_url: session?.user.user_metadata.avatar_url as string,
+            });
+          } catch (error) {
+            if (error === `duplicate key value violates unique constraint "USERS_pkey"`) {
               console.info("소셜 재로그인");
             }
-          });
+          }
         }
       }
 
