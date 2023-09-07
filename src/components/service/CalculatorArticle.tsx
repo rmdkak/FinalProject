@@ -5,14 +5,12 @@ interface Props {
   label: string;
   firstPlaceholder: string;
   secondPlaceholder: string;
-  propId: string;
   state: WidthHeight;
   setState: Dispatch<SetStateAction<WidthHeight>>;
   selectItem?: number;
 }
 
-const CalculatorArticle = ({
-  propId,
+const CalculatorArticleMamoization = ({
   label,
   firstPlaceholder,
   secondPlaceholder,
@@ -22,18 +20,17 @@ const CalculatorArticle = ({
 }: Props): JSX.Element => {
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
+    // NOTE: input number type에는 , 가 찍히지 않는다.
+    // const threeDigitCommaValue = threeDigitComma(value);
+    // console.log(threeDigitCommaValue);
     setState({
       ...state,
       [name]: value,
     });
   };
-
   return (
     <>
       <article>
-        <label htmlFor={propId} className="absolute top-[-9999px] left-[-9999px]">
-          {label}
-        </label>
         <h3 className="mb-4">{label}</h3>
 
         <div className="flex items-center mb-6">
@@ -44,13 +41,11 @@ const CalculatorArticle = ({
           >
             <input
               className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
-              id={propId}
-              value={state.width}
               name="width"
               type="number"
               placeholder={firstPlaceholder}
-              //   value={width}
               onChange={onChangeInput}
+              value={state.width}
             />
           </div>
           <span className="mx-2">X</span>
@@ -60,14 +55,12 @@ const CalculatorArticle = ({
             } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
           >
             <input
-              className="box-border rounded-l pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
-              id={propId}
-              value={state.height}
+              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
               name="height"
               type="number"
               placeholder={secondPlaceholder}
-              //   value={height}
               onChange={onChangeInput}
+              value={state.height}
             />
           </div>
         </div>
@@ -76,4 +69,4 @@ const CalculatorArticle = ({
   );
 };
 
-export default CalculatorArticle;
+export const CalculatorArticle = React.memo(CalculatorArticleMamoization);

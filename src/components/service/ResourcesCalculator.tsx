@@ -4,14 +4,15 @@ import CloseBtn from "assets/svgs/close.svg";
 import tileIMG from "assets/svgs/tileCalculator.svg";
 import wallPaperIMG from "assets/svgs/wallpaperCalculator.svg";
 import { type ResultCalculator, type WidthHeight } from "types/calculator";
+import { resultConsumpTionCalculate, workingAreaCalculator } from "utils/ResourcesCalculator";
 
-import CalculatorArticle from "./CalculatorArticle";
-import CalculatorResult from "./CalculatorResult";
+import { CalculatorArticle } from "./CalculatorArticle";
+import { CalculatorResult } from "./CalculatorResult";
 import { RESOURCES_CALCULATOR_LIST } from "./data";
 
 const IMG_LIST: string[] = [wallPaperIMG, tileIMG];
 
-export const ResourcesCalculator = (): JSX.Element => {
+export const ResourcesCalculatorMamoization = (): JSX.Element => {
   const [visible, setVisible] = useState<boolean>(false);
   const [selectItem, setSelectItem] = useState<number>(0);
 
@@ -25,48 +26,14 @@ export const ResourcesCalculator = (): JSX.Element => {
   });
   const [result, setResult] = useState<ResultCalculator>({
     resultArea: "",
-    result_consumption: "",
+    resultConsumption: "",
   });
 
-  const onSubmitResourcesCalculator = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (resources.width === "" || resources.height === "") return;
-    if (workingArea.width === "" || workingArea.height === "") return;
-    setVisible(true);
-    handleCalculrator();
-  };
-
-  const handleCalculrator = useCallback(() => {
-    const RESULT_AREA: number = +((+workingArea.width / 100) * (+workingArea.height / 100));
-    let RESULT_CONSUMPTION: number = 0;
-    if (selectItem === 0)
-      RESULT_CONSUMPTION = Math.ceil(
-        +RESULT_AREA / (+resources.width * +resources.height) +
-          +RESULT_AREA / (+resources.width * +resources.height) / 10,
-      );
-
-    if (selectItem === 1)
-      RESULT_CONSUMPTION = Math.ceil(
-        (+RESULT_AREA * 10000) / (+resources.width * +resources.height) +
-          (+RESULT_AREA * 10000) / (+resources.width * +resources.height) / 10,
-      );
-
-    setResult({
-      resultArea: `${RESULT_AREA}`,
-      result_consumption: `${RESULT_CONSUMPTION}`,
-    });
-  }, [workingArea, resources]);
-
-  const onVisibleBtn = useCallback(() => {
-    setVisible(false);
+  const resetState = useCallback(() => {
     setResult({
       resultArea: "",
-      result_consumption: "",
+      resultConsumption: "",
     });
-  }, []);
-
-  const onSelectItem = useCallback((index: number) => {
-    setSelectItem(index);
     setResources({
       width: "",
       height: "",
@@ -77,14 +44,47 @@ export const ResourcesCalculator = (): JSX.Element => {
     });
   }, []);
 
+  const onSubmitResourcesCalculator = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (resources.width === "" || resources.height === "") return;
+    if (workingArea.width === "" || workingArea.height === "") return;
+    setVisible(true);
+    handleCalculrator();
+  };
+
+  const handleCalculrator = useCallback(() => {
+    const resultArea = workingAreaCalculator(+workingArea.width, +workingArea.height);
+
+    const resultConsumpTion: number | undefined = resultConsumpTionCalculate(
+      resultArea,
+      +resources.width,
+      +resources.height,
+      selectItem,
+    );
+    if (typeof resultConsumpTion === "number") {
+      setResult({
+        resultArea: `${resultArea}`,
+        resultConsumption: `${resultConsumpTion}`,
+      });
+    }
+  }, [workingArea, resources]);
+
+  const onVisibleBtn = useCallback(() => {
+    setVisible(false);
+    resetState();
+  }, []);
+
+  const onSelectItem = useCallback((index: number) => {
+    setSelectItem(index);
+    resetState();
+  }, []);
+
   const handleTapClick = (index: number) => {
     onSelectItem(index);
     setVisible(false);
-    setWorkingArea({
-      width: "",
-      height: "",
-    });
+    resetState();
   };
+
   return (
     <>
       <div>
@@ -119,7 +119,6 @@ export const ResourcesCalculator = (): JSX.Element => {
           <CalculatorArticle
             state={resources}
             setState={setResources}
-            propId="resources"
             label="자재 사이즈"
             firstPlaceholder="폭"
             secondPlaceholder="길이"
@@ -128,7 +127,6 @@ export const ResourcesCalculator = (): JSX.Element => {
           <CalculatorArticle
             state={workingArea}
             setState={setWorkingArea}
-            propId="workingrea"
             label="작업 면적"
             firstPlaceholder="너비"
             secondPlaceholder="높이"
@@ -143,7 +141,7 @@ export const ResourcesCalculator = (): JSX.Element => {
             <div className="flex items-center justify-between pb-6 mb-10 border-b border-b-black">
               <h2 className="text-[18px]">예상 소모량</h2>
               <button className="w-[18px] h-[18px]" onClick={onVisibleBtn}>
-                <img className="block w-[18px] h-[18px]" src={CloseBtn} alt="엑스모양 사진" />
+                <img width={18} height={18} className="block" src={CloseBtn} alt="엑스모양 사진" />
               </button>
             </div>
 
@@ -152,7 +150,7 @@ export const ResourcesCalculator = (): JSX.Element => {
               <div className="mb-3">
                 <CalculatorResult result={result.resultArea} resultName="작업 면적" />
               </div>
-              <CalculatorResult result={result.result_consumption} resultName="소모량" meter={true} />
+              <CalculatorResult result={result.resultConsumption} resultName="소모량" meter={true} />
             </div>
             <p className="text-gray">- 소모량은 예상 수치로 약간의 차이가 날 수 있습니다.</p>
           </section>
@@ -161,3 +159,5 @@ export const ResourcesCalculator = (): JSX.Element => {
     </>
   );
 };
+
+export const ResourcesCalculator = React.memo(ResourcesCalculatorMamoization);
