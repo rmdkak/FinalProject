@@ -5,6 +5,6 @@ export * from "./useMypageQuery";
 export * from "./usePostsLikeQuery";
 export * from "./useCommentsQuery";
 export * from "./usePostsQuery";
-export * from "./useFlicking";
+export * from "./usePostsData";
 export * from "./usePagination";
 export * from "./useSearchBar";
