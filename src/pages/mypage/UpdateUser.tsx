@@ -100,24 +100,24 @@ export const UpdateUser = () => {
   // 비밀번호 수정
   const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
     const { password } = data;
-    await changePassword(password)
-      .then(async () => {
-        await Alert("비밀번호가 정상적으로 변경되었습니다.");
-      })
-      .catch(async (error) => {
-        switch (error.message) {
-          case "New password should be different from the old password.":
-            await Alert("이전 비밀번호와 동일합니다.");
-            break;
-          case "Auth session missing!":
-            await Alert("이메일 유효시간이 만료되었습니다.");
-            break;
-          default:
-            await Alert("Error");
-            console.error("newError : ", error.message);
-            break;
-        }
-      });
+
+    try {
+      await changePassword(password);
+      await Alert("비밀번호가 정상적으로 변경되었습니다.");
+    } catch (error) {
+      switch (error) {
+        case "New password should be different from the old password.":
+          await Alert("이전 비밀번호와 동일합니다.");
+          break;
+        case "Auth session missing!":
+          await Alert("이메일 유효시간이 만료되었습니다.");
+          break;
+        default:
+          await Alert("Error");
+          console.error("newError : ", error);
+          break;
+      }
+    }
     toggleOpenHandler("password");
   };
 

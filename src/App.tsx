@@ -11,18 +11,26 @@ const App = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      await fetchUserCheckData().then((data) => {
-        setUserData(data);
-      });
+      try {
+        const user = await fetchUserCheckData();
+        setUserData(user);
+      } catch (error) {
+        console.error(error);
+      }
     };
     void getUserData();
   }, [fetchUserCheckData]);
 
   useEffect(() => {
     const getAuthSession = async () => {
-      await auth.getSession().then(({ data: { session } }) => {
+      try {
+        const {
+          data: { session },
+        } = await auth.getSession();
         setCurrentSession(session);
-      });
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     if (stayLoggedInStatus) {
