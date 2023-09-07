@@ -83,7 +83,7 @@ export const FindAuth = () => {
     try {
       const data = await findPassword({ name, email, idAnswer, idQuestion: selectIdQuestion });
       void sendEmailForFindPassword(data.email);
-      await Alert("이메일이 전송되었습니다.");
+      void Alert("이메일이 전송되었습니다.");
       navigate("/");
     } catch (error) {
       passwordSetError("root", { message: "해당 유저를 찾을 수 없습니다." });

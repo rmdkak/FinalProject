@@ -29,13 +29,13 @@ export const UpdatePassword = () => {
     } catch (error) {
       switch (error) {
         case "New password should be different from the old password.":
-          await Alert("이전 비밀번호와 동일합니다.");
+          void Alert("이전 비밀번호와 동일합니다.");
           break;
         case "Auth session missing!":
-          await Alert("이메일 유효시간이 만료되었습니다.");
+          void Alert("이메일 유효시간이 만료되었습니다.");
           break;
         default:
-          await Alert("Error");
+          void Alert("Error");
           console.error("newError : ", error);
           break;
       }

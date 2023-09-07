@@ -67,7 +67,7 @@ export const UpdateUser = () => {
     await deleteImage(prevProfileImageId);
     patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
-    await uploadImage({ file: imgFile, userId: uid });
+    void uploadImage({ file: imgFile, userId: uid });
   };
 
   // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
@@ -149,7 +149,7 @@ export const UpdateUser = () => {
       await logout();
       navigate("/");
       if (prevProfileImageId !== "defaultImg") {
-        await deleteImage(prevProfileImageId);
+        void deleteImage(prevProfileImageId);
       }
     }
   };

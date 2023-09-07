@@ -34,7 +34,7 @@ export const useBookmark = () => {
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
-    await Alert("조합이 저장되었습니다.");
+    void Alert("조합이 저장되었습니다.");
   };
 
   const deleteBookmark = async () => {
@@ -45,7 +45,7 @@ export const useBookmark = () => {
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
-    await Alert("조합이 삭제되었습니다.");
+    void Alert("조합이 삭제되었습니다.");
   };
 
   const recommendDesign = async () => {

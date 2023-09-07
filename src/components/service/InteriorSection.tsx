@@ -44,7 +44,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
 
   // supabase에서 data정보 가져오기
   useEffect(() => {
-    fetchData().catch((error) => error(error));
+    void fetchData();
   }, []);
 
   /**
