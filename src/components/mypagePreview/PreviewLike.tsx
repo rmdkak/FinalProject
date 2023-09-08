@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { DateConvertor } from "components/common";
 import { type Tables } from "types/supabase";
 
-import { dateStyle, innerBoxStyle, linkStyle } from "./preview.style";
+import { dateStyle, innerBoxStyle, linkStyle, OUTER_BOX_STYLE } from "./preview.style";
 import { PreviewEmpty } from "./PreviewEmpty";
 
 interface Props {
@@ -15,7 +15,7 @@ export const PreviewLike = ({ likeData }: Props) => {
   if (likeData === undefined) return <PreviewEmpty />;
 
   return (
-    <ul className="flex-column h-[130px]">
+    <ul className={OUTER_BOX_STYLE}>
       {likeData.length === 0 ? <PreviewEmpty /> : null}
       {likeData.map((like) => {
         const { POSTS: post } = like;

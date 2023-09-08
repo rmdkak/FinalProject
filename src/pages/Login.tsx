@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { login } from "api/supabase";
 import { PasswordVisibleButton, InvalidText, useDialog, SocialLogin, CheckBoxIcon } from "components";
+import { useMovePage } from "hooks";
 import { useAuthStore } from "store";
 
 export interface LoginInputs {
@@ -18,6 +19,7 @@ export const Login = () => {
   const { Alert } = useDialog();
   const { currentSession, stayLoggedInStatus, setStayLoggedInStatus } = useAuthStore();
   const [showPassword, setShowPassword] = useState({ password: false });
+  const { getCurrentPathname } = useMovePage();
 
   const {
     register,
@@ -30,7 +32,7 @@ export const Login = () => {
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
       await login(data);
-      navigate("/");
+      getCurrentPathname();
     } catch (error) {
       setError("root", { message: "일치하는 회원정보가 없습니다." });
     }

@@ -14,8 +14,13 @@ export const HomeKvBanner = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      // 다음 인덱스를 계산
+      const nextIdx = (currentIdx + 1) % 3;
+      // widths 배열을 업데이트
       const updatedWidths = initialWidths.map((_, index) => {
         if (index === currentIdx) {
+          return "w-[10%]";
+        } else if (index === nextIdx) {
           return finalWidth;
         } else {
           return "w-[10%]";
@@ -23,7 +28,7 @@ export const HomeKvBanner = () => {
       });
 
       setWidths(updatedWidths);
-      setCurrentIdx((currentIdx + 1) % 3);
+      setCurrentIdx(nextIdx);
     }, transitionInterval);
 
     return () => {

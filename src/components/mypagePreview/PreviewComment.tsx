@@ -5,7 +5,7 @@ import arrowIcon from "assets/svgs/arrowIcon.svg";
 import { DateConvertor } from "components/common";
 import { type Tables } from "types/supabase";
 
-import { dateStyle, linkStyle } from "./preview.style";
+import { dateStyle, linkStyle, OUTER_BOX_STYLE } from "./preview.style";
 import { PreviewEmpty } from "./PreviewEmpty";
 
 interface Props {
@@ -19,7 +19,7 @@ export const PreviewComment = ({ commentData }: Props) => {
     setIsOpenComment(commentId);
   };
   return (
-    <ul className="flex-column h-[255px]">
+    <ul className={OUTER_BOX_STYLE}>
       {commentData.length === 0 ? <PreviewEmpty /> : null}
       {commentData.map((comment) => {
         const { POSTS: post } = comment;

@@ -37,7 +37,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    fetchData().catch((error) => error(error));
+    void fetchData();
   }, []);
   return (
     <>

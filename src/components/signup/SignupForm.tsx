@@ -57,13 +57,30 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   // 중복체크
   const duplicateCheck = (target: "email" | "name") => {
-    if (selectEmail === undefined) {
-      setError("id", { message: "email을 선택해주세요." });
+    const inputIdValue = getValues("id");
+    const inputNameValue = getValues("name");
+
+    if (target === "email" && inputIdValue.trim() === "") {
+      setCheckedDuplicate({ ...checkedDuplicate, email: false });
+      setError("id", { message: "이메일을 입력해주세요." });
       return;
     }
-    const matchUser = fetchUserData.filter((user) => {
-      return target === "name" ? user.name === getValues("name") : user.email === `${getValues("id")}@${selectEmail}`;
-    });
+
+    if (target === "name" && inputNameValue.trim() === "") {
+      setCheckedDuplicate({ ...checkedDuplicate, name: false });
+      setError("name", { message: "닉네임을 입력해주세요." });
+      return;
+    }
+
+    if (selectEmail === undefined) {
+      setError("id", { message: "이메일을 선택해주세요." });
+      return;
+    }
+
+    const matchUser = fetchUserData.filter((user) =>
+      target === "name" ? user.name === inputIdValue : user.email === `${inputNameValue}@${selectEmail}`,
+    );
+
     if (matchUser === null || matchUser.length === 0) {
       setCheckedDuplicate({ ...checkedDuplicate, [target]: true });
     } else {
@@ -77,7 +94,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     const { id } = data;
 
     if (selectEmail === undefined) {
-      setError("id", { message: "email을 선택해주세요." });
+      setError("id", { message: "이메일을 선택해주세요." });
       return;
     }
     if (selectIdQuestion === undefined) {
@@ -98,6 +115,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     const email = `${id}@${selectEmail}`;
     if (!emailPattern.test(email)) {
       setError("id", { message: "이메일 형식이 올바르지 않습니다." });
+      return;
+    }
+    if (email === `@${selectEmail}`) {
+      setError("id", { message: "ID를 입력해주세요." });
       return;
     }
 
@@ -204,7 +225,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             중복확인
           </button>
         </div>
-        {checkedDuplicate.name ? (
+        {checkedDuplicate.name && errors.name?.message !== null ? (
           <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
             사용 가능한 닉네임입니다.
           </p>

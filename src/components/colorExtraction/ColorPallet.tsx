@@ -33,16 +33,14 @@ export const ColorPallet = ({ color }: props) => {
    *
    * @param color "이 함수는 클립보드에 색상 값을 복사하는 기능을 제공합니다. 매개변수 'color'에는 복사할 색상 값이 전달되어야 합니다."
    */
-  const handleCopyColorClipBoard = (color: string) => {
-    navigator.clipboard
-      .writeText(color)
-      .then(async () => {
-        await Alert("컬러가 복사되었습니다.");
-      })
-      .catch(async (error) => {
-        await Alert("복사에 실패했습니다.");
-        console.error("복사 실패", error);
-      });
+  const handleCopyColorClipBoard = async (color: string) => {
+    try {
+      await navigator.clipboard.writeText(color);
+      await Alert("컬러가 복사되었습니다.");
+    } catch (error) {
+      await Alert("복사에 실패했습니다.");
+      console.error("복사 실패", error);
+    }
   };
 
   return (
@@ -53,7 +51,7 @@ export const ColorPallet = ({ color }: props) => {
           return (
             <li
               onClick={() => {
-                handleCopyColorClipBoard(color);
+                void handleCopyColorClipBoard(color);
               }}
               key={idx}
               className="flex"
@@ -69,7 +67,7 @@ export const ColorPallet = ({ color }: props) => {
           return (
             <li
               onClick={() => {
-                handleCopyColorClipBoard(color);
+                void handleCopyColorClipBoard(color);
               }}
               key={idx}
               className="flex"

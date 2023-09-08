@@ -67,7 +67,7 @@ export const UpdateUser = () => {
     await deleteImage(prevProfileImageId);
     patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
-    await uploadImage({ file: imgFile, userId: uid });
+    void uploadImage({ file: imgFile, userId: uid });
   };
 
   // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
@@ -100,24 +100,24 @@ export const UpdateUser = () => {
   // 비밀번호 수정
   const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
     const { password } = data;
-    await changePassword(password)
-      .then(async () => {
-        await Alert("비밀번호가 정상적으로 변경되었습니다.");
-      })
-      .catch(async (error) => {
-        switch (error.message) {
-          case "New password should be different from the old password.":
-            await Alert("이전 비밀번호와 동일합니다.");
-            break;
-          case "Auth session missing!":
-            await Alert("이메일 유효시간이 만료되었습니다.");
-            break;
-          default:
-            await Alert("Error");
-            console.error("newError : ", error.message);
-            break;
-        }
-      });
+
+    try {
+      await changePassword(password);
+      await Alert("비밀번호가 정상적으로 변경되었습니다.");
+    } catch (error) {
+      switch (error) {
+        case "New password should be different from the old password.":
+          await Alert("이전 비밀번호와 동일합니다.");
+          break;
+        case "Auth session missing!":
+          await Alert("이메일 유효시간이 만료되었습니다.");
+          break;
+        default:
+          await Alert("Error");
+          console.error("newError : ", error);
+          break;
+      }
+    }
     toggleOpenHandler("password");
   };
 
@@ -149,7 +149,7 @@ export const UpdateUser = () => {
       await logout();
       navigate("/");
       if (prevProfileImageId !== "defaultImg") {
-        await deleteImage(prevProfileImageId);
+        void deleteImage(prevProfileImageId);
       }
     }
   };
@@ -330,14 +330,14 @@ export const UpdateUser = () => {
                   navigate(-1);
                 }}
               >
-                취소
+                이전
               </button>
               <div className="right-[-33px] translate-x-full absolute flex items-center gap-3">
-                <p className="text-[14px] font-normal leading-[130%] text-gray02">더 이상 이용하지 않으시나요?</p>
+                <p className="body-3 text-gray02">더 이상 이용하지 않으시나요?</p>
                 <button
                   onClick={deleteAuth}
                   type="button"
-                  className="w-[120px] h-12 border border-gray05 text-gray02 rounded-lg"
+                  className="w-[120px] h-12 border body-3 border-gray05 text-gray02 rounded-lg"
                 >
                   회원탈퇴
                 </button>

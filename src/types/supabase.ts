@@ -95,6 +95,39 @@ export interface Database {
           },
         ];
       };
+      EVENT: {
+        Row: {
+          content: string;
+          created_at: string;
+          eventImg: string | null;
+          id: string;
+          maxDate: string | null;
+          minDate: string | null;
+          title: string;
+          userId: string | null;
+        };
+        Insert: {
+          content: string;
+          created_at?: string;
+          eventImg?: string | null;
+          id?: string;
+          maxDate?: string | null;
+          minDate?: string | null;
+          title: string;
+          userId?: string | null;
+        };
+        Update: {
+          content?: string;
+          created_at?: string;
+          eventImg?: string | null;
+          id?: string;
+          maxDate?: string | null;
+          minDate?: string | null;
+          title?: string;
+          userId?: string | null;
+        };
+        Relationships: [];
+      };
       FURNITURE: {
         Row: {
           category: string[];
@@ -115,6 +148,46 @@ export interface Database {
           texture?: string;
         };
         Relationships: [];
+      };
+      MANTOMAN: {
+        Row: {
+          adminAnswer: string | null;
+          category: string;
+          content: string;
+          created_at: string;
+          id: string;
+          inquiryImg: string | null;
+          isCheck: boolean;
+          userId: string;
+        };
+        Insert: {
+          adminAnswer?: string | null;
+          category: string;
+          content: string;
+          created_at?: string;
+          id?: string;
+          inquiryImg?: string | null;
+          isCheck?: boolean;
+          userId: string;
+        };
+        Update: {
+          adminAnswer?: string | null;
+          category?: string;
+          content?: string;
+          created_at?: string;
+          id?: string;
+          inquiryImg?: string | null;
+          isCheck?: boolean;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "MANTOMAN_userId_fkey";
+            columns: ["userId"];
+            referencedRelation: "USERS";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       POSTLIKES: {
         Row: {
@@ -248,6 +321,46 @@ export interface Database {
           },
           {
             foreignKeyName: "RECOMMENTS_userId_fkey";
+            columns: ["userId"];
+            referencedRelation: "USERS";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      REPORT: {
+        Row: {
+          category: string;
+          content: string;
+          created_at: string;
+          id: string;
+          postContent: string;
+          postImg: string | null;
+          postTitle: string;
+          userId: string;
+        };
+        Insert: {
+          category: string;
+          content: string;
+          created_at?: string;
+          id?: string;
+          postContent: string;
+          postImg?: string | null;
+          postTitle: string;
+          userId: string;
+        };
+        Update: {
+          category?: string;
+          content?: string;
+          created_at?: string;
+          id?: string;
+          postContent?: string;
+          postImg?: string | null;
+          postTitle?: string;
+          userId?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "REPORT_userId_fkey";
             columns: ["userId"];
             referencedRelation: "USERS";
             referencedColumns: ["id"];

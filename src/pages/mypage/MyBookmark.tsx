@@ -7,6 +7,8 @@ import { ShowRoom } from "components/service/ShowRoom";
 import { useMypageQuery, usePagination } from "hooks";
 import { useModalStore } from "store";
 
+import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
+
 export const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
@@ -43,7 +45,7 @@ export const MyBookmark = () => {
   });
 
   return (
-    <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
+    <div className={MYPAGE_LAYOUT_STYLE}>
       <MypageTitle />
       <MypageSubTitle type="bookmark" />
       {pageData.length === 0 ? (

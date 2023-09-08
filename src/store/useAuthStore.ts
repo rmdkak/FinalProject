@@ -23,7 +23,7 @@ export const useAuthStore = create(
       setPreviewProfileUrl: (files) => {
         set(() => ({ previewProfileUrl: files }));
       },
-      stayLoggedInStatus: false,
+      stayLoggedInStatus: true,
       setStayLoggedInStatus: (boolean) => {
         set(() => ({ stayLoggedInStatus: boolean }));
       },

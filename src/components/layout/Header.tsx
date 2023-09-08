@@ -70,6 +70,14 @@ export const Header = () => {
             <>
               {/* 로그인 되어있는 메뉴 */}
               {/* 로그아웃 */}
+              <button
+                className="w-[200px] h-[50px] bg-gray03"
+                onClick={() => {
+                  navigate("/adminpage");
+                }}
+              >
+                관리자 페이지 이동
+              </button>
               <div className="flex gap-2 contents-center">
                 <button onClick={logoutHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>

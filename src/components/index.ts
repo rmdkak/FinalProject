@@ -1,6 +1,6 @@
 export * from "./auth";
 export * from "./colorExtraction";
-export * from "./comment";
+export * from "./detail";
 export * from "./common";
 export * from "./layout";
 export * from "./mypage";

@@ -13,125 +13,98 @@ interface Input {
   max?: string | undefined;
 }
 
-const date = new Date();
-const nowYear = `${date.getFullYear()}`;
-const nowMonth = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`;
-const nowDay = date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
-
 export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => {
-  // 시간 조건 State
-  const [selectDate, setSelectDate] = useState<number>(0);
-  // 키워드 검색 조건 State
+  const [selectedOption, setSelectedOption] = useState("선택하세요");
+
   const [conditionWord, setConditionWord] = useState<string>();
-  // 키워드 검색 카테고리 State
-  const [category, setCategory] = useState<string>("title");
-  const { register, watch, handleSubmit, resetField } = useForm<Input>();
+  const [searchCategory, setSearchCategory] = useState<string>("title");
 
-  // 날짜 가공 함수
-  const refactorDate = (date: string | undefined) => {
-    if (date === undefined) return;
-    const prevYear = Number(date.slice(0, 4));
-    const prevMonth = Number(date.slice(5, 7));
-    const prevDay = Number(date.slice(8, 10));
-    return Number(
-      `${prevYear}${prevMonth < 10 ? `0${prevMonth}` : prevMonth}${prevDay < 10 ? `0${prevDay}` : prevDay}`,
-    );
-  };
+  const { register, handleSubmit } = useForm<Input>();
 
-  // 현재 날짜 가공 결과
-  const nowDate = refactorDate(`${nowYear}-${nowMonth}-${nowDay}`);
-  const minDate = refactorDate(watch("min"));
-  const maxDate = refactorDate(watch("max"));
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() - 1);
 
-  // 시간 조건 필터링
+  switch (selectedOption) {
+    case "선택하세요":
+      currentDate.setDate(currentDate.getDate() - 1);
+      break;
+    case "1일":
+      currentDate.setDate(currentDate.getDate() - 1);
+      break;
+    case "1주일":
+      currentDate.setDate(currentDate.getDate() - 7);
+      break;
+    case "1개월":
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      break;
+    case "3개월":
+      currentDate.setMonth(currentDate.getMonth() - 3);
+      break;
+    case "6개월":
+      currentDate.setMonth(currentDate.getMonth() - 6);
+      break;
+    case "1년":
+      currentDate.setFullYear(currentDate.getFullYear() - 1);
+      break;
+    default:
+      break;
+  }
+
+  // const dataDate = new Date(data.created_at);
   const timeFilteredData =
-    dataList === undefined
-      ? []
-      : dataList.filter((data) => {
-          const dataDate = refactorDate(data.created_at);
-
-          if (dataDate === undefined || nowDate === undefined || minDate === undefined || maxDate === undefined)
-            return data;
-
-          if (minDate !== 0 && maxDate !== 0) return minDate <= dataDate && dataDate <= maxDate;
-          else return selectDate <= dataDate && dataDate <= nowDate;
-        });
+    dataList === undefined ? [] : dataList.filter((data) => new Date(data.created_at) >= currentDate);
 
   // 검색 조건 필터링
   const filteredData = timeFilteredData.filter((data) => {
     if (conditionWord === undefined) return data;
     switch (type) {
       case "post":
-        return data[category].includes(conditionWord);
+        return data[searchCategory].includes(conditionWord);
       case "comment":
-        if (category === "content") return data[category].includes(conditionWord);
-        else return data.POSTS[category].includes(conditionWord);
+        if (searchCategory === "content") return data[searchCategory].includes(conditionWord);
+        else return data.POSTS[searchCategory].includes(conditionWord);
       case "like":
-        return data.POSTS[category].includes(conditionWord);
+        return data.POSTS[searchCategory].includes(conditionWord);
       default:
         return data;
     }
   });
 
   const changMonthOption = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectMonth = Number(event.target.value);
-    const refactorMonth = Number(nowMonth) - selectMonth < 10 ? `0${Number(nowMonth) - selectMonth}` : selectMonth;
-
-    const conditionDate = refactorDate(`${nowYear}-${refactorMonth}-${nowDay}`);
-
-    if (conditionDate === undefined) return;
-    setSelectDate(conditionDate);
+    setSelectedOption(event.target.value);
   };
 
-  const changeCategory = (event: ChangeEvent<HTMLSelectElement>) => {
-    setCategory(event.target.value);
+  const changeSearchCategory = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSearchCategory(event.target.value);
   };
 
-  const onSubmit: SubmitHandler<Input> = (data) => {
-    const { searchKeyword } = data;
-    setConditionWord(searchKeyword);
-  };
-
-  const resetFilter = () => {
-    setSelectDate(0);
-    setConditionWord(undefined);
-    resetField("searchKeyword");
-    setCategory("title");
+  const searchOnKeywordHandler: SubmitHandler<Input> = (data) => {
+    setConditionWord(data.searchKeyword);
   };
 
   const SearchBar = () => {
     return (
       <div className="flex gap-[22px]">
-        <div className="flex items-center gap-[12px]">
+        <form onSubmit={handleSubmit(searchOnKeywordHandler)} className="flex items-center gap-3">
           <select
+            value={selectedOption}
             onChange={changMonthOption}
             name="month"
-            className="w-[100px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
+            className="w-[100px] h-8 px-[10px] gray-outline-button rounded-md text-gray02 body-4"
           >
-            <option value={1}>1개월</option>
-            <option value={3}>3개월</option>
-            <option value={6}>6개월</option>
+            <option value={"선택하세요"}>선택하세요</option>
+            <option value={"1일"}>1일</option>
+            <option value={"1주일"}>1주일</option>
+            <option value={"1개월"}>1개월</option>
+            <option value={"3개월"}>3개월</option>
+            <option value={"6개월"}>6개월</option>
+            <option value={"1년"}>1년</option>
           </select>
-          <p className="flex contents-center w-[80px] h-[32px] px-[10px] py-auto gray-outline-button rounded-[4px] text-gray02 body-4">
-            직접설정
-          </p>
-          <input
-            type="date"
-            {...register("min")}
-            className="w-[120px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
-          />
-          <p>-</p>
-          <input
-            type="date"
-            {...register("max")}
-            className="w-[120px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
-          />
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-[12px]">
+
           <select
-            onChange={changeCategory}
-            value={category}
-            className="w-[100px] h-[32px] px-[10px] gray-outline-button rounded-[4px] text-gray02 body-4"
+            value={searchCategory}
+            onChange={changeSearchCategory}
+            className="w-[100px] h-8 px-[10px] gray-outline-button rounded-md text-gray02 body-4"
           >
             <option value={"title"}>제목</option>
 
@@ -146,15 +119,9 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           <input
             {...register("searchKeyword")}
             type="text"
-            className="w-[180px] h-[32px] px-2 gray-outline-button rounded-[4px] text-gray02 body-4"
+            className="w-[180px] h-8 px-2 gray-outline-button rounded-md text-gray02 body-4"
           />
-          <button className="w-[64px] h-[32px] gray-outline-button rounded-[4px] text-gray02 body-4">검색</button>
-          <button
-            onClick={resetFilter}
-            className="w-[64px] h-[32px] gray-outline-button rounded-[4px] text-gray02 body-4"
-          >
-            초기화
-          </button>
+          <button className="w-16 h-8 rounded-md gray-outline-button text-gray02 body-4">검색</button>
         </form>
       </div>
     );
