@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
@@ -29,8 +30,8 @@ export const MypageSkeleton = () => {
           </div>
         </div>
         <div className="flex items-start border border-gray05 rounded-[12px]">
-          {iconArr.map((el, index) => (
-            <div key={index} className="relative flex-column contents-center h-full w-[254px] gap-6">
+          {iconArr.map((el) => (
+            <div key={el.title} className="relative flex-column contents-center h-full w-[254px] gap-6">
               <div className="gap-3 flex-column contents-center">
                 {el.icon}
                 <p className="text-[16px] font-normal leading-[150%]">{el.title}</p>
@@ -45,8 +46,8 @@ export const MypageSkeleton = () => {
         <div className="flex-column">
           {iconArr.map((el, index) => {
             return (
-              <>
-                <div key={index} className="flex items-center justify-between border-b border-black pb-6 mt-[80px]">
+              <Fragment key={index}>
+                <div className="flex items-center justify-between border-b border-black pb-6 mt-[80px]">
                   <p className="text-[18px] font-normal leading-[150%]">{el.title}</p>
                   <button className="flex contents-center gap-[12px] body-4 text-gray02">
                     VIEW MORE
@@ -54,16 +55,16 @@ export const MypageSkeleton = () => {
                   </button>
                 </div>
                 <ul className="flex-column h-[130px]">
-                  <li className="w-full h-[64px] flex justify-between items-center px-6">
+                  <li key={`${el.title}1`} className="w-full h-[64px] flex justify-between items-center px-6">
                     <div className="w-[200px] h-[14px] skeleton-effect"></div>
                     <div className="w-[56px] h-[14px] skeleton-effect" />
                   </li>
-                  <li className="w-full h-[64px] flex justify-between items-center px-6">
+                  <li key={`${el.title}2`} className="w-full h-[64px] flex justify-between items-center px-6">
                     <div className="w-[200px] h-[14px] skeleton-effect"></div>
                     <div className="w-[56px] h-[14px] skeleton-effect" />
                   </li>
                 </ul>
-              </>
+              </Fragment>
             );
           })}
         </div>
