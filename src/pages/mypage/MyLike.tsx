@@ -40,7 +40,7 @@ export const MyLike = () => {
   });
 
   return (
-    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
+    <div className={MYPAGE_LAYOUT_STYLE}>
       <MypageTitle />
       <MypageSubTitle type="like" />
       {pageData.length === 0 ? (
