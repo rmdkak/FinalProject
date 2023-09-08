@@ -1,3 +1,4 @@
+export * from "./adminPage";
 export * from "./Community";
 export * from "./Detail";
 export * from "./FindAuth";

@@ -1,4 +1,5 @@
 export * from "./useAuthQuery";
+export * from "./useAdminQuery";
 export * from "./useBookmarkQuery";
 export * from "./useBookmark";
 export * from "./useMypageQuery";

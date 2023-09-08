@@ -79,18 +79,17 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
 
         <div>
           <ul className="gap-4 text-black flex-column body-1">
-            <li className="duration-500 border-b-2 border-transparent hover:border-black">
-              {/* console.log li 클래스 적용여부 후 삭제 */}
+            <li className="duration-500 text-gray03 hover:text-black">
               <Link onClick={closeSideBarHandler} to="/interior-preview">
                 인테리어 조합
               </Link>
             </li>
-            <li>
+            <li className="duration-500 text-gray03 hover:text-black">
               <Link onClick={closeSideBarHandler} to="/community">
                 커뮤니티
               </Link>
             </li>
-            <li>
+            <li className="duration-500 text-gray03 hover:text-black">
               <Link onClick={closeSideBarHandler} to="/">
                 브랜드 소개
               </Link>

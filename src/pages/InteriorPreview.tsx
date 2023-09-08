@@ -4,7 +4,7 @@ import { BsCalculator } from "react-icons/bs";
 import { STORAGE_URL } from "api/supabase";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import share from "assets/svgs/icon_share.svg";
-import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview } from "components";
+import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview, Share } from "components";
 import { useBookmarkQuery, useBookmark, useMovePage } from "hooks";
 import { useModalStore, useServiceStore } from "store";
 import { type FetchItemBookmark } from "types/service";
@@ -14,6 +14,7 @@ export const InteriorPreview = () => {
   setCurrentPathname();
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
+  const [openShareModal, setOpenShareModal] = useState<boolean>(false);
   const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const [tileBg, setTileBg] = useState<string>("");
 
@@ -103,9 +104,15 @@ export const InteriorPreview = () => {
               >
                 추천하기
               </button>
-              <button className="w-[64px] h-[64px] rounded-xl border border-gray05 outline-button-hover">
+              <button
+                onClick={() => {
+                  setOpenShareModal(true);
+                }}
+                className="w-[64px] h-[64px] rounded-xl border border-gray05 outline-button-hover"
+              >
                 <img src={share} className="mx-auto" />
               </button>
+              {openShareModal && <Share setOpenShareModal={setOpenShareModal} />}
             </div>
           </div>
         </div>
