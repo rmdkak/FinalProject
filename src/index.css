@@ -46,6 +46,11 @@ pre {
   }
 }
 
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 .flicking-viewport {
   padding-bottom: 64px !important;
 }
