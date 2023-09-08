@@ -24,15 +24,22 @@ export const createCommentsHandler = async (commentData: Tables<"COMMENTS", "Ins
 
 // post(스토리지 저장)
 export const saveCommentImageHandler = async ({ id, commentImgFile }: { id: string; commentImgFile: Blob }) => {
-  await supabase.storage.from("Images").upload(`commentImg/${id}`, commentImgFile, {
+  console.log("id :", id);
+  console.log("commentImgFile :", commentImgFile);
+  const { data, error } = await supabase.storage.from("Images").upload(`commentImg/${id}`, commentImgFile, {
     cacheControl: "3600",
     upsert: false,
   });
+  console.log("data :", data);
+  console.log("error :", error);
 };
 // post(스토리지 삭제)
 export const deleteCommentImageHandler = async (currentImg: string) => {
-  currentImg.replace("/", "");
-  await supabase.storage.from("Images").remove([currentImg]);
+  console.log("currentImg :", currentImg);
+  if (currentImg !== null) currentImg.replace("/", "");
+  const { data, error } = await supabase.storage.from("Images").remove([currentImg]);
+  console.log("data :", data);
+  console.log("error :", error);
 };
 
 // patch(comments)

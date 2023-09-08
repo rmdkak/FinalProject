@@ -25,7 +25,7 @@ export const Community = () => {
   const { flickingSkeleton, postListSkeleton } = CommunitySkeleton();
 
   const { fetchPostsMutation } = usePostsQuery();
-  const { data: postList } = fetchPostsMutation;
+  const { data: postList, isLoading } = fetchPostsMutation;
 
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
 
@@ -62,7 +62,7 @@ export const Community = () => {
     dataLength: filteredData.length,
     postPerPage: 8,
   });
-
+  console.log("pageData", pageData);
   const newPostList = postList === undefined ? [] : [...postList];
   const flickingPostList = newPostList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 5);
 
@@ -78,7 +78,7 @@ export const Community = () => {
         </div>
         {/* 슬라이더 영역 */}
         <Flicking align={"prev"} circular={true} panelsPerView={3} moveType={"strict"} plugins={plugins}>
-          {flickingPostList.length === 0 && flickingSkeleton}
+          {isLoading && flickingSkeleton}
           {flickingPostList?.map((post) => bestPostList(post))}
           <ViewportSlot>
             <div className="flicking-pagination"></div>
@@ -102,7 +102,12 @@ export const Community = () => {
               총 <span className="font-semibold text-black">{filteredData?.length}</span>개의 게시물이 있습니다.
             </p>
           </div>
-          {pageData.length === 0 && postListSkeleton}
+          {pageData.length === 0 ? (
+            <p className="text-[18px] flex justify-center my-10">존재하는 게시물이 없습니다.</p>
+          ) : (
+            ""
+          )}
+          {isLoading && postListSkeleton}
           {pageData.map((post) => {
             return (
               <div
