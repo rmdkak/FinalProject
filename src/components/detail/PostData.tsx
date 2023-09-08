@@ -19,7 +19,7 @@ export const PostData = ({ postData }: PostProps) => {
     <>
       <div className="items-center flex-column">
         <p
-          className="font-medium text-[32px]"
+          className="font-medium text-[32px] hover:cursor-pointer"
           onClick={() => {
             navigate("/community");
           }}
@@ -28,7 +28,6 @@ export const PostData = ({ postData }: PostProps) => {
         </p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
-
       <div className="contents-between border-b border-gray06 my-[10px] py-[20px] items-center">
         <div className="w-[1000px] my-[10px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
@@ -42,6 +41,7 @@ export const PostData = ({ postData }: PostProps) => {
               <FaRegHeart />
               <p>좋아요 {postData?.bookmark}</p>
             </div>
+            <button className="leading-[1px] hover:border-b border-gray02">신고하기</button>
           </div>
         </div>
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (

@@ -36,7 +36,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
 
   return (
     <>
-      <dialog className=" fixed z-[9110] top-0 box-border py-8 px-20 right-0 mr-0  h-full w-[25rem]" open={isOpen}>
+      <dialog className=" fixed z-[9110] top-0 box-border py-8 px-10 right-0 mr-0  h-full w-80" open={isOpen}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-title text-[1.25em]">STILE</h2>
           <button onClick={closeSideBarHandler} className="flex contents-center">
@@ -91,8 +91,13 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
               </Link>
             </li>
             <li>
+              <Link onClick={closeSideBarHandler} to="/eventlist">
+                이벤트
+              </Link>
+            </li>
+            <li>
               <Link onClick={closeSideBarHandler} to="/">
-                브랜드 소개
+                1:1문의하기
               </Link>
             </li>
           </ul>
