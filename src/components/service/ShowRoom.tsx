@@ -8,8 +8,8 @@ interface Props {
   tileBg: string | null | undefined;
   page: "detail" | "mypage";
 }
-const leftSize = 300;
-const rightSize = 300;
+const leftSize = 100;
+const rightSize = 100;
 const tileSize = 100;
 
 export const ShowRoom = (Props: Props) => {

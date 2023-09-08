@@ -67,6 +67,11 @@ pre {
   color: #9a9a9a;
 }
 
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
 .flicking-viewport {
   padding-bottom: 40px !important;
 }

@@ -1,10 +1,9 @@
-/* eslint-disable no-case-declarations */
 import { AutoPlay, Pagination } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Toolbar } from "components/sidebar";
+import { useMovePage, usePostsData } from "hooks";
 import "@egjs/react-flicking/dist/flicking.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
-import { usePostsData } from "hooks";
 
 const plugins = [
   new AutoPlay({ animationDuration: 3000, direction: "NEXT", stopOnHover: true }),
@@ -12,6 +11,8 @@ const plugins = [
 ];
 
 export const Community = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const { CommunityPostsForm, ShowBestPostElements, showPageComponent, SearchBar } = usePostsData();
 
   return (

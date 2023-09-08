@@ -8,9 +8,11 @@ import calcArrow from "assets/svgs/calcArrow.svg";
 import thumnail1 from "assets/thumbnail1.png";
 import thumnail2 from "assets/thumbnail2.png";
 import { HomeContentsTitle, HomeKvBanner } from "components/home";
-import { usePostsData } from "hooks";
+import { usePostsData, useMovePage } from "hooks";
 
 export const Home = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const navigate = useNavigate();
   const { ShowBestPostElements, ShowBestRankingElements } = usePostsData();
   const [plugins, setPlugins] = useState<Plugin[]>([]);
