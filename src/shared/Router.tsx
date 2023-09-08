@@ -24,6 +24,10 @@ const Router = () => {
           <Route path="/find-auth/:focus" element={<Pages.FindAuth />} />
           <Route path="/update-password" element={<Pages.UpdatePassword />} />
           <Route path="/signup" element={<Pages.Signup />} />
+          <Route path="/*" element={<Pages.Error />} />
+          <Route path="/admin" element={<Pages.AdminPage />} />
+          <Route path="/event/:id" element={<Pages.Event />} />
+          <Route path="/eventlist" element={<Pages.EventList />} />
         </Routes>
       </Layout>
     </BrowserRouter>

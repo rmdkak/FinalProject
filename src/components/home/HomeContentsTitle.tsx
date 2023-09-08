@@ -17,7 +17,7 @@ export const HomeContentsTitle = ({ title, page, navigation }: Props) => {
         <div className="items-center contents-between">
           <h2 className="section-title">{title}</h2>
           <div>
-            <label htmlFor={page} className="mr-3 text-[12px] text-gray02 hover:cursor-pointer">
+            <label htmlFor={page} className="mr-[10px] text-[14px] text-gray02 hover:cursor-pointer">
               VIEW MORE
             </label>
             <button
@@ -32,7 +32,7 @@ export const HomeContentsTitle = ({ title, page, navigation }: Props) => {
         </div>
       ) : (
         <div className="flex items-center">
-          <h2 className="section-title mr-auto">{title}</h2>
+          <h2 className="mr-auto section-title">{title}</h2>
         </div>
       )}
     </>

@@ -41,13 +41,38 @@ pre {
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
-
     margin: 0;
   }
 }
+.active {
+  position: relative;
+  color: black !important;
+}
+
+.active::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  display: block;
+  background-color: #ffd75e;
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -1;
+  border-radius: 100%;
+}
+
+.has-background-primary {
+  color: #9a9a9a;
+}
 
 .flicking-viewport {
-  padding-bottom: 64px !important;
+  padding-bottom: 40px !important;
+}
+
+.flicking-pagination {
+  bottom: 0 !important;
 }
 
 .flicking-pagination-bullet {
@@ -173,6 +198,10 @@ pre {
   .selected-wall-point {
     @apply relative hover:cursor-pointer text-black after:content-[''] after:absolute after:w-1 after:h-1 after:block after:top-[-10px] after:left-[50%] after:bg-point after:rounded-full after:-translate-x-[50%];
   }
+  .selected-ranking-point {
+    @apply relative after:content-[''] after:absolute after:w-6 after:h-6 after:block after:top-0 after:left-[50%] after:bg-gray07 after:rounded-full after:-translate-x-[50%] after:-z-10;
+  }
+
   .skeleton-effect {
     @apply bg-gradient-to-r from-gray06 to-gray05 animate-pulse;
   }

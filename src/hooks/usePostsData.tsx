@@ -10,7 +10,11 @@ import { type Tables } from "types/supabase";
 interface Props {
   dataLength: number;
 }
-
+/**
+ * PostsData를 사용한 element, flicking 라이브러리에 적용시킬 반복되는 element 요소를 반환힙니다.
+ * @returns ShowBestPostElements: Home,community 화면에 보여지는 BEST CONTENTS 요소들을 반환합니다.
+ * ShowBestRankingElements: Home화면에 보여지는 베스트 조합 랭킹 요소들을 반환합니다.
+ */
 export const usePostsData = () => {
   const [selectedOption, setSelectedOption] = useState<string>("whole");
   const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
@@ -61,14 +65,12 @@ export const usePostsData = () => {
     setSelectedOption(event.target.value);
   };
 
-  const { pageData, showPageComponent } = usePagination({
-    data: filteredData,
-    dataLength: filteredData.length,
-    postPerPage: 8,
-  });
-
   const flickingPostList = newPostList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 5);
-
+  /**
+   * flicking 라이브러리에 적용할 수 있도록, 반복되는 element 컴포넌트를 대신합니다.
+   * @params dataLength:number 원하는 길이의 PostData 배열을 가져옵니다.
+   * @returns Home,community 화면에 보여지는 BEST CONTENTS 요소들을 반환합니다.
+   */
   const ShowBestPostElements = ({ dataLength }: Props) => {
     return (
       <>
@@ -141,6 +143,12 @@ export const usePostsData = () => {
       </>
     );
   };
+
+  const { pageData, showPageComponent } = usePagination({
+    data: filteredData,
+    dataLength: filteredData.length,
+    postPerPage: 8,
+  });
 
   const CommunityPostsForm = () => {
     return (
@@ -242,54 +250,59 @@ export const usePostsData = () => {
 
   const rankingList = newPostList
     ?.sort((a, b) => b.bookmark - a.bookmark)
-    .filter((post, idx) => isExistCombination(post, "all") && idx < 10);
-
+    .filter((post, idx) => isExistCombination(post, "all") && idx < 13);
+  /**
+   * flicking 라이브러리에 적용할 수 있도록, 반복되는 element 컴포넌트를 대신합니다.
+   * @returns Home화면에 보여지는 베스트 조합 랭킹 요소들을 반환합니다.
+   */
   const ShowBestRankingElements = () => {
     return (
       <>
         {rankingList?.map((post, idx) => (
-          <div className="items-center gap-4 flex-column w-[125px] h-[90px] hover:cursor-pointer" key={post.id}>
-            <p className="w-6 h-6 text-center">{idx + 1}</p>
-            {isExistCombination(post, "interior") && (
-              <div className="relative inline-flex">
-                <img
-                  src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
-                  alt="좌측 벽지"
-                  className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                ></img>
-                <img
-                  src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
-                  alt="우측 벽지"
-                  className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                ></img>
-                <img
-                  src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                  alt="바닥"
-                  className="absolute min-w-[48px] min-h-[48px] top-0 left-[15px] rounded-full border border-gray05"
-                ></img>
-              </div>
-            )}
-            {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
-              <div className="relative inline-flex">
-                <div
-                  style={{
-                    backgroundColor: post.leftColorCode,
-                  }}
-                  className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                ></div>
-                <div
-                  style={{
-                    backgroundColor: post.rightColorCode,
-                  }}
-                  className="absolute top-0 left-[-30.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                ></div>
-                <img
-                  src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                  alt="바닥"
-                  className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                ></img>
-              </div>
-            )}
+          <div key={post.id} className="mr-10 flicking-panel thumb has-background-primary">
+            <div className="items-center gap-4 flex-column w-[125px] h-[90px] hover:cursor-pointer">
+              <p className="relative w-6 h-6 text-center selected-ranking-point">{idx + 1}</p>
+              {isExistCombination(post, "interior") && (
+                <div className="relative inline-flex">
+                  <img
+                    src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
+                    alt="좌측 벽지"
+                    className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                  ></img>
+                  <img
+                    src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
+                    alt="우측 벽지"
+                    className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                  ></img>
+                  <img
+                    src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                    alt="바닥"
+                    className="absolute min-w-[48px] min-h-[48px] top-0 left-[15px] rounded-full border border-gray05"
+                  ></img>
+                </div>
+              )}
+              {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
+                <div className="relative inline-flex">
+                  <div
+                    style={{
+                      backgroundColor: post.leftColorCode,
+                    }}
+                    className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                  ></div>
+                  <div
+                    style={{
+                      backgroundColor: post.rightColorCode,
+                    }}
+                    className="absolute top-0 left-[-30.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                  ></div>
+                  <img
+                    src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                    alt="바닥"
+                    className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                  ></img>
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </>

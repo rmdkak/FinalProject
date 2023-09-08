@@ -1,5 +1,8 @@
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Sync } from "@egjs/flicking-plugins";
+import Flicking, { type Plugin } from "@egjs/react-flicking";
 import mainPreview from "assets/mainpreviewImg.jpg";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import thumnail1 from "assets/thumbnail1.png";
@@ -10,10 +13,32 @@ import { usePostsData } from "hooks";
 export const Home = () => {
   const navigate = useNavigate();
   const { ShowBestPostElements, ShowBestRankingElements } = usePostsData();
+  const [plugins, setPlugins] = useState<Plugin[]>([]);
+  const flicking0 = useRef() as React.LegacyRef<Flicking> | undefined;
+  const flicking1 = useRef() as React.LegacyRef<Flicking> | undefined;
+
+  useEffect(() => {
+    setPlugins([
+      new Sync({
+        type: "index",
+        synchronizedFlickingOptions: [
+          {
+            flicking: (flicking0 as React.RefObject<Flicking>).current as Flicking,
+            isSlidable: true,
+          },
+          {
+            flicking: (flicking1 as React.RefObject<Flicking>).current as Flicking,
+            isClickable: true,
+            activeClass: "active",
+          },
+        ],
+      }),
+    ]);
+  }, []);
 
   return (
-    <div className="items-center flex-column gap-[120px] mt-16">
-      <div className="flex w-full">
+    <div className="items-center mt-16 flex-column">
+      <div className="flex w-full mb-[120px]">
         <div className="flex-column w-[30%] min-w-[561px] mx-[5%] mb-20 mt-[100px]">
           <div className="mx-auto my-auto">
             <h1 className="text-[56px] leading-[130%]">
@@ -43,33 +68,77 @@ export const Home = () => {
           <HomeKvBanner />
         </div>
       </div>
-      <div className="home-section">
+      <div className="w-[1280px] flex-column mb-[80px]">
         <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} navigation={false} />
-        <img src={mainPreview} alt="preview" className="w-full h-[740px]" />
-        <div className="flex gap-10">
-          <ShowBestRankingElements />
-        </div>
+        <Flicking ref={flicking0} bounce={30} plugins={plugins} circular={true}>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+          <div className="flicking-panel full has-background-primary">
+            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
+          </div>
+        </Flicking>
+        <Flicking ref={flicking1} align={"prev"} moveType={"strict"} circular={true}>
+          {ShowBestRankingElements()}
+        </Flicking>
       </div>
-      <div className="home-section">
-        <HomeContentsTitle title={"EVENT"} page={"event"} navigation={true} />
+      <div className="home-section mb-[120px]">
+        <HomeContentsTitle title={"EVENT"} page={"eventlist"} navigation={true} />
         <div className="flex gap-10">
-          <div className="w-full gap-6 flex-column">
-            <img src={thumnail1} alt="thumnail" className="h-[400px] rounded-xl object-contain"></img>
-            <div className="gap-2 flex-column">
+          <div
+            className="w-full gap-6 flex-column"
+            onClick={() => {
+              navigate("/event/1");
+            }}
+          >
+            <img
+              src={thumnail1}
+              alt="thumnail"
+              className="h-[400px] rounded-xl object-contain hover:cursor-pointer"
+            ></img>
+            <div className="gap-2 flex-column hover:cursor-pointer">
               <h2 className="text-2xl font-medium">홈 & 리빙 페스티벌</h2>
               <p className="text-gray02">가을 분위기로 변신할 수 있는 기회! 홈&리빙 페스티벌을 즐겨보세요</p>
             </div>
           </div>
           <div className="w-full gap-6 flex-column">
-            <img src={thumnail2} alt="thumnail" className="h-[400px] rounded-xl object-contain"></img>
-            <div className="gap-2 flex-column">
+            <img
+              src={thumnail2}
+              alt="thumnail"
+              className="h-[400px] rounded-xl object-contain hover:cursor-pointer"
+            ></img>
+            <div className="gap-2 flex-column hover:cursor-pointer">
               <h2 className="text-2xl font-medium">요즘 뜨는 신상 아이템</h2>
               <p className="text-gray02">최신 유행하는 신상 아이템을 바로 확인해보세요!</p>
             </div>
           </div>
         </div>
       </div>
-      <div className="mb-20 home-section">
+      <div className="mb-[120px] home-section">
         <HomeContentsTitle title={"COMMUNITY"} page={"community"} navigation={true} />
         <div className="flex w-full gap-10">
           <ShowBestPostElements dataLength={3} />
