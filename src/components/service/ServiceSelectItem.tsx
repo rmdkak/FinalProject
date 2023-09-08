@@ -1,3 +1,4 @@
+import { STORAGE_URL } from "api/supabase";
 import { useServiceStore } from "store";
 
 import { SELECT_BORDER_COLOR } from "./data";
@@ -17,7 +18,6 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
     setTile,
     onClickItemBorder,
   } = useServiceStore((state) => state);
-  const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
   const getItemData = (selectItem: { id: string; image: string }): void => {
     if (checkType === "wallPaper") {

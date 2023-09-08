@@ -92,6 +92,14 @@ input[type="password"]::-ms-clear {
   transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-300px) translateX(-25px);
   transform-style: preserve-3d;
 }
+.home-preview-left-wall {
+  position: absolute;
+  width: 980px;
+  height: 750px;
+  background-color: #f3f3f3;
+  transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-300px) translateX(-22px) translateZ(-257px);
+  transform-style: preserve-3d;
+}
 .right-wall {
   position: absolute;
   width: 650px;
@@ -100,12 +108,28 @@ input[type="password"]::-ms-clear {
   transform: rotateX(-90deg) translateZ(-300px) translateY(-300px);
   transform-style: preserve-3d;
 }
+.home-preview-right-wall {
+  position: absolute;
+  width: 980px;
+  height: 750px;
+  background-color: #e5e5e5;
+  transform: rotateX(-90deg) translateZ(-300px) translateY(-436px) translateX(77px);
+  transform-style: preserve-3d;
+}
 .floor {
   position: absolute;
   top: 0;
   left: 0;
   width: 800px;
   height: 800px;
+  background-color: #bcbcbc;
+}
+.home-preview-floor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1070px;
+  height: 1070px;
   background-color: #bcbcbc;
 }
 
