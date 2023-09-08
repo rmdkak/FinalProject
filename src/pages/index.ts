@@ -10,6 +10,5 @@ export * from "./Signup";
 export * from "./UpdatePassword";
 export * from "./UpdatePost";
 export * from "./Error";
-export * from "./AdminPage";
 export * from "./Event";
 export * from "./EventList";
