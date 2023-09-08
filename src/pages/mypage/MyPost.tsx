@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
 import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
+import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
+
 export const MyPost = () => {
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
 
@@ -40,7 +42,7 @@ export const MyPost = () => {
   });
 
   return (
-    <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
+    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <MypageTitle />
       <MypageSubTitle type="post" />
       {/* 글 목록 */}
