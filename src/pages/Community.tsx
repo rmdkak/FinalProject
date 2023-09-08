@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +7,7 @@ import { STORAGE_URL } from "api/supabase";
 import { DateConvertor } from "components";
 import { CommunitySkeleton } from "components/common/skeletonUI";
 import { Toolbar } from "components/sidebar";
-import { usePagination, usePostsQuery, useSearchBar, useFlicking } from "hooks";
+import { useFlicking, useMovePage, usePagination, usePostsQuery, useSearchBar } from "hooks";
 import "@egjs/react-flicking/dist/flicking.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
 import { type Tables } from "types/supabase";
@@ -19,6 +18,8 @@ const plugins = [
 ];
 
 export const Community = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const [selectedOption, setSelectedOption] = useState<string>("whole");
   const { bestPostList, isExistCombination } = useFlicking();
   const navigate = useNavigate();
@@ -31,17 +32,19 @@ export const Community = () => {
 
   useEffect(() => {
     if (postList !== undefined) {
+      let filtered;
+      let filteredRecommendation;
       switch (selectedOption) {
         case "whole":
           setFilteredPosts(postList);
           break;
         case "normal":
-          const filterd = postList?.filter((post) => !isExistCombination(post, "all"));
-          setFilteredPosts(filterd);
+          filtered = postList?.filter((post) => !isExistCombination(post, "all"));
+          setFilteredPosts(filtered);
           break;
         case "recommendation":
-          const filterdRecommendation = postList?.filter((post) => isExistCombination(post, "all"));
-          setFilteredPosts(filterdRecommendation);
+          filteredRecommendation = postList?.filter((post) => isExistCombination(post, "all"));
+          setFilteredPosts(filteredRecommendation);
           break;
       }
     }

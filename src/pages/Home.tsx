@@ -6,9 +6,11 @@ import calcArrow from "assets/svgs/calcArrow.svg";
 import thumnail1 from "assets/thumbnail1.png";
 import thumnail2 from "assets/thumbnail2.png";
 import { HomeContentsTitle, HomeKvBanner } from "components/home";
-import { usePostsQuery, useFlicking } from "hooks";
+import { usePostsQuery, useFlicking, useMovePage } from "hooks";
 
 export const Home = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const navigate = useNavigate();
   const { fetchPostsMutation } = usePostsQuery();
   const { data: postList } = fetchPostsMutation;
@@ -18,6 +20,7 @@ export const Home = () => {
   const rankingList = postList
     ?.sort((a, b) => b.bookmark - a.bookmark)
     .filter((post, idx) => isExistCombination(post, "all") && idx < 10);
+
   return (
     <div className="items-center flex-column gap-[120px] mt-16">
       <div className="flex w-full">

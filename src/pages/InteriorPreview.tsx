@@ -5,11 +5,13 @@ import { STORAGE_URL } from "api/supabase";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import share from "assets/svgs/icon_share.svg";
 import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview } from "components";
-import { useBookmarkQuery, useBookmark } from "hooks";
+import { useBookmarkQuery, useBookmark, useMovePage } from "hooks";
 import { useModalStore, useServiceStore } from "store";
 import { type FetchItemBookmark } from "types/service";
 
 export const InteriorPreview = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
   const [tileBg, setTileBg] = useState<string>("");

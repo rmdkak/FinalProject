@@ -11,10 +11,12 @@ import lineHeart from "assets/svgs/lineheart.svg";
 import share from "assets/svgs/share.svg";
 import { Comments, DateConvertor, useDialog, DetailSkeleton } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
-import { usePostsQuery, usePostsLikeQuery } from "hooks";
+import { usePostsQuery, usePostsLikeQuery, useMovePage } from "hooks";
 import { useAuthStore, useLikeStore } from "store";
 
 export const Detail = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const { id: paramsId } = useParams();
   const navigate = useNavigate();
   const { resetDetailPostId, setDetailPostId } = useLikeStore();

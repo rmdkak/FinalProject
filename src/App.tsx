@@ -6,7 +6,6 @@ import { useAuthStore } from "store";
 
 const App = () => {
   const { setCurrentSession, stayLoggedInStatus } = useAuthStore();
-
   const [userData, setUserData] = useState<Array<{ email: string; name: string }>>();
 
   useEffect(() => {
@@ -38,7 +37,6 @@ const App = () => {
     }
 
     auth.onAuthStateChange(async (event, session) => {
-      // 소셜 로그인일 때 USER DATA 저장
       const provider = session?.user.app_metadata.provider;
       if (provider === "kakao" || provider === "google" || provider === "github") {
         const matchUser = userData?.filter((user) => user.email === session?.user.email);
