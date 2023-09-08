@@ -26,16 +26,14 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
     interiorSelectX ? setColor(leftWall) : setColor(rightWall);
   }, [interiorSelectX, leftWall, rightWall]);
 
-  const handleCopyColorClipBoard = (color: string) => {
-    navigator.clipboard
-      .writeText(color)
-      .then(async () => {
-        await Alert("컬러가 복사되었습니다.");
-      })
-      .catch(async (error) => {
-        await Alert("복사에 실패했습니다.");
-        console.error("복사 실패", error);
-      });
+  const handleCopyColorClipBoard = async (color: string) => {
+    try {
+      await navigator.clipboard.writeText(color);
+      await Alert("컬러가 복사되었습니다.");
+    } catch (error) {
+      await Alert("복사에 실패했습니다.");
+      console.error("복사 실패", error);
+    }
   };
 
   const { data, loading, error } = useColor<ColorFormats, ReducerState<string>>(color, "hex", {
@@ -49,7 +47,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         <ul className="flex flex-wrap gap-4">
           <li
             onClick={() => {
-              handleCopyColorClipBoard(changeSidePaint);
+              void handleCopyColorClipBoard(changeSidePaint);
             }}
             className="flex"
           >
@@ -95,7 +93,7 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           <ul className="flex flex-wrap gap-4">
             <li
               onClick={() => {
-                handleCopyColorClipBoard(data);
+                void handleCopyColorClipBoard(data);
               }}
               className="flex"
             >

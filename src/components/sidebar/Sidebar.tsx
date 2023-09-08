@@ -18,6 +18,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
 
   // 로그아웃
   const logoutHandler = async () => {
+    closeSideBarHandler();
     navigate("/");
     try {
       await logout();
@@ -45,15 +46,15 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
 
         {/* 로그인 토글 */}
         <div className="pb-3 mb-8 border-b border-black">
-          <ul className="flex text-[0.75rem] font-[#1a1a1a] ">
+          <ul className="flex gap-4 text-black body-3">
             {currentSession === null ? (
               <>
-                <li className="mr-4 cursor-pointer text-[#1a1a1a]">
+                <li>
                   <Link onClick={closeSideBarHandler} to="/login">
                     로그인
                   </Link>
                 </li>
-                <li className="cursor-pointer text-[#1a1a1a]">
+                <li>
                   <Link onClick={closeSideBarHandler} to="/signup">
                     회원가입
                   </Link>
@@ -61,13 +62,15 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
               </>
             ) : (
               <>
-                <li className="mr-4 cursor-pointer text-[#1a1a1a]">
+                <li>
                   <Link onClick={closeSideBarHandler} to={"/mypage"}>
                     마이페이지
                   </Link>
                 </li>
-                <li onClick={logoutHandler} className="cursor-pointer text-[#1a1a1a]">
-                  로그아웃
+                <li>
+                  <Link onClick={logoutHandler} to={"/"}>
+                    로그아웃
+                  </Link>
                 </li>
               </>
             )}
@@ -75,18 +78,19 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
         </div>
 
         <div>
-          <ul>
-            <li className="mb-4 cursor-pointer text-[#1a1a1a]">
+          <ul className="gap-4 text-black flex-column body-1">
+            <li className="duration-500 border-b-2 border-transparent hover:border-black">
+              {/* console.log li 클래스 적용여부 후 삭제 */}
               <Link onClick={closeSideBarHandler} to="/interior-preview">
                 인테리어 조합
               </Link>
             </li>
-            <li className="mb-4 cursor-pointer text-[#1a1a1a] ">
+            <li>
               <Link onClick={closeSideBarHandler} to="/community">
                 커뮤니티
               </Link>
             </li>
-            <li className="cursor-pointer ">
+            <li>
               <Link onClick={closeSideBarHandler} to="/">
                 브랜드 소개
               </Link>

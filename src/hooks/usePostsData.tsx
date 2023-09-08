@@ -1,0 +1,306 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { STORAGE_URL } from "api/supabase";
+import noImage from "assets/no_image.png";
+import { DateConvertor, CommunitySkeleton } from "components";
+import { usePagination, usePostsQuery, useSearchBar } from "hooks";
+import { type Tables } from "types/supabase";
+
+interface Props {
+  dataLength: number;
+}
+
+export const usePostsData = () => {
+  const [selectedOption, setSelectedOption] = useState<string>("whole");
+  const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
+
+  const { SearchBar, filteredData } = useSearchBar({ dataList: filteredPosts, type: "post" });
+  const { postListSkeleton, flickingSkeleton } = CommunitySkeleton();
+  const { fetchPostsMutation } = usePostsQuery();
+  const { data: postList } = fetchPostsMutation;
+  const newPostList = postList === undefined ? [] : [...postList];
+
+  const navigate = useNavigate();
+
+  const isExistCombination = (post: Tables<"POSTS", "Row">, type: "all" | "interior" | "paint") => {
+    switch (type) {
+      case "all":
+        return (
+          (post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null) ||
+          (post.tileId !== null && post.leftColorCode !== null && post.rightColorCode !== null)
+        );
+      case "interior":
+        return post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null;
+      case "paint":
+        return post.leftColorCode !== null && post.rightColorCode !== null;
+    }
+  };
+
+  useEffect(() => {
+    let filterd;
+    let filterdRecommendation;
+    if (postList !== undefined) {
+      switch (selectedOption) {
+        case "whole":
+          setFilteredPosts(postList);
+          break;
+        case "normal":
+          filterd = postList?.filter((post) => !isExistCombination(post, "all"));
+          setFilteredPosts(filterd);
+          break;
+        case "recommendation":
+          filterdRecommendation = postList?.filter((post) => isExistCombination(post, "all"));
+          setFilteredPosts(filterdRecommendation);
+          break;
+      }
+    }
+  }, [selectedOption, postList]);
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const { pageData, showPageComponent } = usePagination({
+    data: filteredData,
+    dataLength: filteredData.length,
+    postPerPage: 8,
+  });
+
+  const flickingPostList = newPostList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 5);
+
+  const ShowBestPostElements = ({ dataLength }: Props) => {
+    return (
+      <>
+        {flickingPostList.length === 0 && flickingSkeleton}
+        {flickingPostList.slice(0, dataLength).map((post) => (
+          <div
+            key={post.id}
+            className="w-[400px] flex-column mr-10 cursor-pointer"
+            onClick={() => {
+              navigate(`/detail/${post.id}`);
+            }}
+          >
+            <div>
+              <img
+                src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
+                alt="postImg"
+                className="rounded-[8px] w-full h-[400px] object-cover"
+              />
+            </div>
+
+            <div className="w-full gap-2 mt-3 flex-column">
+              <div className="flex h-12">
+                <p className="text-[20px] my-auto font-semibold truncate w-1/2">{post.title}</p>
+
+                {isExistCombination(post, "interior") && (
+                  <div className="inline-flex w-1/2">
+                    <img
+                      src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
+                      alt="벽지"
+                      className="relative w-[48px] h-[48px] left-[76px] rounded-full border border-gray05"
+                    />
+                    <img
+                      src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
+                      alt="벽지"
+                      className="relative w-[48px] h-[48px] left-[66px] rounded-full border border-gray05"
+                    />
+                    <img
+                      src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                      alt="바닥"
+                      className="relative w-[48px] h-[48px] left-[56px] rounded-full border border-gray05"
+                    />
+                  </div>
+                )}
+                {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
+                  <div className="inline-flex w-1/2">
+                    <div
+                      className="relative w-[48px] h-[48px] left-[76px] rounded-full border-gray05"
+                      style={{
+                        backgroundColor: post.leftColorCode,
+                      }}
+                    />
+                    <div
+                      className="relative w-[48px] h-[48px] left-[66px] rounded-full border-gray05"
+                      style={{
+                        backgroundColor: post.rightColorCode,
+                      }}
+                    />
+                    <img
+                      src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                      alt="바닥"
+                      className="relative w-[48px] h-[48px] left-[56px] rounded-full border-gray05"
+                    />
+                  </div>
+                )}
+              </div>
+              <p className="text-[16px] text-gray02 line-clamp-2 h-[46px]">{post.content}</p>
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  };
+
+  const CommunityPostsForm = () => {
+    return (
+      <>
+        <div className="flex justify-center">
+          <div className="w-[1280px] mt-20">
+            <div className="flex gap-3 text-[16px] items-center pb-3 border-b-[1px] border-gray02">
+              <select
+                value={selectedOption}
+                onChange={handleOptionChange}
+                className="p-1 w-[140px] text-[#888888] border shadow focus:outline-none"
+              >
+                <option value="whole">전체 게시글</option>
+                <option value="normal">일반 게시글</option>
+                <option value="recommendation">조합추천 게시글</option>
+              </select>
+              <p className="text-[#888888]">
+                총 <span className="font-semibold text-black">{filteredData?.length}</span>개의 게시물이 있습니다.
+              </p>
+            </div>
+            {pageData.length === 0 && postListSkeleton}
+            {pageData.map((post) => {
+              return (
+                <div
+                  key={post.id}
+                  className="flex justify-between gap-4 py-8 ml-3 border-b border-gray-200 cursor-pointer"
+                  onClick={() => {
+                    navigate(`/detail/${post.id as string}`);
+                  }}
+                >
+                  <div className="flex-column w-[1028px] gap-8">
+                    <div className="gap-4 flex-column">
+                      <p className="text-[18px] font-semibold truncate">{post.title}</p>
+                      <p className="text-[16px] h-[52px] overflow-hidden text-[#888888]">{post.content}</p>
+                    </div>
+                    <div className="flex text-[#888888] text-[12px] gap-2">
+                      <p>{post.USERS?.name}</p>
+                      <DateConvertor datetime={post.created_at} type="dotDate" />
+                      <DateConvertor datetime={post.created_at} type={"hourMinute"} />
+                      <p>좋아요 {post.bookmark}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-end gap-4">
+                    {post.postImage !== null && (
+                      <img
+                        src={`${STORAGE_URL}${post.postImage as string}`}
+                        className="h-[124px] w-[124px] rounded-[8px] object-cover mr-auto"
+                      />
+                    )}
+                    {isExistCombination(post, "interior") && (
+                      <div>
+                        <img
+                          src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
+                          alt="벽지"
+                          className="w-12 h-12 rounded-full relative top-[10px] border border-gray05"
+                        />
+                        <img
+                          src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
+                          alt="벽지"
+                          className="relative w-12 h-12 border rounded-full border-gray05"
+                        />
+                        <img
+                          src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                          alt="바닥"
+                          className="w-12 h-12 rounded-full relative bottom-[10px] border border-gray05"
+                        />
+                      </div>
+                    )}
+                    {isExistCombination(post, "paint") && (
+                      <div>
+                        <div
+                          className="w-12 h-12 rounded-full relative top-[10px]"
+                          style={{
+                            backgroundColor: post.leftColorCode,
+                          }}
+                        />
+                        <div
+                          className="relative w-12 h-12 rounded-full"
+                          style={{
+                            backgroundColor: post.rightColorCode,
+                          }}
+                        />
+                        <img
+                          src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                          alt="바닥"
+                          className="w-12 h-12 rounded-full relative bottom-[10px]"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  const rankingList = newPostList
+    ?.sort((a, b) => b.bookmark - a.bookmark)
+    .filter((post, idx) => isExistCombination(post, "all") && idx < 10);
+
+  const ShowBestRankingElements = () => {
+    return (
+      <>
+        {rankingList?.map((post, idx) => (
+          <div className="items-center gap-4 flex-column w-[125px] h-[90px] hover:cursor-pointer" key={post.id}>
+            <p className="w-6 h-6 text-center">{idx + 1}</p>
+            {isExistCombination(post, "interior") && (
+              <div className="relative inline-flex">
+                <img
+                  src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
+                  alt="좌측 벽지"
+                  className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                ></img>
+                <img
+                  src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
+                  alt="우측 벽지"
+                  className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                ></img>
+                <img
+                  src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                  alt="바닥"
+                  className="absolute min-w-[48px] min-h-[48px] top-0 left-[15px] rounded-full border border-gray05"
+                ></img>
+              </div>
+            )}
+            {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
+              <div className="relative inline-flex">
+                <div
+                  style={{
+                    backgroundColor: post.leftColorCode,
+                  }}
+                  className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                ></div>
+                <div
+                  style={{
+                    backgroundColor: post.rightColorCode,
+                  }}
+                  className="absolute top-0 left-[-30.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                ></div>
+                <img
+                  src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                  alt="바닥"
+                  className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                ></img>
+              </div>
+            )}
+          </div>
+        ))}
+      </>
+    );
+  };
+
+  return {
+    SearchBar,
+    showPageComponent,
+    ShowBestPostElements,
+    CommunityPostsForm,
+    ShowBestRankingElements,
+  };
+};

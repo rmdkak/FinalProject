@@ -5,25 +5,28 @@ import { STORAGE_URL } from "api/supabase";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import share from "assets/svgs/icon_share.svg";
 import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview } from "components";
-import { useBookmarkQuery, useBookmark } from "hooks";
+import { useBookmarkQuery, useBookmark, useMovePage } from "hooks";
 import { useModalStore, useServiceStore } from "store";
 import { type FetchItemBookmark } from "types/service";
 
 export const InteriorPreview = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
+  const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
   const [tileBg, setTileBg] = useState<string>("");
 
   const { onOpenModal } = useModalStore((state) => state);
   const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile, resetClickItemBorder } =
     useServiceStore((state) => state);
-  const [isItemBookmarkedData, setIsItemBookmarkedData] = useState<FetchItemBookmark>();
 
   const { bookmarkResponse } = useBookmarkQuery();
   const { addBookmark, deleteBookmark, recommendDesign } = useBookmark();
   const { data: currentBookmarkData } = bookmarkResponse;
 
   const isWallPaperPaintSelected = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
+
   useEffect(() => {
     tile.image !== null ? setTileBg(`${STORAGE_URL}${tile.image}`) : setTileBg("");
     if (isWallPaperPaintSelected) {
@@ -71,7 +74,7 @@ export const InteriorPreview = () => {
             <InteriorSection onCheckCustom={true} />
             {/* 컬러 추출 */}
             <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
-
+            {/* 자재 소모량 계산기 */}
             <div className="flex mb-6">
               <label className="flex hover:cursor-pointer text-gray02" htmlFor="calc">
                 <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
@@ -84,7 +87,6 @@ export const InteriorPreview = () => {
                 <ResourcesCalculator />
               </Modal>
             </div>
-
             <div className="flex gap-4 mt-6">
               {isItemBookmarkedData != null ? (
                 <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">

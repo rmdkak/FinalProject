@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { DateConvertor } from "components/common";
 import { type Tables } from "types/supabase";
 
-import { dateStyle, innerBoxStyle, linkStyle, outerBoxStyle } from "./preview.style";
+import { dateStyle, innerBoxStyle, linkStyle, OUTER_BOX_STYLE } from "./preview.style";
 import { PreviewEmpty } from "./PreviewEmpty";
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 export const PreviewPost = ({ postData }: Props) => {
   if (postData === undefined) return <PreviewEmpty />;
   return (
-    <ul className={outerBoxStyle}>
+    <ul className={OUTER_BOX_STYLE}>
       {postData.length === 0 ? <PreviewEmpty /> : null}
       {postData.map((post) => {
         return (

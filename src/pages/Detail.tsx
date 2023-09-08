@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Comments, DetailSideFunction, DetailSkeleton, PostData } from "components";
-import { usePostsQuery } from "hooks";
+import { useMovePage, usePostsQuery } from "hooks";
 import { useLikeStore } from "store";
 
 export const Detail = () => {
+  const { setCurrentPathname } = useMovePage();
+  setCurrentPathname();
   const { id: paramsId } = useParams();
   const { resetDetailPostId, setDetailPostId } = useLikeStore();
   const { fetchDetailMutation } = usePostsQuery();

@@ -5,6 +5,8 @@ import arrowIcon from "assets/svgs/arrowIcon.svg";
 import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData, CheckBoxIcon } from "components";
 import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
+import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
+
 export const MyComment = () => {
   const [isOpenComment, setIsOpenComment] = useState<string>();
   const [commentIdsToDelete, setCommentIdsToDelete] = useState<string[]>([]);
@@ -46,7 +48,7 @@ export const MyComment = () => {
   });
 
   return (
-    <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
+    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <MypageTitle />
       <MypageSubTitle type="comment" />
       {/* 글 목록 */}

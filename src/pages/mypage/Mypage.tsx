@@ -1,15 +1,28 @@
+import { useEffect } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
+import { type IconType } from "react-icons/lib";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import defaultImg from "assets/defaultImg.jpg";
 import { MypageTitle, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
 import { useAuthQuery, useMypageQuery } from "hooks";
 import { useAuthStore } from "store";
 
+export interface MypageInfo {
+  title: string;
+  link: string;
+  icon: IconType;
+  data: any[] | undefined;
+}
+
+export const MYPAGE_LAYOUT_STYLE: string = "flex-column items-center m-[60px] w-[1280px] mx-auto";
+
 export const Mypage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { currentSession } = useAuthStore();
   const { currentUserResponse } = useAuthQuery();
   const { data: currentUser, isLoading, isError } = currentUserResponse;
@@ -21,29 +34,18 @@ export const Mypage = () => {
     userLikesResponse: { data: likeData },
   } = useMypageQuery();
 
-  const filteredData = {
-    filteredPosts: postData?.filter((_, index) => index < 2),
-    filteredComment: commentData?.filter((_, index) => index < 2),
-    filteredBookmark: bookmarkData?.filter((_, index) => index < 5),
-    filteredLikes: likeData?.filter((_, index) => index < 2),
-  };
-
-  const countBoxArray = [
-    { title: "내가 쓴 글", link: "/mypage/post", icon: <RxPencil2 className="w-6 h-6" />, data: postData },
-    {
-      title: "내가 쓴 댓글",
-      link: "/mypage/comment",
-      icon: <BiCommentDetail className="w-6 h-6" />,
-      data: commentData,
-    },
-    {
-      title: "북마크",
-      link: "/mypage/bookmark",
-      icon: <RxBookmark className="w-6 h-6" />,
-      data: bookmarkData,
-    },
-    { title: "좋아요", link: "/mypage/like", icon: <AiOutlineHeart className="w-6 h-6" />, data: likeData },
+  const countBoxArray: MypageInfo[] = [
+    { title: "내가 쓴 글", link: "/mypage/post", icon: RxPencil2, data: postData },
+    { title: "내가 쓴 댓글", link: "/mypage/comment", icon: BiCommentDetail, data: commentData },
+    { title: "북마크", link: "/mypage/bookmark", icon: RxBookmark, data: bookmarkData },
+    { title: "좋아요", link: "/mypage/like", icon: AiOutlineHeart, data: likeData },
   ];
+
+  useEffect(() => {
+    if (currentSession === null && location.pathname === "/mypage") {
+      navigate("/");
+    }
+  }, []);
 
   if (currentUser === undefined || isLoading) return <MypageSkeleton />;
 
@@ -51,36 +53,22 @@ export const Mypage = () => {
 
   if (currentSession === null) {
     navigate("/");
-    return;
+    return <></>;
   }
+
+  const imgStyle = { alt: "프로필 이미지", className: "w-[60px] h-[60px] rounded-full text-center justify-center" };
 
   const { name, avatar_url: profileImg } = currentUser;
   return (
-    <div className="flex-column items-center m-[60px] w-[1280px] mx-auto">
+    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <MypageTitle />
-      {/* 프로필 박스 */}
       <div className="flex gap-6 mt-8">
-        <div className="relative flex-column contents-center gap-4 w-[240px] h-[200px] px-6 bg-gray08 rounded-[12px] border border-gray05">
-          {profileImg === "" ? (
-            <img
-              src={defaultImg}
-              alt="프로필 이미지"
-              className="w-[60px] h-[60px] rounded-full text-center justify-center"
-            />
-          ) : (
-            <img
-              src={profileImg}
-              alt="프로필 이미지"
-              className="w-[60px] h-[60px] rounded-full text-center justify-center"
-            />
-          )}
+        <div className="relative flex-column contents-center gap-4 w-[240px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
+          {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}
           <div className="gap-2 flex-column contents-center">
-            <p className="text-black text-[18px] font-normal leading-[145%]">{`${name}님`}</p>
+            <p className="text-black body-1">{`${name}님`}</p>
             {currentSession?.user.app_metadata.provider === "email" && (
-              <Link
-                to="/mypage/update"
-                className="border px-2 py-1 border-gray05 rounded-lg text-[12px] font-normal leading-[150%]"
-              >
+              <Link to="/mypage/update" className="px-2 py-1 border rounded-lg border-gray05 body-4">
                 회원정보수정
               </Link>
             )}
@@ -88,7 +76,7 @@ export const Mypage = () => {
         </div>
         <MyActiveCountBox mypageInfoArray={countBoxArray} />
       </div>
-      <PreviewBox mypageInfoArray={countBoxArray} filteredData={filteredData} />
+      <PreviewBox mypageInfoArray={countBoxArray} userId={currentSession.user.id} />
     </div>
   );
 };
