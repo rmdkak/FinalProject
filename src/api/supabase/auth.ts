@@ -166,7 +166,9 @@ export const fetchUserCheckData = async () => {
 export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
   const { error } = await supabase.from(TABLE).insert([inputValue]).select();
 
-  if (error !== null) throw new Error(error.message);
+  if (error !== null) {
+    console.log(error.message);
+  }
 };
 
 /**
