@@ -23,6 +23,13 @@ export const InteriorPreview = () => {
   const { addBookmark, deleteBookmark, recommendDesign } = useBookmark();
   const { data: currentBookmarkData } = bookmarkResponse;
 
+  const resetState = useCallback(() => {
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
+    resetClickItemBorder();
+  }, []);
+
   const isWallPaperPaintSelected = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
   useEffect(() => {
     tile.image !== null ? setTileBg(`${STORAGE_URL}${tile.image}`) : setTileBg("");
@@ -44,13 +51,6 @@ export const InteriorPreview = () => {
     setIsItemBookmarkedData(currentBookmarkData[0]);
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
 
-  const resetState = useCallback(() => {
-    resetWallPaper();
-    resetWallpaperPaint();
-    resetTile();
-    resetClickItemBorder();
-  }, []);
-
   useEffect(() => {
     resetState();
     return () => {
@@ -71,7 +71,6 @@ export const InteriorPreview = () => {
             <InteriorSection onCheckCustom={true} />
             {/* 컬러 추출 */}
             <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
-
             <div className="flex mb-6">
               <label className="flex hover:cursor-pointer text-gray02" htmlFor="calc">
                 <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
@@ -84,7 +83,6 @@ export const InteriorPreview = () => {
                 <ResourcesCalculator />
               </Modal>
             </div>
-
             <div className="flex gap-4 mt-6">
               {isItemBookmarkedData != null ? (
                 <button onClick={deleteBookmark} className="flex-auto h-[64px] rounded-xl gray-outline-button">

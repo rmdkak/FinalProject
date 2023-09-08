@@ -1,5 +1,6 @@
-type WallOrTile = "tile" | "wallPaper";
+type WallOrTileOrFurniture = "tile" | "wallPaper" | "furniture";
 type SelectBg = "leftWall" | "rightWall" | "tile";
+type LeftorRight = "left" | "right";
 
 interface selectBgSize {
   leftWall: number;
@@ -28,4 +29,47 @@ interface FetchItemBookmark {
   rightWallpaperId: string;
 }
 
-export type { CustomSelf, FetchItemBookmark, WallOrTile, SelectBg, selectBgSize, Wallpaper, CheckBorder };
+interface FurnitureState {
+  sopa: {
+    visible: boolean;
+    id: string;
+    direction: "left" | "right";
+  };
+  closet: {
+    visible: boolean;
+    id: string;
+    direction: "left" | "right";
+  };
+  ramp1: {
+    visible: boolean;
+    id: string;
+    direction: "left" | "right";
+  };
+  ramp2: {
+    visible: boolean;
+    id: string;
+    direction: "left" | "right";
+  };
+  table: {
+    visible: boolean;
+    id: string;
+    direction: "left" | "right";
+  };
+  clock: {
+    visible: boolean;
+    id: string;
+    direction: "left" | "right";
+  };
+}
+
+export type {
+  CustomSelf,
+  LeftorRight,
+  FetchItemBookmark,
+  WallOrTileOrFurniture,
+  SelectBg,
+  selectBgSize,
+  Wallpaper,
+  CheckBorder,
+  FurnitureState,
+};

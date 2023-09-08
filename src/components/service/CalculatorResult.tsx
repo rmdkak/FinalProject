@@ -1,6 +1,7 @@
 import React from "react";
 
-import { threeDigitComma } from "utils/resourcesCalculator";
+import { threeDigitComma } from "utils/servise/resourcesCalculator";
+
 interface Props {
   resultName: string;
   result: string;

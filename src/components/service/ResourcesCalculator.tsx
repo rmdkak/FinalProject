@@ -4,7 +4,7 @@ import CloseBtn from "assets/svgs/close.svg";
 import tileIMG from "assets/svgs/tileCalculator.svg";
 import wallPaperIMG from "assets/svgs/wallpaperCalculator.svg";
 import { type ResultCalculator, type WidthHeight } from "types/calculator";
-import { resultConsumpTionCalculate, workingAreaCalculator } from "utils/resourcesCalculator";
+import { resultConsumpTionCalculate, workingAreaCalculator } from "utils/servise/resourcesCalculator";
 
 import { CalculatorArticle } from "./CalculatorArticle";
 import { CalculatorResult } from "./CalculatorResult";

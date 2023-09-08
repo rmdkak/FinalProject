@@ -28,17 +28,11 @@ const BG_SIZE_CONTROL_BTN_IMAGE_MAPPER: BG_SIZE_CONTROL_BTN = {
   8: bgSizeWallpaperControlBtnActive,
 };
 
-/**
- * 여기에 벽지 카테고리가 추가되면 추가하면 됩니다.
- */
-const WALLPAPER_TEXTURE_LIST: string[] = ["전체", "벽지", "타일", "포세린", "페인트", "셀프조합"];
+const WALLPAPER_TEXTURE_LIST: string[] = ["전체 보기", "벽지", "타일", "포세린", "페인트", "셀프조합"];
+const TILE_TEXTURE_LIST: string[] = ["전체 보기", "장판", "마루", "포세린", "데코타일", "셀프조합"];
+const FURNITURE_LIST: string[] = ["전체 보기", "가구", "조명"];
 
-/**
- * 여기에 타일 카테고리가 추가되면 추가하면 됩니다.
- */
-const TILE_TEXTURE_LIST: string[] = ["전체", "장판", "마루", "포세린", "데코타일", "셀프조합"];
-
-const RESOURCES_CALCULATOR_LIST: string[] = ["벽지", "타일"];
+const RESOURCES_CALCULATOR_LIST: string[] = ["벽지", "타일, 가구"];
 
 const SELECT_PAINT_INDEX: number = 4;
 
@@ -67,6 +61,7 @@ const BG_MAGNIFICATION_LANGTH: number = BG_MAGNIFICATION.length;
 
 export {
   BG_SIZE_CONTROL_BTN_IMAGE_MAPPER,
+  FURNITURE_LIST,
   SELECT_BORDER_COLOR,
   BG_MAGNIFICATION_LANGTH,
   BG_DEFAULT_SIZE,

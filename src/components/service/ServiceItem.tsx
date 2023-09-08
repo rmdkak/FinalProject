@@ -4,15 +4,16 @@ import { SketchPicker, type ColorResult } from "react-color";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";
 
-import { SELECT_PAINT_INDEX, TILE_TEXTURE_LIST, WALLPAPER_TEXTURE_LIST } from "./data";
+import { FURNITURE_LIST, SELECT_PAINT_INDEX, TILE_TEXTURE_LIST, WALLPAPER_TEXTURE_LIST } from "./data";
 import { SelfPattern } from "./SelfPattern";
 import { ServiceSelectItem } from "./ServiceSelectItem";
 
 interface Props {
   data: Array<Tables<"WALLPAPER", "Row">>;
+  furniture?: boolean;
 }
 
-export const ServiceItem = ({ data }: Props): JSX.Element => {
+export const ServiceItem = ({ data, furniture }: Props): JSX.Element => {
   const { checkType, resetWallPaper, setWallpaperPaint, interiorSelecteIndex, interiorSelectX } = useServiceStore(
     (state) => state,
   );
@@ -24,7 +25,8 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
     interiorSelectX ? setWallpaperPaint(color.hex, "left") : setWallpaperPaint(color.hex, "right");
   };
 
-  const checkData = checkType === "wallPaper" ? WALLPAPER_TEXTURE_LIST : TILE_TEXTURE_LIST;
+  const checkData =
+    checkType === "wallPaper" ? WALLPAPER_TEXTURE_LIST : checkType === "tile" ? TILE_TEXTURE_LIST : FURNITURE_LIST;
 
   let filterData: Array<Tables<"WALLPAPER", "Row">> = [];
   const filterDate = (typeName?: string) => {
@@ -34,6 +36,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
       });
       filterData = FILTER_DATA;
     }
+
     if (typeName === "All") {
       filterData = data;
     }
@@ -42,11 +45,11 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
   let changeName: string = "";
   switch (checkData[interiorSelecteIndex]) {
     case checkData[1]:
-      changeName = checkData[1] === "장판" ? "장판" : "벽지";
+      changeName = checkData[1] === "장판" ? "장판" : checkData[1] === "벽지" ? "벽지" : "가구";
       filterDate(changeName);
       break;
     case checkData[2]:
-      changeName = checkData[2] === "마루" ? "마루" : "타일";
+      changeName = checkData[2] === "마루" ? "마루" : checkData[2] === "타일" ? "타일" : "조명";
       filterDate(changeName);
       break;
     case checkData[3]:
@@ -86,7 +89,7 @@ export const ServiceItem = ({ data }: Props): JSX.Element => {
       <>
         {filterData.map((item) => {
           const { id, image } = item;
-          return <ServiceSelectItem key={id} image={image} id={id} />;
+          return <ServiceSelectItem key={id} image={image} id={id} furniture={furniture} />;
         })}
       </>
     );

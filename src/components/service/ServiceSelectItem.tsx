@@ -1,14 +1,17 @@
 import React from "react";
 
 import { useServiceStore } from "store";
-import { handleCheckTypeItemBorder } from "utils/interiorSection";
+import { useFurniture } from "store/useFurniture";
+import { type WallOrTileOrFurniture } from "types/service";
+import { handleCheckTypeItemBorder } from "utils/servise/interiorSection";
 
 interface Props {
   image: string;
   id: string;
+  furniture?: boolean;
 }
 
-export const ServiceSelectItemMemoization = ({ image, id }: Props): JSX.Element => {
+export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): JSX.Element => {
   const {
     checkType,
     resetWallpaperPaint,
@@ -18,6 +21,7 @@ export const ServiceSelectItemMemoization = ({ image, id }: Props): JSX.Element 
     setTile,
     onClickItemBorder,
   } = useServiceStore((state) => state);
+  const { setImageState } = useFurniture((state) => state);
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
   const getItemData = (selectItem: { id: string; image: string }): void => {
@@ -41,12 +45,25 @@ export const ServiceSelectItemMemoization = ({ image, id }: Props): JSX.Element 
       ? { border: checkRightItemBorder }
       : { border: checkTileItemBorder };
 
+  const handleClickEvent = (
+    { id, image }: { id: string; image: string },
+    _id: string,
+    interiorSelectX: boolean,
+    checkType: WallOrTileOrFurniture,
+  ) => {
+    if (furniture === true) {
+      interiorSelectX ? setImageState(image, "left") : setImageState(image, "right");
+    } else {
+      getItemData({ id, image });
+      setClickItemBorder(_id, interiorSelectX, checkType);
+    }
+  };
+
   return (
     <>
       <li
         onClick={() => {
-          getItemData({ id, image });
-          setClickItemBorder(id, interiorSelectX, checkType);
+          handleClickEvent({ id, image }, id, interiorSelectX, checkType);
         }}
         key={id}
         style={borderSelectStyle}
@@ -57,7 +74,7 @@ export const ServiceSelectItemMemoization = ({ image, id }: Props): JSX.Element 
           width={80}
           height={80}
           className="cursor-pointer drag-none"
-          alt={`${checkType} 미리보기 이미지`}
+          alt="미리보기"
         />
       </li>
     </>

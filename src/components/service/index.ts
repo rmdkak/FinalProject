@@ -11,3 +11,5 @@ export * from "./InteriorBgSizeController";
 export * from "./BgSizeSelectcontrolBtn";
 export * from "./BgSizecontrolBtn";
 export * from "./Preview";
+export * from "./WallpaperLeftRightTitle";
+export * from "./InteriorTitle";

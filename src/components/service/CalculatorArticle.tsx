@@ -20,9 +20,6 @@ const CalculatorArticleMamoization = ({
 }: Props): JSX.Element => {
   const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
-    // NOTE: input number type에는 , 가 찍히지 않는다.
-    // const threeDigitCommaValue = threeDigitComma(value);
-    // console.log(threeDigitCommaValue);
     setState({
       ...state,
       [name]: value,
