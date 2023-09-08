@@ -330,14 +330,14 @@ export const UpdateUser = () => {
                   navigate(-1);
                 }}
               >
-                취소
+                이전
               </button>
               <div className="right-[-33px] translate-x-full absolute flex items-center gap-3">
-                <p className="text-[14px] font-normal leading-[130%] text-gray02">더 이상 이용하지 않으시나요?</p>
+                <p className="body-3 text-gray02">더 이상 이용하지 않으시나요?</p>
                 <button
                   onClick={deleteAuth}
                   type="button"
-                  className="w-[120px] h-12 border border-gray05 text-gray02 rounded-lg"
+                  className="w-[120px] h-12 border body-3 border-gray05 text-gray02 rounded-lg"
                 >
                   회원탈퇴
                 </button>
