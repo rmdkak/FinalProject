@@ -2,9 +2,9 @@ import bgSizeMinusControlBtn from "assets/BgSizeControlBtns/bgSizeMinusControlBt
 import bgSizeMinusControlBtnActive from "assets/BgSizeControlBtns/bgSizeMinusControlBtnActive.svg";
 import bgSizePlusControlBtn from "assets/BgSizeControlBtns/bgSizePlusControlBtn.svg";
 import bgSizePlusControlBtnActive from "assets/BgSizeControlBtns/bgSizePlusControlBtnActive.svg";
-import bgSizeTileControlBtn from "assets/BgSizeControlBtns/bgSizeTileControlBtn.svg";
+import bgSizeTileControlBtn from "assets/BgSizeControlBtns/BgSizeTileControlBtn.svg";
 import bgSizeTileControlBtnActive from "assets/BgSizeControlBtns/bgSizeTileControlBtnActive.svg";
-import bgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/bgSizeWallpaperControlBtn.svg";
+import bgSizeWallpaperControlBtn from "assets/BgSizeControlBtns/BgSizeWallpaperControlBtn.svg";
 import bgSizeWallpaperControlBtnActive from "assets/BgSizeControlBtns/bgSizeWallpaperControlBtnActive.svg";
 
 interface BG_SIZE_CONTROL_BTN {

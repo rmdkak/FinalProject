@@ -64,10 +64,8 @@ export const EventForm = () => {
     <>
       <form className="w-full flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-center justify-center">
-          <label htmlFor="title" className="font-normal text-[18px] w-[50px]">
-            제목:
-          </label>
           <input
+            placeholder="타이틀 내용을 입력하세요."
             className="w-full h-[48px] text-[18px] px-[24px] py-[12px] border border-gray05 focus:outline-none"
             {...register("title", {
               required: "이벤트 제목을 입력하세요.",
@@ -76,10 +74,9 @@ export const EventForm = () => {
           />
         </div>
         <p className="mb-5 text-error">{errors.title?.message}</p>
-
         <textarea
-          placeholder="이벤트 내용을 입력하세요."
-          className="h-[400px] border border-[#a7a7a7] focus:outline-none p-[20px] text-[18px] resize-none"
+          placeholder="이벤트 내용 or 서브 타이틀 내용을 입력하세요."
+          className="h-[400px] border border-gray05 focus:outline-none p-[20px] text-[18px] resize-none"
           {...register("content", {
             required: "이벤트 내용을 입력하세요.",
             maxLength: { value: 1000, message: "1000자를 넘을 수 없습니다." },
@@ -88,18 +85,18 @@ export const EventForm = () => {
         <p className="mb-5 text-error">{errors.content?.message}</p>
 
         <div className="flex w-full border-y border-gray06 h-[72px] justify-center items-center mt-[20px]">
-          <label htmlFor="img" className="w-[128px] text-[14px] font-normal">
+          <label htmlFor="img" className="w-[128px] text-sm font-normal">
             첨부파일
           </label>
           <input
             type="file"
-            accept="image/png, image/jpeg, image/gif"
+            accept="image/png, image/jpeg, image/gif, image/webp"
             className="w-full text-[14px] focus:outline-none"
             {...register("file")}
           />
         </div>
         <div className="flex items-center gap-[12px] mt-10">
-          <label className="w-[100px]">이벤트 기간:</label>
+          <label className="text-sm w-[100px]">이벤트 기간</label>
           <input
             type="date"
             {...register("minDate")}

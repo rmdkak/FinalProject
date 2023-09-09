@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Sync } from "@egjs/flicking-plugins";
 import Flicking, { type Plugin } from "@egjs/react-flicking";
 import calcArrow from "assets/svgs/calcArrow.svg";
-import thumnail1 from "assets/thumbnail1.png";
-import thumnail2 from "assets/thumbnail2.png";
 import { HomeContentsTitle, HomeKvBanner } from "components/home";
 import { usePostsData, useMovePage } from "hooks";
 
@@ -86,22 +84,14 @@ export const Home = () => {
               navigate("/event/1");
             }}
           >
-            <img
-              src={thumnail1}
-              alt="thumnail"
-              className="h-[400px] rounded-xl object-contain hover:cursor-pointer"
-            ></img>
+            <img src="" alt="thumnail" className="h-[400px] rounded-xl object-contain hover:cursor-pointer"></img>
             <div className="gap-2 flex-column hover:cursor-pointer">
               <h2 className="text-2xl font-medium">홈 & 리빙 페스티벌</h2>
               <p className="text-gray02">가을 분위기로 변신할 수 있는 기회! 홈&리빙 페스티벌을 즐겨보세요</p>
             </div>
           </div>
           <div className="w-full gap-6 flex-column">
-            <img
-              src={thumnail2}
-              alt="thumnail"
-              className="h-[400px] rounded-xl object-contain hover:cursor-pointer"
-            ></img>
+            <img src="" alt="thumnail" className="h-[400px] rounded-xl object-contain hover:cursor-pointer"></img>
             <div className="gap-2 flex-column hover:cursor-pointer">
               <h2 className="text-2xl font-medium">요즘 뜨는 신상 아이템</h2>
               <p className="text-gray02">최신 유행하는 신상 아이템을 바로 확인해보세요!</p>
