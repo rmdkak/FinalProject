@@ -21,12 +21,10 @@ export const MyBookmark = () => {
   const { userBookmarksResponse, deleteUserBookmarkMutation } = useMypageQuery();
   const { data: userBookmarkData } = userBookmarksResponse;
 
-  // 선택 된 아이디 배열 삭제
   const deletePosts = () => {
     deleteUserBookmarkMutation.mutate(bookmarkIdsToDelete);
   };
 
-  // 체크 상태 변경
   const onChange = (event: ChangeEvent<HTMLInputElement>, id: string) => {
     const filteredBookmarkIds = filteredBookmarkIdsHandler(id);
     if (event.target.checked) {
@@ -60,7 +58,6 @@ export const MyBookmark = () => {
                   bookmarkIdsToDelete.find((id) => id === bookmark.id) === undefined ? "border-gray05" : "border-black"
                 } rounded-[12px] w-[400px] gap-[16px] h-[200px]`}
               >
-                {/* 체크박스 */}
                 {isDeleteMode ? (
                   <div className="w-full h-full">
                     <input
@@ -83,8 +80,6 @@ export const MyBookmark = () => {
                     </label>
                   </div>
                 ) : null}
-
-                {/* 조합 이미지 */}
 
                 <button
                   onMouseUp={() => {
@@ -147,7 +142,6 @@ export const MyBookmark = () => {
           </button>
         )}
       </div>
-      {/* 페이지네이션 */}
       <div className="mt-[120px]">{showPageComponent}</div>
     </div>
   );

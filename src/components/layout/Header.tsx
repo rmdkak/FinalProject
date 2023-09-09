@@ -58,11 +58,11 @@ export const Header = () => {
               <div className="flex gap-2 contents-center">
                 <button onClick={goToLogin}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그인</span>
-                  <img src={logOutIcon} alt="로그인 메뉴 이미지" />
+                  <img src={logOutIcon} alt="로그인" />
                 </button>
                 <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
-                  <img src={hambergerMenu} alt="햄버거 메뉴" />
+                  <img src={hambergerMenu} alt="메뉴" />
                 </button>
               </div>
             </>
@@ -93,7 +93,7 @@ export const Header = () => {
                 {/* 햄버거 */}
                 <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
-                  <img src={hambergerMenu} alt="햄버거 메뉴" />
+                  <img src={hambergerMenu} alt="메뉴" />
                 </button>
               </div>
             </>
