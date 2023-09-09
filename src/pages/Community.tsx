@@ -18,7 +18,7 @@ export const Community = () => {
   return (
     <div className="flex-column w-[1280px] mx-auto mt-20 gap-10">
       <div className="text-center border-b border-gray-400 drop-shadow-xl">
-        <p className="text-[32px] pb-6 font-medium">커뮤니티</p>
+        <p className="text-[32px] pb-6 font-medium cursor-default">커뮤니티</p>
       </div>
       <div className="gap-4 flex-column">
         <div className="flex items-center gap-3">

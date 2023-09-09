@@ -8,6 +8,7 @@ import lineHeart from "assets/svgs/lineheart.svg";
 import share from "assets/svgs/share.svg";
 import { useDialog } from "components/common";
 import { usePostsLikeQuery, usePostsQuery } from "hooks";
+import { throttle } from "lodash";
 import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 
@@ -49,7 +50,7 @@ export const DetailSideFunction = ({ paramsId, postData }: props) => {
     }
   }, [currentSession, currentBookmarkData]);
 
-  const addBookmark = async () => {
+  const addBookmark = throttle(async () => {
     if (currentSession === null) {
       const goToLogin = await Confirm(
         <>
@@ -66,9 +67,9 @@ export const DetailSideFunction = ({ paramsId, postData }: props) => {
     const addIds = [...currentBookmarkData.userId, currentSession.user.id];
     addLikeMutation.mutate({ postId: paramsId, userId: addIds });
     wholeChangePostLikeMutation.mutate({ id: paramsId, likeState: "add", bookmark: postData?.bookmark });
-  };
+  }, 500);
 
-  const deleteBookmark = async () => {
+  const deleteBookmark = throttle(async () => {
     if (currentSession === null) {
       const goToLogin = await Confirm(
         <>
@@ -85,7 +86,7 @@ export const DetailSideFunction = ({ paramsId, postData }: props) => {
     const deletedIds = currentBookmarkData.userId.filter((id) => id !== currentSession.user.id);
     deleteLikeMutation.mutate({ postId: paramsId, userId: deletedIds });
     wholeChangePostLikeMutation.mutate({ id: paramsId, likeState: "delete", bookmark: postData?.bookmark });
-  };
+  }, 500);
 
   const movePostPageHandler = async () => {
     if (currentSession === null) {
