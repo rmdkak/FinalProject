@@ -6,6 +6,7 @@ export * from "./Home";
 export * from "./Login";
 export * from "./mypage";
 export * from "./Post";
+export * from "./Inquiry";
 export * from "./InteriorPreview";
 export * from "./Signup";
 export * from "./UpdatePassword";

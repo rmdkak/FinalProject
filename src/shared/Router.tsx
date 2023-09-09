@@ -14,6 +14,7 @@ const Router = () => {
           <Route path="/updatepost/:id" element={<Pages.UpdatePost />} />
           <Route path="/detail/:id" element={<Pages.Detail />} />
           <Route path="/community" element={<Pages.Community />} />
+          <Route path="/inquire" element={<Pages.Inquiry />} />
           <Route path="/mypage" element={<Pages.Mypage />} />
           <Route path="/mypage/update" element={<Pages.UpdateUser />} />
           <Route path="/mypage/post" element={<Pages.MyPost />} />

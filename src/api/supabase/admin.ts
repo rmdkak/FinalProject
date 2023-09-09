@@ -1,3 +1,5 @@
+import { manToManCategory } from "pages";
+
 import { supabase } from "./supabaseClient";
 
 import type { Tables } from "types/supabase";
@@ -40,11 +42,17 @@ export const deleteEventData = async (eventId: string) => {
 
 // 문의하기 GET
 export const fetchManToManData = async () => {
-  const { data, error } = await supabase.from("MANTOMAN").select();
+  const { data, error } = await supabase
+    .from("MANTOMAN")
+    .select("*,USERS (*)")
+    .in("category", manToManCategory)
+    .order("isCheck", { ascending: true });
+
   if (error !== null) {
     console.error(error);
     return;
   }
+
   return data;
 };
 
@@ -53,6 +61,17 @@ export const addManToManData = async (manToManData: Tables<"MANTOMAN", "Insert">
   const { error } = await supabase.from("MANTOMAN").insert(manToManData);
   if (error !== null) {
     console.log("addManToManDataError", error);
+  }
+};
+
+// 문의하기 이미지 upload
+export const uploadManToManImg = async ({ UUID, imgFile }: { UUID: string; imgFile: Blob }) => {
+  const { error } = await supabase.storage.from("Images").upload(`inquiryImg/${UUID}`, imgFile, {
+    cacheControl: "3600",
+    upsert: false,
+  });
+  if (error !== null) {
+    console.error("uploadManToManImgError", error);
   }
 };
 
@@ -74,7 +93,7 @@ export const deleteManToManData = async (manToManId: string) => {
 
 // 신고하기 GET
 export const fetchReportData = async () => {
-  const { data, error } = await supabase.from("REPORT").select("*");
+  const { data, error } = await supabase.from("REPORT").select("*,USERS (*)");
   if (error !== null) {
     console.error(error);
     return;
