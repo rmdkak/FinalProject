@@ -50,7 +50,11 @@ export const deleteEventData = async (eventId: string) => {
 
 // 문의하기 GET
 export const fetchManToManData = async () => {
-  const { data } = await supabase.from("MANTOMAN").select("*");
+  const { data, error } = await supabase.from("MANTOMAN").select();
+  if (error !== null) {
+    console.error(error);
+    return;
+  }
   return data;
 };
 
@@ -83,6 +87,7 @@ export const fetchReportData = async () => {
   const { data, error } = await supabase.from("REPORT").select("*");
   if (error !== null) {
     console.error(error);
+    return;
   }
   return data;
 };

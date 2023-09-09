@@ -96,14 +96,13 @@ export const idQuestionOptions = [
   "나의 아버지 성함은?",
 ];
 
-export const passwordValid = (passwordConfirm: string) => ({
+export const passwordValid = () => ({
   required: "비밀번호를 입력해주세요.",
   pattern: {
     value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
   },
   minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-  validate: (value: string) => passwordConfirm === value || "비밀번호가 일치하지 않습니다.",
 });
 
 export const nameValid = {

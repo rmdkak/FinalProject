@@ -1,8 +1,7 @@
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
-import arrowIcon from "assets/svgs/arrowIcon.svg";
-import { DateConvertor } from "components/common";
+import { ArrowButton, DateConvertor } from "components/common";
 import { type Tables } from "types/supabase";
 
 import { dateStyle, linkStyle, OUTER_BOX_STYLE } from "./preview.style";
@@ -42,22 +41,13 @@ export const PreviewComment = ({ commentData }: Props) => {
                     <div className="flex">
                       <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
                       <button className="flex contents-center w-[16px] h-[16px] ml-[12px]">
-                        {isOpenComment === comment.id ? (
-                          <img
-                            className="rotate-180"
-                            src={arrowIcon}
-                            onClick={() => {
-                              openCommentHandler("");
-                            }}
-                          />
-                        ) : (
-                          <img
-                            src={arrowIcon}
-                            onClick={() => {
-                              openCommentHandler(comment.id);
-                            }}
-                          />
-                        )}
+                        <ArrowButton
+                          isOpen={isOpenComment === comment.id}
+                          openHandler={openCommentHandler}
+                          statusToClose={""}
+                          statusToOpen={comment.id}
+                          className={"flex w-4 h-4 contents-center"}
+                        />
                       </button>
                     </div>
                   </div>
@@ -68,9 +58,12 @@ export const PreviewComment = ({ commentData }: Props) => {
                     <p className="flex self-start">{comment.content}</p>
                     <div className="flex contents-center gap-[12px]">
                       <DateConvertor datetime={comment.created_at} type={"dotDate"} />
-                      <button className="w-[80px] h-[32px] border border-gray05 text-gray05 rounded-[8px] hover:border-black hover:text-black">
+                      <Link
+                        to={`/detail/${post.id}`}
+                        className="flex contents-center w-[80px] h-8 gray-outline-button rounded-lg"
+                      >
                         수정
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}

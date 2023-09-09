@@ -34,7 +34,7 @@ export const Error = () => {
         return null;
       });
       setCurrentIdx((currentIdx + 1) % 5);
-    }, 3000);
+    }, 1000);
 
     return () => {
       clearInterval(intervalId);
@@ -49,7 +49,7 @@ export const Error = () => {
         <span className="text-[120px] font-normal">4</span>
       </div>
       <p className="mt-2 text-xl">페이지를 찾을 수 없습니다.</p>
-      <p className="mt-6 text-center text-gray02">
+      <p className="mt-6 text-sm text-center text-gray02">
         찾으려는 페이지의 주소가 잘못 입력되었거나,
         <br />
         주소의 변경 혹은 삭제로 인해 사용하실 수 없습니다.

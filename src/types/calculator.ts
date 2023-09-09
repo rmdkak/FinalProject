@@ -5,7 +5,7 @@ interface WidthHeight {
 
 interface ResultCalculator {
   resultArea: string;
-  result_consumption: string;
+  resultConsumption: string;
 }
 
 export type { WidthHeight, ResultCalculator };

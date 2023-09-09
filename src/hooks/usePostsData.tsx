@@ -78,7 +78,7 @@ export const usePostsData = () => {
         {flickingPostList.slice(0, dataLength).map((post) => (
           <div
             key={post.id}
-            className="w-[400px] flex-column mr-10 cursor-pointer"
+            className="w-[400px] mr-7 flex-column cursor-pointer"
             onClick={() => {
               navigate(`/detail/${post.id}`);
             }}

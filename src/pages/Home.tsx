@@ -135,7 +135,7 @@ export const Home = () => {
       </div>
       <div className="mb-[120px] home-section">
         <HomeContentsTitle title={"COMMUNITY"} page={"community"} navigation={true} />
-        <div className="flex w-full gap-10">
+        <div className="flex w-full">
           <ShowBestPostElements dataLength={3} />
         </div>
       </div>

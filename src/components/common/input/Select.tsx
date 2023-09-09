@@ -1,5 +1,6 @@
 import { useState, type MouseEvent, type ChangeEvent, type Dispatch } from "react";
-import { FaAngleDown } from "react-icons/fa";
+
+import { ArrowButton } from "../button";
 
 interface Props {
   option: string[];
@@ -55,17 +56,31 @@ export const Select = ({
             value={selectedValue ?? defaultValue}
             className="w-full auth-input"
           />
-          <FaAngleDown
+          <ArrowButton
+            isOpen={toggleIsOpen}
+            openHandler={changeToggleHandler}
+            statusToClose={toggleIsOpen}
+            statusToOpen={toggleIsOpen}
+            className={"absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"}
+          />
+          {/* <FaAngleDown
             onClick={changeToggleHandler}
             className="absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"
-          />
+          /> */}
         </>
       ) : (
-        <button className="flex w-full h-[48px] auth-input" type="button" onClick={changeToggleHandler}>
+        <button className="flex items-center w-full h-[48px] auth-input" type="button" onClick={changeToggleHandler}>
           <p className="text-center whitespace-nowrap body-3">
             {selectedValue !== undefined ? selectedValue : placeholder}
           </p>
-          <FaAngleDown className="absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer" />
+          <ArrowButton
+            isOpen={toggleIsOpen}
+            openHandler={changeToggleHandler}
+            statusToClose={toggleIsOpen}
+            statusToOpen={toggleIsOpen}
+            className={"absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"}
+          />
+          {/* <FaAngleDown className="absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer" /> */}
         </button>
       )}
       <div className="absolute w-full top-[50px] bg-white z-50 shadow-lg body-3">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase";
 import { DateConvertor } from "components";
@@ -11,15 +12,22 @@ interface PostProps {
 }
 
 export const PostData = ({ postData }: PostProps) => {
+  const navigate = useNavigate();
   const [previewModal, setPreviewModal] = useState<boolean>(false);
 
   return (
     <>
       <div className="items-center flex-column">
-        <p className="font-medium text-[32px]">커뮤니티</p>
+        <p
+          className="font-medium text-[32px] hover:cursor-pointer"
+          onClick={() => {
+            navigate("/community");
+          }}
+        >
+          커뮤니티
+        </p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
-
       <div className="contents-between border-b border-gray06 my-[10px] py-[20px] items-center">
         <div className="w-[1000px] my-[10px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
@@ -33,6 +41,7 @@ export const PostData = ({ postData }: PostProps) => {
               <FaRegHeart />
               <p>좋아요 {postData?.bookmark}</p>
             </div>
+            <button className="leading-[1px] hover:border-b border-gray02">신고하기</button>
           </div>
         </div>
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
