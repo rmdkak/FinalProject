@@ -53,8 +53,9 @@ export const UpdateUser = () => {
     handleSubmit,
     getValues,
     setError,
+    resetField,
     formState: { errors },
-  } = useForm<UpdateInput>({ mode: "all" });
+  } = useForm<UpdateInput>();
 
   // 프로필 이미지 변경
   const changeProfileImgHandler = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -89,23 +90,27 @@ export const UpdateUser = () => {
     else setError("name", { message: "이미 존재하는 닉네임입니다." });
   };
 
-  const toggleOpenHandler = (target: "name" | "password") => {
+  const toggleChangeHandler = (target: "name" | "password") => {
     if (target === "name") {
       setIsOpenToggle({ password: false, name: !isOpenToggle.name });
+      resetField("name");
     } else {
       setIsOpenToggle({ name: false, password: !isOpenToggle.password });
+      resetField("password");
+      resetField("passwordConfirm");
     }
   };
 
   // 비밀번호 수정
   const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
-    const { password } = data;
-
     try {
-      await changePassword(password);
+      await changePassword(data.password);
       await Alert("비밀번호가 정상적으로 변경되었습니다.");
     } catch (error) {
       switch (error) {
+        case "Error: New password should be different from the old password.":
+          await Alert("이전 비밀번호와 동일합니다.");
+          break;
         case "New password should be different from the old password.":
           await Alert("이전 비밀번호와 동일합니다.");
           break;
@@ -114,11 +119,13 @@ export const UpdateUser = () => {
           break;
         default:
           await Alert("Error");
-          console.error("newError : ", error);
+          console.log(error);
           break;
       }
     }
-    toggleOpenHandler("password");
+    resetField("password");
+    resetField("passwordConfirm");
+    toggleChangeHandler("password");
   };
 
   // 닉네임 수정
@@ -132,15 +139,20 @@ export const UpdateUser = () => {
       await changeMetaName(data.name);
       patchUserMutation.mutate({ inputValue: { name: data.name }, userId });
     }
-    toggleOpenHandler("name");
+    toggleChangeHandler("name");
   };
 
   const deleteAuth = async () => {
     if (
       await Confirm(
         <>
-          <p>회원탈퇴를 하시겠습니까?</p>
-          <p>탈퇴 후에는 되돌릴 수 없습니다.</p>
+          <p className="w-[400px] pb-6 border-b border-black title-4 font-medium">회원탈퇴</p>
+          <p className="mt-4 text-black body-2">그동안 Stile을 이용해주셔서 감사합니다.</p>
+          <p className="mt-3 body-3 text-gray02">불편하셨던 점이나 불만사항을 알려주시면 적극 반영해서 </p>
+          <p className="body-3 text-gray02">고객님의 불편함을 해결해 드리도록 노력하겠습니다. </p>
+          <p className="mt-6 body-3 text-gray01">회원탈퇴 시 확인하셔야 할 사항을 반드시 체크 부탁드리겠습니다.</p>
+          <p className="mt-3 body-3 text-gray02">게시글 및 댓글은 탈퇴시 자동삭제 되지 않고 남아있습니다.</p>
+          <p className="body-3 text-gray02">삭제를 원하시는 게시글이 있다면 탈퇴전에 삭제하시기 바랍니다.</p>
         </>,
       )
     ) {
@@ -158,6 +170,7 @@ export const UpdateUser = () => {
     navigate("/");
     return <p>에러페이지</p>;
   }
+
   const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
   const prevProfileImageId =
     currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
@@ -203,7 +216,7 @@ export const UpdateUser = () => {
                   id="nickname"
                   type="button"
                   onClick={() => {
-                    toggleOpenHandler("name");
+                    toggleChangeHandler("name");
                   }}
                   className="w-32 h-12 rounded-lg point-button body-3"
                 >
@@ -248,7 +261,7 @@ export const UpdateUser = () => {
                       type="button"
                       className="w-32 h-12 rounded-lg gray-outline-button body-3"
                       onClick={() => {
-                        toggleOpenHandler("name");
+                        toggleChangeHandler("name");
                       }}
                     >
                       취소
@@ -268,7 +281,7 @@ export const UpdateUser = () => {
                   id="password"
                   type="button"
                   onClick={() => {
-                    toggleOpenHandler("password");
+                    toggleChangeHandler("password");
                   }}
                   className="w-32 h-12 rounded-lg point-button body-3"
                 >
@@ -283,7 +296,11 @@ export const UpdateUser = () => {
                         placeholder="새 비밀번호"
                         type={showPassword.password ? "text" : "password"}
                         className="auth-input"
-                        {...register("password", { ...passwordValid(getValues("passwordConfirm")) })}
+                        {...register("password", {
+                          ...passwordValid(),
+                          validate: (_, formValue) =>
+                            formValue.password === formValue.passwordConfirm || "비밀번호가 일치하지 않습니다.",
+                        })}
                       />
                       <PasswordVisibleButton
                         passwordType={"password"}
@@ -312,7 +329,7 @@ export const UpdateUser = () => {
                       type="button"
                       className="w-32 h-12 rounded-lg gray-outline-button body-3"
                       onClick={() => {
-                        toggleOpenHandler("password");
+                        toggleChangeHandler("password");
                       }}
                     >
                       취소

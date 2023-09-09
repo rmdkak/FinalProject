@@ -45,7 +45,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     setError,
     getValues,
     formState: { errors },
-  } = useForm<SignupInputs>({ mode: "onSubmit" });
+  } = useForm<SignupInputs>({ mode: "all" });
 
   useEffect(() => {
     const getUsers = async () => {
@@ -78,7 +78,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     }
 
     const matchUser = fetchUserData.filter((user) =>
-      target === "name" ? user.name === inputIdValue : user.email === `${inputNameValue}@${selectEmail}`,
+      target === "name" ? user.name === inputNameValue : user.email === `${inputIdValue}@${selectEmail}`,
     );
 
     if (matchUser === null || matchUser.length === 0) {
@@ -244,7 +244,9 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             placeholder="비밀번호"
             className="auth-input body-3"
             {...register("password", {
-              ...passwordValid(getValues("passwordCheck")),
+              ...passwordValid(),
+              validate: (_, formValue) =>
+                formValue.password === formValue.passwordCheck || "비밀번호가 일치하지 않습니다.",
             })}
           />
           <PasswordVisibleButton
