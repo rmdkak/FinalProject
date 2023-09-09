@@ -31,7 +31,7 @@ export const EventForm = () => {
     const { title, content, minDate, maxDate } = data;
     const UUID = uuid();
     const eventImgFile = data.file[0];
-    const eventImg = eventImgFile !== undefined ? `/eventImg/${UUID}` : null;
+    const eventImg = `/eventImg/${UUID}`;
     const userId = currentSession?.user.id;
 
     const eventData = {
@@ -63,6 +63,7 @@ export const EventForm = () => {
   return (
     <>
       <form className="w-full flex-column" onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="text-[24px] font-normal mb-5">이벤트 작성</h1>
         <div className="flex items-center justify-center">
           <label htmlFor="title" className="font-normal text-[18px] w-[50px]">
             제목:
@@ -95,11 +96,14 @@ export const EventForm = () => {
             type="file"
             accept="image/png, image/jpeg, image/gif"
             className="w-full text-[14px] focus:outline-none"
-            {...register("file")}
+            {...register("file", {
+              required: "이미지 파일을 넣어주세요.",
+            })}
           />
         </div>
+        {errors.file != null && <p className="mb-5 text-error">{errors.file.message}</p>}
         <div className="flex items-center gap-[12px] mt-10">
-          <label className="w-[100px]">이벤트 기간:</label>
+          <label>이벤트 기간:</label>
           <input
             type="date"
             {...register("minDate")}

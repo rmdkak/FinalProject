@@ -14,7 +14,9 @@ export const Header = () => {
   const { Alert } = useDialog();
 
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
+
   const userUid = currentSession?.user.id;
+  const isAdmin = currentSession?.user.user_metadata.name === "stile";
 
   // 로그아웃
   const logoutHandler = async () => {
@@ -70,15 +72,16 @@ export const Header = () => {
             <>
               {/* 로그인 되어있는 메뉴 */}
               {/* 로그아웃 */}
-              <button
-                className="w-[200px] h-[50px] bg-gray03"
-                onClick={() => {
-                  navigate("/adminpage");
-                }}
-              >
-                관리자 페이지 이동
-              </button>
               <div className="flex gap-2 contents-center">
+                {isAdmin && (
+                  <button
+                    onClick={() => {
+                      navigate("/adminpage");
+                    }}
+                  >
+                    관리자 페이지로 이동
+                  </button>
+                )}
                 <button onClick={logoutHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
                   <img src={logOutIcon} alt="로그아웃" className="rotate-180" />

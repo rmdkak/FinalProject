@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase";
 import { DateConvertor } from "components";
@@ -12,20 +11,12 @@ interface PostProps {
 }
 
 export const PostData = ({ postData }: PostProps) => {
-  const navigate = useNavigate();
   const [previewModal, setPreviewModal] = useState<boolean>(false);
 
   return (
     <>
       <div className="items-center flex-column">
-        <p
-          className="font-medium text-[32px]"
-          onClick={() => {
-            navigate("/community");
-          }}
-        >
-          커뮤니티
-        </p>
+        <p className="font-medium text-[32px]">커뮤니티</p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
 

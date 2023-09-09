@@ -68,7 +68,14 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
     if (userId == null) return;
 
     try {
-      if (commentImgFile != null) {
+      if (commentImgFile !== null) {
+        const allowedExtensions = ["png", "jpeg", "jpg", "gif"];
+        const fileExtension = commentImgFile.name.split(".").pop()?.toLowerCase();
+        if (fileExtension === undefined) return;
+        if (!allowedExtensions.includes(fileExtension)) {
+          await Alert("이미지 파일(.png, .jpeg, .jpg, .gif)만 업로드 가능합니다.");
+          return;
+        }
         await saveCommentImageHandler({ id, commentImgFile });
       }
       if (commentStatus) createCommentMutation.mutate({ id, userId, content, postId, commentImg });
@@ -122,14 +129,20 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
             {commentImgFile == null && commentStatus && (
               <label htmlFor="imageInput">
                 <AiOutlineCamera className="text-gray-400 cursor-pointer text-[40px] mt-[40px]" />
-                <input type="file" id="imageInput" className="hidden" onChange={handleImageChange} />
+                <input
+                  type="file"
+                  accept="image/png, image/jpeg, image/gif"
+                  id="imageInput"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
               </label>
             )}
             {commentImgFile != null && commentStatus && (
               <div className="relative">
                 <img
                   src={URL.createObjectURL(commentImgFile)}
-                  alt="Selected"
+                  alt="미리보기"
                   className="object-cover cursor-pointer w-[80px] h-[80px]"
                   onClick={handleImageCancel}
                 />

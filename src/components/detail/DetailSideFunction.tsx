@@ -118,9 +118,11 @@ export const DetailSideFunction = ({ paramsId, postData }: props) => {
             }}
           >
             <SlArrowUp className="fill-gray02" />
-            <label className="text-gray02">이전글 보기</label>
+            <label className="text-gray02 w-[80px]">이전글 보기</label>
             <span className="h-[8px] border border-gray08"></span>
-            <p>{postList !== undefined ? postList[(findCurrentIdx as number) - 1].title : ""}</p>
+            <p className="line-clamp-1">
+              {postList !== undefined ? postList[(findCurrentIdx as number) - 1].title : ""}
+            </p>
           </div>
         )}
         {nextPage !== undefined && (
