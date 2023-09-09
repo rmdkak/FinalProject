@@ -53,14 +53,24 @@ export const Event = () => {
         <img src={`${STORAGE_URL}${eventDetailData?.eventImg}`} alt="eventImg" />
         <pre className="w-full break-words whitespace-pre-wrap text-[18px] mb-10">{eventDetailData?.content}</pre>
       </div>
-      <button
-        className="w-40 h-12 text-sm border rounded-lg border-gray05"
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        이전으로
-      </button>
+      <div className="flex justify-between">
+        <button
+          className="w-40 h-12 text-sm border rounded-lg border-gray05"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          이전으로
+        </button>
+        <button
+          className="w-40 h-12 text-sm border rounded-lg border-gray05"
+          onClick={() => {
+            navigate("/eventlist");
+          }}
+        >
+          목록으로
+        </button>
+      </div>
       <div className="mt-20 flex-column border-t-[1px] border-gray06">
         {prevPage !== undefined && (
           <div

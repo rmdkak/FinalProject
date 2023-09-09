@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { logout } from "api/supabase";
+import { ADMIN_ID, logout } from "api/supabase";
 import hambergerMenu from "assets/headersvg/cate.svg";
 import logOutIcon from "assets/headersvg/LogoutOutline.svg";
 import userIcon from "assets/headersvg/user.svg";
@@ -16,7 +16,7 @@ export const Header = () => {
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
 
   const userUid = currentSession?.user.id;
-  const isAdmin = currentSession?.user.user_metadata.name === "stile";
+  const isAdmin = userUid === ADMIN_ID;
 
   // 로그아웃
   const logoutHandler = async () => {
