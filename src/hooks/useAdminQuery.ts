@@ -22,7 +22,7 @@ export const useAdminQuery = () => {
 
   // 이벤트 GET
   const fetchEventMutation = useQuery({
-    queryKey: ["manToMan"],
+    queryKey: ["event"],
     queryFn: async () => {
       return await fetchEventData();
     },
