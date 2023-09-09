@@ -189,7 +189,8 @@ export const Comments = ({ postData }: CommentProps) => {
                         </div>
                       </>
                     ) : (
-                      <p className="text-[14px]">{comment.content}</p>
+                      // <p className="text-[14px]">{comment.content}</p>
+                      <pre className="w-full text-sm break-words whitespace-pre-wrap ">{comment.content}</pre>
                     )}
                     {comment.commentImg === null ? (
                       selectedId === comment.id ? (
@@ -338,7 +339,8 @@ export const Comments = ({ postData }: CommentProps) => {
                               className="p-1 rounded-[4px] border border-black text-[14px] outline-none resize-none"
                             />
                           ) : (
-                            <p className="text-[14px]">{reply.content}</p>
+                            // <p className="text-[14px]">{reply.content}</p>
+                            <pre className="w-full text-sm break-words whitespace-pre-wrap ">{reply.content}</pre>
                           )}
 
                           <div className="flex gap-2 text-gray02 text-[14px]">

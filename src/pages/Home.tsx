@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { Sync } from "@egjs/flicking-plugins";
 import Flicking, { type Plugin } from "@egjs/react-flicking";
 import { STORAGE_URL } from "api/supabase";
-import mainPreview from "assets/mainpreviewImg.jpg";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import { HomeContentsTitle, HomeKvBanner } from "components/home";
 import { usePostsData, useMovePage, useAdminQuery } from "hooks";
@@ -12,7 +11,7 @@ export const Home = () => {
   const { setCurrentPathname } = useMovePage();
   setCurrentPathname();
   const navigate = useNavigate();
-  const { ShowBestPostElements, ShowBestRankingElements } = usePostsData();
+  const { ShowBestPostElements, ShowBestRankingElements, ShowBestRankingPreview } = usePostsData();
   const [plugins, setPlugins] = useState<Plugin[]>([]);
   const flicking0 = useRef() as React.LegacyRef<Flicking> | undefined;
   const flicking1 = useRef() as React.LegacyRef<Flicking> | undefined;
@@ -27,7 +26,6 @@ export const Home = () => {
         synchronizedFlickingOptions: [
           {
             flicking: (flicking0 as React.RefObject<Flicking>).current as Flicking,
-            isSlidable: true,
           },
           {
             flicking: (flicking1 as React.RefObject<Flicking>).current as Flicking,
@@ -73,37 +71,8 @@ export const Home = () => {
       </div>
       <div className="w-[1280px] flex-column mb-[80px]">
         <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} navigation={false} />
-        <Flicking ref={flicking0} bounce={30} plugins={plugins} circular={true}>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
-          <div className="flicking-panel full has-background-primary">
-            <img src={mainPreview} alt="preview" className="panel-image w-[1280px] mt-10" />
-          </div>
+        <Flicking ref={flicking0} plugins={plugins} circular={true} disableOnInit={true}>
+          {ShowBestRankingPreview()}
         </Flicking>
         <Flicking ref={flicking1} align={"prev"} moveType={"strict"} circular={true}>
           {ShowBestRankingElements()}

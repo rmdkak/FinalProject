@@ -1,11 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { Comments, DetailSideFunction, DetailSkeleton, PostData } from "components";
+import { Comments, DetailSideFunction, DetailSkeleton, PostData, Share } from "components";
 import { useMovePage, usePostsQuery } from "hooks";
 import { useLikeStore } from "store";
 
 export const Detail = () => {
+  const [openShareModal, setOpenShareModal] = useState<boolean>(false);
   const { setCurrentPathname } = useMovePage();
   setCurrentPathname();
   const { id: paramsId } = useParams();
@@ -30,7 +31,8 @@ export const Detail = () => {
       <PostData postData={postData} />
       <Comments postData={postData} />
       <PrevNextPostList />
-      <DetailSideBar />
+      <DetailSideBar setOpenShareModal={setOpenShareModal} />
+      {openShareModal && <Share setOpenShareModal={setOpenShareModal} />}
     </div>
   );
 };
