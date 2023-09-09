@@ -1,29 +1,15 @@
 import { useState } from "react";
 
-// 테스트 데이터
-const reportData = [
-  {
-    id: "asdfasdfasdfasdf",
-    created_at: "2023-09-08",
-    category: "커뮤니티 이용",
-    title: "커뮤니티 어떻게 이용하나요?.",
-    content: "사용방법을 모르겠어요.",
-    userId: "asdflajsdlfj",
-    isCheck: false,
-  },
-  {
-    id: "asdfasdfasd123",
-    created_at: "2023-09-08",
-    category: "인테리어 조합 이용",
-    title: "인테리어 조합 어떻게 이용하나요?.",
-    content: "사용방법을 모르겠어요.",
-    userId: "asdflajsdlf123j",
-    isCheck: false,
-  },
-];
+import { type Tables } from "types/supabase";
 
-export const Report = () => {
+interface Props {
+  data: Array<Tables<"REPORT", "Row">> | undefined;
+}
+
+export const Report = ({ data: reportData }: Props) => {
   const [currentReport, setCurrentReport] = useState<string>();
+
+  if (reportData === undefined) return <p>신고가 없습니다.</p>;
 
   return (
     <ul className="w-full">
@@ -36,9 +22,6 @@ export const Report = () => {
               setCurrentReport(report.id);
             }}
           >
-            <p className={`${currentReport === report.id ? "border-b border-gray04" : ""} p-1 cursor-pointer`}>
-              {report.title}
-            </p>
             {currentReport === report.id && (
               <div className="flex items-center justify-between p-4">
                 <p>{report.content}</p>
