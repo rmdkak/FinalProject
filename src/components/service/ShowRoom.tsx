@@ -34,7 +34,6 @@ export const ShowRoom = (Props: Props) => {
         className={`md:max flex flex-none contents-center sticky top-[20%] bg-gray03 overflow-hidden rounded-xl ${size}`}
       >
         <div className="cube">
-          {/* 벽지 */}
           <div
             style={{
               backgroundImage: `url(${createUrl("wallpaper", leftWallpaperBg)})`,
@@ -49,7 +48,6 @@ export const ShowRoom = (Props: Props) => {
             }}
             className="right-wall"
           ></div>
-          {/* 타일 */}
           <div
             style={{
               backgroundImage: `url(${createUrl("tile", tileBg)})`,
@@ -71,16 +69,8 @@ export const ShowRoom = (Props: Props) => {
     return (
       <div className="md:max flex flex-none contents-center sticky top-[20%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
         <div className="cube">
-          {/* 벽지 */}
-          <div
-            style={{ backgroundColor: `${leftWallpaperPaintBg}`, backgroundSize: `${leftSize}px, ${leftSize}px` }}
-            className="left-wall"
-          ></div>
-          <div
-            style={{ backgroundColor: `${rightWallpaperPaintBg}`, backgroundSize: `${rightSize}px, ${rightSize}px` }}
-            className="right-wall"
-          ></div>
-          {/* 타일 */}
+          <div style={{ backgroundColor: `${leftWallpaperPaintBg}` }} className="left-wall"></div>
+          <div style={{ backgroundColor: `${rightWallpaperPaintBg}` }} className="right-wall"></div>
           <div
             style={{
               backgroundImage: `url(${createUrl("tile", tileBg)})`,

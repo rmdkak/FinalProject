@@ -3,8 +3,9 @@ import { FaRegHeart } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase";
-import { DateConvertor } from "components";
+import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
+import { useAuthStore, useModalStore } from "store";
 import { type Tables } from "types/supabase";
 
 interface PostProps {
@@ -13,7 +14,9 @@ interface PostProps {
 
 export const PostData = ({ postData }: PostProps) => {
   const navigate = useNavigate();
+  const { onOpenModal } = useModalStore((state) => state);
   const [previewModal, setPreviewModal] = useState<boolean>(false);
+  const { currentSession } = useAuthStore();
 
   return (
     <>
@@ -41,7 +44,18 @@ export const PostData = ({ postData }: PostProps) => {
               <FaRegHeart />
               <p>좋아요 {postData?.bookmark}</p>
             </div>
-            <button className="leading-[1px] hover:border-b border-gray02">신고하기</button>
+            {currentSession !== null ? (
+              <button onClick={onOpenModal} className="leading-[1px] hover:border-b border-gray02">
+                신고하기
+              </button>
+            ) : (
+              <></>
+            )}
+            {
+              <Modal title="신고하기">
+                <ReportForm currentSession={currentSession} postData={postData} />
+              </Modal>
+            }
           </div>
         </div>
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (

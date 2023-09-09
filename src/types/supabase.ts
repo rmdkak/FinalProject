@@ -99,7 +99,7 @@ export interface Database {
         Row: {
           content: string;
           created_at: string;
-          eventImg: string | null;
+          eventImg: string;
           id: string;
           maxDate: string | null;
           minDate: string | null;
@@ -109,7 +109,7 @@ export interface Database {
         Insert: {
           content: string;
           created_at?: string;
-          eventImg?: string | null;
+          eventImg: string;
           id?: string;
           maxDate?: string | null;
           minDate?: string | null;
@@ -119,14 +119,21 @@ export interface Database {
         Update: {
           content?: string;
           created_at?: string;
-          eventImg?: string | null;
+          eventImg?: string;
           id?: string;
           maxDate?: string | null;
           minDate?: string | null;
           title?: string;
           userId?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "EVENT_userId_fkey";
+            columns: ["userId"];
+            referencedRelation: "USERS";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       FURNITURE: {
         Row: {
@@ -365,6 +372,12 @@ export interface Database {
           isCheck?: boolean;
         };
         Relationships: [
+          {
+            foreignKeyName: "REPORT_imgId_fkey";
+            columns: ["imgId"];
+            referencedRelation: "objects";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "REPORT_userId_fkey";
             columns: ["userId"];

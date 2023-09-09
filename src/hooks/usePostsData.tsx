@@ -78,7 +78,7 @@ export const usePostsData = () => {
         {flickingPostList.slice(0, dataLength).map((post) => (
           <div
             key={post.id}
-            className="w-[400px] flex-column cursor-pointer"
+            className="w-[400px] mr-7 flex-column cursor-pointer"
             onClick={() => {
               navigate(`/detail/${post.id}`);
             }}
@@ -87,11 +87,13 @@ export const usePostsData = () => {
               <img
                 src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
                 alt="postImg"
-                className="rounded-[8px] w-full h-[400px] object-cover"
+                height={"400px"}
+                width={"400px"}
+                className="rounded-[8px] object-cover"
               />
             </div>
 
-            <div className="w-full gap-2 mt-3 flex-column">
+            <div className="w-[400px] gap-2 mt-3 flex-column">
               <div className="flex h-12">
                 <p className="text-[20px] my-auto font-semibold truncate w-1/2">{post.title}</p>
 
@@ -281,27 +283,88 @@ export const usePostsData = () => {
                   ></img>
                 </div>
               )}
-              {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
-                <div className="relative inline-flex">
-                  <div
-                    style={{
-                      backgroundColor: post.leftColorCode,
-                    }}
-                    className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                  ></div>
-                  <div
-                    style={{
-                      backgroundColor: post.rightColorCode,
-                    }}
-                    className="absolute top-0 left-[-30.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                  ></div>
-                  <img
-                    src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                    alt="바닥"
-                    className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
-                  ></img>
-                </div>
-              )}
+              {isExistCombination(post, "paint") &&
+                post.leftColorCode !== null &&
+                post.rightColorCode !== null &&
+                post.tileId !== null && (
+                  <div className="relative inline-flex">
+                    <div
+                      style={{
+                        backgroundColor: post.leftColorCode,
+                      }}
+                      className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                    ></div>
+                    <div
+                      style={{
+                        backgroundColor: post.rightColorCode,
+                      }}
+                      className="absolute top-0 left-[-30.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                    ></div>
+                    <img
+                      src={`${STORAGE_URL}/tile/${post.tileId}`}
+                      alt="바닥"
+                      className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                    ></img>
+                  </div>
+                )}
+            </div>
+          </div>
+        ))}
+      </>
+    );
+  };
+
+  const createUrl = (type: "tile" | "wallpaper", interiorId: string) => {
+    return `${STORAGE_URL}/${type}/${interiorId}`;
+  };
+
+  const ShowBestRankingPreview = () => {
+    return (
+      <>
+        {rankingList?.map((post) => (
+          <div key={post.id} className="flicking-panel full has-background-primary">
+            <div className="flex contents-center overflow-hidden rounded-xl w-[1280px] h-[574px] mt-10">
+              {isExistCombination(post, "interior") &&
+                post.leftWallpaperId !== null &&
+                post.rightWallpaperId !== null &&
+                post.tileId !== null && (
+                  <div className="cube">
+                    <div
+                      style={{
+                        backgroundImage: `url(${createUrl("wallpaper", post.leftWallpaperId)})`,
+                        backgroundSize: "100px, 100px",
+                      }}
+                      className="home-preview-left-wall"
+                    ></div>
+                    <div
+                      style={{
+                        backgroundImage: `url(${createUrl("wallpaper", post.rightWallpaperId)})`,
+                        backgroundSize: "100px, 100px",
+                      }}
+                      className="home-preview-right-wall"
+                    ></div>
+                    <div
+                      style={{
+                        backgroundImage: `url(${createUrl("tile", post.tileId)})`,
+                        backgroundSize: "100px, 100px",
+                      }}
+                      className="home-preview-floor"
+                    ></div>
+                  </div>
+                )}
+              {isExistCombination(post, "paint") &&
+                post.leftColorCode !== null &&
+                post.rightColorCode !== null &&
+                post.tileId !== null && (
+                  <div className="cube">
+                    <div style={{ backgroundColor: `${post.leftColorCode}` }} className="home-preview-left-wall"></div>
+                    <div
+                      style={{ backgroundColor: `${post.rightColorCode}` }}
+                      className="home-preview-right-wall"
+                    ></div>
+                    <div className="home-preview-floor"></div>
+                  </div>
+                )}
             </div>
           </div>
         ))}
@@ -315,5 +378,6 @@ export const usePostsData = () => {
     ShowBestPostElements,
     CommunityPostsForm,
     ShowBestRankingElements,
+    ShowBestRankingPreview,
   };
 };
