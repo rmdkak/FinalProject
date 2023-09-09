@@ -61,7 +61,7 @@ export const Mypage = () => {
   const { name, avatar_url: profileImg } = currentUser;
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <MypageTitle />
+      <MypageTitle title="마이페이지" isBorder={true} />
       <div className="flex gap-6 mt-8">
         <div className="relative flex-column contents-center gap-4 w-[240px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}

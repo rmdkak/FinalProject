@@ -49,7 +49,7 @@ export const MyComment = () => {
 
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <MypageTitle />
+      <MypageTitle title="마이페이지" isBorder={false} />
       <MypageSubTitle type="comment" />
       {/* 글 목록 */}
       {pageData.length === 0 ? (
