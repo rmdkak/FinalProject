@@ -11,7 +11,7 @@ interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
+const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
   const navigate = useNavigate();
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
   const { Alert } = useDialog();
@@ -106,3 +106,5 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
     </>
   );
 };
+
+export const Sidebar = React.memo(SidebarMemoization);

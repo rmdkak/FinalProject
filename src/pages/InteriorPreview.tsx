@@ -7,6 +7,7 @@ import share from "assets/svgs/icon_share.svg";
 import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview, Share } from "components";
 import { useBookmarkQuery, useBookmark, useMovePage } from "hooks";
 import { useModalStore, useServiceStore } from "store";
+import { useFurniture } from "store/useFurniture";
 import { type FetchItemBookmark } from "types/service";
 
 export const InteriorPreview = () => {
@@ -24,6 +25,7 @@ export const InteriorPreview = () => {
 
   const { bookmarkResponse } = useBookmarkQuery();
   const { addBookmark, deleteBookmark, recommendDesign } = useBookmark();
+  const { resetFurnitureState } = useFurniture();
   const { data: currentBookmarkData } = bookmarkResponse;
 
   const resetState = useCallback(() => {
@@ -31,6 +33,7 @@ export const InteriorPreview = () => {
     resetWallpaperPaint();
     resetTile();
     resetClickItemBorder();
+    resetFurnitureState();
   }, []);
 
   const isWallPaperPaintSelected = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
@@ -82,7 +85,7 @@ export const InteriorPreview = () => {
                 <span>자재 소모량 계산기</span>
               </label>
               <button className="h-6 ml-2" id="calc" onClick={onOpenModal}>
-                <img src={calcArrow} alt="" />
+                <img src={calcArrow} alt="오른쪽 화살표 이미지" />
               </button>
               <Modal title="자재 소모량 계산기">
                 <ResourcesCalculator />
@@ -110,7 +113,7 @@ export const InteriorPreview = () => {
                 }}
                 className="w-[64px] h-[64px] rounded-xl border border-gray05 outline-button-hover"
               >
-                <img src={share} className="mx-auto" />
+                <img src={share} alt="공유하기 이미지" className="mx-auto" />
               </button>
               {openShareModal && <Share setOpenShareModal={setOpenShareModal} />}
             </div>

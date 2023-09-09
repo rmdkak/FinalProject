@@ -84,7 +84,6 @@ export const ResourcesCalculatorMamoization = (): JSX.Element => {
     setVisible(false);
     resetState();
   };
-
   return (
     <>
       <div>

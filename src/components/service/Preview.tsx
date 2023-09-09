@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const Preview = ({ leftWallPaperBg, RightWallPaperBg, tileBg }: Props) => {
-  const { imageState } = useFurniture((state) => state);
+  const { furnitureState } = useFurniture((state) => state);
   const { wallPaper, tile, wallpaperPaint, interiorSelecteIndex, selectBgSize } = useServiceStore((state) => state);
 
   const isWallPaperPaintSeleted = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
@@ -73,53 +73,57 @@ export const Preview = ({ leftWallPaperBg, RightWallPaperBg, tileBg }: Props) =>
       </div>
       {/* 시계 */}
       <div
-        className={`absolute z-[110] top-[49px]  ${imageState.clock.visible ? "visible" : "hidden"} ${
-          imageState.clock.direction === "left" ? "left-[40px]" : "right-[40px] scale-x-[-1]"
+        className={`absolute z-[110] top-[49px]  ${furnitureState.clock.visible ? "visible" : "hidden"} ${
+          furnitureState.clock.direction === "left" ? "left-[40px]" : "right-[40px] scale-x-[-1]"
         }`}
       >
-        <img src={STORAGE_URL.concat(imageState.clock.id)} width={49} height={50} alt="가구미리보기 이미지" />
+        <img src={STORAGE_URL.concat(furnitureState.clock.id)} width={49} height={50} alt="가구미리보기 이미지" />
       </div>
       {/* 장 */}
       <div
-        className={`absolute z-[100] ${imageState.closet.visible ? "visible" : "hidden"} ${
-          imageState.closet.direction === "left"
+        className={`absolute z-[100] ${furnitureState.closet.visible ? "visible" : "hidden"} ${
+          furnitureState.closet.direction === "left"
             ? "top-[22px] left-[228px] right-0"
             : "top-[150px] right-[0] scale-x-[-1] z-[110]"
         }`}
       >
-        <img src={STORAGE_URL.concat(imageState.closet.id)} width={85} height={192} alt="가구미리보기 이미지" />
+        <img src={STORAGE_URL.concat(furnitureState.closet.id)} width={85} height={192} alt="가구미리보기 이미지" />
       </div>
       {/* 램프1 */}
       <div
-        className={`absolute z-[103]  left-0 ${imageState.ramp1.visible ? "visible" : "hidden"} ${
-          imageState.ramp1.direction === "left" ? "top-[137px] left-[0]" : "top-0 left-[300px]"
+        className={`absolute z-[103]  left-0 ${furnitureState.ramp1.visible ? "visible" : "hidden"} ${
+          furnitureState.ramp1.direction === "left" ? "top-[137px] left-[0]" : "top-0 left-[300px]"
         }`}
       >
-        <img src={STORAGE_URL.concat(imageState.ramp1.id)} width={85} height={192} alt="가구미리보기 이미지" />
+        <img src={STORAGE_URL.concat(furnitureState.ramp1.id)} width={85} height={192} alt="가구미리보기 이미지" />
       </div>
       {/* 램프2 */}
       <div
-        className={`absolute z-[102]  left-0 ${imageState.ramp2.visible ? "visible" : "hidden"} ${
-          imageState.ramp2.direction === "left" ? "top-[198px] left-[11px]" : "top-[66px] right-[260px] scale-x-[-1]"
+        className={`absolute z-[102]  left-0 ${furnitureState.ramp2.visible ? "visible" : "hidden"} ${
+          furnitureState.ramp2.direction === "left"
+            ? "top-[198px] left-[11px]"
+            : "top-[66px] right-[260px] scale-x-[-1]"
         }`}
       >
-        <img src={STORAGE_URL.concat(imageState.ramp2.id)} width={79} height={116} alt="가구미리보기 이미지" />
+        <img src={STORAGE_URL.concat(furnitureState.ramp2.id)} width={79} height={116} alt="가구미리보기 이미지" />
       </div>
       {/* 테이블 */}
       <div
-        className={`absolute z-[105]  left-[22px] ${imageState.table.visible ? "visible" : "hidden"} ${
-          imageState.table.direction === "left" ? "top-[287px] left-[22px]" : "top-[177px] right-[264px] scale-x-[-1]"
+        className={`absolute z-[105]  left-[22px] ${furnitureState.table.visible ? "visible" : "hidden"} ${
+          furnitureState.table.direction === "left"
+            ? "top-[287px] left-[22px]"
+            : "top-[177px] right-[264px] scale-x-[-1]"
         }`}
       >
-        <img src={STORAGE_URL.concat(imageState.table.id)} width={79} height={76} alt="가구미리보기 이미지" />
+        <img src={STORAGE_URL.concat(furnitureState.table.id)} width={79} height={76} alt="가구미리보기 이미지" />
       </div>
       {/* 소파 */}
       <div
-        className={`absolute z-[101] top-[101px] left-[44px] ${imageState.sopa.visible ? "visible" : "hidden"} ${
-          imageState.sopa.direction === "left" ? "left-[44px]" : "right-[44px] scale-x-[-1]"
+        className={`absolute z-[101] top-[101px] left-[44px] ${furnitureState.sopa.visible ? "visible" : "hidden"} ${
+          furnitureState.sopa.direction === "left" ? "left-[44px]" : "right-[44px] scale-x-[-1]"
         }`}
       >
-        <img src={STORAGE_URL.concat(imageState.sopa.id)} width={243} height={216} alt="가구미리보기 이미지" />
+        <img src={STORAGE_URL.concat(furnitureState.sopa.id)} width={243} height={216} alt="가구미리보기 이미지" />
       </div>
     </div>
   );

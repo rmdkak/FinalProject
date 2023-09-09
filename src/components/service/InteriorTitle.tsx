@@ -14,6 +14,7 @@ const InteriorTitleMemoization = ({ children, type }: Props): JSX.Element => {
   const onClickTypeSwitch = useCallback((type: WallOrTileOrFurniture) => {
     setTypeCheck(type);
   }, []);
+
   return (
     <>
       <span

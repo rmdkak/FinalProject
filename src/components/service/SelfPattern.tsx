@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 import photoImage from "assets/svgs/photoImage.svg";
@@ -11,13 +11,15 @@ export const SelfPattern = (): JSX.Element => {
   const InputRef = useRef<HTMLInputElement>(null);
   const IdRef = useRef(0);
 
-  const { checkType, setCustomSelfWallPaper, setCustomSelfTile, customSelfWallPaper, customSelfTile } = useServiceStore(
-    (state) => state,
-  );
+  const {
+    checkType,
+    resetWallpaperPaint,
+    setCustomSelfWallPaper,
+    setCustomSelfTile,
+    customSelfWallPaper,
+    customSelfTile,
+  } = useServiceStore((state) => state);
 
-  /**
-   * 리액트 드랍존 라이브러리 함수
-   */
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       const URL_IMG_PATH: Wallpaper[] = acceptedFiles.map((imgFile) => {
@@ -41,6 +43,9 @@ export const SelfPattern = (): JSX.Element => {
 
   const { getRootProps, getInputProps } = useDropzone({ accept: { "image/*": [] }, onDrop });
 
+  useEffect(() => {
+    resetWallpaperPaint();
+  }, []);
   return (
     <>
       <input type="file" accept="image/*" ref={InputRef} {...getInputProps()} />

@@ -21,7 +21,7 @@ export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): J
     setTile,
     onClickItemBorder,
   } = useServiceStore((state) => state);
-  const { setImageState } = useFurniture((state) => state);
+  const { setFurnitureState } = useFurniture((state) => state);
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
   const getItemData = (selectItem: { id: string; image: string }): void => {
@@ -52,13 +52,12 @@ export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): J
     checkType: WallOrTileOrFurniture,
   ) => {
     if (furniture === true) {
-      interiorSelectX ? setImageState(image, "left") : setImageState(image, "right");
+      interiorSelectX ? setFurnitureState(image, "left") : setFurnitureState(image, "right");
     } else {
       getItemData({ id, image });
       setClickItemBorder(_id, interiorSelectX, checkType);
     }
   };
-
   return (
     <>
       <li
@@ -69,13 +68,11 @@ export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): J
         style={borderSelectStyle}
         className="overflow-hidden rounded-full interior-item"
       >
-        <img
-          src={`${STORAGE_URL}${image}`}
-          width={80}
-          height={80}
-          className="cursor-pointer drag-none"
-          alt="미리보기"
-        />
+        <picture className={`box-border block h-full cursor-pointer drag-none`}>
+          <source srcSet={`${STORAGE_URL}${image}`} type="image/webp"></source>
+          <source srcSet={`${STORAGE_URL}${image}`} type="image/jpg"></source>
+          <img src={`${STORAGE_URL}${image}`} alt={`${checkType} 이미지`} />
+        </picture>
       </li>
     </>
   );
