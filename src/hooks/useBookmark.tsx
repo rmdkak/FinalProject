@@ -57,7 +57,10 @@ export const useBookmark = () => {
           로그인 페이지로 이동하시겠습니까?
         </p>,
       );
-      if (sessionCheck) navigate("/login");
+      if (sessionCheck) {
+        navigate("/login");
+      }
+      return;
     }
     if (tile.id !== null && wallPaper.left.id !== null && wallPaper.right.id !== null) {
       const selectedData = {
