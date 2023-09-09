@@ -62,7 +62,7 @@ export const MyPost = () => {
                   }}
                 />
                 <label htmlFor={post.id}>
-                  <CheckBoxIcon checkState={postIdsToDelete.find((id) => id === post.id) !== undefined} />
+                  <CheckBoxIcon isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined} />
                 </label>
                 <p className="w-[80px]">{index + 1}</p>
                 <Link to={`/detail/${post.id as string}`} className="w-[830px]">

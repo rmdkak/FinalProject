@@ -63,7 +63,7 @@ export const MyLike = () => {
                   }}
                 />
                 <label htmlFor={likedPost.id}>
-                  <CheckBoxIcon checkState={likeIdsToDelete.find((id) => id === likedPost.id) !== undefined} />
+                  <CheckBoxIcon isCheck={likeIdsToDelete.find((id) => id === likedPost.id) !== undefined} />
                 </label>
                 <p className="w-[80px]">{pageData.length - index}</p>
                 <Link to={`/detail/${post.id as string}`} className="w-[830px]">
