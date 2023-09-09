@@ -340,33 +340,36 @@ export interface Database {
           content: string;
           created_at: string;
           id: string;
-          imgId: string | null;
+          postId: string;
           postContent: string;
           postImg: string | null;
           postTitle: string;
           userId: string;
+          isCheck: boolean;
         };
         Insert: {
           category: string;
           content: string;
           created_at?: string;
           id?: string;
-          imgId?: string | null;
+          postId: string;
           postContent: string;
           postImg?: string | null;
           postTitle: string;
           userId: string;
+          isCheck?: boolean;
         };
         Update: {
           category?: string;
           content?: string;
           created_at?: string;
           id?: string;
-          imgId?: string | null;
+          postId?: string;
           postContent?: string;
           postImg?: string | null;
           postTitle?: string;
           userId?: string;
+          isCheck?: boolean;
         };
         Relationships: [
           {

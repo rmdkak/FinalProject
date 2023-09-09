@@ -41,7 +41,7 @@ export const MyLike = () => {
 
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
-      <MypageTitle />
+      <MypageTitle title="마이페이지" isBorder={false} />
       <MypageSubTitle type="like" />
       {pageData.length === 0 ? (
         <EmptyData type="like" />

@@ -34,14 +34,14 @@ export const DataForm = () => {
         await uploadTileImageHandler({ UUID, postImgFile: newImg });
         await addTileData(imgData);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } else {
       try {
         await uploadWallpaperImageHandler({ UUID, postImgFile: newImg });
         await addWallpaperData(imgData);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };

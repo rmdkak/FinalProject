@@ -18,7 +18,7 @@ export const MypageSkeleton = () => {
 
   return (
     <div className="flex-column items-center m-[60px] w-[1280px] h-[2000px] mx-auto">
-      <MypageTitle />
+      <MypageTitle title="마이페이지" isBorder={true} />
       <div className="flex gap-6 mt-8">
         <div className="relative flex-column contents-center gap-4 w-[240px] h-[200px] rounded-[12px] border border-gray05">
           <div className="w-[60px] h-[60px] rounded-full text-center justify-center skeleton-effect" />

@@ -31,7 +31,6 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
   };
 
   const checkTypeOfString = typeof image === "string" ? image : "";
-  console.log(checkTypeOfString);
   return (
     <>
       {/* 아이템 리스트 */}

@@ -15,7 +15,7 @@ export const Error = () => {
   const fetchData = async () => {
     const { data: wallpaper, error } = await supabase.from("WALLPAPER").select("image").limit(5);
     if (error !== null) {
-      console.log(error);
+      console.error(error);
       return;
     }
     setRandomImg(wallpaper);

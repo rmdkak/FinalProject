@@ -44,7 +44,6 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
           </button>
         </div>
 
-        {/* 로그인 토글 */}
         <div className="pb-3 mb-8 border-b border-black">
           <ul className="flex gap-4 text-black body-3">
             {currentSession === null ? (
@@ -95,7 +94,7 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
               </Link>
             </li>
             <li className="duration-500 text-gray03 hover:text-black">
-              <Link onClick={closeSideBarHandler} to="/">
+              <Link onClick={closeSideBarHandler} to="/inquire">
                 1:1문의하기
               </Link>
             </li>

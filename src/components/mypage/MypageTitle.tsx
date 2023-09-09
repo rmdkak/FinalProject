@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 
-export const MypageTitle = () => {
+interface Props {
+  title: string;
+  isBorder: boolean;
+}
+
+export const MypageTitle = ({ title, isBorder }: Props) => {
   return (
-    <div className="w-full pb-6 text-center">
+    <div className={`w-full pb-6 text-center ${isBorder ? "border-b-2 border-black" : ""}`}>
       <Link to="/mypage" className="text-[32px] font-normal leading-[130%]">
-        마이페이지
+        {title}
       </Link>
     </div>
   );

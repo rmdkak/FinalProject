@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { MdContactSupport, MdAnnouncement, MdFactCheck, MdLibraryAdd } from "react-icons/md";
 
-import { useAdminQuery } from "hooks";
-
 import { DataForm } from "./DataForm";
 import { EventForm } from "./EventForm";
 import { ManToMan } from "./ManToMan";
@@ -11,22 +9,21 @@ import { Report } from "./Report";
 export const AdminPage = () => {
   const [currentTab, setCurrentTab] = useState<string>("문의");
 
-  const { fetchManToManMutation, fetchReportMutation } = useAdminQuery();
-  const { data: manToManData } = fetchManToManMutation;
-  const { data: reportData } = fetchReportMutation;
+  const [manToManDataLength, setManToManDataLength] = useState(0);
+  const [reportDataLength, setReportDataLength] = useState(0);
 
   const adminPageInfoTabArray = [
     {
       title: "문의",
       icon: MdContactSupport,
-      component: <ManToMan key="문의" data={manToManData} />,
-      length: manToManData?.length,
+      component: <ManToMan key="문의" setLength={setManToManDataLength} />,
+      length: manToManDataLength,
     },
     {
       title: "신고",
       icon: MdAnnouncement,
-      component: <Report key="신고" data={reportData} />,
-      length: reportData?.length,
+      component: <Report key="신고" setLength={setReportDataLength} />,
+      length: reportDataLength,
     },
     {
       title: "이벤트 작성",

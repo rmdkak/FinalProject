@@ -17,7 +17,6 @@ export const Share = ({ setOpenShareModal }: Props) => {
   useEffect(() => {
     Kakao.cleanup();
     Kakao.init(process.env.REACT_APP_SHARE_KAKAO_LINK_KEY);
-    console.log(Kakao.isInitialized());
   }, []);
 
   const shareKakao = () => {

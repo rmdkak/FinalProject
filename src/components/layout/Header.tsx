@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { ADMIN_ID, logout } from "api/supabase";
 import hambergerMenu from "assets/headersvg/cate.svg";
-import logIn from "assets/headersvg/Login.svg";
 import logOutIcon from "assets/headersvg/Logout.svg";
 import userIcon from "assets/headersvg/user.svg";
 import { Sidebar, useDialog } from "components";
@@ -37,7 +36,6 @@ const HeaderMemoization = () => {
     navigate("/mypage");
   }, []);
 
-  // 로그인페이지 이동
   const goToLogin = useCallback(() => {
     navigate("/login");
   }, []);
@@ -56,22 +54,20 @@ const HeaderMemoization = () => {
 
           {currentSession === null ? (
             <>
-              {/* 로그인 안되어있는 메뉴 */}
               <div className="flex gap-2 contents-center">
                 <button onClick={goToLogin}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그인</span>
-                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={logIn} alt="로그인 메뉴 이미지" />
+
+                  <img src={logOutIcon} alt="로그인" />
                 </button>
                 <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
-                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={hambergerMenu} alt="햄버거 메뉴" />
+                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={hambergerMenu} alt="메뉴" />
                 </button>
               </div>
             </>
           ) : (
             <>
-              {/* 로그인 되어있는 메뉴 */}
-              {/* 로그아웃 */}
               <div className="flex gap-2 contents-center">
                 {isAdmin && (
                   <button
@@ -86,17 +82,13 @@ const HeaderMemoization = () => {
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
                   <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={logOutIcon} alt="로그아웃" />
                 </button>
-
-                {/* 마이페이지 */}
                 <button onClick={goToMypage}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">마이페이지버튼</span>
                   <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={userIcon} alt="마이 페이지" />
                 </button>
-
-                {/* 햄버거 */}
                 <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
-                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={hambergerMenu} alt="햄버거 메뉴" />
+                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={hambergerMenu} alt="메뉴" />
                 </button>
               </div>
             </>
