@@ -69,6 +69,7 @@ export const FindAuth = () => {
       setIsDoneFind(false);
       emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
     }
+    emailReset();
   };
 
   // 비밀번호 찾기
@@ -88,6 +89,7 @@ export const FindAuth = () => {
     } catch (error) {
       passwordSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
     }
+    passwordReset();
   };
 
   const changeTabHandler = (type: "email" | "password") => {

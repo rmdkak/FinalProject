@@ -90,6 +90,11 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
               </Link>
             </li>
             <li className="duration-500 text-gray03 hover:text-black">
+              <Link onClick={closeSideBarHandler} to="/eventlist">
+                EVENT
+              </Link>
+            </li>
+            <li className="duration-500 text-gray03 hover:text-black">
               <Link onClick={closeSideBarHandler} to="/">
                 1:1문의하기
               </Link>

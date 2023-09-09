@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 import { Sync } from "@egjs/flicking-plugins";
 import Flicking, { type Plugin } from "@egjs/react-flicking";
+import { STORAGE_URL } from "api/supabase";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import { HomeContentsTitle, HomeKvBanner } from "components/home";
-import { usePostsData, useMovePage } from "hooks";
-
+import { usePostsData, useMovePage, useAdminQuery } from "hooks";
 export const Home = () => {
   const { setCurrentPathname } = useMovePage();
   setCurrentPathname();
@@ -15,6 +15,9 @@ export const Home = () => {
   const [plugins, setPlugins] = useState<Plugin[]>([]);
   const flicking0 = useRef() as React.LegacyRef<Flicking> | undefined;
   const flicking1 = useRef() as React.LegacyRef<Flicking> | undefined;
+  const { fetchEventMutation } = useAdminQuery();
+  const { data: eventData } = fetchEventMutation;
+  const filterEventData = eventData?.slice(0, 2);
 
   useEffect(() => {
     setPlugins([
@@ -78,30 +81,30 @@ export const Home = () => {
       <div className="home-section mb-[120px]">
         <HomeContentsTitle title={"EVENT"} page={"eventlist"} navigation={true} />
         <div className="flex gap-10">
-          <div
-            className="w-full gap-6 flex-column"
-            onClick={() => {
-              navigate("/event/1");
-            }}
-          >
-            <img src="" alt="thumnail" className="h-[400px] rounded-xl object-contain hover:cursor-pointer"></img>
-            <div className="gap-2 flex-column hover:cursor-pointer">
-              <h2 className="text-2xl font-medium">홈 & 리빙 페스티벌</h2>
-              <p className="text-gray02">가을 분위기로 변신할 수 있는 기회! 홈&리빙 페스티벌을 즐겨보세요</p>
+          {filterEventData?.map((data) => (
+            <div
+              key={data.id}
+              className="w-full gap-6 flex-column"
+              onClick={() => {
+                navigate(`/event/${data.id}`);
+              }}
+            >
+              <img
+                src={`${STORAGE_URL}${data.eventImg}`}
+                alt="eventImg"
+                className="h-[400px] rounded-xl object-contain hover:cursor-pointer"
+              />
+              <div className="gap-2 flex-column hover:cursor-pointer">
+                <h2 className="text-2xl font-medium line-clamp-2">{data.title}</h2>
+                <p className="text-gray02 line-clamp-2">{data.content}</p>
+              </div>
             </div>
-          </div>
-          <div className="w-full gap-6 flex-column">
-            <img src="" alt="thumnail" className="h-[400px] rounded-xl object-contain hover:cursor-pointer"></img>
-            <div className="gap-2 flex-column hover:cursor-pointer">
-              <h2 className="text-2xl font-medium">요즘 뜨는 신상 아이템</h2>
-              <p className="text-gray02">최신 유행하는 신상 아이템을 바로 확인해보세요!</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className="mb-[120px] home-section">
         <HomeContentsTitle title={"COMMUNITY"} page={"community"} navigation={true} />
-        <div className="flex w-full gap-10">
+        <div className="flex w-full">
           <ShowBestPostElements dataLength={3} />
         </div>
       </div>

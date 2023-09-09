@@ -6,8 +6,8 @@ import { Select, useDialog } from "components";
 
 export const DataForm = () => {
   const [newImg, setNewImg] = useState<Blob | null>();
-  const [selectType, setSelectType] = useState<string | undefined>("");
-  const [selectTexture, setSelectTexture] = useState<string | undefined>("");
+  const [selectType, setSelectType] = useState<string | undefined>();
+  const [selectTexture, setSelectTexture] = useState<string | undefined>();
 
   const { Alert } = useDialog();
   const UUID = uuid();
@@ -74,6 +74,7 @@ export const DataForm = () => {
               selectedValue={selectType}
               setSelectedValue={setSelectType}
               selfEnterOption={false}
+              placeholder="타입 선택"
             ></Select>
           </div>
           <label className="text-sm text-black w-[70px]">텍스쳐 선택</label>
@@ -83,6 +84,7 @@ export const DataForm = () => {
               selectedValue={selectTexture}
               setSelectedValue={setSelectTexture}
               selfEnterOption={false}
+              placeholder="텍스처 선택"
             ></Select>
           </div>
         </div>

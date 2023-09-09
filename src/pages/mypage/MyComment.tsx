@@ -1,8 +1,8 @@
 import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
-import arrowIcon from "assets/svgs/arrowIcon.svg";
 import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData, CheckBoxIcon } from "components";
+import { ArrowButton } from "components/common";
 import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
@@ -62,7 +62,7 @@ export const MyComment = () => {
             return (
               <li key={comment.id} className="flex-column contents-center border-y border-gray06">
                 {/* 포스트 */}
-                <div className="flex contents-center w-full border-y border-gray06 gap-[24px] h-[64px] px-[24px]">
+                <div className="flex contents-center w-full border-y border-gray06 gap-[24px] h-[72px] px-[24px]">
                   <input
                     id={comment.id}
                     type="checkbox"
@@ -74,7 +74,7 @@ export const MyComment = () => {
 
                   {/* 체크 박스 */}
                   <label htmlFor={comment.id}>
-                    <CheckBoxIcon checkState={commentIdsToDelete.find((id) => id === comment.id) !== undefined} />
+                    <CheckBoxIcon isCheck={commentIdsToDelete.find((id) => id === comment.id) !== undefined} />
                   </label>
                   <div
                     className="flex contents-center gap-[24px] w-full h-full cursor-pointer"
@@ -82,27 +82,20 @@ export const MyComment = () => {
                       isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id);
                     }}
                   >
-                    <p className="w-[80px]">{index + 1}</p>
-                    <p className="w-[1040px]">{post.title}</p>
-                    <DateConvertor datetime={post.created_at} type={"dotDate"} />
+                    <p className="flex contents-center w-20 p-[10px] ">{index + 1}</p>
+                    <div className="w-[1044px] flex justify-between">
+                      <p className="body-3">{post.title}</p>
+                      <DateConvertor datetime={post.created_at} type={"dotDate"} className="body-3" />
+                    </div>
 
-                    <button className="flex contents-center w-[16px] h-[16px]">
-                      {isOpenComment === comment.id ? (
-                        <img
-                          className="rotate-180"
-                          src={arrowIcon}
-                          onClick={() => {
-                            openCommentHandler("");
-                          }}
-                        />
-                      ) : (
-                        <img
-                          src={arrowIcon}
-                          onClick={() => {
-                            openCommentHandler(comment.id);
-                          }}
-                        />
-                      )}
+                    <button className="flex w-4 h-4 contents-center">
+                      <ArrowButton
+                        isOpen={isOpenComment === comment.id}
+                        openHandler={openCommentHandler}
+                        statusToClose={""}
+                        statusToOpen={comment.id}
+                        className={"flex w-4 h-4 contents-center"}
+                      />
                     </button>
                   </div>
                 </div>

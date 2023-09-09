@@ -69,10 +69,20 @@ export const Comments = ({ postData }: CommentProps) => {
 
     const UUID = uuid();
     const newCommentImg = selectedCommentImgFile === null ? currentImg : `/commentImg/${UUID}`;
+
     if (selectedCommentImgFile !== null) {
+      const allowedExtensions = ["png", "jpeg", "jpg", "gif"];
+      const fileExtension = selectedCommentImgFile.name.split(".").pop()?.toLowerCase();
+      if (fileExtension === undefined) return;
+      if (!allowedExtensions.includes(fileExtension)) {
+        await Alert("이미지 파일(.png, .jpeg, .jpg, .gif)만 업로드 가능합니다.");
+        return;
+      }
+
       await saveCommentImageHandler({ id: UUID, commentImgFile: selectedCommentImgFile });
       await deleteCommentImageHandler(currentImg as string);
     }
+
     if (type === "comment") updateCommentMutation.mutate({ commentId: id, newComment, newCommentImg });
     if (type === "reply") updateReplyMutation.mutate({ replyId: id, newReply: newComment });
     setSelectedId("");
@@ -131,11 +141,14 @@ export const Comments = ({ postData }: CommentProps) => {
               <div key={comment.id}>
                 <div className="flex py-5 border-b border-gray06 ">
                   {comment.USERS?.avatar_url === "" ? (
-                    <img src={defaultImg} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
+                    <img src={defaultImg} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
                   ) : (
-                    <img src={comment.USERS?.avatar_url} alt="profileImg" className="w-[40px] h-[40px] rounded-full" />
+                    <img
+                      src={comment.USERS?.avatar_url}
+                      alt="프로필이미지"
+                      className="w-[40px] h-[40px] rounded-full"
+                    />
                   )}
-
                   <div className="flex flex-col justify-between w-full gap-2 ml-3">
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{comment.USERS?.name}</p>
@@ -160,12 +173,19 @@ export const Comments = ({ postData }: CommentProps) => {
                         <div className="relative">
                           <label htmlFor="inputImg">
                             <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute top-[245px] left-[305px]" />
-                            <input type="file" id="inputImg" className="hidden" onChange={handleImageChange} />
+                            <input
+                              type="file"
+                              accept="image/png, image/jpeg, image/gif"
+                              id="inputImg"
+                              className="hidden"
+                              onChange={handleImageChange}
+                            />
                           </label>
                         </div>
                       </>
                     ) : (
-                      <p className="text-[14px]">{comment.content}</p>
+                      // <p className="text-[14px]">{comment.content}</p>
+                      <pre className="w-full text-sm break-words whitespace-pre-wrap ">{comment.content}</pre>
                     )}
                     {comment.commentImg === null ? (
                       selectedId === comment.id ? (
@@ -175,6 +195,7 @@ export const Comments = ({ postData }: CommentProps) => {
                               ? comment_no_img
                               : URL.createObjectURL(selectedCommentImgFile)
                           }
+                          alt="미리보기"
                           className="my-[20px] w-[300px] h-[250px]"
                         />
                       ) : (
@@ -182,6 +203,7 @@ export const Comments = ({ postData }: CommentProps) => {
                       )
                     ) : selectedId === comment.id ? (
                       <img
+                        alt="미리보기"
                         src={
                           selectedCommentImgFile === null
                             ? `${STORAGE_URL}${comment.commentImg}`
@@ -194,6 +216,7 @@ export const Comments = ({ postData }: CommentProps) => {
                     ) : (
                       <img src={`${STORAGE_URL}${comment.commentImg}`} className="my-[20px] w-[300px] h-[250px]" />
                     )}
+
                     <div className="flex gap-2 text-gray02 text-[14px]">
                       <DateConvertor datetime={comment.created_at} type="timeAgo" />
                       <div className="relative">
@@ -272,11 +295,15 @@ export const Comments = ({ postData }: CommentProps) => {
                     <div key={reply.id} className="border-b border-[#E5E5E5]">
                       <div className="flex py-[15px]">
                         <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
-                        <img
-                          src={reply.USERS?.avatar_url}
-                          alt="profileImg"
-                          className="w-[40px] h-[40px] rounded-full"
-                        />
+                        {reply.USERS?.avatar_url === "" ? (
+                          <img src={defaultImg} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
+                        ) : (
+                          <img
+                            src={reply.USERS?.avatar_url}
+                            alt="프로필이미지"
+                            className="w-[40px] h-[40px] rounded-full"
+                          />
+                        )}
                         <div className="flex flex-col w-full gap-1 ml-3">
                           <div className="flex gap-2">
                             <p className="font-semibold">{reply.USERS?.name}</p>
@@ -298,7 +325,8 @@ export const Comments = ({ postData }: CommentProps) => {
                               className="p-1 rounded-[4px] border border-black text-[14px] outline-none resize-none"
                             />
                           ) : (
-                            <p className="text-[14px]">{reply.content}</p>
+                            // <p className="text-[14px]">{reply.content}</p>
+                            <pre className="w-full text-sm break-words whitespace-pre-wrap ">{reply.content}</pre>
                           )}
 
                           <div className="flex gap-2 text-gray02 text-[14px]">

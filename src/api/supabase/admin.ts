@@ -3,10 +3,20 @@ import { supabase } from "./supabaseClient";
 import type { Tables } from "types/supabase";
 
 // 이벤트 GET
-export const fetchEventData = async () => {
-  const { data, error } = await supabase.from("EVENT").select("*");
+export const fetchEventAllData = async () => {
+  const { data, error } = await supabase.from("EVENT").select("*").order("created_at", { ascending: false });
   if (error !== null) {
     console.error(error.message);
+    return;
+  }
+  return data;
+};
+// 이벤트 GET
+export const fetchEventDetailData = async (id: string) => {
+  const { data, error } = await supabase.from("EVENT").select("*,USERS (*)").eq("id", id).single();
+  if (error !== null) {
+    console.error(error.message);
+    return;
   }
   return data;
 };
@@ -40,7 +50,11 @@ export const deleteEventData = async (eventId: string) => {
 
 // 문의하기 GET
 export const fetchManToManData = async () => {
-  const { data } = await supabase.from("MANTOMAN").select("*");
+  const { data, error } = await supabase.from("MANTOMAN").select();
+  if (error !== null) {
+    console.error(error);
+    return;
+  }
   return data;
 };
 
@@ -73,6 +87,7 @@ export const fetchReportData = async () => {
   const { data, error } = await supabase.from("REPORT").select("*");
   if (error !== null) {
     console.error(error);
+    return;
   }
   return data;
 };

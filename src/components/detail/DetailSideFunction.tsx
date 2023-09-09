@@ -11,12 +11,16 @@ import { usePostsLikeQuery, usePostsQuery } from "hooks";
 import { useAuthStore } from "store";
 import { type Tables } from "types/supabase";
 
-interface props {
+interface Props {
   paramsId: string | undefined;
   postData: Tables<"POSTS", "Row"> | undefined;
 }
 
-export const DetailSideFunction = ({ paramsId, postData }: props) => {
+interface ModalProps {
+  setOpenShareModal: (value: React.SetStateAction<boolean>) => void;
+}
+
+export const DetailSideFunction = ({ paramsId, postData }: Props) => {
   const navigate = useNavigate();
   const { currentSession } = useAuthStore();
   const [isHaveBookmark, setIsHaveBookmark] = useState(false);
@@ -118,9 +122,11 @@ export const DetailSideFunction = ({ paramsId, postData }: props) => {
             }}
           >
             <SlArrowUp className="fill-gray02" />
-            <label className="text-gray02">이전글 보기</label>
+            <label className="text-gray02 w-[80px]">이전글 보기</label>
             <span className="h-[8px] border border-gray08"></span>
-            <p>{postList !== undefined ? postList[(findCurrentIdx as number) - 1].title : ""}</p>
+            <p className="line-clamp-1">
+              {postList !== undefined ? postList[(findCurrentIdx as number) - 1].title : ""}
+            </p>
           </div>
         )}
         {nextPage !== undefined && (
@@ -140,7 +146,7 @@ export const DetailSideFunction = ({ paramsId, postData }: props) => {
     );
   };
 
-  const DetailSideBar = () => {
+  const DetailSideBar = ({ setOpenShareModal }: ModalProps) => {
     return (
       <div className="sticky gap-4 bottom-[50%] translate-x-[1350px] inline-flex flex-col">
         <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
@@ -155,7 +161,12 @@ export const DetailSideFunction = ({ paramsId, postData }: props) => {
             <img src={lineHeart} className="mx-auto text-gray01 " />
           </button>
         )}
-        <button className="w-12 h-12 border rounded-full border-gray06">
+        <button
+          onClick={() => {
+            setOpenShareModal(true);
+          }}
+          className="w-12 h-12 border rounded-full border-gray06"
+        >
           <img src={share} className="mx-auto fill-gray01" />
         </button>
       </div>
