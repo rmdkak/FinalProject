@@ -85,7 +85,7 @@ export const Login = () => {
         <InvalidText errorsMessage={errors.email?.message} />
 
         <label htmlFor="password" className="text-[12px] font-normal leading-[110%] text-gray01">
-          password
+          비밀번호
         </label>
         <div className="relative flex w-full">
           <input
@@ -119,7 +119,7 @@ export const Login = () => {
               htmlFor="logging"
               className="flex contents-center gap-2 text-[12px] leading-[110%] self-center cursor-pointer hover:text-black"
             >
-              <CheckBoxIcon checkState={stayLoggedInStatus} />
+              <CheckBoxIcon isCheck={stayLoggedInStatus} />
               로그인 유지
             </label>
           </div>

@@ -122,7 +122,7 @@ input[type="password"]::-ms-clear {
   width: 980px;
   height: 750px;
   background-color: #f3f3f3;
-  transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-300px) translateX(-22px) translateZ(-257px);
+  transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-300px) translateX(-23px) translateZ(-256px);
   transform-style: preserve-3d;
 }
 .right-wall {
@@ -138,7 +138,7 @@ input[type="password"]::-ms-clear {
   width: 980px;
   height: 750px;
   background-color: #e5e5e5;
-  transform: rotateX(-90deg) translateZ(-300px) translateY(-436px) translateX(77px);
+  transform: rotateX(-90deg) translateZ(-300px) translateY(-436px) translateX(75px);
   transform-style: preserve-3d;
 }
 .floor {

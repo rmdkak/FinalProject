@@ -26,7 +26,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
 
   switch (selectedOption) {
     case "선택하세요":
-      currentDate.setDate(currentDate.getDate() - 1);
+      currentDate.setFullYear(currentDate.getFullYear() - 10);
       break;
     case "1일":
       currentDate.setDate(currentDate.getDate() - 1);
@@ -108,7 +108,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           >
             <option value={"title"}>제목</option>
 
-            {type === "post" && isUseMypage ? null : <option value={"nickname"}>작성자</option>}
+            {type === "post" && isUseMypage ? null : <option value={"nickname"}>글 작성자</option>}
 
             {type === "comment" ? (
               <option value={"content"}>댓글 내용</option>

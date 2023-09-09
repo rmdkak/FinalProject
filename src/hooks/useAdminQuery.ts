@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addEventData,
@@ -10,21 +12,30 @@ import {
   deleteReport,
   deleteTileData,
   deleteWallpaperData,
-  fetchEventData,
+  fetchEventAllData,
   fetchInteriorData,
   fetchManToManData,
   fetchReportData,
   patchManToManData,
+  fetchEventDetailData,
 } from "api/supabase";
 
 export const useAdminQuery = () => {
+  const { id } = useParams();
   const queryClient = useQueryClient();
 
   // 이벤트 GET
   const fetchEventMutation = useQuery({
-    queryKey: ["manToMan"],
+    queryKey: ["event", null],
     queryFn: async () => {
-      return await fetchEventData();
+      return await fetchEventAllData();
+    },
+  });
+  // 이벤트 GET
+  const fetchEventDetailMutation = useQuery({
+    queryKey: ["event", id],
+    queryFn: async () => {
+      return await fetchEventDetailData(id as string);
     },
   });
 
@@ -155,5 +166,6 @@ export const useAdminQuery = () => {
     deleteReportMutation,
     deleteTileMutation,
     deleteWallpaperMutation,
+    fetchEventDetailMutation,
   };
 };

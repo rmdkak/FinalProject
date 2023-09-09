@@ -38,6 +38,7 @@ export const Post = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    resetField,
   } = useForm<Inputs>();
   const {
     wallPaper,
@@ -240,16 +241,27 @@ export const Post = () => {
             내용 글자 수: {textarea.length} / 1000
           </p>
         </div>
-        <div className="flex w-full border-y border-gray06 h-[72px] justify-center items-center mt-[20px]">
-          <label htmlFor="img" className="w-[128px] text-[14px] font-normal">
+        <div className="flex w-full border-y border-gray06 h-[72px] items-center mt-[20px]">
+          <label htmlFor="img" className="w-[80px] text-[14px] font-normal">
             첨부파일
           </label>
-          <input
-            type="file"
-            accept="image/png, image/jpeg, image/gif"
-            className="w-full text-[14px] focus:outline-none"
-            {...register("file")}
-          />
+          <div className="flex items-center justify-between w-full">
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/gif"
+              className="w-[200px] text-[14px] focus:outline-none"
+              {...register("file")}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                resetField("file");
+              }}
+              className="w-[160px] h-[48px] border border-gray-300 rounded-[8px]"
+            >
+              선택해제
+            </button>
+          </div>
         </div>
         <div className="my-[60px] contents-between">
           <button
