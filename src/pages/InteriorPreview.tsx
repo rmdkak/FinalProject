@@ -26,6 +26,13 @@ export const InteriorPreview = () => {
   const { addBookmark, deleteBookmark, recommendDesign } = useBookmark();
   const { data: currentBookmarkData } = bookmarkResponse;
 
+  const resetState = useCallback(() => {
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
+    resetClickItemBorder();
+  }, []);
+
   const isWallPaperPaintSelected = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
 
   useEffect(() => {
@@ -47,13 +54,6 @@ export const InteriorPreview = () => {
     if (currentBookmarkData == null) return;
     setIsItemBookmarkedData(currentBookmarkData[0]);
   }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
-
-  const resetState = useCallback(() => {
-    resetWallPaper();
-    resetWallpaperPaint();
-    resetTile();
-    resetClickItemBorder();
-  }, []);
 
   useEffect(() => {
     resetState();

@@ -1,8 +1,9 @@
-import React, { useRef, useCallback, useEffect } from "react";
+import React, { useRef, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 import photoImage from "assets/svgs/photoImage.svg";
-import { type Wallpaper, useServiceStore } from "store";
+import { useServiceStore } from "store";
+import { type Wallpaper } from "types/service";
 
 import { SelfItem } from "./SelfItem";
 
@@ -10,22 +11,9 @@ export const SelfPattern = (): JSX.Element => {
   const InputRef = useRef<HTMLInputElement>(null);
   const IdRef = useRef(0);
 
-  const {
-    checkType,
-    setCustomSelfWallPaper,
-    setCustomSelfTile,
-    customSelfWallPaper,
-    customSelfTile,
-    resetWallpaperPaint,
-    resetWallPaper,
-    resetTile,
-  } = useServiceStore((state) => state);
-
-  useEffect(() => {
-    resetWallPaper();
-    resetWallpaperPaint();
-    resetTile();
-  }, []);
+  const { checkType, setCustomSelfWallPaper, setCustomSelfTile, customSelfWallPaper, customSelfTile } = useServiceStore(
+    (state) => state,
+  );
 
   /**
    * 리액트 드랍존 라이브러리 함수

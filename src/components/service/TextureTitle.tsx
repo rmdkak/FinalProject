@@ -1,19 +1,25 @@
+import React, { useCallback } from "react";
+
 import { useServiceStore } from "store";
 
 interface Props {
   data: string[];
 }
 
-const TextureTitle = ({ data }: Props): JSX.Element => {
+const TextureTitleMemoization = ({ data }: Props) => {
   const { interiorSelecteIndex, setInteriorSelecteIndex } = useServiceStore((state) => state);
 
-  const onTextureTitleHandler = (index: number) => {
-    if (interiorSelecteIndex !== index) {
-      setInteriorSelecteIndex(index);
-      return;
-    }
-    setInteriorSelecteIndex(0);
-  };
+  const onTextureTitleHandler = useCallback(
+    (index: number) => {
+      if (interiorSelecteIndex !== index) {
+        setInteriorSelecteIndex(index);
+        return;
+      }
+      setInteriorSelecteIndex(0);
+    },
+    [interiorSelecteIndex],
+  );
+
   return (
     <div className="flex">
       {data.map((item, index) => (
@@ -33,4 +39,4 @@ const TextureTitle = ({ data }: Props): JSX.Element => {
   );
 };
 
-export default TextureTitle;
+export const TextureTitle = React.memo(TextureTitleMemoization);

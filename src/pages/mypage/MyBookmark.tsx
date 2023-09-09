@@ -45,7 +45,7 @@ export const MyBookmark = () => {
   });
 
   return (
-    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
+    <div className={MYPAGE_LAYOUT_STYLE}>
       <MypageTitle />
       <MypageSubTitle type="bookmark" />
       {pageData.length === 0 ? (
