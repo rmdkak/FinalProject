@@ -8,13 +8,13 @@ interface Props {
   className: string;
 }
 // "flex w-4 h-4 contents-center"
-export const ArrowButton = ({ isOpen, openHandler, statusToOpen, statusToClose, className }: Props) => {
+export const ArrowButton = ({ isOpen, openHandler, statusToOpen, statusToClose, className = "" }: Props) => {
   const changeOpen = () => {
     isOpen ? openHandler(statusToClose) : openHandler(statusToOpen);
   };
   return (
-    <button type="button" onClick={changeOpen} className={className}>
+    <div onClick={changeOpen} className={className}>
       {isOpen ? <img className="rotate-180" src={arrowIcon} /> : <img src={arrowIcon} />}
-    </button>
+    </div>
   );
 };

@@ -12,7 +12,7 @@ export const Event = () => {
   const { data: eventDetailData } = fetchEventDetailMutation;
   const { data: eventAllData } = fetchEventMutation;
 
-  if (eventDetailData === undefined) return;
+  if (eventDetailData === undefined) return <></>;
 
   let prevPage = "";
   let nextPage = "";

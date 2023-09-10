@@ -3,7 +3,7 @@ import { supabase } from "./supabaseClient";
 // MyPosts Get
 export const fetchMyPostsData = async (id: string) => {
   const { data, error } = await supabase.from("POSTS").select("*").eq("userId", id);
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
@@ -24,7 +24,7 @@ export const filteredMyPostsData = async (id: string) => {
     .order("created_at", { ascending: false })
     .limit(2);
 
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
@@ -35,7 +35,7 @@ export const filteredMyPostsData = async (id: string) => {
 // MyComments Get
 export const fetchMyCommentsData = async (id: string) => {
   const { data, error } = await supabase.from("COMMENTS").select(`*,POSTS (*)`).eq("userId", id);
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
@@ -56,7 +56,7 @@ export const filteredMyCommentsData = async (id: string) => {
     .order("created_at", { ascending: false })
     .limit(2);
 
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
@@ -67,7 +67,7 @@ export const filteredMyCommentsData = async (id: string) => {
 // MyBookmarks Get
 export const fetchMyBookmarksData = async (id: string) => {
   const { data, error } = await supabase.from("BOOKMARKS").select("*").eq("userId", id);
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
@@ -88,7 +88,7 @@ export const filteredMyBookmarksData = async (id: string) => {
     .order("created_at", { ascending: false })
     .limit(5);
 
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
@@ -99,7 +99,7 @@ export const filteredMyBookmarksData = async (id: string) => {
 // MyLikes Get
 export const fetchMyLikesData = async (id: string) => {
   const { data, error } = await supabase.from("POSTLIKES").select(`*,POSTS (*)`).contains("userId", [id]);
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
@@ -120,10 +120,24 @@ export const filteredMyLikesData = async (id: string) => {
     .order("created_at", { ascending: false })
     .limit(5);
 
-  if (error != null) {
+  if (error !== null) {
     console.error(error.message);
     return;
   }
 
   return data;
+};
+// MyInquiry Get
+export const fetchMyInquiry = async (userId: string) => {
+  const { data, error } = await supabase.from("MANTOMAN").select("*").eq("userId", userId);
+  if (error !== null) {
+    console.error("error :", error);
+    return;
+  }
+  return data;
+};
+
+// MyInquiry Delete
+export const deleteInquiryData = async (inquiryIdsToDelete: string[]) => {
+  await supabase.from("POSTS").delete().in("id", inquiryIdsToDelete);
 };

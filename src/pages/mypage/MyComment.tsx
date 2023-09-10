@@ -88,7 +88,7 @@ export const MyComment = () => {
                       <DateConvertor datetime={post.created_at} type={"dotDate"} className="body-3" />
                     </div>
 
-                    <button className="flex w-4 h-4 contents-center">
+                    <div className="flex w-4 h-4 contents-center">
                       <ArrowButton
                         isOpen={isOpenComment === comment.id}
                         openHandler={openCommentHandler}
@@ -96,7 +96,7 @@ export const MyComment = () => {
                         statusToOpen={comment.id}
                         className={"flex w-4 h-4 contents-center"}
                       />
-                    </button>
+                    </div>
                   </div>
                 </div>
                 {/* 댓글 */}
