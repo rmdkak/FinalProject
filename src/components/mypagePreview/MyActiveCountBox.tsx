@@ -12,7 +12,7 @@ const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 transl
 
 export const MyActiveCountBox = ({ mypageInfoArray, adminCheck }: Props) => {
   return (
-    <div className="flex items-start border border-gray05 rounded-[12px]">
+    <div className="flex items-start border border-gray05 rounded-xl">
       {mypageInfoArray.map((mypageInfo) => {
         if (mypageInfo.title === "문의&신고" && adminCheck === ADMIN_ID) {
           return (
