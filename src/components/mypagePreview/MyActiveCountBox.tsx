@@ -16,7 +16,7 @@ export const MyActiveCountBox = ({ mypageInfoArray }: Props) => {
           <Link
             to={mypageInfo.link}
             key={mypageInfo.title}
-            className="relative flex-column contents-center h-full w-[254px] gap-[24px]"
+            className="relative flex-column contents-center h-full w-[206px] gap-[24px]"
           >
             <div className="gap-3 flex-column contents-center">
               <mypageInfo.icon className="w-6 h-6" />
