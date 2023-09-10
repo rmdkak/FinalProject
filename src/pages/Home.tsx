@@ -79,7 +79,7 @@ export const Home = () => {
         </Flicking>
       </div>
       <div className="home-section mb-[120px]">
-        <HomeContentsTitle title={"EVENT"} page={"eventlist"} navigation={true} />
+        <HomeContentsTitle title={"이벤트"} page={"eventlist"} navigation={true} />
         <div className="flex gap-10">
           {filterEventData?.map((data) => (
             <div

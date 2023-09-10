@@ -17,6 +17,7 @@ interface BG_SIZE_CONTROL_BTN {
   7: string;
   8: string;
 }
+
 const BG_SIZE_CONTROL_BTN_IMAGE_MAPPER: BG_SIZE_CONTROL_BTN = {
   1: bgSizeMinusControlBtn,
   2: bgSizeMinusControlBtnActive,

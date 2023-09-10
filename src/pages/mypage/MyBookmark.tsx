@@ -125,7 +125,7 @@ export const MyBookmark = () => {
               }}
               className="w-24 h-12 rounded-lg gray-outline-button body-3"
             >
-              취소
+              취소하기
             </button>
             <button onClick={deletePosts} className="w-24 h-12 rounded-lg point-button body-3">
               선택삭제
@@ -138,7 +138,7 @@ export const MyBookmark = () => {
             }}
             className="w-24 h-12 rounded-lg gray-outline-button body-3"
           >
-            편집
+            편집하기
           </button>
         )}
       </div>

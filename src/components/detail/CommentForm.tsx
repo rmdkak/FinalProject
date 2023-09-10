@@ -120,9 +120,9 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
                   setOpenReply(null);
                 }}
                 type="button"
-                className="h-[48px] px-[24px] border border-gray03 rounded-[8px]"
+                className="h-[48px] w-[120px] border border-gray03 rounded-[8px]"
               >
-                취소
+                취소하기
               </button>
             )}
 
@@ -151,7 +151,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
                 </div>
               </div>
             )}
-            <button type="submit" className="h-[48px] w-[120px] px-[24px] bg-point rounded-[8px]">
+            <button type="submit" className="h-[48px] w-[120px] bg-point rounded-[8px]">
               등록하기
             </button>
           </div>

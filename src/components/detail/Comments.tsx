@@ -250,7 +250,7 @@ export const Comments = ({ postData }: CommentProps) => {
                                       openCommentUpdateForm(comment.id, comment.content, comment.commentImg);
                                     }}
                                   >
-                                    수정
+                                    수정하기
                                   </button>
                                 </>
                               )}
@@ -263,7 +263,7 @@ export const Comments = ({ postData }: CommentProps) => {
                                   await deleteCommentHandler(comment.id, "comment");
                                 }}
                               >
-                                삭제
+                                삭제하기
                               </button>
                             </>
                           ) : (
@@ -361,7 +361,7 @@ export const Comments = ({ postData }: CommentProps) => {
                                             openCommentUpdateForm(reply.id, reply.content);
                                           }}
                                         >
-                                          수정
+                                          수정하기
                                         </button>
                                       </>
                                     )}
@@ -374,7 +374,7 @@ export const Comments = ({ postData }: CommentProps) => {
                                         await deleteCommentHandler(reply.id, "reply");
                                       }}
                                     >
-                                      삭제
+                                      삭제하기
                                     </button>
                                   </>
                                 ) : (
@@ -398,7 +398,7 @@ export const Comments = ({ postData }: CommentProps) => {
                                         setSelectedId("");
                                       }}
                                     >
-                                      취소
+                                      취소하기
                                     </button>
                                   </>
                                 )}

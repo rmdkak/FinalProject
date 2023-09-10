@@ -90,7 +90,7 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
             </li>
             <li className="duration-500 text-gray03 hover:text-black">
               <Link onClick={closeSideBarHandler} to="/eventlist">
-                EVENT
+                이벤트
               </Link>
             </li>
             <li className="duration-500 text-gray03 hover:text-black">
