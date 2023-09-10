@@ -148,9 +148,6 @@ export const UpdateUser = () => {
         <>
           <p className="w-[400px] pb-6 border-b border-black title-4 font-medium">회원탈퇴</p>
           <p className="mt-4 text-black body-2">그동안 Stile을 이용해주셔서 감사합니다.</p>
-          <p className="mt-3 body-3 text-gray02">불편하셨던 점이나 불만사항을 알려주시면 적극 반영해서 </p>
-          <p className="body-3 text-gray02">고객님의 불편함을 해결해 드리도록 노력하겠습니다. </p>
-          <p className="mt-6 body-3 text-gray01">회원탈퇴 시 확인하셔야 할 사항을 반드시 체크 부탁드리겠습니다.</p>
           <p className="mt-3 body-3 text-gray02">게시글 및 댓글은 탈퇴시 자동삭제 되지 않고 남아있습니다.</p>
           <p className="body-3 text-gray02">삭제를 원하시는 게시글이 있다면 탈퇴전에 삭제하시기 바랍니다.</p>
         </>,
@@ -160,6 +157,7 @@ export const UpdateUser = () => {
       await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
       await logout();
       navigate("/");
+      await Alert("정상적으로 탈퇴되었습니다.");
       if (prevProfileImageId !== "defaultImg") {
         void deleteImage(prevProfileImageId);
       }
