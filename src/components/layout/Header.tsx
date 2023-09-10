@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { ADMIN_ID, logout } from "api/supabase";
+import { logout } from "api/supabase";
 import hambergerMenu from "assets/headersvg/cate.svg";
 import logOutIcon from "assets/headersvg/Logout.svg";
 import userIcon from "assets/headersvg/user.svg";
@@ -17,7 +17,6 @@ const HeaderMemoization = () => {
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
 
   const userUid = currentSession?.user.id;
-  const isAdmin = userUid === ADMIN_ID;
 
   const logoutHandler = useCallback(async () => {
     navigate("/");
@@ -69,15 +68,6 @@ const HeaderMemoization = () => {
           ) : (
             <>
               <div className="flex gap-2 contents-center">
-                {isAdmin && (
-                  <button
-                    onClick={() => {
-                      navigate("/adminpage");
-                    }}
-                  >
-                    관리자 페이지로 이동
-                  </button>
-                )}
                 <button onClick={logoutHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
                   <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={logOutIcon} alt="로그아웃" />

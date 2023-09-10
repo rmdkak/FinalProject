@@ -1,23 +1,17 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { Sync } from "@egjs/flicking-plugins";
 import Flicking, { type Plugin } from "@egjs/react-flicking";
-import { STORAGE_URL } from "api/supabase";
-import calcArrow from "assets/svgs/calcArrow.svg";
-import { HomeContentsTitle, HomeKvBanner } from "components/home";
-import { usePostsData, useMovePage, useAdminQuery } from "hooks";
+import { EventCardForm, HomeContentsTitle, HomeKvBanner } from "components/home";
+import { usePostsData, useMovePage } from "hooks";
+
 export const Home = () => {
   const { setCurrentPathname } = useMovePage();
   setCurrentPathname();
-  const navigate = useNavigate();
   const { ShowBestPostElements, ShowBestRankingElements, ShowBestRankingPreview } = usePostsData();
   const [plugins, setPlugins] = useState<Plugin[]>([]);
   const flicking0 = useRef() as React.LegacyRef<Flicking> | undefined;
   const flicking1 = useRef() as React.LegacyRef<Flicking> | undefined;
-  const { fetchEventMutation } = useAdminQuery();
-  const { data: eventData } = fetchEventMutation;
-  const filterEventData = eventData?.slice(0, 2);
 
   useEffect(() => {
     setPlugins([
@@ -52,17 +46,7 @@ export const Home = () => {
               <br />
               당신의 취향이 만들어가는 따뜻한 인테리어 세상에 오세요.
             </p>
-            <label htmlFor="toInteriorPreview" className="mr-3 text-[12px] text-gray02 hover:cursor-pointer">
-              VIEW MORE
-            </label>
-            <button
-              id="toInteriorPreview"
-              onClick={() => {
-                navigate("/interior-preview");
-              }}
-            >
-              <img src={calcArrow} className="view-more-icon" />
-            </button>
+            <HomeContentsTitle page={"interior-preview"} type={"noTitle"} />
           </div>
         </div>
         <div className="flex w-[70%] gap-[5%]">
@@ -70,7 +54,7 @@ export const Home = () => {
         </div>
       </div>
       <div className="w-[1280px] flex-column mb-[80px]">
-        <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} navigation={false} />
+        <HomeContentsTitle title={"지금 뜨고있는 베스트조합"} type={"noNavigate"} />
         <Flicking ref={flicking0} plugins={plugins} circular={true} disableOnInit={true}>
           {ShowBestRankingPreview()}
         </Flicking>
@@ -79,31 +63,11 @@ export const Home = () => {
         </Flicking>
       </div>
       <div className="home-section mb-[120px]">
-        <HomeContentsTitle title={"EVENT"} page={"eventlist"} navigation={true} />
-        <div className="flex gap-10">
-          {filterEventData?.map((data) => (
-            <div
-              key={data.id}
-              className="w-full gap-6 flex-column"
-              onClick={() => {
-                navigate(`/event/${data.id}`);
-              }}
-            >
-              <img
-                src={`${STORAGE_URL}${data.eventImg}`}
-                alt="eventImg"
-                className="h-[400px] rounded-xl object-contain hover:cursor-pointer"
-              />
-              <div className="gap-2 flex-column hover:cursor-pointer">
-                <h2 className="text-2xl font-medium line-clamp-2">{data.title}</h2>
-                <p className="text-gray02 line-clamp-2">{data.content}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+        <HomeContentsTitle title={"EVENT"} page={"eventlist"} type={"useAll"} />
+        <EventCardForm />
       </div>
       <div className="mb-[120px] home-section">
-        <HomeContentsTitle title={"COMMUNITY"} page={"community"} navigation={true} />
+        <HomeContentsTitle title={"COMMUNITY"} page={"community"} type={"useAll"} />
         <div className="flex w-full">
           <ShowBestPostElements dataLength={3} />
         </div>

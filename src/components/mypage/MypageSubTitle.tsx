@@ -1,4 +1,4 @@
-type dataType = "post" | "comment" | "bookmark" | "like";
+type dataType = "post" | "comment" | "bookmark" | "like" | "inquiry";
 
 interface Props {
   type: dataType;
@@ -14,6 +14,8 @@ export const MypageSubTitle = ({ type }: Props) => {
         return "북마크";
       case "like":
         return "좋아요 누른 글";
+      case "inquiry":
+        return "내가 작성한 문의 & 신고 답변";
     }
   };
   return (

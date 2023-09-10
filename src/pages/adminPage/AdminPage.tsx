@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdContactSupport, MdAnnouncement, MdFactCheck, MdLibraryAdd } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+
+import { ADMIN_ID } from "api/supabase";
+import { useAuthStore } from "store";
 
 import { DataForm } from "./DataForm";
 import { EventForm } from "./EventForm";
@@ -7,10 +11,19 @@ import { ManToMan } from "./ManToMan";
 import { Report } from "./Report";
 
 export const AdminPage = () => {
-  const [currentTab, setCurrentTab] = useState<string>("문의");
+  const navigate = useNavigate();
 
+  const [currentTab, setCurrentTab] = useState<string>("문의");
   const [manToManDataLength, setManToManDataLength] = useState(0);
   const [reportDataLength, setReportDataLength] = useState(0);
+
+  const { currentSession } = useAuthStore();
+
+  useEffect(() => {
+    if (currentSession !== null && currentSession.user.id !== ADMIN_ID) {
+      navigate("/");
+    }
+  }, [currentSession]);
 
   const adminPageInfoTabArray = [
     {

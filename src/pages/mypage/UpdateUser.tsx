@@ -200,7 +200,7 @@ export const UpdateUser = () => {
               <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
-          <p className="text-[24px] font-normal leading-[145%]">{`${currentUser.name} 님`}</p>
+          <p className="text-[24px] font-normal leading-[145%]">{`${currentName} 님`}</p>
         </div>
         <div className="flex contents-center w-[624px]">
           <div className="w-full gap-6 flex-column">
@@ -229,7 +229,7 @@ export const UpdateUser = () => {
                     <input
                       id={"name"}
                       placeholder={"닉네임"}
-                      defaultValue={currentUser?.name}
+                      defaultValue={currentName}
                       className="auth-input w-[300px]"
                       {...register("name", {
                         ...nameValid,

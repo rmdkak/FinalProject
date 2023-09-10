@@ -89,6 +89,13 @@ export const useMypageQuery = () => {
     enabled: userId !== undefined,
   });
 
+  const deleteUserInquiryMutation = useMutation({
+    mutationFn: supabaseApi.deleteInquiryData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageInquiry"] });
+    },
+  });
+
   return {
     userPostsResponse,
     deleteUserPostsMutation,
@@ -99,5 +106,6 @@ export const useMypageQuery = () => {
     userLikesResponse,
     deleteUserLikeMutation,
     userInquiryResponse,
+    deleteUserInquiryMutation,
   };
 };

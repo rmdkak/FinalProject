@@ -15,7 +15,7 @@ export interface MypageInfo {
   title: string;
   link: string;
   icon: IconType;
-  data: any[] | undefined;
+  data?: any[] | undefined;
 }
 
 export const MYPAGE_LAYOUT_STYLE: string = "flex-column items-center m-[60px] w-[1280px] mx-auto";
@@ -56,17 +56,17 @@ export const Mypage = () => {
 
   if (currentSession === null) {
     navigate("/");
-    return <p>에러</p>;
+    return <></>;
   }
 
   const imgStyle = { alt: "프로필 이미지", className: "w-[60px] h-[60px] rounded-full text-center justify-center" };
 
   const { name, avatar_url: profileImg } = currentUser;
   return (
-    <div className={`${MYPAGE_LAYOUT_STYLE} sm:w-[360px]`}>
-      <MypageTitle title="마이페이지" isBorder={true} />
-      <div className="flex gap-6 mt-8 sm:flex-column">
-        <div className="relative flex-column contents-center gap-4 w-[220px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
+    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
+      <MypageTitle title={"마이페이지"} isBorder={true} />
+      <div className="flex gap-6 mt-8">
+        <div className="relative flex-column contents-center gap-4 w-[240px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}
           <div className="gap-2 flex-column contents-center">
             <p className="text-black body-1">{`${name}님`}</p>
@@ -77,7 +77,7 @@ export const Mypage = () => {
             )}
           </div>
         </div>
-        <MyActiveCountBox mypageInfoArray={countBoxArray} />
+        <MyActiveCountBox mypageInfoArray={countBoxArray} adminCheck={currentSession.user.id} />
       </div>
       <PreviewBox mypageInfoArray={countBoxArray} userId={currentSession.user.id} />
     </div>

@@ -345,7 +345,7 @@ export interface Database {
           postImg: string | null;
           postTitle: string;
           userId: string;
-          isCheck: boolean;
+          isCheck: boolean | null;
         };
         Insert: {
           category: string;
@@ -357,7 +357,7 @@ export interface Database {
           postImg?: string | null;
           postTitle: string;
           userId: string;
-          isCheck?: boolean;
+          isCheck?: boolean | null;
         };
         Update: {
           category?: string;
@@ -369,13 +369,13 @@ export interface Database {
           postImg?: string | null;
           postTitle?: string;
           userId?: string;
-          isCheck?: boolean;
+          isCheck?: boolean | null;
         };
         Relationships: [
           {
-            foreignKeyName: "REPORT_imgId_fkey";
-            columns: ["imgId"];
-            referencedRelation: "objects";
+            foreignKeyName: "REPORT_postId_fkey";
+            columns: ["postId"];
+            referencedRelation: "POSTS";
             referencedColumns: ["id"];
           },
           {

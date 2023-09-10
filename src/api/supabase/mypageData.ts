@@ -127,7 +127,7 @@ export const filteredMyLikesData = async (id: string) => {
 
   return data;
 };
-// MyInquiry Get
+// MyInquiry filter Get
 export const fetchMyInquiry = async (userId: string) => {
   const { data, error } = await supabase.from("MANTOMAN").select("*").eq("userId", userId);
   if (error !== null) {
@@ -137,7 +137,23 @@ export const fetchMyInquiry = async (userId: string) => {
   return data;
 };
 
+// MyInquiry Get
+export const filteredMyInquiryData = async (id: string) => {
+  const { data, error } = await supabase
+    .from("MANTOMAN")
+    .select("*")
+    .eq("userId", id)
+    .order("created_at", { ascending: false })
+    .limit(2);
+
+  if (error !== null) {
+    console.error(error.message);
+    return;
+  }
+  return data;
+};
+
 // MyInquiry Delete
 export const deleteInquiryData = async (inquiryIdsToDelete: string[]) => {
-  await supabase.from("POSTS").delete().in("id", inquiryIdsToDelete);
+  await supabase.from("MANTOMAN").delete().in("id", inquiryIdsToDelete);
 };

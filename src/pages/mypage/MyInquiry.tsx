@@ -6,7 +6,7 @@ import { useMypageQuery } from "hooks";
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyInquiry = () => {
-  const { userInquiryResponse } = useMypageQuery();
+  const { userInquiryResponse, deleteUserInquiryMutation } = useMypageQuery();
   const { data: userInquiryData } = userInquiryResponse;
 
   const [isOpenInquiry, setIsOpenInquiry] = useState<string>();
@@ -22,7 +22,7 @@ export const MyInquiry = () => {
 
   // 선택 된 아이디 배열 삭제
   const deletePosts = () => {
-    // deleteUserPostsMutation.mutate(postIdsToDelete);
+    deleteUserInquiryMutation.mutate(postIdsToDelete);
   };
 
   // 체크 상태 변경
@@ -42,10 +42,10 @@ export const MyInquiry = () => {
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <MypageTitle title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="post" />
+      <MypageSubTitle type="inquiry" />
       {/* 글 목록 */}
       {userInquiryData.length === 0 ? (
-        <EmptyData type="post" />
+        <EmptyData type="inquiry" />
       ) : (
         <ul className="w-full">
           {userInquiryData?.map((post, index) => {

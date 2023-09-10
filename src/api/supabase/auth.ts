@@ -175,7 +175,14 @@ export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
  * @table "USERS"
  * @method patch
  */
-export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"USERS", "Update">; userId: string }) => {
+export const patchUser = async ({
+  inputValue,
+  userId,
+}: {
+  inputValue: Tables<"USERS", "Update">;
+  userId: string | undefined;
+}) => {
+  if (userId === undefined) return;
   const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select("*");
 
   if (error !== null) {
