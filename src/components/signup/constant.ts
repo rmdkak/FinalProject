@@ -108,7 +108,7 @@ export const passwordValid = () => ({
 export const nameValid = {
   required: "닉네임은 필수 입력 사항입니다.",
   minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
-  maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
+  maxLength: { value: 8, message: "닉네임이 너무 깁니다." },
 };
 
 export const idValid = {

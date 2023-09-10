@@ -3,16 +3,46 @@ import { FaRegHeart } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase";
+import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useAuthStore, useModalStore } from "store";
-import { type Tables } from "types/supabase";
 
-interface PostProps {
-  postData: Tables<"POSTS", "Row">;
+interface Props {
+  postData: {
+    bookmark: number;
+    content: string;
+    created_at: string;
+    id: string;
+    leftColorCode: string | null;
+    leftWallpaperId: string | null;
+    nickname: string | null;
+    postImage: string | null;
+    rightColorCode: string | null;
+    rightWallpaperId: string | null;
+    tileId: string | null;
+    title: string;
+    userId: string | null;
+    POSTLIKES: Array<{
+      created_at: string;
+      id: string;
+      postId: string;
+      userId: string[];
+    }>;
+    USERS: {
+      avatar_url: string;
+      created_at: string | null;
+      email: string;
+      id: string;
+      idAnswer: string | null;
+      idQuestion: string | null;
+      name: string;
+    } | null;
+  };
 }
 
-export const PostData = ({ postData }: PostProps) => {
+export const PostData = ({ postData }: Props) => {
+  console.log("postData :", postData);
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
   const [previewModal, setPreviewModal] = useState<boolean>(false);
@@ -31,13 +61,18 @@ export const PostData = ({ postData }: PostProps) => {
         </p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
-      <div className="contents-between border-b border-gray06 my-[10px] py-[20px] items-center">
-        <div className="w-[1000px] my-[10px]">
+      <div className="contents-between border-b border-gray06 py-[20px] items-center">
+        <div className="w-[1000px]">
           <label htmlFor="title" className="text-[18px] font-semibold">
             {postData?.title}
           </label>
-          <div className="flex my-[15px] gap-[10px] text-gray02 text-[14px]">
-            <a>{postData?.nickname}</a>
+          <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px]">
+            <img
+              src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
+              alt="userImg"
+              className="w-8 h-8 border rounded-full border-gray05 object"
+            />
+            <p>{postData?.USERS !== null ? postData?.USERS.name : null}</p>
             <DateConvertor datetime={postData?.created_at} type="dotDate" />
             <DateConvertor datetime={postData?.created_at} type="hourMinute" />
             <div className="flex items-center gap-1">

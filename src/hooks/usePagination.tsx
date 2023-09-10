@@ -8,7 +8,7 @@ import {
 
 interface PaginationProps {
   data: any[] | undefined;
-  dataLength: number;
+  dataLength: number | undefined;
   postPerPage: number;
 }
 
@@ -17,7 +17,7 @@ interface PaginationProps {
  */
 export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(dataLength / postPerPage);
+  const totalPages = Math.ceil(dataLength === undefined ? 0 : dataLength / postPerPage);
   const pagesToShow = 3;
 
   const showPage = (pageNumber: number) => {

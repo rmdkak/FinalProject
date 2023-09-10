@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-type dataType = "post" | "comment" | "bookmark" | "like";
+type dataType = "post" | "comment" | "bookmark" | "like" | "inquiry";
 
 interface Props {
   type: dataType;
@@ -17,6 +17,8 @@ export const EmptyData = ({ type }: Props) => {
         return "현재 추가된 북마크가 없습니다.";
       case "like":
         return "현재 좋아요한 게시물이 없습니다.";
+      case "inquiry":
+        return "작성하신 문의 글이 없습니다.";
     }
   };
 
@@ -30,6 +32,8 @@ export const EmptyData = ({ type }: Props) => {
         return "/interior-preview";
       case "like":
         return "/community";
+      case "inquiry":
+        return "/inquire";
     }
   };
 
@@ -43,6 +47,8 @@ export const EmptyData = ({ type }: Props) => {
         return "추가하기";
       case "like":
         return "추가하기";
+      case "inquiry":
+        return "문의하기";
     }
   };
 

@@ -14,6 +14,12 @@ interface Inputs {
   maxDate: string;
 }
 
+const TEXTAREA_PLACEHOLDER = `이벤트 내용 or 서브 타이틀 내용을 입력하세요. 작성 양식을 반드시 따라주세요
+예시)
+서브타이틀 내용
+
+본문 내용`;
+
 export const EventForm = () => {
   const { currentSession } = useAuthStore();
   const { addEventMutation } = useAdminQuery();
@@ -76,7 +82,7 @@ export const EventForm = () => {
         </div>
         <p className="mb-5 text-error">{errors.title?.message}</p>
         <textarea
-          placeholder="이벤트 내용 or 서브 타이틀 내용을 입력하세요."
+          placeholder={TEXTAREA_PLACEHOLDER}
           className="h-[400px] border border-gray05 focus:outline-none p-[20px] text-[18px] resize-none"
           {...register("content", {
             required: "이벤트 내용을 입력하세요.",

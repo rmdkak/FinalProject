@@ -40,7 +40,7 @@ export const PreviewComment = ({ commentData }: Props) => {
                     </Link>
                     <div className="flex">
                       <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
-                      <button className="flex contents-center w-[16px] h-[16px] ml-[12px]">
+                      <div className="flex contents-center w-[16px] h-[16px] ml-[12px]">
                         <ArrowButton
                           isOpen={isOpenComment === comment.id}
                           openHandler={openCommentHandler}
@@ -48,7 +48,7 @@ export const PreviewComment = ({ commentData }: Props) => {
                           statusToOpen={comment.id}
                           className={"flex w-4 h-4 contents-center"}
                         />
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </div>

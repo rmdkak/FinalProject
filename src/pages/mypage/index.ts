@@ -1,5 +1,6 @@
 export * from "./MyBookmark";
 export * from "./MyComment";
+export * from "./MyInquiry";
 export * from "./MyLike";
 export * from "./Mypage";
 export * from "./MyPost";

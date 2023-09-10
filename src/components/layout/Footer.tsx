@@ -19,17 +19,25 @@ export const Footer = () => {
             <div>
               <ul className="flex self-center justify-end">
                 <li>
-                  <a className="mr-[8px] block w-6 h-6 self-start" href="#외부경로" target="_blink">
-                    <img className="block w-6 h-6" src={github} alt="blog ci" />
+                  <a
+                    className="mr-[8px] block w-6 h-6 self-start"
+                    href="https://github.com/rmdkak/Stile"
+                    target="_blink"
+                  >
+                    <img className="block w-6 h-6" src={github} alt="github ci" />
                   </a>
                 </li>
                 <li>
                   <a className="mr-[8px] block w-6 h-6" href="#외부경로" target="_blink">
-                    <img className="block w-6 h-6" src={blog} alt="github ci" />
+                    <img className="block w-6 h-6" src={blog} alt="blog ci" />
                   </a>
                 </li>
                 <li>
-                  <a className="block w-6 h-6" href="외부경로" target="_blink">
+                  <a
+                    className="block w-6 h-6"
+                    href="https://www.notion.so/bcb9f4acc35d4daa8ee06badfb06c0d6?pvs=4"
+                    target="_blink"
+                  >
                     <img className="block w-6 h-6" src={notion} alt="notion ci" />
                   </a>
                 </li>

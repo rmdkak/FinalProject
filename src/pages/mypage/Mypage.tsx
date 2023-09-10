@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
+import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
 import { type IconType } from "react-icons/lib";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -14,7 +15,7 @@ export interface MypageInfo {
   title: string;
   link: string;
   icon: IconType;
-  data: any[] | undefined;
+  data?: any[] | undefined;
 }
 
 export const MYPAGE_LAYOUT_STYLE: string = "flex-column items-center m-[60px] w-[1280px] mx-auto";
@@ -32,6 +33,7 @@ export const Mypage = () => {
     userCommentsResponse: { data: commentData },
     userBookmarksResponse: { data: bookmarkData },
     userLikesResponse: { data: likeData },
+    userInquiryResponse: { data: inquiryData },
   } = useMypageQuery();
 
   const countBoxArray: MypageInfo[] = [
@@ -39,6 +41,7 @@ export const Mypage = () => {
     { title: "내가 쓴 댓글", link: "/mypage/comment", icon: BiCommentDetail, data: commentData },
     { title: "북마크", link: "/mypage/bookmark", icon: RxBookmark, data: bookmarkData },
     { title: "좋아요", link: "/mypage/like", icon: AiOutlineHeart, data: likeData },
+    { title: "문의&신고", link: "/mypage/inquiry", icon: HiOutlineChatBubbleLeftRight, data: inquiryData },
   ];
 
   useEffect(() => {
@@ -61,9 +64,9 @@ export const Mypage = () => {
   const { name, avatar_url: profileImg } = currentUser;
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <MypageTitle title="마이페이지" isBorder={true} />
+      <MypageTitle title={"마이페이지"} isBorder={true} />
       <div className="flex gap-6 mt-8">
-        <div className="relative flex-column contents-center gap-4 w-[240px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
+        <div className="relative flex-column contents-center gap-4 w-[225px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}
           <div className="gap-2 flex-column contents-center">
             <p className="text-black body-1">{`${name}님`}</p>
@@ -74,7 +77,7 @@ export const Mypage = () => {
             )}
           </div>
         </div>
-        <MyActiveCountBox mypageInfoArray={countBoxArray} />
+        <MyActiveCountBox mypageInfoArray={countBoxArray} adminCheck={currentSession.user.id} />
       </div>
       <PreviewBox mypageInfoArray={countBoxArray} userId={currentSession.user.id} />
     </div>

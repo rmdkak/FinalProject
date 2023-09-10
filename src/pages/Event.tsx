@@ -12,7 +12,7 @@ export const Event = () => {
   const { data: eventDetailData } = fetchEventDetailMutation;
   const { data: eventAllData } = fetchEventMutation;
 
-  if (eventDetailData === undefined) return;
+  if (eventDetailData === undefined) return <></>;
 
   let prevPage = "";
   let nextPage = "";
@@ -53,7 +53,7 @@ export const Event = () => {
         <img src={`${STORAGE_URL}${eventDetailData?.eventImg}`} alt="eventImg" />
         <pre className="w-full break-words whitespace-pre-wrap text-[18px] mb-10">{eventDetailData?.content}</pre>
       </div>
-      <div className="flex justify-between">
+      <div className="flex gap-4">
         <button
           className="w-40 h-12 text-sm border rounded-lg border-gray05"
           onClick={() => {

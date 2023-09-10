@@ -189,7 +189,6 @@ export const Comments = ({ postData }: CommentProps) => {
                         </div>
                       </>
                     ) : (
-                      // <p className="text-[14px]">{comment.content}</p>
                       <pre className="w-full text-sm break-words whitespace-pre-wrap ">{comment.content}</pre>
                     )}
                     {comment.commentImg === null ? (

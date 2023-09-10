@@ -79,6 +79,23 @@ export const useMypageQuery = () => {
     },
   });
 
+  // my inquiry get query
+  const userInquiryResponse = useQuery({
+    queryKey: ["mypageInquiry", userId],
+    queryFn: async () => {
+      if (userId === undefined) return;
+      return await supabaseApi.fetchMyInquiry(userId);
+    },
+    enabled: userId !== undefined,
+  });
+
+  const deleteUserInquiryMutation = useMutation({
+    mutationFn: supabaseApi.deleteInquiryData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageInquiry"] });
+    },
+  });
+
   return {
     userPostsResponse,
     deleteUserPostsMutation,
@@ -88,5 +105,7 @@ export const useMypageQuery = () => {
     deleteUserBookmarkMutation,
     userLikesResponse,
     deleteUserLikeMutation,
+    userInquiryResponse,
+    deleteUserInquiryMutation,
   };
 };

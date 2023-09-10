@@ -21,6 +21,7 @@ const Router = () => {
           <Route path="/mypage/comment" element={<Pages.MyComment />} />
           <Route path="/mypage/bookmark" element={<Pages.MyBookmark />} />
           <Route path="/mypage/like" element={<Pages.MyLike />} />
+          <Route path="/mypage/inquiry" element={<Pages.MyInquiry />} />
           <Route path="/login" element={<Pages.Login />} />
           <Route path="/find-auth/:focus" element={<Pages.FindAuth />} />
           <Route path="/update-password" element={<Pages.UpdatePassword />} />
