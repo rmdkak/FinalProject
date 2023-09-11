@@ -9,25 +9,6 @@ import { useAuthStore } from "store";
 
 import { CommentForm } from "./CommentForm";
 
-// interface CommentProps {
-//   postData: {
-//     bookmark: number;
-//     content: string;
-//     created_at: string;
-//     id: string;
-//     leftColorCode: string | null;
-//     leftWallpaperId: string | null;
-//     nickname: string | null;
-//     postImage: string | null;
-//     rightColorCode: string | null;
-//     rightWallpaperId: string | null;
-//     tileId: string | null;
-//     title: string;
-//     userId: string | null;
-//     POSTLIKES: Array<Tables<"POSTLIKES", "Row">>;
-//     USERS: Tables<"USERS", "Row"> | null;
-//   };
-// }
 interface CommentProps {
   postData: PostDataChain;
 }
