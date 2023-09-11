@@ -7,9 +7,9 @@ import notion from "assets/footerIcon/notionIcon.svg";
 export const Footer = () => {
   return (
     <>
-      <footer className="flex-column bg-gray08 ">
+      <footer className=" flex-column bg-gray08">
         {/* footHead */}
-        <div className="w-[1280px] mx-auto my-10">
+        <div className="max-w-[1280px] w-full min-w-[360px] mx-auto my-10">
           <div className="contents-between mb-[50px] border-b border-[#d9d9d9] pb-6 ">
             <h2 className=" item text-[2rem] leading-none">
               <Link to="/" className="font-title">

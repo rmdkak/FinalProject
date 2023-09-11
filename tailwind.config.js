@@ -5,7 +5,7 @@ module.exports = {
     screens: {
       //모바일 환경
       xs: { max: "360px" },
-      sm: { min: "361px", max: "768px" },
+      sm: { max: "768px" },
       // pc 환경
       md: { min: "769px", max: "1024px" },
       lg: { min: "1025px", max: "1280px" },

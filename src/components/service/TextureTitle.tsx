@@ -21,16 +21,21 @@ const TextureTitleMemoization = ({ data }: Props) => {
   );
 
   return (
-    <div className="flex">
+    <div
+      className="box-border flex 
+    sm:overflow-x-scroll sm:max-w-[100vw]
+    xs:overflow-x-scroll xs:max-w-[100vw]
+    "
+    >
       {data.map((item, index) => (
         <span
           onClick={() => {
             onTextureTitleHandler(index);
           }}
           key={item}
-          className={`hover:cursor-pointer ${
+          className={`whitespace-nowrap ${
             interiorSelecteIndex === index ? "px-6 pb-3 text-black border-b border-black" : "px-6 pb-3 text-gray03"
-          }`}
+          } hover:cursor-pointer`}
         >
           {item}
         </span>

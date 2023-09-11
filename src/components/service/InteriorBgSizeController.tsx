@@ -4,7 +4,7 @@ import { BgSizeSelectcontrolBtn } from "./BgSizeSelectcontrolBtn";
 export const InteriorBgSizeController = (): JSX.Element => {
   return (
     <>
-      <div className="absolute z-50 flex bottom-4 right-4">
+      <div className="absolute z-50 flex bottom-4 right-4 sm:hidden xs:hidden ">
         <BgSizeSelectcontrolBtn type="leftWall" />
         <BgSizeSelectcontrolBtn type="rightWall" />
         <BgSizeSelectcontrolBtn type="tile" />

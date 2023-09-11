@@ -10,8 +10,14 @@ import { type WallOrTileOrFurniture, type LeftorRight } from "types/service";
  */
 const handleCheckType = (CheckType: WallOrTileOrFurniture, type: WallOrTileOrFurniture) => {
   return CheckType === type
-    ? "rounded-3xl px-10 py-2 bg-point hover:cursor-pointer text-black"
-    : "rounded-3xl px-10 py-2 bg-gray07 text-gray03 hover:cursor-pointer ";
+    ? `rounded-3xl px-10 py-2 bg-point hover:cursor-pointer text-black
+    sm:py-[6px] sm:px-6
+    xs:py-[6px] xs:px-6
+    `
+    : `rounded-3xl px-10 py-2 bg-gray07 text-gray03 hover:cursor-pointer 
+    sm:py-[6px] sm:px-6
+    xs:py-[6px] xs:px-6
+    `;
 };
 
 /**
