@@ -1,9 +1,7 @@
-import { Link } from "react-router-dom";
-
 import { DateConvertor } from "components/common";
 import { type Tables } from "types/supabase";
 
-import { OUTER_BOX_STYLE, dateStyle, innerBoxStyle, linkStyle } from "./preview.style";
+import { OUTER_BOX_STYLE, dateStyle, innerBoxStyle } from "./preview.style";
 import { PreviewEmpty } from "./PreviewEmpty";
 
 interface Props {
@@ -18,9 +16,7 @@ export const PreviewInquiry = ({ inquiryData }: Props) => {
       {inquiryData.map((post) => {
         return (
           <li key={post.id} className={innerBoxStyle}>
-            <Link to={`/detail/${post.id}`} className={linkStyle}>
-              {post.content}
-            </Link>
+            <p className="text-black cursor-default body-3">{post.content}</p>
             <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
           </li>
         );

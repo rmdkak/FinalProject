@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 
-type dataType = "post" | "comment" | "bookmark" | "like" | "inquiry";
+import { type DataType } from "./mypage.type";
 
 interface Props {
-  type: dataType;
+  type: DataType;
 }
 
 export const EmptyData = ({ type }: Props) => {
-  const infoText = (type: dataType) => {
+  const infoText = (type: DataType) => {
     switch (type) {
       case "post":
         return "현재 작성된 게시물이 없습니다.";
@@ -22,7 +22,7 @@ export const EmptyData = ({ type }: Props) => {
     }
   };
 
-  const linkSwitch = (type: dataType) => {
+  const linkSwitch = (type: DataType) => {
     switch (type) {
       case "post":
         return "/post";
@@ -37,7 +37,7 @@ export const EmptyData = ({ type }: Props) => {
     }
   };
 
-  const buttonText = (type: dataType) => {
+  const buttonText = (type: DataType) => {
     switch (type) {
       case "post":
         return "글 작성하기";
