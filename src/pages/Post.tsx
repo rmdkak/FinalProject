@@ -29,7 +29,6 @@ export const Post = () => {
   const { Alert } = useDialog();
   const { currentSession } = useAuthStore();
   const userId = currentSession?.user.id;
-  const nickname = currentSession?.user.user_metadata.name;
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   const { createPostMutation } = usePostsQuery();
@@ -51,6 +50,7 @@ export const Post = () => {
     setWallpaperPaint,
     setTile,
   } = useServiceStore();
+
   useEffect(() => {
     const data: SelectedData | null =
       localStorage.getItem("selectedData") !== null ? JSON.parse(localStorage.getItem("selectedData") ?? "") : null;
@@ -79,8 +79,8 @@ export const Post = () => {
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     debounce(async (data) => {
       const UUID = uuid();
-      const postImgFile = data.file[0];
-      const postImage = data.file[0] == null ? null : `/postImg/${UUID}`;
+      const postImgFile = data?.file[0];
+      const postImage = data?.file[0] == null ? null : `/postImg/${UUID}`;
 
       if (
         (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
@@ -91,8 +91,6 @@ export const Post = () => {
           id: UUID,
           title: data.title,
           content: data.textarea,
-          bookmark: 0,
-          nickname,
           postImage,
           userId,
           tileId: tile.id,
@@ -102,7 +100,9 @@ export const Post = () => {
           rightColorCode: wallpaperPaint.right,
         };
         try {
-          await savePostImageHandler({ UUID, postImgFile });
+          if (postImgFile !== undefined) {
+            await savePostImageHandler({ UUID, postImgFile });
+          }
           createPostMutation.mutate(postData);
         } catch (error) {
           console.error("error", error);

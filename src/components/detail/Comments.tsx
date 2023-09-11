@@ -3,31 +3,14 @@ import { AiOutlineCamera } from "react-icons/ai";
 import { ADMIN_ID, STORAGE_URL } from "api/supabase";
 import comment_no_img from "assets/comment_no_img.png";
 import defaultImg from "assets/defaultImg.jpg";
-import { DateConvertor, ReComments } from "components";
+import { DateConvertor, type PostDataChain, ReComments } from "components";
 import { useCommentsQuery, usePostsQuery, useComments } from "hooks";
 import { useAuthStore } from "store";
-import { type Tables } from "types/supabase";
 
 import { CommentForm } from "./CommentForm";
 
 interface CommentProps {
-  postData: {
-    bookmark: number;
-    content: string;
-    created_at: string;
-    id: string;
-    leftColorCode: string | null;
-    leftWallpaperId: string | null;
-    nickname: string | null;
-    postImage: string | null;
-    rightColorCode: string | null;
-    rightWallpaperId: string | null;
-    tileId: string | null;
-    title: string;
-    userId: string | null;
-    POSTLIKES: Array<Tables<"POSTLIKES", "Row">>;
-    USERS: Tables<"USERS", "Row"> | null;
-  };
+  postData: PostDataChain;
 }
 
 export const Comments = ({ postData }: CommentProps) => {

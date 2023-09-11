@@ -7,7 +7,7 @@ interface Props {
   statusToClose: string | boolean;
   className: string;
 }
-// "flex w-4 h-4 contents-center"
+
 export const ArrowButton = ({ isOpen, openHandler, statusToOpen, statusToClose, className = "" }: Props) => {
   const changeOpen = () => {
     isOpen ? openHandler(statusToClose) : openHandler(statusToOpen);

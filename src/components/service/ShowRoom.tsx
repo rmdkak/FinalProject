@@ -19,7 +19,7 @@ export const ShowRoom = (Props: Props) => {
     return `${STORAGE_URL}/${type}/${interiorId}`;
   };
 
-  const size = page === "mypage" ? "w-[860px] h-[603px]" : "w-[500px] h-[400px]";
+  const size = page === "detail" ? "w-[500px] h-[400px]" : "w-[860px] h-[603px]";
 
   if (
     leftWallpaperBg !== null &&
@@ -67,7 +67,9 @@ export const ShowRoom = (Props: Props) => {
     tileBg !== undefined
   ) {
     return (
-      <div className="md:max flex flex-none contents-center sticky top-[20%] bg-gray03 w-[860px] h-[603px] overflow-hidden rounded-xl">
+      <div
+        className={`md:max flex flex-none contents-center sticky top-[20%] bg-gray03 overflow-hidden rounded-xl ${size}`}
+      >
         <div className="cube">
           <div style={{ backgroundColor: `${leftWallpaperPaintBg}` }} className="left-wall"></div>
           <div style={{ backgroundColor: `${rightWallpaperPaintBg}` }} className="right-wall"></div>
