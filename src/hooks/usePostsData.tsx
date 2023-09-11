@@ -65,7 +65,9 @@ export const usePostsData = () => {
     setSelectedOption(event.target.value);
   };
 
-  const flickingPostList = newPostList?.sort((a, b) => b.bookmark - a.bookmark).filter((_, idx) => idx < 5);
+  const flickingPostList = newPostList
+    ?.sort((a, b) => b.POSTLIKES[0]?.userId?.length - a.POSTLIKES[0]?.userId?.length)
+    .filter((_, idx) => idx < 5);
   /**
    * flicking 라이브러리에 적용할 수 있도록, 반복되는 element 컴포넌트를 대신합니다.
    * @params dataLength:number 원하는 길이의 PostData 배열을 가져옵니다.
@@ -87,9 +89,7 @@ export const usePostsData = () => {
               <img
                 src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
                 alt="postImg"
-                height={"400px"}
-                width={"400px"}
-                className="rounded-[8px] object-cover"
+                className="rounded-[8px] object-cover w-[400px] h-[400px]"
               />
             </div>
 
@@ -251,7 +251,7 @@ export const usePostsData = () => {
   };
 
   const rankingList = newPostList
-    ?.sort((a, b) => b.bookmark - a.bookmark)
+    ?.sort((a, b) => b.POSTLIKES[0]?.userId?.length - a.POSTLIKES[0]?.userId?.length)
     .filter((post, idx) => isExistCombination(post, "all") && idx < 13);
   /**
    * flicking 라이브러리에 적용할 수 있도록, 반복되는 element 컴포넌트를 대신합니다.

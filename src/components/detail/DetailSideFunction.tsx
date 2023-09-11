@@ -10,11 +10,12 @@ import { useDialog } from "components/common";
 import { usePostsLikeQuery, usePostsQuery } from "hooks";
 import { throttle } from "lodash";
 import { useAuthStore } from "store";
-import { type Tables } from "types/supabase";
+
+import { type PostDataChain } from "./PostData";
 
 interface Props {
   paramsId: string | undefined;
-  postData: Tables<"POSTS", "Row"> | undefined;
+  postData: PostDataChain | undefined;
 }
 
 interface ModalProps {
@@ -28,7 +29,6 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
   const { Confirm } = useDialog();
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLikeQuery();
   const { data: currentBookmarkData } = postLikeResponse;
-  const { wholeChangePostLikeMutation } = usePostsQuery();
   const { fetchPostsMutation } = usePostsQuery();
 
   const { data: postList } = fetchPostsMutation;
@@ -67,10 +67,14 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
       }
       return;
     }
-    if (paramsId === undefined || currentBookmarkData === undefined || postData?.bookmark === undefined) return;
+    if (
+      paramsId === undefined ||
+      currentBookmarkData === undefined ||
+      postData?.POSTLIKES[0]?.userId?.length === undefined
+    )
+      return;
     const addIds = [...currentBookmarkData.userId, currentSession.user.id];
     addLikeMutation.mutate({ postId: paramsId, userId: addIds });
-    wholeChangePostLikeMutation.mutate({ id: paramsId, likeState: "add", bookmark: postData?.bookmark });
   }, 500);
 
   const deleteBookmark = throttle(async () => {
@@ -86,10 +90,14 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
       }
       return;
     }
-    if (paramsId === undefined || currentBookmarkData === undefined || postData?.bookmark === undefined) return;
+    if (
+      paramsId === undefined ||
+      currentBookmarkData === undefined ||
+      postData?.POSTLIKES[0]?.userId?.length === undefined
+    )
+      return;
     const deletedIds = currentBookmarkData.userId.filter((id) => id !== currentSession.user.id);
     deleteLikeMutation.mutate({ postId: paramsId, userId: deletedIds });
-    wholeChangePostLikeMutation.mutate({ id: paramsId, likeState: "delete", bookmark: postData?.bookmark });
   }, 500);
 
   const movePostPageHandler = async () => {

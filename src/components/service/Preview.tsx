@@ -18,6 +18,7 @@ export const Preview = ({ leftWallPaperBg, RightWallPaperBg, tileBg }: Props) =>
   const tileBgsize: number = (BG_DEFAULT_SIZE * BG_MAGNIFICATION[selectBgSize.tile]) / 100;
 
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
+
   return (
     <div className="flex flex-none contents-center sticky top-[20%] bg-gray03 w-[600px] h-[400px] overflow-hidden rounded-xl">
       {/* 배경크기 컨트롤 박스 */}
