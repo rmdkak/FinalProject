@@ -3,6 +3,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   changeMetaAvatar,
   changeMetaName,
@@ -28,6 +29,7 @@ import {
   useDialog,
 } from "components";
 import { useAuthQuery } from "hooks";
+import { useAuthStore } from "store";
 
 interface UpdateInput {
   name: string;
@@ -45,8 +47,29 @@ export const UpdateUser = () => {
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
 
-  const { currentUserResponse, patchUserMutation } = useAuthQuery();
+  // const { currentUserResponse, patchUserMutation } = useAuthQuery();
+  const { currentUserResponse } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
+
+  const { currentSession } = useAuthStore();
+  if (currentSession === null) {
+    navigate("/");
+    return <></>;
+  }
+
+  const queryClient = useQueryClient();
+  const patchUserMutation = useMutation({
+    mutationFn: patchUser,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["auth"]);
+    },
+  });
+
+  const { avatar_url: currentProfileImg, name: currentName } = currentSession.user.user_metadata;
+  // const currentProfileImg = currentSession.user.user_metadata.avatar_url;
+  const userId = currentSession.user.id;
+  const prevProfileImageId =
+    currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
 
   const {
     register,
@@ -66,7 +89,7 @@ export const UpdateUser = () => {
 
     const profileImg = `${STORAGE_URL}/profileImg/${uid}`;
     await deleteImage(prevProfileImageId);
-    patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
+    patchUserMutation.mutate({ inputValue: { name: currentName, avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
     void uploadImage({ file: imgFile, userId: uid });
   };
@@ -76,7 +99,7 @@ export const UpdateUser = () => {
     if (currentProfileImg !== "") {
       await deleteImage(prevProfileImageId);
       await changeMetaAvatar("");
-      patchUserMutation.mutate({ inputValue: { avatar_url: "" }, userId });
+      patchUserMutation.mutate({ inputValue: { name: currentName, avatar_url: "" }, userId });
     }
   };
 
@@ -130,6 +153,7 @@ export const UpdateUser = () => {
 
   // 닉네임 수정
   const changeNameHandler: SubmitHandler<UpdateInput> = async (data) => {
+    const inputValue = { name: data.name };
     if (data.name !== currentName) {
       if (!checkedDuplicate) {
         setError("name", { message: "중복체크를 눌러주세요." });
@@ -137,12 +161,13 @@ export const UpdateUser = () => {
       }
 
       await changeMetaName(data.name);
-      patchUserMutation.mutate({ inputValue: { name: data.name }, userId });
+      patchUserMutation.mutate({ inputValue, userId });
     }
     toggleChangeHandler("name");
   };
 
   const deleteAuth = async () => {
+    const inputValue = { name: "탈퇴한 유저입니다.", avatar_url: "" };
     if (
       await Confirm(
         <>
@@ -154,7 +179,7 @@ export const UpdateUser = () => {
       )
     ) {
       await deleteUser(userId);
-      await patchUser({ inputValue: { name: "탈퇴한 유저입니다.", avatar_url: "" }, userId });
+      patchUserMutation.mutate({ inputValue, userId });
       await logout();
       navigate("/");
       await Alert("정상적으로 탈퇴되었습니다.");
@@ -168,10 +193,6 @@ export const UpdateUser = () => {
     navigate("/");
     return <p>에러페이지</p>;
   }
-
-  const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
-  const prevProfileImageId =
-    currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
@@ -200,7 +221,7 @@ export const UpdateUser = () => {
               <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
-          <p className="text-[24px] font-normal leading-[145%]">{`${currentName} 님`}</p>
+          <p className="text-[24px] font-normal leading-[145%]">{`${currentName as string} 님`}</p>
         </div>
         <div className="flex contents-center w-[624px]">
           <div className="w-full gap-6 flex-column">

@@ -1,16 +1,26 @@
 import { type ChangeEvent, useState } from "react";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteInquiryData } from "api/supabase";
 import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
 import { useMypageQuery } from "hooks";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyInquiry = () => {
-  const { userInquiryResponse, deleteUserInquiryMutation } = useMypageQuery();
+  const queryClient = useQueryClient();
+  const { userInquiryResponse } = useMypageQuery();
   const { data: userInquiryData } = userInquiryResponse;
 
   const [isOpenInquiry, setIsOpenInquiry] = useState<string>();
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
+
+  const deleteUserInquiryMutation = useMutation({
+    mutationFn: deleteInquiryData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageInquiry"] });
+    },
+  });
 
   const openCommentHandler = (commentId: string) => {
     isOpenInquiry !== undefined ? setIsOpenInquiry(undefined) : setIsOpenInquiry(commentId);

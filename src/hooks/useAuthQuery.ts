@@ -1,28 +1,33 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchUser, patchUser } from "api/supabase";
+import { useQuery } from "@tanstack/react-query";
+import { fetchUser } from "api/supabase";
 import { useAuthStore } from "store";
 
-const queryKey = ["auth"];
+// const queryKey = ["auth"];
 
 export const useAuthQuery = () => {
-  const queryClient = useQueryClient();
-  const { currentSession } = useAuthStore();
+  // const queryClient = useQueryClient();
+  const { currentUserId } = useAuthStore();
+  console.log("hooks > useAuthQuery > currentUserId :", currentUserId);
 
   const currentUserResponse = useQuery({
-    queryKey: [queryKey[0]],
+    queryKey: ["auth", currentUserId],
     queryFn: async () => {
-      if (currentSession === null) return;
-      return await fetchUser(currentSession.user.id);
+      if (currentUserId === undefined) return;
+      console.log("hooks > useAuthQuery > currentUserResponse > currentUserId :", currentUserId);
+      return await fetchUser(currentUserId);
     },
-    enabled: currentSession !== null,
+    // enabled: currentSession !== null,
   });
 
-  const patchUserMutation = useMutation({
-    mutationFn: patchUser,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey });
-    },
-  });
+  // const patchUserMutation = useMutation({
+  //   mutationFn: patchUser,
+  //   onSuccess: async () => {
+  //     await queryClient.invalidateQueries(queryKey);
+  //   },
+  // });
 
-  return { currentUserResponse, patchUserMutation };
+  return {
+    currentUserResponse,
+    //  patchUserMutation
+  };
 };

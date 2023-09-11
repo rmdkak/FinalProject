@@ -2,7 +2,9 @@ import { supabase } from "./supabaseClient";
 
 // MyPosts Get
 export const fetchMyPostsData = async (id: string) => {
+  console.log("supabase > mypageData > fetchMyPostsData id :", id);
   const { data, error } = await supabase.from("POSTS").select("*").eq("userId", id);
+  console.log("data :", data);
   if (error !== null) {
     console.error(error.message);
     return;

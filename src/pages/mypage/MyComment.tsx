@@ -1,6 +1,8 @@
 import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteCommentsData } from "api/supabase";
 import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData, CheckBoxIcon } from "components";
 import { ArrowButton } from "components/common";
 import { useMypageQuery, usePagination, useSearchBar } from "hooks";
@@ -10,6 +12,7 @@ import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 export const MyComment = () => {
   const [isOpenComment, setIsOpenComment] = useState<string>();
   const [commentIdsToDelete, setCommentIdsToDelete] = useState<string[]>([]);
+  const queryClient = useQueryClient();
 
   const openCommentHandler = (commentId: string) => {
     setIsOpenComment(commentId);
@@ -19,8 +22,15 @@ export const MyComment = () => {
     return commentIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userCommentsResponse, deleteUserCommentMutation } = useMypageQuery();
+  const { userCommentsResponse } = useMypageQuery();
   const { data: userCommentData } = userCommentsResponse;
+
+  const deleteUserCommentMutation = useMutation({
+    mutationFn: deleteCommentsData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageComment"] });
+    },
+  });
 
   // 선택 된 아이디 배열 삭제
   const deleteComments = () => {

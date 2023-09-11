@@ -1,6 +1,8 @@
 import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deletePostsData } from "api/supabase";
 import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
 import { useMypageQuery, usePagination, useSearchBar } from "hooks";
 
@@ -8,13 +10,22 @@ import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyPost = () => {
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
+  const queryClient = useQueryClient();
 
   const filteredPostIdsHandler = (selectId: string) => {
     return postIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userPostsResponse, deleteUserPostsMutation } = useMypageQuery();
+  const { userPostsResponse } = useMypageQuery();
+
   const { data: userPostData } = userPostsResponse;
+
+  const deleteUserPostsMutation = useMutation({
+    mutationFn: deletePostsData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypagePost"] });
+    },
+  });
 
   // 선택 된 아이디 배열 삭제
   const deletePosts = () => {

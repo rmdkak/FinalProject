@@ -5,7 +5,7 @@ import Router from "shared/Router";
 import { useAuthStore } from "store";
 
 const App = () => {
-  const { setCurrentSession, stayLoggedInStatus } = useAuthStore();
+  const { setCurrentSession, stayLoggedInStatus, setCurrentUserId } = useAuthStore();
   const [userData, setUserData] = useState<Array<{ email: string; name: string }>>();
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const App = () => {
           data: { session },
         } = await auth.getSession();
         setCurrentSession(session);
+        setCurrentUserId(session?.user.id);
       } catch (error) {
         console.error(error);
       }
