@@ -7,26 +7,38 @@ import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useAuthStore, useModalStore } from "store";
-import { type Tables } from "types/supabase";
 
-interface Props {
-  postData: {
-    bookmark: number;
-    content: string;
+export interface PostDataChain {
+  content: string;
+  created_at: string;
+  id: string;
+  leftColorCode: string | null;
+  leftWallpaperId: string | null;
+  postImage: string | null;
+  rightColorCode: string | null;
+  rightWallpaperId: string | null;
+  tileId: string | null;
+  title: string;
+  userId: string | null;
+  POSTLIKES: Array<{
     created_at: string;
     id: string;
-    leftColorCode: string | null;
-    leftWallpaperId: string | null;
-    nickname: string | null;
-    postImage: string | null;
-    rightColorCode: string | null;
-    rightWallpaperId: string | null;
-    tileId: string | null;
-    title: string;
-    userId: string | null;
-    POSTLIKES: Array<Tables<"POSTLIKES", "Row">>;
-    USERS: Tables<"USERS", "Row"> | null;
-  };
+    postId: string;
+    userId: string[];
+  }>;
+  USERS: {
+    avatar_url: string;
+    created_at: string | null;
+    email: string;
+    id: string;
+    idAnswer: string | null;
+    idQuestion: string | null;
+    name: string;
+  } | null;
+}
+
+interface Props {
+  postData: PostDataChain;
 }
 
 export const PostData = ({ postData }: Props) => {
@@ -64,7 +76,7 @@ export const PostData = ({ postData }: Props) => {
             <DateConvertor datetime={postData?.created_at} type="hourMinute" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
-              <p>좋아요 {postData?.bookmark}</p>
+              <p>좋아요 {postData?.POSTLIKES[0]?.userId?.length}</p>
             </div>
             {currentSession !== null ? (
               <button onClick={onOpenModal} className="leading-[1px] hover:border-b border-gray02">

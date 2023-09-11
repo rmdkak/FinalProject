@@ -1,14 +1,7 @@
 import { useParams } from "react-router-dom";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  createPostHandler,
-  deletePostHandler,
-  fetchDetailData,
-  fetchPostData,
-  patchPostHandler,
-  wholeChangePostLike,
-} from "api/supabase";
+import { createPostHandler, deletePostHandler, fetchDetailData, fetchPostData, patchPostHandler } from "api/supabase";
 
 export const usePostsQuery = () => {
   const { id: postId } = useParams();
@@ -55,33 +48,11 @@ export const usePostsQuery = () => {
     },
   });
 
-  const wholeChangePostLikeMutation = useMutation({
-    mutationFn: wholeChangePostLike,
-    onMutate: async (newLike) => {
-      await queryClient.cancelQueries({ queryKey: ["POSTS", postId] });
-      const previousLike = queryClient.getQueryData(["POSTS", postId]);
-      queryClient.setQueryData(["POSTS", postId], newLike);
-      return { previousLike };
-    },
-
-    onError: (err, _, context) => {
-      if (context === undefined) return;
-      if (err !== null) {
-        return queryClient.setQueryData(["POSTS", postId], context.previousLike);
-      }
-    },
-
-    onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["POSTS", postId] });
-    },
-  });
-
   return {
     fetchPostsMutation,
     createPostMutation,
     updatePostMutation,
     deletePostMutation,
     fetchDetailMutation,
-    wholeChangePostLikeMutation,
   };
 };
