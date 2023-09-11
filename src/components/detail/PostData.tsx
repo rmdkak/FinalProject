@@ -7,6 +7,7 @@ import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useAuthStore, useModalStore } from "store";
+import { type Tables } from "types/supabase";
 
 interface Props {
   postData: {
@@ -23,26 +24,12 @@ interface Props {
     tileId: string | null;
     title: string;
     userId: string | null;
-    POSTLIKES: Array<{
-      created_at: string;
-      id: string;
-      postId: string;
-      userId: string[];
-    }>;
-    USERS: {
-      avatar_url: string;
-      created_at: string | null;
-      email: string;
-      id: string;
-      idAnswer: string | null;
-      idQuestion: string | null;
-      name: string;
-    } | null;
+    POSTLIKES: Array<Tables<"POSTLIKES", "Row">>;
+    USERS: Tables<"USERS", "Row"> | null;
   };
 }
 
 export const PostData = ({ postData }: Props) => {
-  console.log("postData :", postData);
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
   const [previewModal, setPreviewModal] = useState<boolean>(false);

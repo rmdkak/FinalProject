@@ -10,3 +10,4 @@ export * from "./useMovePage";
 export * from "./usePostsData";
 export * from "./usePagination";
 export * from "./useSearchBar";
+export * from "./useComments";
