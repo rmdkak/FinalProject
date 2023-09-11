@@ -69,12 +69,11 @@ export const InteriorPreview = () => {
     <div className="mx-auto flex-column w-[1280px] gap-10">
       <h1 className="mt-20 text-3xl font-medium">인테리어 조합</h1>
       <div className="gap-40 flex-column">
-        {/* 벽지/ 타일 비교 박스 */}
+        {/* 왼쪽 인터렉션 박스 */}
         <div className="flex w-full gap-20 mb-20">
-          {/* 왼쪽 인터렉션 박스 */}
           <Preview leftWallPaperBg={leftWallPaperBg} RightWallPaperBg={RightWallPaperBg} tileBg={tileBg} />
+          {/* 인테리어 섹션 */}
           <div className="flex-column w-[600px] gap-10">
-            {/* 인테리어 섹션 */}
             <InteriorSection onCheckCustom={true} />
             {/* 컬러 추출 */}
             <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />

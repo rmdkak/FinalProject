@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase";
 import noImage from "assets/no_image.png";
-import { DateConvertor, CommunitySkeleton } from "components";
+import { DateConvertor, CommunitySkeleton, type PostDataChain } from "components";
 import { usePagination, usePostsQuery, useSearchBar } from "hooks";
-import { type Tables } from "types/supabase";
 
 interface Props {
   dataLength: number;
@@ -17,7 +16,7 @@ interface Props {
  */
 export const usePostsData = () => {
   const [selectedOption, setSelectedOption] = useState<string>("whole");
-  const [filteredPosts, setFilteredPosts] = useState<Array<Tables<"POSTS", "Row">>>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostDataChain[]>([]);
 
   const { SearchBar, filteredData } = useSearchBar({ dataList: filteredPosts, type: "post" });
   const { postListSkeleton, flickingSkeleton } = CommunitySkeleton();
@@ -27,7 +26,7 @@ export const usePostsData = () => {
 
   const navigate = useNavigate();
 
-  const isExistCombination = (post: Tables<"POSTS", "Row">, type: "all" | "interior" | "paint") => {
+  const isExistCombination = (post: PostDataChain, type: "all" | "interior" | "paint") => {
     switch (type) {
       case "all":
         return (
@@ -37,7 +36,7 @@ export const usePostsData = () => {
       case "interior":
         return post.tileId !== null && post.leftWallpaperId !== null && post.rightWallpaperId !== null;
       case "paint":
-        return post.leftColorCode !== null && post.rightColorCode !== null;
+        return post.leftColorCode !== null && post.rightColorCode !== null && post.tileId !== null;
     }
   };
 
@@ -190,7 +189,7 @@ export const usePostsData = () => {
                       <p>{post.USERS?.name}</p>
                       <DateConvertor datetime={post.created_at} type="dotDate" />
                       <DateConvertor datetime={post.created_at} type={"hourMinute"} />
-                      <p>좋아요 {post.bookmark}</p>
+                      <p>좋아요 {post.POSTLIKES[0]?.userId?.length}</p>
                     </div>
                   </div>
                   <div className="flex items-center justify-end gap-4">
@@ -298,7 +297,7 @@ export const usePostsData = () => {
                       style={{
                         backgroundColor: post.rightColorCode,
                       }}
-                      className="absolute top-0 left-[-30.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                      className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
                     ></div>
                     <img
                       src={`${STORAGE_URL}/tile/${post.tileId}`}
@@ -362,7 +361,13 @@ export const usePostsData = () => {
                       style={{ backgroundColor: `${post.rightColorCode}` }}
                       className="home-preview-right-wall"
                     ></div>
-                    <div className="home-preview-floor"></div>
+                    <div
+                      style={{
+                        backgroundImage: `url(${createUrl("tile", post.tileId)})`,
+                        backgroundSize: "100px, 100px",
+                      }}
+                      className="home-preview-floor"
+                    ></div>
                   </div>
                 )}
             </div>

@@ -128,23 +128,19 @@ export const PostData = ({ postData }: Props) => {
             </div>
           </div>
         )}
-        {previewModal && (
-          <div className="absolute top-[380px] translate-x-[780px]">
-            <ShowRoom
-              leftWallpaperBg={postData.leftWallpaperId}
-              rightWallpaperBg={postData.rightWallpaperId}
-              leftWallpaperPaintBg={postData.leftColorCode}
-              rightWallpaperPaintBg={postData.rightColorCode}
-              tileBg={postData.tileId}
-              page={"detail"}
-            />
-          </div>
-        )}
         {postData?.leftColorCode !== null &&
           postData?.leftColorCode !== undefined &&
           postData?.rightColorCode !== null &&
           postData?.rightColorCode !== undefined && (
-            <div className="flex gap-4">
+            <div
+              className="flex gap-4"
+              onMouseEnter={() => {
+                setPreviewModal(true);
+              }}
+              onMouseLeave={() => {
+                setPreviewModal(false);
+              }}
+            >
               <div>
                 <div
                   className="w-16 h-16 rounded-full bg-gray06"
@@ -174,7 +170,18 @@ export const PostData = ({ postData }: Props) => {
             </div>
           )}
       </div>
-
+      {previewModal && (
+        <div className="absolute top-[380px] translate-x-[780px]">
+          <ShowRoom
+            leftWallpaperBg={postData.leftWallpaperId}
+            rightWallpaperBg={postData.rightWallpaperId}
+            leftWallpaperPaintBg={postData.leftColorCode}
+            rightWallpaperPaintBg={postData.rightColorCode}
+            tileBg={postData.tileId}
+            page={"detail"}
+          />
+        </div>
+      )}
       <div className="flex-column gap-5 mt-[15px] mb-[50px]">
         {postData?.postImage !== null && postData?.postImage !== undefined && (
           <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[640px]" />

@@ -3,7 +3,7 @@ import { create } from "zustand";
 
 const IMAGE_BOOLEAN: boolean = false;
 const IMAGE_DIRECTION: LeftorRight = "left";
-// const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
+
 interface Furniture {
   furnitureState: FurnitureState;
   setFurnitureState: (id: string, direction: LeftorRight) => void;
