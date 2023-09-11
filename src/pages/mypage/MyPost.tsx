@@ -1,9 +1,10 @@
 import { type ChangeEvent, useState } from "react";
-import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypage, usePagination, useSearchBar } from "hooks";
+import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
+import { useMypageQuery, usePagination, useSearchBar } from "hooks";
+
+import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyPost = () => {
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
@@ -12,7 +13,7 @@ export const MyPost = () => {
     return postIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userPostsResponse, deleteUserPostsMutation } = useMypage();
+  const { userPostsResponse, deleteUserPostsMutation } = useMypageQuery();
   const { data: userPostData } = userPostsResponse;
 
   // 선택 된 아이디 배열 삭제
@@ -41,8 +42,8 @@ export const MyPost = () => {
   });
 
   return (
-    <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
-      <MypageTitle />
+    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
+      <MypageTitle title="마이페이지" isBorder={false} />
       <MypageSubTitle type="post" />
       {/* 글 목록 */}
       {pageData.length === 0 ? (
@@ -61,11 +62,7 @@ export const MyPost = () => {
                   }}
                 />
                 <label htmlFor={post.id}>
-                  {postIdsToDelete.find((id) => id === post.id) !== undefined ? (
-                    <FaRegSquareCheck className="text-black" />
-                  ) : (
-                    <FaRegSquareCheck className="text-gray05" />
-                  )}
+                  <CheckBoxIcon isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined} />
                 </label>
                 <p className="w-[80px]">{index + 1}</p>
                 <Link to={`/detail/${post.id as string}`} className="w-[830px]">

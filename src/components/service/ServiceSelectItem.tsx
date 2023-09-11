@@ -1,13 +1,17 @@
-import { useServiceStore } from "store";
+import React from "react";
 
-import { SELECT_BORDER_COLOR } from "./data";
+import { useServiceStore } from "store";
+import { useFurniture } from "store/useFurniture";
+import { type WallOrTileOrFurniture } from "types/service";
+import { handleCheckTypeItemBorder } from "utils/servise/interiorSection";
 
 interface Props {
   image: string;
   id: string;
+  furniture?: boolean;
 }
 
-export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
+export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): JSX.Element => {
   const {
     checkType,
     resetWallpaperPaint,
@@ -17,6 +21,7 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
     setTile,
     onClickItemBorder,
   } = useServiceStore((state) => state);
+  const { setFurnitureState } = useFurniture((state) => state);
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
   const getItemData = (selectItem: { id: string; image: string }): void => {
@@ -29,33 +34,48 @@ export const ServiceSelectItem = ({ image, id }: Props): JSX.Element => {
     }
   };
 
-  const checkLeftItemBorder = onClickItemBorder.left === id ? `4px solid ${SELECT_BORDER_COLOR}` : "1px solid #d5d5d5";
-  const checkRightItemBorder =
-    onClickItemBorder.right === id ? `4px solid ${SELECT_BORDER_COLOR}` : "1px solid #d5d5d5";
-  const checkTileItemBorder = onClickItemBorder.tile === id ? `4px solid ${SELECT_BORDER_COLOR}` : "1px solid #d5d5d5";
+  const checkLeftItemBorder = handleCheckTypeItemBorder(onClickItemBorder.left, id);
+  const checkRightItemBorder = handleCheckTypeItemBorder(onClickItemBorder.right, id);
+  const checkTileItemBorder = handleCheckTypeItemBorder(onClickItemBorder.tile, id);
 
+  const borderSelectStyle =
+    onClickItemBorder.left === id
+      ? { border: checkLeftItemBorder }
+      : onClickItemBorder.right === id
+      ? { border: checkRightItemBorder }
+      : { border: checkTileItemBorder };
+
+  const handleClickEvent = (
+    { id, image }: { id: string; image: string },
+    _id: string,
+    interiorSelectX: boolean,
+    checkType: WallOrTileOrFurniture,
+  ) => {
+    if (furniture === true) {
+      interiorSelectX ? setFurnitureState(image, "left") : setFurnitureState(image, "right");
+    } else {
+      getItemData({ id, image });
+      setClickItemBorder(_id, interiorSelectX, checkType);
+    }
+  };
   return (
     <>
       <li
         onClick={() => {
-          getItemData({ id, image });
-          setClickItemBorder(id, interiorSelectX, checkType);
+          handleClickEvent({ id, image }, id, interiorSelectX, checkType);
         }}
         key={id}
+        style={borderSelectStyle}
+        className="overflow-hidden rounded-full interior-item"
       >
-        <img
-          src={`${STORAGE_URL}${image}`}
-          style={
-            onClickItemBorder.left === id
-              ? { border: checkLeftItemBorder }
-              : onClickItemBorder.right === id
-              ? { border: checkRightItemBorder }
-              : { border: checkTileItemBorder }
-          }
-          className={`interior-item drag-none cursor-pointer`}
-          alt={` ${checkType} 미리보기 이미지`}
-        />
+        <picture className={`box-border block h-full cursor-pointer drag-none`}>
+          <source srcSet={`${STORAGE_URL}${image}`} type="image/webp"></source>
+          <source srcSet={`${STORAGE_URL}${image}`} type="image/jpg"></source>
+          <img src={`${STORAGE_URL}${image}`} alt={`${checkType} 이미지`} />
+        </picture>
       </li>
     </>
   );
 };
+
+export const ServiceSelectItem = React.memo(ServiceSelectItemMemoization);

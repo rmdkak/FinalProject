@@ -3,9 +3,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { savePostImageHandler, storageUrl } from "api/supabase";
+import { savePostImageHandler, STORAGE_URL } from "api/supabase";
 import { Button, InteriorSection, Modal, useDialog } from "components";
-import { usePosts } from "hooks";
+import { usePostsQuery } from "hooks";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -29,15 +29,15 @@ export const Post = () => {
   const { Alert } = useDialog();
   const { currentSession } = useAuthStore();
   const userId = currentSession?.user.id;
-  const nickname = currentSession?.user.user_metadata.name;
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
-  const { createPostMutation } = usePosts();
+  const { createPostMutation } = usePostsQuery();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    resetField,
   } = useForm<Inputs>();
   const {
     wallPaper,
@@ -79,8 +79,8 @@ export const Post = () => {
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     debounce(async (data) => {
       const UUID = uuid();
-      const postImgFile = data.file[0];
-      const postImage = data.file[0] == null ? null : `/postImg/${UUID}`;
+      const postImgFile = data?.file[0];
+      const postImage = data?.file[0] == null ? null : `/postImg/${UUID}`;
 
       if (
         (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
@@ -91,8 +91,6 @@ export const Post = () => {
           id: UUID,
           title: data.title,
           content: data.textarea,
-          bookmark: 0,
-          nickname,
           postImage,
           userId,
           tileId: tile.id,
@@ -102,7 +100,9 @@ export const Post = () => {
           rightColorCode: wallpaperPaint.right,
         };
         try {
-          await savePostImageHandler({ UUID, postImgFile });
+          if (postImgFile !== undefined) {
+            await savePostImageHandler({ UUID, postImgFile });
+          }
           createPostMutation.mutate(postData);
         } catch (error) {
           console.error("error", error);
@@ -126,7 +126,7 @@ export const Post = () => {
       localStorage.removeItem("selectedData");
       navigate("/community");
     }, 500),
-    [],
+    [tile.id, wallPaper.left.id, wallPaper.right.id, wallpaperPaint.left, wallpaperPaint.right],
   );
 
   useEffect(() => {
@@ -178,7 +178,7 @@ export const Post = () => {
             />
           ) : wallPaper.left.image !== null ? (
             <img
-              src={`${storageUrl}${wallPaper.left.image}`}
+              src={`${STORAGE_URL}${wallPaper.left.image}`}
               alt="왼쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray05"
             />
@@ -192,7 +192,7 @@ export const Post = () => {
             />
           ) : wallPaper.right.image !== null ? (
             <img
-              src={`${storageUrl}${wallPaper.right.image}`}
+              src={`${STORAGE_URL}${wallPaper.right.image}`}
               alt="오른쪽벽지"
               className="w-[40px] h-[40px] rounded-full absolute right-[170px] border border-gray05"
             />
@@ -201,7 +201,7 @@ export const Post = () => {
           )}
           {tile.image !== null ? (
             <img
-              src={`${storageUrl}${tile.image}`}
+              src={`${STORAGE_URL}${tile.image}`}
               alt="바닥재"
               className="w-[40px] h-[40px] rounded-full absolute right-[140px] border border-gray05"
             />
@@ -241,16 +241,27 @@ export const Post = () => {
             내용 글자 수: {textarea.length} / 1000
           </p>
         </div>
-        <div className="flex w-full border-y border-gray06 h-[72px] justify-center items-center mt-[20px]">
-          <label htmlFor="img" className="w-[128px] text-[14px] font-normal">
+        <div className="flex w-full border-y border-gray06 h-[72px] items-center mt-[20px]">
+          <label htmlFor="img" className="w-[80px] text-[14px] font-normal">
             첨부파일
           </label>
-          <input
-            type="file"
-            accept="image/png, image/jpeg, image/gif"
-            className="w-full text-[14px] focus:outline-none"
-            {...register("file")}
-          />
+          <div className="flex items-center justify-between w-full">
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/gif"
+              className="w-[200px] text-[14px] focus:outline-none"
+              {...register("file")}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                resetField("file");
+              }}
+              className="w-[160px] h-[48px] border border-gray-300 rounded-[8px]"
+            >
+              선택해제
+            </button>
+          </div>
         </div>
         <div className="my-[60px] contents-between">
           <button

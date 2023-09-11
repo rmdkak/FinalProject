@@ -1,10 +1,11 @@
 import { type ChangeEvent, useState } from "react";
-import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import arrowIcon from "assets/svgs/arrowIcon.svg";
-import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData } from "components";
-import { useMypage, usePagination, useSearchBar } from "hooks";
+import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData, CheckBoxIcon } from "components";
+import { ArrowButton } from "components/common";
+import { useMypageQuery, usePagination, useSearchBar } from "hooks";
+
+import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyComment = () => {
   const [isOpenComment, setIsOpenComment] = useState<string>();
@@ -18,7 +19,7 @@ export const MyComment = () => {
     return commentIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userCommentsResponse, deleteUserCommentMutation } = useMypage();
+  const { userCommentsResponse, deleteUserCommentMutation } = useMypageQuery();
   const { data: userCommentData } = userCommentsResponse;
 
   // 선택 된 아이디 배열 삭제
@@ -47,8 +48,8 @@ export const MyComment = () => {
   });
 
   return (
-    <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
-      <MypageTitle />
+    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
+      <MypageTitle title="마이페이지" isBorder={false} />
       <MypageSubTitle type="comment" />
       {/* 글 목록 */}
       {pageData.length === 0 ? (
@@ -61,7 +62,7 @@ export const MyComment = () => {
             return (
               <li key={comment.id} className="flex-column contents-center border-y border-gray06">
                 {/* 포스트 */}
-                <div className="flex contents-center w-full border-y border-gray06 gap-[24px] h-[64px] px-[24px]">
+                <div className="flex contents-center w-full border-y border-gray06 gap-[24px] h-[72px] px-[24px]">
                   <input
                     id={comment.id}
                     type="checkbox"
@@ -73,11 +74,7 @@ export const MyComment = () => {
 
                   {/* 체크 박스 */}
                   <label htmlFor={comment.id}>
-                    {commentIdsToDelete.find((id) => id === comment.id) !== undefined ? (
-                      <FaRegSquareCheck className="text-black" />
-                    ) : (
-                      <FaRegSquareCheck className="text-gray05" />
-                    )}
+                    <CheckBoxIcon isCheck={commentIdsToDelete.find((id) => id === comment.id) !== undefined} />
                   </label>
                   <div
                     className="flex contents-center gap-[24px] w-full h-full cursor-pointer"
@@ -85,28 +82,21 @@ export const MyComment = () => {
                       isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id);
                     }}
                   >
-                    <p className="w-[80px]">{index + 1}</p>
-                    <p className="w-[1040px]">{post.title}</p>
-                    <DateConvertor datetime={post.created_at} type={"dotDate"} />
+                    <p className="flex contents-center w-20 p-[10px] ">{index + 1}</p>
+                    <div className="w-[1044px] flex justify-between">
+                      <p className="body-3">{post.title}</p>
+                      <DateConvertor datetime={post.created_at} type={"dotDate"} className="body-3" />
+                    </div>
 
-                    <button className="flex contents-center w-[16px] h-[16px]">
-                      {isOpenComment === comment.id ? (
-                        <img
-                          className="rotate-180"
-                          src={arrowIcon}
-                          onClick={() => {
-                            openCommentHandler("");
-                          }}
-                        />
-                      ) : (
-                        <img
-                          src={arrowIcon}
-                          onClick={() => {
-                            openCommentHandler(comment.id);
-                          }}
-                        />
-                      )}
-                    </button>
+                    <div className="flex w-4 h-4 contents-center">
+                      <ArrowButton
+                        isOpen={isOpenComment === comment.id}
+                        openHandler={openCommentHandler}
+                        statusToClose={""}
+                        statusToOpen={comment.id}
+                        className={"flex w-4 h-4 contents-center"}
+                      />
+                    </div>
                   </div>
                 </div>
                 {/* 댓글 */}

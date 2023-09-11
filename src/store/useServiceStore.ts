@@ -1,25 +1,15 @@
 import { BG_MAGNIFICATION_LANGTH } from "components";
+import { type selectBgSize, type SelectBg, type WallOrTileOrFurniture, type Wallpaper } from "types/service";
 import { create } from "zustand";
-type WallOrTile = "tile" | "wallPaper";
-export type SelectBg = "leftWall" | "rightWall" | "tile";
 
-export interface Wallpaper {
-  image: string | null;
-  id: string | null;
-}
 interface Tile {
   image: string | null;
   id: string | null;
 }
 
-interface selectBgSize {
-  leftWall: number;
-  rightWall: number;
-  tile: number;
-}
 interface Store {
-  checkType: WallOrTile;
-  setTypeCheck: (type: WallOrTile) => void;
+  checkType: WallOrTileOrFurniture;
+  setTypeCheck: (type: WallOrTileOrFurniture) => void;
 
   // 인테리어 헤더
   interiorSelecteIndex: number;
@@ -53,7 +43,7 @@ interface Store {
 
   // 아이템클릭 보더
   onClickItemBorder: { left: string; right: string; tile: string };
-  setClickItemBorder: (id: string, type: boolean, headerTitle: WallOrTile) => void;
+  setClickItemBorder: (id: string, type: boolean, headerTitle: WallOrTileOrFurniture) => void;
   resetClickItemBorder: () => void;
 
   // 배경 선택

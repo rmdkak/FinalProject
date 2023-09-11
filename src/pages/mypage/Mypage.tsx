@@ -1,19 +1,31 @@
+import { useEffect } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
+import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
+import { type IconType } from "react-icons/lib";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import defaultImg from "assets/defaultImg.jpg";
-import viewMore from "assets/svgs/viewMore.svg";
-import { PreviewBookmark, PreviewComment, PreviewLike, PreviewPost, MypageTitle } from "components";
-import { useAuth, useMypage } from "hooks";
+import { MypageTitle, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
+import { useAuthQuery, useMypageQuery } from "hooks";
 import { useAuthStore } from "store";
 
-const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 translate-y-[-50%]";
+export interface MypageInfo {
+  title: string;
+  link: string;
+  icon: IconType;
+  data?: any[] | undefined;
+}
+
+export const MYPAGE_LAYOUT_STYLE: string = "flex-column items-center m-[60px] w-[1280px] mx-auto";
 
 export const Mypage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const { currentSession } = useAuthStore();
-  const { currentUserResponse } = useAuth();
+  const { currentUserResponse } = useAuthQuery();
   const { data: currentUser, isLoading, isError } = currentUserResponse;
 
   const {
@@ -21,104 +33,53 @@ export const Mypage = () => {
     userCommentsResponse: { data: commentData },
     userBookmarksResponse: { data: bookmarkData },
     userLikesResponse: { data: likeData },
-  } = useMypage();
+    userInquiryResponse: { data: inquiryData },
+  } = useMypageQuery();
 
-  const filteredPosts = postData?.filter((_, index) => index < 2);
-  const filteredComment = commentData?.filter((_, index) => index < 2);
-  const filteredBookmark = bookmarkData?.filter((_, index) => index < 5);
-  const filteredLikes = likeData?.filter((_, index) => index < 2);
-
-  const countBoxArray = [
-    { title: "내가 쓴 글", link: "/mypage/post", icon: <RxPencil2 className="w-[24px] h-[24px]" />, data: postData },
-    {
-      title: "내가 쓴 댓글",
-      link: "/mypage/comment",
-      icon: <BiCommentDetail className="w-[24px] h-[24px]" />,
-      data: commentData,
-    },
-    {
-      title: "북마크",
-      link: "/mypage/bookmark",
-      icon: <RxBookmark className="w-[24px] h-[24px]" />,
-      data: bookmarkData,
-    },
-    { title: "좋아요", link: "/mypage/like", icon: <AiOutlineHeart className="w-[24px] h-[24px]" />, data: likeData },
+  const countBoxArray: MypageInfo[] = [
+    { title: "내가 쓴 글", link: "/mypage/post", icon: RxPencil2, data: postData },
+    { title: "내가 쓴 댓글", link: "/mypage/comment", icon: BiCommentDetail, data: commentData },
+    { title: "북마크", link: "/mypage/bookmark", icon: RxBookmark, data: bookmarkData },
+    { title: "좋아요", link: "/mypage/like", icon: AiOutlineHeart, data: likeData },
+    { title: "문의&신고", link: "/mypage/inquiry", icon: HiOutlineChatBubbleLeftRight, data: inquiryData },
   ];
 
-  // 내 활동의 갯수 알려주는 UI
-  const countBox = countBoxArray.map((el) => {
-    return (
-      <div key={el.title} className="relative flex-column contents-center h-full w-[254px] gap-[24px]">
-        <div className="flex-column contents-center gap-[12px]">
-          {el.icon}
-          <p className="text-[18px] font-normal leading-[150%]">{el.title}</p>
-        </div>
-        <div className={BR_STYLE}></div>
-        <p className="text-[24px] font-medium leading-[145%]">{el.data === undefined ? 0 : el.data.length}</p>
-      </div>
-    );
-  });
+  useEffect(() => {
+    if (currentSession === null && location.pathname === "/mypage") {
+      navigate("/");
+    }
+  }, []);
 
-  // 각 카테고리 title
-  const previewBox = countBoxArray.map((el) => {
-    return (
-      <div key={el.title} className="flex-column">
-        <div className="flex items-center justify-between border-b border-black pb-[24px] mt-[80px]">
-          <p className="text-[18px] font-normal leading-[150%]">{el.title}</p>
-          <Link to={el.link} className="flex contents-center gap-[12px] body-4 text-gray02">
-            VIEW MORE
-            <img src={viewMore} className="w-[24px] h-[24px]" />
-          </Link>
-        </div>
-        {el.title === "내가 쓴 글" && <PreviewPost postData={filteredPosts} />}
-        {el.title === "내가 쓴 댓글" && <PreviewComment commentData={filteredComment} />}
-        {el.title === "북마크" && <PreviewBookmark bookmarkData={filteredBookmark} />}
-        {el.title === "좋아요" && <PreviewLike likeData={filteredLikes} />}
-      </div>
-    );
-  });
+  if (currentUser === undefined || isLoading) return <MypageSkeleton />;
 
-  if (currentUser === undefined || isLoading) return <p>로딩중</p>;
+  if (isError) return <MypageSkeleton />;
 
-  if (isError) return <p>에러페이지</p>;
+  if (currentSession === null) {
+    navigate("/");
+    return <></>;
+  }
+
+  const imgStyle = { alt: "프로필 이미지", className: "w-[60px] h-[60px] rounded-full text-center justify-center" };
 
   const { name, avatar_url: profileImg } = currentUser;
   return (
-    <div className="flex-column items-center m-[60px] w-[1280px] mx-auto">
-      <MypageTitle />
-      {/* 프로필 박스 */}
-      <div className="flex gap-[24px] mt-[40px]">
-        <div className="relative flex-column contents-center gap-[40px] w-[240px] h-[320px] px-[24px] bg-gray08 rounded-[12px] border border-gray05">
-          {profileImg === "" ? (
-            <img
-              src={defaultImg}
-              alt="프로필 이미지"
-              className="w-[120px] h-[120px] rounded-full text-center justify-center"
-            />
-          ) : (
-            <img
-              src={profileImg}
-              alt="프로필 이미지"
-              className="w-[120px] h-[120px] rounded-full text-center justify-center"
-            />
-          )}
-          <div className="flex-column contents-center gap-[12px]">
-            <p className="text-black text-[24px] font-normal leading-[145%]">{`${name}님`}</p>
+    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
+      <MypageTitle title={"마이페이지"} isBorder={true} />
+      <div className="flex gap-6 mt-8">
+        <div className="relative flex-column contents-center gap-4 w-[225px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
+          {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}
+          <div className="gap-2 flex-column contents-center">
+            <p className="text-black body-1">{`${name}님`}</p>
             {currentSession?.user.app_metadata.provider === "email" && (
-              <Link
-                to="/mypage/update"
-                className="border px-[24px] border-gray05 rounded-[8px] text-[12px] font-normal leading-[150%]"
-              >
+              <Link to="/mypage/update" className="px-2 py-1 border rounded-lg border-gray05 body-4">
                 회원정보수정
               </Link>
             )}
           </div>
         </div>
-        {/* 카운트 박스 */}
-        <div className="flex items-start border border-gray05 rounded-[12px]">{countBox}</div>
+        <MyActiveCountBox mypageInfoArray={countBoxArray} adminCheck={currentSession.user.id} />
       </div>
-      {/* 카테고리 */}
-      <div className="flex-column w-[1280px]">{previewBox}</div>
+      <PreviewBox mypageInfoArray={countBoxArray} userId={currentSession.user.id} />
     </div>
   );
 };

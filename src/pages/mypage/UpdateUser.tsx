@@ -12,7 +12,7 @@ import {
   fetchUserCheckData,
   logout,
   patchUser,
-  storageUrl,
+  STORAGE_URL,
   uploadImage,
 } from "api/supabase";
 import defaultImg from "assets/defaultImg.jpg";
@@ -27,7 +27,7 @@ import {
   nameValid,
   useDialog,
 } from "components";
-import { useAuth } from "hooks";
+import { useAuthQuery } from "hooks";
 
 interface UpdateInput {
   name: string;
@@ -45,7 +45,7 @@ export const UpdateUser = () => {
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
 
-  const { currentUserResponse, patchUserMutation } = useAuth();
+  const { currentUserResponse, patchUserMutation } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
 
   const {
@@ -53,8 +53,9 @@ export const UpdateUser = () => {
     handleSubmit,
     getValues,
     setError,
+    resetField,
     formState: { errors },
-  } = useForm<UpdateInput>({ mode: "all" });
+  } = useForm<UpdateInput>();
 
   // 프로필 이미지 변경
   const changeProfileImgHandler = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -63,18 +64,17 @@ export const UpdateUser = () => {
     const imgFile = event.target.files[0];
     if (imgFile === undefined) return;
 
-    const profileImg = `${storageUrl}/profileImg/${uid}`;
-    await deleteImage(prevProfileImg);
+    const profileImg = `${STORAGE_URL}/profileImg/${uid}`;
+    await deleteImage(prevProfileImageId);
     patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
-    await uploadImage({ file: imgFile, userId: uid });
+    void uploadImage({ file: imgFile, userId: uid });
   };
 
   // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
   const resetImgFile = async () => {
     if (currentProfileImg !== "") {
-      const getImgId = currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
-      await deleteImage(getImgId);
+      await deleteImage(prevProfileImageId);
       await changeMetaAvatar("");
       patchUserMutation.mutate({ inputValue: { avatar_url: "" }, userId });
     }
@@ -90,36 +90,42 @@ export const UpdateUser = () => {
     else setError("name", { message: "이미 존재하는 닉네임입니다." });
   };
 
-  const toggleOpenHandler = (target: "name" | "password") => {
+  const toggleChangeHandler = (target: "name" | "password") => {
     if (target === "name") {
       setIsOpenToggle({ password: false, name: !isOpenToggle.name });
+      resetField("name");
     } else {
       setIsOpenToggle({ name: false, password: !isOpenToggle.password });
+      resetField("password");
+      resetField("passwordConfirm");
     }
   };
 
   // 비밀번호 수정
   const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
-    const { password } = data;
-    await changePassword(password)
-      .then(async () => {
-        await Alert("비밀번호가 정상적으로 변경되었습니다.");
-      })
-      .catch(async (error) => {
-        switch (error.message) {
-          case "New password should be different from the old password.":
-            await Alert("이전 비밀번호와 동일합니다.");
-            break;
-          case "Auth session missing!":
-            await Alert("이메일 유효시간이 만료되었습니다.");
-            break;
-          default:
-            await Alert("Error");
-            console.error("newError : ", error.message);
-            break;
-        }
-      });
-    toggleOpenHandler("password");
+    try {
+      await changePassword(data.password);
+      await Alert("비밀번호가 정상적으로 변경되었습니다.");
+    } catch (error) {
+      switch (error) {
+        case "Error: New password should be different from the old password.":
+          await Alert("이전 비밀번호와 동일합니다.");
+          break;
+        case "New password should be different from the old password.":
+          await Alert("이전 비밀번호와 동일합니다.");
+          break;
+        case "Auth session missing!":
+          await Alert("이메일 유효시간이 만료되었습니다.");
+          break;
+        default:
+          await Alert("Error");
+          console.error(error);
+          break;
+      }
+    }
+    resetField("password");
+    resetField("passwordConfirm");
+    toggleChangeHandler("password");
   };
 
   // 닉네임 수정
@@ -133,24 +139,27 @@ export const UpdateUser = () => {
       await changeMetaName(data.name);
       patchUserMutation.mutate({ inputValue: { name: data.name }, userId });
     }
-    toggleOpenHandler("name");
+    toggleChangeHandler("name");
   };
 
   const deleteAuth = async () => {
     if (
       await Confirm(
         <>
-          <p>회원탈퇴를 하시겠습니까?</p>
-          <p>탈퇴 후에는 되돌릴 수 없습니다.</p>
+          <p className="w-[400px] pb-6 border-b border-black title-4 font-medium">회원탈퇴</p>
+          <p className="mt-4 text-black body-2">그동안 Stile을 이용해주셔서 감사합니다.</p>
+          <p className="mt-3 body-3 text-gray02">게시글 및 댓글은 탈퇴시 자동삭제 되지 않고 남아있습니다.</p>
+          <p className="body-3 text-gray02">삭제를 원하시는 게시글이 있다면 탈퇴전에 삭제하시기 바랍니다.</p>
         </>,
       )
     ) {
       await deleteUser(userId);
-      await patchUser({ inputValue: { name: "탈퇴한 유저입니다." }, userId });
+      await patchUser({ inputValue: { name: "탈퇴한 유저입니다.", avatar_url: "" }, userId });
       await logout();
       navigate("/");
-      if (prevProfileImg !== "defaultImg") {
-        await deleteImage(prevProfileImg);
+      await Alert("정상적으로 탈퇴되었습니다.");
+      if (prevProfileImageId !== "defaultImg") {
+        void deleteImage(prevProfileImageId);
       }
     }
   };
@@ -159,16 +168,15 @@ export const UpdateUser = () => {
     navigate("/");
     return <p>에러페이지</p>;
   }
+
   const { id: userId, avatar_url: currentProfileImg, name: currentName } = currentUser;
-  const prevProfileImg =
-    currentProfileImg === `${storageUrl}/profileImg/defaultImg`
-      ? "defaultImg"
-      : currentProfileImg.replace(`${storageUrl}/profileImg/`, "");
+  const prevProfileImageId =
+    currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
-      <MypageTitle />
-      <div className="flex w-full mt-[40px]">
+      <MypageTitle title="회원정보수정" isBorder={true} />
+      <div className="flex w-full mt-10">
         {/* 프로필 이미지 */}
         <div className="flex-column items-center w-[328px] gap-[36px]">
           <div className="relative w-[120px]">
@@ -177,9 +185,9 @@ export const UpdateUser = () => {
             ) : (
               <img src={currentProfileImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
             )}
-            <div className="absolute flex justify-center items-center gap-[8px] bottom-0 left-1/2 translate-x-[-50%] translate-y-[25%] rounded-[8px] border bg-white w-[80px] h-[32px]">
+            <div className="absolute bottom-0 flex items-center justify-center w-20 h-8 gap-2 -translate-x-1/2 bg-white border rounded-lg left-1/2 translate-y-1/4">
               <label htmlFor="profileImgButton">
-                <img src={photoCamera} className="w-[16px] h-[16px] cursor-pointer" />
+                <img src={photoCamera} className="w-4 h-4 cursor-pointer" />
               </label>
               <input
                 id="profileImgButton"
@@ -188,14 +196,14 @@ export const UpdateUser = () => {
                 onChange={changeProfileImgHandler}
                 className="hidden"
               />
-              <div className="h-[8px] bg-gray06 border" />
-              <img src={xmark} onClick={resetImgFile} className="w-[16px] h-[16px] cursor-pointer" />
+              <div className="h-2 border bg-gray06" />
+              <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
-          <p className="text-[24px] font-normal leading-[145%]">{`${currentUser.name} 님`}</p>
+          <p className="text-[24px] font-normal leading-[145%]">{`${currentName} 님`}</p>
         </div>
         <div className="flex contents-center w-[624px]">
-          <div className="flex-column w-full gap-[24px]">
+          <div className="w-full gap-6 flex-column">
             {/* 닉네임 form */}
             <div className="gap-2 border-b pb-7 flex-column border-b-gray06">
               <div className="flex gap-6">
@@ -206,7 +214,7 @@ export const UpdateUser = () => {
                   id="nickname"
                   type="button"
                   onClick={() => {
-                    toggleOpenHandler("name");
+                    toggleChangeHandler("name");
                   }}
                   className="w-32 h-12 rounded-lg point-button body-3"
                 >
@@ -221,7 +229,7 @@ export const UpdateUser = () => {
                     <input
                       id={"name"}
                       placeholder={"닉네임"}
-                      defaultValue={currentUser?.name}
+                      defaultValue={currentName}
                       className="auth-input w-[300px]"
                       {...register("name", {
                         ...nameValid,
@@ -251,7 +259,7 @@ export const UpdateUser = () => {
                       type="button"
                       className="w-32 h-12 rounded-lg gray-outline-button body-3"
                       onClick={() => {
-                        toggleOpenHandler("name");
+                        toggleChangeHandler("name");
                       }}
                     >
                       취소
@@ -271,7 +279,7 @@ export const UpdateUser = () => {
                   id="password"
                   type="button"
                   onClick={() => {
-                    toggleOpenHandler("password");
+                    toggleChangeHandler("password");
                   }}
                   className="w-32 h-12 rounded-lg point-button body-3"
                 >
@@ -286,7 +294,11 @@ export const UpdateUser = () => {
                         placeholder="새 비밀번호"
                         type={showPassword.password ? "text" : "password"}
                         className="auth-input"
-                        {...register("password", { ...passwordValid(getValues("passwordConfirm")) })}
+                        {...register("password", {
+                          ...passwordValid(),
+                          validate: (_, formValue) =>
+                            formValue.password === formValue.passwordConfirm || "비밀번호가 일치하지 않습니다.",
+                        })}
                       />
                       <PasswordVisibleButton
                         passwordType={"password"}
@@ -315,7 +327,7 @@ export const UpdateUser = () => {
                       type="button"
                       className="w-32 h-12 rounded-lg gray-outline-button body-3"
                       onClick={() => {
-                        toggleOpenHandler("password");
+                        toggleChangeHandler("password");
                       }}
                     >
                       취소
@@ -328,19 +340,19 @@ export const UpdateUser = () => {
             <div className="relative flex items-center justify-center gap-4">
               <button
                 type="button"
-                className="flex contents-center w-[192px] h-[48px] rounded-[8px] bg-white gray-outline-button body-3"
+                className="flex contents-center w-[192px] h-12 rounded-lg bg-white gray-outline-button body-3"
                 onClick={() => {
                   navigate(-1);
                 }}
               >
-                취소
+                이전
               </button>
-              <div className="right-[-33px] translate-x-full absolute flex items-center gap-[12px]">
-                <p className="text-[14px] font-normal leading-[130%] text-gray02">더 이상 이용하지 않으시나요?</p>
+              <div className="right-[-33px] translate-x-full absolute flex items-center gap-3">
+                <p className="body-3 text-gray02">더 이상 이용하지 않으시나요?</p>
                 <button
                   onClick={deleteAuth}
                   type="button"
-                  className="w-[120px] h-[48px] border border-gray05 text-gray02 rounded-[8px]"
+                  className="w-[120px] h-12 border body-3 border-gray05 text-gray02 rounded-lg"
                 >
                   회원탈퇴
                 </button>

@@ -1,9 +1,10 @@
 import { useState, type ChangeEvent } from "react";
-import { FaRegSquareCheck } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypage, usePagination, useSearchBar } from "hooks";
+import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
+import { useMypageQuery, usePagination, useSearchBar } from "hooks";
+
+import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyLike = () => {
   const [likeIdsToDelete, setLikeIdsToDelete] = useState<string[]>([]);
@@ -12,7 +13,7 @@ export const MyLike = () => {
     return likeIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userLikesResponse, deleteUserLikeMutation } = useMypage();
+  const { userLikesResponse, deleteUserLikeMutation } = useMypageQuery();
   const { data: userLikeData } = userLikesResponse;
 
   const deleteLikes = () => {
@@ -39,8 +40,8 @@ export const MyLike = () => {
   });
 
   return (
-    <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
-      <MypageTitle />
+    <div className={MYPAGE_LAYOUT_STYLE}>
+      <MypageTitle title="마이페이지" isBorder={false} />
       <MypageSubTitle type="like" />
       {pageData.length === 0 ? (
         <EmptyData type="like" />
@@ -62,11 +63,7 @@ export const MyLike = () => {
                   }}
                 />
                 <label htmlFor={likedPost.id}>
-                  {likeIdsToDelete.find((id) => id === likedPost.id) !== undefined ? (
-                    <FaRegSquareCheck className="text-black" />
-                  ) : (
-                    <FaRegSquareCheck className="text-gray05" />
-                  )}
+                  <CheckBoxIcon isCheck={likeIdsToDelete.find((id) => id === likedPost.id) !== undefined} />
                 </label>
                 <p className="w-[80px]">{pageData.length - index}</p>
                 <Link to={`/detail/${post.id as string}`} className="w-[830px]">

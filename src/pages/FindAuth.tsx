@@ -17,15 +17,11 @@ interface FocusTab {
 
 interface FindEmailInput {
   nicknameForEmail: string;
-  phoneMidNumForEmail: string;
-  phoneLastNumForEmail: string;
   idAnswerForEmail: string;
 }
 interface FindPasswordInput {
   emailForPassword: string;
   nicknameForPassword: string;
-  phoneMidNumForPassword: string;
-  phoneLastNumForPassword: string;
   idAnswerForPassword: string;
 }
 
@@ -65,15 +61,15 @@ export const FindAuth = () => {
       return;
     }
 
-    await findEmail({ name, idAnswer, idQuestion: selectIdQuestion })
-      .then((data) => {
-        setIsDoneFind(true);
-        setFindUser(data);
-      })
-      .catch(() => {
-        emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
-        setIsDoneFind(false);
-      });
+    try {
+      const data = await findEmail({ name, idAnswer, idQuestion: selectIdQuestion });
+      setIsDoneFind(true);
+      setFindUser(data);
+    } catch (error) {
+      setIsDoneFind(false);
+      emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
+    }
+    emailReset();
   };
 
   // 비밀번호 찾기
@@ -85,20 +81,28 @@ export const FindAuth = () => {
       return;
     }
 
-    await findPassword({ name, email, idAnswer, idQuestion: selectIdQuestion })
-      .then(async (data) => {
-        await sendEmailForFindPassword(data.email);
-        await Alert("이메일이 전송되었습니다.");
-        navigate("/");
-      })
-      .catch(() => {
-        passwordSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
-      });
+    try {
+      const data = await findPassword({ name, email, idAnswer, idQuestion: selectIdQuestion });
+      void sendEmailForFindPassword(data.email);
+      void Alert("이메일이 전송되었습니다.");
+      navigate("/");
+    } catch (error) {
+      passwordSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
+    }
+    passwordReset();
+  };
+
+  const changeTabHandler = (type: "email" | "password") => {
+    setIsDoneFind(false);
+
+    type === "email"
+      ? setFocusTab({ focusEmail: true, focusPassword: false })
+      : setFocusTab({ focusEmail: false, focusPassword: true });
+    type === "email" ? passwordReset() : emailReset();
   };
 
   useEffect(() => {
     return () => {
-      // 찾은 데이터 초기화
       setFindUser(undefined);
     };
   }, []);
@@ -110,9 +114,7 @@ export const FindAuth = () => {
         <div
           className={focusTab.focusEmail ? TAB_FOCUSED_STYLE : TAB_UNFOCUSED_STYLE}
           onClick={() => {
-            setFocusTab({ focusEmail: true, focusPassword: false });
-            setIsDoneFind(false);
-            passwordReset();
+            changeTabHandler("email");
           }}
         >
           아이디 찾기
@@ -120,9 +122,7 @@ export const FindAuth = () => {
         <div
           className={focusTab.focusPassword ? TAB_FOCUSED_STYLE : TAB_UNFOCUSED_STYLE}
           onClick={() => {
-            setFocusTab({ focusEmail: false, focusPassword: true });
-            setIsDoneFind(false);
-            emailReset();
+            changeTabHandler("password");
           }}
         >
           비밀번호 찾기

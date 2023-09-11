@@ -1,23 +1,24 @@
-import { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { logout } from "api/supabase";
 import hambergerMenu from "assets/headersvg/cate.svg";
-import logOutIcon from "assets/headersvg/LogoutOutline.svg";
+import logOutIcon from "assets/headersvg/Logout.svg";
 import userIcon from "assets/headersvg/user.svg";
 import { Sidebar, useDialog } from "components";
 import { useAuthStore } from "store";
 
-export const Header = () => {
+const IMG_WIDTH_HEIGHT = 32;
+const HeaderMemoization = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
   const { Alert } = useDialog();
 
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
+
   const userUid = currentSession?.user.id;
 
-  // 로그아웃
-  const logoutHandler = async () => {
+  const logoutHandler = useCallback(async () => {
     navigate("/");
     try {
       await logout();
@@ -27,22 +28,20 @@ export const Header = () => {
       await Alert("로그아웃 실패");
       console.error(error);
     }
-  };
+  }, []);
 
-  // 마이페이지 이동
-  const goToMypage = () => {
+  const goToMypage = useCallback(() => {
     if (userUid == null) return;
     navigate("/mypage");
-  };
+  }, []);
 
-  // 로그인페이지 이동
-  const goToLogin = () => {
+  const goToLogin = useCallback(() => {
     navigate("/login");
-  };
+  }, []);
 
-  const openSideBarHandler = (): void => {
+  const openSideBarHandler = useCallback((): void => {
     setIsOpen(true);
-  };
+  }, []);
 
   return (
     <>
@@ -54,38 +53,32 @@ export const Header = () => {
 
           {currentSession === null ? (
             <>
-              {/* 로그인 안되어있는 메뉴 */}
               <div className="flex gap-2 contents-center">
                 <button onClick={goToLogin}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그인</span>
-                  <img src={logOutIcon} alt="로그인 메뉴 이미지" className="rotate-180" />
+
+                  <img src={logOutIcon} alt="로그인" />
                 </button>
                 <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
-                  <img src={hambergerMenu} alt="햄버거 메뉴" />
+                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={hambergerMenu} alt="메뉴" />
                 </button>
               </div>
             </>
           ) : (
             <>
-              {/* 로그인 되어있는 메뉴 */}
-              {/* 로그아웃 */}
               <div className="flex gap-2 contents-center">
                 <button onClick={logoutHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
-                  <img src={logOutIcon} alt="로그아웃" />
+                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={logOutIcon} alt="로그아웃" />
                 </button>
-
-                {/* 마이페이지 */}
                 <button onClick={goToMypage}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">마이페이지버튼</span>
-                  <img src={userIcon} alt="마이 페이지" />
+                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={userIcon} alt="마이 페이지" />
                 </button>
-
-                {/* 햄버거 */}
                 <button onClick={openSideBarHandler}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">햄버거</span>
-                  <img src={hambergerMenu} alt="햄버거 메뉴" />
+                  <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={hambergerMenu} alt="메뉴" />
                 </button>
               </div>
             </>
@@ -96,3 +89,5 @@ export const Header = () => {
     </>
   );
 };
+
+export const Header = React.memo(HeaderMemoization);

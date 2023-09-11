@@ -4,7 +4,7 @@ import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { fetchUserCheckData, signup } from "api/supabase";
-import { type PasswordVisible, PasswordVisibleButton, Select, useDialog } from "components";
+import { type PasswordVisible, PasswordVisibleButton, Select, useDialog, SignupTitle } from "components";
 import { useAuthStore } from "store";
 
 import { emailOptions, idQuestionOptions, idAnswerValid, idValid, nameValid, passwordValid } from "./constant";
@@ -25,8 +25,8 @@ interface Props {
 }
 
 const DUPLICATE_CHECK_BUTTON =
-  "auth-button-text h-[48px] text-black px-[20px] whitespace-nowrap rounded-[8px] white-outline-button";
-const NEXT_PREV_BUTTON = "auth-button auth-button-text text-black mt-[24px]";
+  "auth-button-text h-12 text-black px-5 whitespace-nowrap rounded-lg white-outline-button";
+const SIGNUP_BUTTON = "auth-button auth-button-text text-black my-3";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     setError,
     getValues,
     formState: { errors },
-  } = useForm<SignupInputs>({ mode: "onSubmit" });
+  } = useForm<SignupInputs>({ mode: "all" });
 
   useEffect(() => {
     const getUsers = async () => {
@@ -57,13 +57,30 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   // 중복체크
   const duplicateCheck = (target: "email" | "name") => {
-    if (selectEmail === undefined) {
-      setError("id", { message: "email을 선택해주세요." });
+    const inputIdValue = getValues("id");
+    const inputNameValue = getValues("name");
+
+    if (target === "email" && inputIdValue.trim() === "") {
+      setCheckedDuplicate({ ...checkedDuplicate, email: false });
+      setError("id", { message: "이메일을 입력해주세요." });
       return;
     }
-    const matchUser = fetchUserData.filter((user) => {
-      return target === "name" ? user.name === getValues("name") : user.email === `${getValues("id")}@${selectEmail}`;
-    });
+
+    if (target === "name" && inputNameValue.trim() === "") {
+      setCheckedDuplicate({ ...checkedDuplicate, name: false });
+      setError("name", { message: "닉네임을 입력해주세요." });
+      return;
+    }
+
+    if (selectEmail === undefined) {
+      setError("id", { message: "이메일을 선택해주세요." });
+      return;
+    }
+
+    const matchUser = fetchUserData.filter((user) =>
+      target === "name" ? user.name === inputNameValue : user.email === `${inputIdValue}@${selectEmail}`,
+    );
+
     if (matchUser === null || matchUser.length === 0) {
       setCheckedDuplicate({ ...checkedDuplicate, [target]: true });
     } else {
@@ -77,7 +94,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     const { id } = data;
 
     if (selectEmail === undefined) {
-      setError("id", { message: "email을 선택해주세요." });
+      setError("id", { message: "이메일을 선택해주세요." });
       return;
     }
     if (selectIdQuestion === undefined) {
@@ -98,6 +115,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     const email = `${id}@${selectEmail}`;
     if (!emailPattern.test(email)) {
       setError("id", { message: "이메일 형식이 올바르지 않습니다." });
+      return;
+    }
+    if (email === `@${selectEmail}`) {
+      setError("id", { message: "ID를 입력해주세요." });
       return;
     }
 
@@ -122,17 +143,15 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   }, []);
 
   return (
-    <div className="items-center flex-column my-20 w-[560px] mx-auto">
-      <div className="w-full text-center underline-pb">
-        <p className="title-3 mt-[40px]">회원가입</p>
-      </div>
+    <div className="items-center flex-column m-5 w-[560px] mx-auto">
+      <SignupTitle />
       <SignupStep step={1} />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center mt-[40px] mb-[20px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center my-5">
         {/* 이메일 */}
-        <label htmlFor="email" className="self-start body-4 my-[8px]">
+        <label htmlFor="email" className="self-start my-2 body-4">
           이메일
         </label>
-        <div className="flex items-center gap-[8px] w-full">
+        <div className="flex items-center w-full gap-2">
           <div className="flex-column w-[610px]">
             <input
               {...register("id", {
@@ -180,10 +199,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         )}
 
         {/* 닉네임 */}
-        <label htmlFor="nickname" className="self-start body-4 my-[8px]">
+        <label htmlFor="nickname" className="self-start my-2 body-4">
           닉네임
         </label>
-        <div className="flex items-center gap-[8px] w-full">
+        <div className="flex items-center w-full gap-2">
           <input
             id="nickname"
             type="text"
@@ -206,7 +225,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             중복확인
           </button>
         </div>
-        {checkedDuplicate.name ? (
+        {checkedDuplicate.name && errors.name?.message !== null ? (
           <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
             사용 가능한 닉네임입니다.
           </p>
@@ -215,17 +234,19 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         )}
 
         {/* 비밀번호 */}
-        <label htmlFor="password" className="self-start body-4 my-[8px]">
+        <label htmlFor="password" className="self-start my-2 body-4">
           비밀번호
         </label>
-        <div className="relative flex items-center gap-[8px] w-full">
+        <div className="relative flex items-center w-full gap-2">
           <input
             type={showPassword.password ? "text" : "password"}
             id="password"
             placeholder="비밀번호"
             className="auth-input body-3"
             {...register("password", {
-              ...passwordValid(getValues("passwordCheck")),
+              ...passwordValid(),
+              validate: (_, formValue) =>
+                formValue.password === formValue.passwordCheck || "비밀번호가 일치하지 않습니다.",
             })}
           />
           <PasswordVisibleButton
@@ -267,8 +288,8 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         </div>
         <InvalidText errorsMessage={errors.idAnswer?.message} size={30} />
 
-        <button className={`${NEXT_PREV_BUTTON} point-button`}>회원가입</button>
-        <button className={`${NEXT_PREV_BUTTON} white-outline-button`} type="button" onClick={prevStep}>
+        <button className={`${SIGNUP_BUTTON} point-button`}>회원가입</button>
+        <button className={`${SIGNUP_BUTTON} white-outline-button`} type="button" onClick={prevStep}>
           이전
         </button>
       </form>

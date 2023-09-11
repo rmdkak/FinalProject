@@ -18,20 +18,27 @@ export const fetchComments = async (postId: string) => {
 
 // post(comments)
 export const createCommentsHandler = async (commentData: Tables<"COMMENTS", "Insert">) => {
-  await supabase.from("COMMENTS").insert(commentData).select();
+  const { error } = await supabase.from("COMMENTS").insert(commentData).select();
+  if (error !== null) throw new Error();
 };
 
 // post(스토리지 저장)
 export const saveCommentImageHandler = async ({ id, commentImgFile }: { id: string; commentImgFile: Blob }) => {
-  await supabase.storage.from("Images").upload(`commentImg/${id}`, commentImgFile, {
+  const { error } = await supabase.storage.from("Images").upload(`commentImg/${id}`, commentImgFile, {
     cacheControl: "3600",
     upsert: false,
   });
+  if (error !== null) {
+    console.error(error);
+  }
 };
 // post(스토리지 삭제)
 export const deleteCommentImageHandler = async (currentImg: string) => {
-  currentImg.replace("/", "");
-  await supabase.storage.from("Images").remove([currentImg]);
+  if (currentImg !== null) currentImg.replace("/", "");
+  const { error } = await supabase.storage.from("Images").remove([currentImg]);
+  if (error !== null) {
+    console.error(error);
+  }
 };
 
 // patch(comments)

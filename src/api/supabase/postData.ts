@@ -4,7 +4,7 @@ import { supabase } from "./supabaseClient";
 
 // get
 export const fetchDetailData = async (postId: string) => {
-  const { data, error } = await supabase.from("POSTS").select("*,POSTLIKES (*)").eq("id", postId).single();
+  const { data, error } = await supabase.from("POSTS").select("*,USERS (*),POSTLIKES (*)").eq("id", postId).single();
   if (error != null) {
     console.error("error.message :", error.message);
     return;

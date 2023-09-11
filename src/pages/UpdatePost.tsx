@@ -3,9 +3,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { deletePostImage, savePostImageHandler, storageUrl } from "api/supabase";
+import { deletePostImage, savePostImageHandler, STORAGE_URL } from "api/supabase";
 import { Button, InteriorSection, InvalidText, Modal, useDialog } from "components";
-import { usePosts } from "hooks";
+import { usePostsQuery } from "hooks";
 import { useModalStore, useServiceStore } from "store";
 
 interface Inputs {
@@ -17,7 +17,7 @@ interface Inputs {
 export const UpdatePost = () => {
   const { Alert } = useDialog();
   const navigate = useNavigate();
-  const { fetchDetailMutation, updatePostMutation } = usePosts();
+  const { fetchDetailMutation, updatePostMutation } = usePostsQuery();
   const { data: postData } = fetchDetailMutation;
   const [previewImg, setPreviewImg] = useState<string | null>(null);
   const {
@@ -130,7 +130,7 @@ export const UpdatePost = () => {
             />
           ) : wallPaper.left.image !== null ? (
             <img
-              src={`${storageUrl}${wallPaper.left.image}`}
+              src={`${STORAGE_URL}${wallPaper.left.image}`}
               alt="왼쪽벽지"
               className="w-10 h-10 rounded-full absolute right-[200px] border border-gray05"
             />
@@ -138,7 +138,7 @@ export const UpdatePost = () => {
             <div className="bg-gray06 w-10 h-10 rounded-full absolute right-[200px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${postData.leftWallpaperId}`}
+              src={`${STORAGE_URL}/wallpaper/${postData.leftWallpaperId}`}
               alt="왼쪽벽지"
               className="w-10 h-10 rounded-full absolute right-[200px] border border-gray05"
             />
@@ -151,7 +151,7 @@ export const UpdatePost = () => {
             />
           ) : wallPaper.right.image !== null ? (
             <img
-              src={`${storageUrl}${wallPaper.right.image}`}
+              src={`${STORAGE_URL}${wallPaper.right.image}`}
               alt="오른쪽벽지"
               className="w-10 h-10 rounded-full absolute right-[170px] border border-gray05"
             />
@@ -159,7 +159,7 @@ export const UpdatePost = () => {
             <div className="bg-gray06 w-10 h-10 rounded-full absolute right-[170px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/wallpaper/${postData.rightWallpaperId}`}
+              src={`${STORAGE_URL}/wallpaper/${postData.rightWallpaperId}`}
               alt="오른쪽벽지"
               className="w-10 h-10 rounded-full absolute right-[170px] border border-gray05"
             />
@@ -167,7 +167,7 @@ export const UpdatePost = () => {
           {/* 타일 */}
           {tile.image !== null ? (
             <img
-              src={`${storageUrl}${tile.image}`}
+              src={`${STORAGE_URL}${tile.image}`}
               alt="바닥재"
               className="w-10 h-10 rounded-full absolute right-[140px] border border-gray05"
             />
@@ -175,7 +175,7 @@ export const UpdatePost = () => {
             <div className="bg-gray06 w-10 h-10 rounded-full absolute right-[140px] border border-gray01" />
           ) : (
             <img
-              src={`${storageUrl}/tile/${postData.tileId}`}
+              src={`${STORAGE_URL}/tile/${postData.tileId}`}
               alt="바닥재"
               className="w-10 h-10 rounded-full absolute right-[140px] border border-gray05"
             />
@@ -212,7 +212,7 @@ export const UpdatePost = () => {
         </div>
         {previewImg === null ? (
           postData?.postImage === null ? null : (
-            <img src={`${storageUrl}${postData?.postImage}`} alt="포스트 이미지" className="object-contain w-80" />
+            <img src={`${STORAGE_URL}${postData?.postImage}`} alt="포스트 이미지" className="object-contain w-80" />
           )
         ) : (
           <img src={previewImg} alt="미리보기 이미지" className="object-contain w-80" />

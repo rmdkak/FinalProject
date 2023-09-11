@@ -1,7 +1,8 @@
 import React from "react";
 
 import CloseBtn from "assets/svgs/close.svg";
-import { type Wallpaper, useServiceStore } from "store";
+import { useServiceStore } from "store";
+import { type Wallpaper } from "types/service";
 interface Props {
   item: Wallpaper;
 }
@@ -11,9 +12,6 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
   const { delCustomSelfWallPaper, delCustomSelfTile, checkType, interiorSelectX, setWallPaper, setTile } =
     useServiceStore((state) => state);
 
-  /**
-   * 셀프조합 삭제 이벤트 함수
-   */
   const onClickPreviewCloseBtn = () => {
     if (checkType === "wallPaper") {
       delCustomSelfWallPaper(id as string);
@@ -31,8 +29,8 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
       setTile(item);
     }
   };
-  // 타입가드
-  const CHECK_TYPE_OF_STRING = typeof image === "string" ? image : "";
+
+  const checkTypeOfString = typeof image === "string" ? image : "";
   return (
     <>
       {/* 아이템 리스트 */}
@@ -42,12 +40,11 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
           <img className="w-3 h-3 transition-all opacity-80 hover:opacity-100" src={CloseBtn} alt="닫기 버튼" />
         </button>
         {/* 이미지 */}
-        <img
-          onClick={onClickItem}
-          className={`box-border block h-full cursor-pointer drag-none`}
-          src={CHECK_TYPE_OF_STRING}
-          alt="셀프 조합 이미지"
-        />
+        <picture onClick={onClickItem} className={`box-border block h-full cursor-pointer drag-none`}>
+          <source srcSet={`${checkTypeOfString}`} type="image/webp"></source>
+          <source srcSet={`${checkTypeOfString}`} type="image/jpg"></source>
+          <img src={`${checkTypeOfString}`} alt="셀프 조합 이미지"></img>
+        </picture>
       </div>
     </>
   );
