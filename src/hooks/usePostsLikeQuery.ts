@@ -45,6 +45,7 @@ export const usePostsLikeQuery = () => {
       }
     },
     onSettled: async () => {
+      await queryClient.invalidateQueries(["POSTS"]);
       await queryClient.invalidateQueries({ queryKey });
     },
   });
@@ -75,6 +76,7 @@ export const usePostsLikeQuery = () => {
     },
 
     onSettled: async () => {
+      await queryClient.invalidateQueries(["POSTS"]);
       await queryClient.invalidateQueries({ queryKey });
     },
   });
