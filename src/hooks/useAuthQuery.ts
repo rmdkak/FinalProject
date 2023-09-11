@@ -7,13 +7,11 @@ import { useAuthStore } from "store";
 export const useAuthQuery = () => {
   // const queryClient = useQueryClient();
   const { currentUserId } = useAuthStore();
-  console.log("hooks > useAuthQuery > currentUserId :", currentUserId);
 
   const currentUserResponse = useQuery({
     queryKey: ["auth", currentUserId],
     queryFn: async () => {
       if (currentUserId === undefined) return;
-      console.log("hooks > useAuthQuery > currentUserResponse > currentUserId :", currentUserId);
       return await fetchUser(currentUserId);
     },
     // enabled: currentSession !== null,

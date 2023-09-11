@@ -11,7 +11,6 @@ import { useAuthStore } from "store";
 export const useMypageQuery = () => {
   // const queryClient = useQueryClient();
   const { currentUserId } = useAuthStore();
-  console.log("hooks > useMypageQuery > currentUserId :", currentUserId);
   // const currentLocal = JSON.parse(localStorage.getItem("stile-session-status") ?? "").state.currentSession;
 
   // my post get query
@@ -19,7 +18,6 @@ export const useMypageQuery = () => {
     queryKey: ["mypagePost", currentUserId],
     queryFn: async () => {
       if (currentUserId === undefined) return;
-      console.log("hooks > useMypageQuery > userPostsResponse currentUserId :", currentUserId);
       return await fetchMyPostsData(currentUserId);
     },
     enabled: currentUserId !== undefined,

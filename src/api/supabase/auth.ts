@@ -143,9 +143,7 @@ export const deleteUser = async (userUid: string) => {
  * @method get
  */
 export const fetchUser = async (userId: string) => {
-  console.log("supabase > auth > fetchUser > userId :", userId);
   const { data, error } = await supabase.from(TABLE).select("*").eq("id", userId).single();
-  console.log("error :", error);
   if (error !== null) throw new Error(error.message);
   return data;
 };

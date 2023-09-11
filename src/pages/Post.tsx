@@ -28,9 +28,8 @@ interface SelectedData {
 export const Post = () => {
   const queryClient = useQueryClient();
   const { Alert } = useDialog();
-  const { currentSession } = useAuthStore();
-  const userId = currentSession?.user.id;
-  const nickname = currentSession?.user.user_metadata.name;
+  const { currentSession, currentUserId } = useAuthStore();
+  // const userId = currentSession?.id;
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   // const { createPostMutation } = usePostsQuery();
@@ -100,10 +99,8 @@ export const Post = () => {
           id: UUID,
           title: data.title,
           content: data.textarea,
-          bookmark: 0,
-          nickname,
           postImage,
-          userId,
+          userId: currentUserId,
           tileId: tile.id,
           leftWallpaperId: wallPaper.left.id,
           rightWallpaperId: wallPaper.right.id,
@@ -139,7 +136,9 @@ export const Post = () => {
   );
 
   useEffect(() => {
-    if (currentSession === null) navigate("/login");
+    if (currentSession === null) {
+      navigate("/login");
+    }
   }, [currentSession]);
 
   const movePageHandler = (moveEvent: string) => {
