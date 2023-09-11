@@ -2,13 +2,11 @@ import { AuthError } from "@supabase/supabase-js";
 import { type LoginInputs } from "pages";
 import { type Tables } from "types/supabase";
 
-import { auth, storageUrl, supabase } from "./supabaseClient";
+import { auth, supabase } from "./supabaseClient";
 
 const TABLE = "USERS";
 const STORAGE = "Images";
 const PATH = "profileImg/";
-
-const defaultProfileImg = `${storageUrl}/profileImg/defaultImg`;
 
 interface SignupInputs {
   email: string;
@@ -51,14 +49,14 @@ export const signup = async (inputValue: SignupInputs) => {
   const { data, error } = await auth.signUp({
     email,
     password,
-    options: { data: { name, avatar_url: defaultProfileImg } },
+    options: { data: { name, avatar_url: "" } },
   });
   if (data.user != null) {
     await addUser({
       id: data.user.id,
       email,
       name,
-      avatar_url: defaultProfileImg,
+      avatar_url: "",
       idAnswer,
       idQuestion: selectIdQuestion,
     });
@@ -168,17 +166,28 @@ export const fetchUserCheckData = async () => {
 export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
   const { error } = await supabase.from(TABLE).insert([inputValue]).select();
 
-  if (error !== null) throw new Error(error.message);
+  if (error !== null) {
+    console.error(error.message);
+  }
 };
 
 /**
  * @table "USERS"
  * @method patch
  */
-export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"USERS", "Update">; userId: string }) => {
-  const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select();
+export const patchUser = async ({
+  inputValue,
+  userId,
+}: {
+  inputValue: Tables<"USERS", "Update">;
+  userId: string | undefined;
+}) => {
+  if (userId === undefined) return;
+  const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select("*");
 
-  if (error !== null) throw new Error(error.message);
+  if (error !== null) {
+    console.error(error.message);
+  }
 };
 
 /**

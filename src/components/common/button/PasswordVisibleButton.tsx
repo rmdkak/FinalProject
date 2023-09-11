@@ -14,22 +14,22 @@ interface Props {
 
 export const PasswordVisibleButton = ({ passwordType, isVisibleState, setIsVisibleState }: Props) => {
   return (
-    <>
+    <button type="button" className="absolute -translate-y-1/2 right-6 top-1/2">
       {isVisibleState[passwordType] ?? false ? (
         <AiOutlineEyeInvisible
-          className="absolute h-4 text-2xl -translate-y-1/2 cursor-pointer right-6 top-1/2 text-gray04"
+          className="h-4 text-gray04"
           onClick={() => {
             setIsVisibleState({ ...isVisibleState, [passwordType]: false });
           }}
         />
       ) : (
         <AiOutlineEye
-          className="absolute h-4 text-2xl -translate-y-1/2 cursor-pointer right-6 top-1/2 text-gray04"
+          className="h-4 text-gray04"
           onClick={() => {
             setIsVisibleState({ ...isVisibleState, [passwordType]: true });
           }}
         />
       )}
-    </>
+    </button>
   );
 };

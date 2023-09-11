@@ -1,12 +1,13 @@
 import { type ChangeEvent, useState } from "react";
 
-import { storageUrl } from "api/supabase";
 import checkboxtrue from "assets/svgs/checkboxtrue.svg";
 import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
-import { EmptyData, Modal, MypageSubTitle, MypageTitle, BookmarkItem } from "components";
+import { EmptyData, Modal, MypageSubTitle, MypageTitle, PreviewItem } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
-import { useMypage, usePagination } from "hooks";
+import { useMypageQuery, usePagination } from "hooks";
 import { useModalStore } from "store";
+
+import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);
@@ -17,15 +18,13 @@ export const MyBookmark = () => {
     return bookmarkIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userBookmarksResponse, deleteUserBookmarkMutation } = useMypage();
+  const { userBookmarksResponse, deleteUserBookmarkMutation } = useMypageQuery();
   const { data: userBookmarkData } = userBookmarksResponse;
 
-  // 선택 된 아이디 배열 삭제
   const deletePosts = () => {
     deleteUserBookmarkMutation.mutate(bookmarkIdsToDelete);
   };
 
-  // 체크 상태 변경
   const onChange = (event: ChangeEvent<HTMLInputElement>, id: string) => {
     const filteredBookmarkIds = filteredBookmarkIdsHandler(id);
     if (event.target.checked) {
@@ -37,10 +36,6 @@ export const MyBookmark = () => {
     }
   };
 
-  const createUrl = (type: "tile" | "wallpaper", interiorId: string) => {
-    return `${storageUrl}/${type}/${interiorId}`;
-  };
-
   const { pageData, showPageComponent } = usePagination({
     data: userBookmarkData,
     dataLength: userBookmarkData === undefined ? 0 : userBookmarkData.length,
@@ -48,8 +43,8 @@ export const MyBookmark = () => {
   });
 
   return (
-    <div className="flex-column items-center mt-[80px] w-[1280px] mx-auto">
-      <MypageTitle />
+    <div className={MYPAGE_LAYOUT_STYLE}>
+      <MypageTitle title="마이페이지" isBorder={false} />
       <MypageSubTitle type="bookmark" />
       {pageData.length === 0 ? (
         <EmptyData type="bookmark" />
@@ -63,7 +58,6 @@ export const MyBookmark = () => {
                   bookmarkIdsToDelete.find((id) => id === bookmark.id) === undefined ? "border-gray05" : "border-black"
                 } rounded-[12px] w-[400px] gap-[16px] h-[200px]`}
               >
-                {/* 체크박스 */}
                 {isDeleteMode ? (
                   <div className="w-full h-full">
                     <input
@@ -87,8 +81,6 @@ export const MyBookmark = () => {
                   </div>
                 ) : null}
 
-                {/* 조합 이미지 */}
-
                 <button
                   onMouseUp={() => {
                     if (isDeleteMode) return;
@@ -100,7 +92,7 @@ export const MyBookmark = () => {
                   }}
                   className={`absolute top-0 flex w-full h-full mx-auto contents-center ${isDeleteMode ? "z-[0]" : ""}`}
                 >
-                  <BookmarkItem
+                  <PreviewItem
                     leftWallpaperId={bookmark.leftWallpaperId}
                     rightWallpaperId={bookmark.rightWallpaperId}
                     tileId={bookmark.tileId}
@@ -110,9 +102,10 @@ export const MyBookmark = () => {
                 {targetModal === bookmark.id && (
                   <Modal title="">
                     <ShowRoom
-                      leftWallpaperBg={createUrl("wallpaper", bookmark.leftWallpaperId)}
-                      rightWallpaperBg={createUrl("wallpaper", bookmark.rightWallpaperId)}
-                      tileBg={createUrl("tile", bookmark.tileId)}
+                      leftWallpaperBg={bookmark.leftWallpaperId}
+                      rightWallpaperBg={bookmark.rightWallpaperId}
+                      tileBg={bookmark.tileId}
+                      page={"mypage"}
                     />
                   </Modal>
                 )}
@@ -132,7 +125,7 @@ export const MyBookmark = () => {
               }}
               className="w-24 h-12 rounded-lg gray-outline-button body-3"
             >
-              취소
+              취소하기
             </button>
             <button onClick={deletePosts} className="w-24 h-12 rounded-lg point-button body-3">
               선택삭제
@@ -145,11 +138,10 @@ export const MyBookmark = () => {
             }}
             className="w-24 h-12 rounded-lg gray-outline-button body-3"
           >
-            편집
+            편집하기
           </button>
         )}
       </div>
-      {/* 페이지네이션 */}
       <div className="mt-[120px]">{showPageComponent}</div>
     </div>
   );

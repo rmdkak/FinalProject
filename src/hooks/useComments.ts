@@ -1,84 +1,128 @@
-import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import uuid from "react-uuid";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  createCommentsHandler,
-  createReplyHandler,
-  patchCommentsHandler,
-  deleteCommentHandler,
-  patchReplyHandler,
-  deleteReplyHandler,
-  fetchComments,
-} from "api/supabase";
+import { deleteCommentImageHandler, saveCommentImageHandler } from "api/supabase";
+import { useDialog } from "components";
+import { useCommentsQuery, usePostsQuery } from "hooks";
 
 export const useComments = () => {
-  const queryClient = useQueryClient();
-  const { id: postId } = useParams();
+  const navigate = useNavigate();
+  const [openReply, setOpenReply] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string>("");
+  const [currentImg, setCurrentImg] = useState<string | null>(null);
+  const [newComment, setNewComment] = useState<string>("");
+  const [selectedCommentImgFile, setSelectedCommentImgFile] = useState<File | null>(null);
 
-  // get(comments)
-  const fetchCommentsMutation = useQuery({
-    queryKey: ["COMMENTS", postId],
-    queryFn: async () => {
-      return await fetchComments(postId as string);
-    },
-    enabled: postId !== undefined,
-  });
+  const { Confirm, Alert } = useDialog();
+  const { deleteCommentMutation, deleteReplyMutation, updateCommentMutation, updateReplyMutation } = useCommentsQuery();
+  const { deletePostMutation } = usePostsQuery();
 
-  // post(comments)
-  const createCommentMutation = useMutation({
-    mutationFn: createCommentsHandler,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["COMMENTS"]);
-    },
-  });
+  const UUID = uuid();
 
-  // patch(comments)
-  const updateCommentMutation = useMutation({
-    mutationFn: patchCommentsHandler,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["COMMENTS"]);
-    },
-  });
+  const handleReplyClick = (commentId: string) => {
+    if (openReply === commentId) {
+      setOpenReply(null);
+    } else {
+      setOpenReply(commentId);
+    }
+  };
 
-  // delete(comments)
-  const deleteCommentMutation = useMutation({
-    mutationFn: deleteCommentHandler,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["COMMENTS"]);
-    },
-  });
+  const deleteCommentHandler = async (id: string, type: "comment" | "reply") => {
+    try {
+      const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
+      if (checkDelete) type === "comment" ? deleteCommentMutation.mutate(id) : deleteReplyMutation.mutate(id);
+    } catch (error) {
+      console.error("error :", error);
+    }
+  };
 
-  // post(reply)
-  const createReplyMutation = useMutation({
-    mutationFn: createReplyHandler,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["COMMENTS"]);
-    },
-  });
+  const autoResizeTextArea = (element: HTMLTextAreaElement) => {
+    element.style.height = "auto";
+    element.style.height = `${element.scrollHeight}px`;
+    setNewComment(element.value);
+  };
 
-  // patch(reply)
-  const updateReplyMutation = useMutation({
-    mutationFn: patchReplyHandler,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["COMMENTS"]);
-    },
-  });
+  const updateCommentHandler = async (id: string, type: "comment" | "reply") => {
+    if (newComment === "") {
+      await Alert("댓글은 1글자 이상 입력해주세요.");
+      return;
+    }
 
-  // delete(reply)
-  const deleteReplyMutation = useMutation({
-    mutationFn: deleteReplyHandler,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["COMMENTS"]);
-    },
-  });
+    const newCommentImg = selectedCommentImgFile === null ? currentImg : `/commentImg/${UUID}`;
+
+    if (selectedCommentImgFile !== null) {
+      const allowedExtensions = ["png", "jpeg", "jpg", "gif"];
+      const fileExtension = selectedCommentImgFile.name.split(".").pop()?.toLowerCase();
+      if (fileExtension === undefined) return;
+      if (!allowedExtensions.includes(fileExtension)) {
+        await Alert("이미지 파일(.png, .jpeg, .jpg, .gif)만 업로드 가능합니다.");
+        return;
+      }
+
+      await saveCommentImageHandler({ id: UUID, commentImgFile: selectedCommentImgFile });
+      await deleteCommentImageHandler(currentImg as string);
+    }
+
+    if (type === "comment") updateCommentMutation.mutate({ commentId: id, newComment, newCommentImg });
+    if (type === "reply") updateReplyMutation.mutate({ replyId: id, newReply: newComment });
+    setSelectedCommentImgFile(null);
+    setSelectedId("");
+  };
+
+  const openCommentUpdateForm = (id: string, content: string, commentImg?: string | null | undefined) => {
+    setSelectedId(id);
+    setNewComment(content);
+    if (commentImg !== null && commentImg !== undefined) setCurrentImg(commentImg);
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file != null) {
+      setSelectedCommentImgFile(file);
+    }
+  };
+
+  const deletePostHandler = async (id: string) => {
+    try {
+      const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
+      if (checkDelete) {
+        deletePostMutation.mutate(id);
+        navigate("/community");
+      }
+    } catch (error) {
+      console.error("error :", error);
+    }
+  };
+
+  const movePageHandler = (moveEvent: "back" | "community" | "update", postId: string) => {
+    switch (moveEvent) {
+      case "back":
+        navigate(-1);
+        break;
+      case "community":
+        navigate("/community");
+        break;
+      case "update":
+        navigate(`/updatepost/${postId}`);
+        break;
+    }
+  };
 
   return {
-    fetchCommentsMutation,
-    createCommentMutation,
-    updateCommentMutation,
-    deleteCommentMutation,
-    createReplyMutation,
-    updateReplyMutation,
-    deleteReplyMutation,
+    selectedId,
+    setSelectedId,
+    selectedCommentImgFile,
+    setSelectedCommentImgFile,
+    openReply,
+    setOpenReply,
+    handleReplyClick,
+    deleteCommentHandler,
+    autoResizeTextArea,
+    updateCommentHandler,
+    openCommentUpdateForm,
+    handleImageChange,
+    deletePostHandler,
+    movePageHandler,
   };
 };

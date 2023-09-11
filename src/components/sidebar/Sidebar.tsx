@@ -11,13 +11,14 @@ interface Props {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
+const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
   const navigate = useNavigate();
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
   const { Alert } = useDialog();
 
   // 로그아웃
   const logoutHandler = async () => {
+    closeSideBarHandler();
     navigate("/");
     try {
       await logout();
@@ -35,7 +36,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
 
   return (
     <>
-      <dialog className=" fixed z-[9110] top-0 box-border py-8 px-20 right-0 mr-0  h-full w-[25rem]" open={isOpen}>
+      <dialog className=" fixed z-[9110] top-0 box-border py-8 px-10 right-0 mr-0  h-full w-80" open={isOpen}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-title text-[1.25em]">STILE</h2>
           <button onClick={closeSideBarHandler} className="flex contents-center">
@@ -43,17 +44,16 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
           </button>
         </div>
 
-        {/* 로그인 토글 */}
         <div className="pb-3 mb-8 border-b border-black">
-          <ul className="flex text-[0.75rem] font-[#1a1a1a] ">
+          <ul className="flex gap-4 text-black body-3">
             {currentSession === null ? (
               <>
-                <li className="mr-4 cursor-pointer text-[#1a1a1a]">
+                <li>
                   <Link onClick={closeSideBarHandler} to="/login">
                     로그인
                   </Link>
                 </li>
-                <li className="cursor-pointer text-[#1a1a1a]">
+                <li>
                   <Link onClick={closeSideBarHandler} to="/signup">
                     회원가입
                   </Link>
@@ -61,13 +61,15 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
               </>
             ) : (
               <>
-                <li className="mr-4 cursor-pointer text-[#1a1a1a]">
+                <li>
                   <Link onClick={closeSideBarHandler} to={"/mypage"}>
                     마이페이지
                   </Link>
                 </li>
-                <li onClick={logoutHandler} className="cursor-pointer text-[#1a1a1a]">
-                  로그아웃
+                <li>
+                  <Link onClick={logoutHandler} to={"/"}>
+                    로그아웃
+                  </Link>
                 </li>
               </>
             )}
@@ -75,20 +77,25 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
         </div>
 
         <div>
-          <ul>
-            <li className="mb-4 cursor-pointer text-[#1a1a1a]">
+          <ul className="gap-4 text-black flex-column body-1">
+            <li className="duration-500 text-gray03 hover:text-black">
               <Link onClick={closeSideBarHandler} to="/interior-preview">
                 인테리어 조합
               </Link>
             </li>
-            <li className="mb-4 cursor-pointer text-[#1a1a1a] ">
+            <li className="duration-500 text-gray03 hover:text-black">
               <Link onClick={closeSideBarHandler} to="/community">
                 커뮤니티
               </Link>
             </li>
-            <li className="cursor-pointer ">
-              <Link onClick={closeSideBarHandler} to="/">
-                브랜드 소개
+            <li className="duration-500 text-gray03 hover:text-black">
+              <Link onClick={closeSideBarHandler} to="/eventlist">
+                이벤트
+              </Link>
+            </li>
+            <li className="duration-500 text-gray03 hover:text-black">
+              <Link onClick={closeSideBarHandler} to="/inquire">
+                1:1문의하기
               </Link>
             </li>
           </ul>
@@ -103,3 +110,5 @@ export const Sidebar = ({ isOpen, setIsOpen }: Props): JSX.Element => {
     </>
   );
 };
+
+export const Sidebar = React.memo(SidebarMemoization);

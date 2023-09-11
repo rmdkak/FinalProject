@@ -73,8 +73,7 @@ export const TERMS_2 = `개인정보 수집 및 이용동의 약관
 
 5. 권리의 행사
   귀하는 개인정보에 대한 열람, 정정, 삭제, 처리정지 등의 권리를 행사할 수 있으며, 이와 관련된 문의 및 요청은 아래 연락처로 문의하시기 바랍니다.
-    - 이메일: privacy@company.com
-    - 전화번호: 123-4567-8901
+    - 이메일: rmdkak99786@naver.com
 
 6. 개인정보의 안전성 보장
   당사는 개인정보보호를 위해 기술적, 관리적, 물리적 보호조치를 강구하며, 개인정보의 분실, 도난, 누출, 변조 등을 방지하기 위한 최선의 노력을 다하고 있습니다.
@@ -97,20 +96,19 @@ export const idQuestionOptions = [
   "나의 아버지 성함은?",
 ];
 
-export const passwordValid = (passwordConfirm: string) => ({
+export const passwordValid = () => ({
   required: "비밀번호를 입력해주세요.",
   pattern: {
     value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
   },
   minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-  validate: (value: string) => passwordConfirm === value || "비밀번호가 일치하지 않습니다.",
 });
 
 export const nameValid = {
   required: "닉네임은 필수 입력 사항입니다.",
   minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
-  maxLength: { value: 10, message: "닉네임이 너무 깁니다." },
+  maxLength: { value: 8, message: "닉네임이 너무 깁니다." },
 };
 
 export const idValid = {

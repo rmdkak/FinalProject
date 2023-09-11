@@ -26,8 +26,8 @@ export const Dialog = ({ onClose, onSucess, type, children }: Props) => {
         <div>{children}</div>
         {type === "Confirm" ? (
           <div className="mt-8">
-            <Button onClick={onSucess}>확인</Button>
             <Button onClick={onClose}>취소</Button>
+            <Button onClick={onSucess}>확인</Button>
           </div>
         ) : (
           <div className="mt-8">

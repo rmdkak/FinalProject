@@ -14,16 +14,22 @@ const Router = () => {
           <Route path="/updatepost/:id" element={<Pages.UpdatePost />} />
           <Route path="/detail/:id" element={<Pages.Detail />} />
           <Route path="/community" element={<Pages.Community />} />
+          <Route path="/inquire" element={<Pages.Inquiry />} />
           <Route path="/mypage" element={<Pages.Mypage />} />
           <Route path="/mypage/update" element={<Pages.UpdateUser />} />
           <Route path="/mypage/post" element={<Pages.MyPost />} />
           <Route path="/mypage/comment" element={<Pages.MyComment />} />
           <Route path="/mypage/bookmark" element={<Pages.MyBookmark />} />
           <Route path="/mypage/like" element={<Pages.MyLike />} />
+          <Route path="/mypage/inquiry" element={<Pages.MyInquiry />} />
           <Route path="/login" element={<Pages.Login />} />
           <Route path="/find-auth/:focus" element={<Pages.FindAuth />} />
           <Route path="/update-password" element={<Pages.UpdatePassword />} />
           <Route path="/signup" element={<Pages.Signup />} />
+          <Route path="/adminpage" element={<Pages.AdminPage />} />
+          <Route path="/*" element={<Pages.Error />} />
+          <Route path="/event/:id" element={<Pages.Event />} />
+          <Route path="/eventlist" element={<Pages.EventList />} />
         </Routes>
       </Layout>
     </BrowserRouter>
