@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { BsCalculator } from "react-icons/bs";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import share from "assets/svgs/icon_share.svg";
 import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview, Share } from "components";
-import { useBookmarkQuery, useBookmark, useMovePage } from "hooks";
+import { useBookmark } from "hooks/useBookmark";
+import { useBookmarkQuery } from "hooks/useBookmarkQuery";
+import { useMovePage } from "hooks/useMovePage";
 import { useModalStore, useServiceStore } from "store";
 import { useFurniture } from "store/useFurniture";
 import { type FetchItemBookmark } from "types/service";

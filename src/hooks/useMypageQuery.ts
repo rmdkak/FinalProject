@@ -1,17 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  deleteBookmarksData,
+  deleteCommentsData,
+  deleteInquiryData,
+  deleteLikesData,
+  deletePostsData,
   fetchMyBookmarksData,
   fetchMyCommentsData,
   fetchMyInquiry,
   fetchMyLikesData,
   fetchMyPostsData,
-} from "api/supabase";
+} from "api/supabase/mypageData";
 import { useAuthStore } from "store";
 
 export const useMypageQuery = () => {
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const { currentUserId } = useAuthStore();
-  // const currentLocal = JSON.parse(localStorage.getItem("stile-session-status") ?? "").state.currentSession;
 
   // my post get query
   const userPostsResponse = useQuery({
@@ -24,12 +28,12 @@ export const useMypageQuery = () => {
   });
 
   // my post delete query
-  // const deleteUserPostsMutation = useMutation({
-  //   mutationFn: deletePostsData,
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({ queryKey: ["mypagePost"] });
-  //   },
-  // });
+  const deleteUserPostsMutation = useMutation({
+    mutationFn: deletePostsData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypagePost"] });
+    },
+  });
 
   // my comment get query
   const userCommentsResponse = useQuery({
@@ -42,12 +46,12 @@ export const useMypageQuery = () => {
   });
 
   // my comment delete query
-  // const deleteUserCommentMutation = useMutation({
-  //   mutationFn: deleteCommentsData,
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({ queryKey: ["mypageComment"] });
-  //   },
-  // });
+  const deleteUserCommentMutation = useMutation({
+    mutationFn: deleteCommentsData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageComment"] });
+    },
+  });
 
   // my bookmark get query
   const userBookmarksResponse = useQuery({
@@ -60,12 +64,12 @@ export const useMypageQuery = () => {
   });
 
   // my bookmark delete query
-  // const deleteUserBookmarkMutation = useMutation({
-  //   mutationFn: deleteBookmarksData,
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({ queryKey: ["mypageBookmark"] });
-  //   },
-  // });
+  const deleteUserBookmarkMutation = useMutation({
+    mutationFn: deleteBookmarksData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageBookmark"] });
+    },
+  });
 
   // my like get query
   const userLikesResponse = useQuery({
@@ -78,12 +82,12 @@ export const useMypageQuery = () => {
   });
 
   // my like delete query
-  // const deleteUserLikeMutation = useMutation({
-  //   mutationFn: deleteLikesData,
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({ queryKey: ["mypageLike"] });
-  //   },
-  // });
+  const deleteUserLikeMutation = useMutation({
+    mutationFn: deleteLikesData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageLike"] });
+    },
+  });
 
   // my inquiry get query
   const userInquiryResponse = useQuery({
@@ -95,18 +99,23 @@ export const useMypageQuery = () => {
     enabled: currentUserId !== undefined,
   });
 
-  // const deleteUserInquiryMutation = useMutation({
-  //   mutationFn: deleteInquiryData,
-  //   onSuccess: async () => {
-  //     await queryClient.invalidateQueries({ queryKey: ["mypageInquiry"] });
-  //   },
-  // });
+  const deleteUserInquiryMutation = useMutation({
+    mutationFn: deleteInquiryData,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["mypageInquiry"] });
+    },
+  });
 
   return {
     userPostsResponse,
+    deleteUserPostsMutation,
     userCommentsResponse,
+    deleteUserCommentMutation,
     userBookmarksResponse,
+    deleteUserBookmarkMutation,
     userLikesResponse,
+    deleteUserLikeMutation,
     userInquiryResponse,
+    deleteUserInquiryMutation,
   };
 };

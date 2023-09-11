@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import { addUser, auth, fetchUserCheckData } from "api/supabase";
+import { addUser, fetchUserCheckData } from "api/supabase/auth";
+import { auth } from "api/supabase/supabaseClient";
 import Router from "shared/Router";
 import { useAuthStore } from "store";
 

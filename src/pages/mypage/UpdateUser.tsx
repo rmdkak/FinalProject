@@ -3,7 +3,6 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   changeMetaAvatar,
   changeMetaName,
@@ -12,10 +11,9 @@ import {
   deleteUser,
   fetchUserCheckData,
   logout,
-  patchUser,
-  STORAGE_URL,
   uploadImage,
-} from "api/supabase";
+} from "api/supabase/auth";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
@@ -28,7 +26,7 @@ import {
   nameValid,
   useDialog,
 } from "components";
-import { useAuthQuery } from "hooks";
+import { useAuthQuery } from "hooks/useAuthQuery";
 import { useAuthStore } from "store";
 
 interface UpdateInput {
@@ -47,8 +45,7 @@ export const UpdateUser = () => {
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
 
-  // const { currentUserResponse, patchUserMutation } = useAuthQuery();
-  const { currentUserResponse } = useAuthQuery();
+  const { currentUserResponse, patchUserMutation } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
 
   const { currentSession } = useAuthStore();
@@ -57,16 +54,7 @@ export const UpdateUser = () => {
     return <></>;
   }
 
-  const queryClient = useQueryClient();
-  const patchUserMutation = useMutation({
-    mutationFn: patchUser,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["auth"]);
-    },
-  });
-
   const { avatar_url: currentProfileImg, name: currentName } = currentSession.user.user_metadata;
-  // const currentProfileImg = currentSession.user.user_metadata.avatar_url;
   const userId = currentSession.user.id;
   const prevProfileImageId =
     currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");

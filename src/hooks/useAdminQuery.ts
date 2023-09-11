@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  addEventData,
   addManToManData,
   addReportData,
   addTileData,
@@ -18,7 +17,8 @@ import {
   fetchReportData,
   patchManToManData,
   fetchEventDetailData,
-} from "api/supabase";
+  addEventData,
+} from "api/supabase/admin";
 
 export const useAdminQuery = () => {
   const { id } = useParams();

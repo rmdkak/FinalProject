@@ -1,12 +1,11 @@
 import { type ChangeEvent, useState } from "react";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteBookmarksData } from "api/supabase";
 import checkboxtrue from "assets/svgs/checkboxtrue.svg";
 import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
 import { EmptyData, Modal, MypageSubTitle, MypageTitle, PreviewItem } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
-import { useMypageQuery, usePagination } from "hooks";
+import { useMypageQuery } from "hooks/useMypageQuery";
+import { usePagination } from "hooks/usePagination";
 import { useModalStore } from "store";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
@@ -15,21 +14,13 @@ export const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const { targetModal, setTargetModal, onOpenModal } = useModalStore();
-  const queryClient = useQueryClient();
 
   const filteredBookmarkIdsHandler = (selectId: string) => {
     return bookmarkIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userBookmarksResponse } = useMypageQuery();
+  const { userBookmarksResponse, deleteUserBookmarkMutation } = useMypageQuery();
   const { data: userBookmarkData } = userBookmarksResponse;
-
-  const deleteUserBookmarkMutation = useMutation({
-    mutationFn: deleteBookmarksData,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["mypageBookmark"] });
-    },
-  });
 
   const deletePosts = () => {
     deleteUserBookmarkMutation.mutate(bookmarkIdsToDelete);

@@ -1,5 +1,3 @@
-import React from "react";
-
 import CloseBtn from "assets/svgs/close.svg";
 import { useServiceStore } from "store";
 import { type Wallpaper } from "types/service";

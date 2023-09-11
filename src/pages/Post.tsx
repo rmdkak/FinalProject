@@ -3,9 +3,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createPostHandler, savePostImageHandler, STORAGE_URL } from "api/supabase";
+import { savePostImageHandler } from "api/supabase/postData";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { Button, InteriorSection, Modal, useDialog } from "components";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -26,20 +27,11 @@ interface SelectedData {
   tile: WallorTile | null;
 }
 export const Post = () => {
-  const queryClient = useQueryClient();
   const { Alert } = useDialog();
   const { currentSession, currentUserId } = useAuthStore();
-  // const userId = currentSession?.id;
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
-  // const { createPostMutation } = usePostsQuery();
-
-  const createPostMutation = useMutation({
-    mutationFn: createPostHandler,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries(["POSTS"]);
-    },
-  });
+  const { createPostMutation } = usePostsQuery();
 
   const {
     register,

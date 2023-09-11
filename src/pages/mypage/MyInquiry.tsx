@@ -1,26 +1,16 @@
 import { type ChangeEvent, useState } from "react";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteInquiryData } from "api/supabase";
 import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypageQuery } from "hooks";
+import { useMypageQuery } from "hooks/useMypageQuery";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyInquiry = () => {
-  const queryClient = useQueryClient();
-  const { userInquiryResponse } = useMypageQuery();
+  const { userInquiryResponse, deleteUserInquiryMutation } = useMypageQuery();
   const { data: userInquiryData } = userInquiryResponse;
 
   const [isOpenInquiry, setIsOpenInquiry] = useState<string>();
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
-
-  const deleteUserInquiryMutation = useMutation({
-    mutationFn: deleteInquiryData,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["mypageInquiry"] });
-    },
-  });
 
   const openCommentHandler = (commentId: string) => {
     isOpenInquiry !== undefined ? setIsOpenInquiry(undefined) : setIsOpenInquiry(commentId);
@@ -71,7 +61,10 @@ export const MyInquiry = () => {
                     }}
                   />
                   <label htmlFor={post.id}>
-                    <CheckBoxIcon isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined} />
+                    <CheckBoxIcon
+                      type="pointColor"
+                      isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined}
+                    />
                   </label>
                   <p className="w-[80px]">{index + 1}</p>
                   <p className="w-[40px]">{post.category}</p>

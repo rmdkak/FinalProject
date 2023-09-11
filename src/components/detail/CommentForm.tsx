@@ -3,9 +3,9 @@ import { AiOutlineCamera, AiFillCloseCircle } from "react-icons/ai";
 import { useParams } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { saveCommentImageHandler } from "api/supabase";
+import { saveCommentImageHandler } from "api/supabase/commentData";
 import { useDialog } from "components";
-import { useCommentsQuery } from "hooks";
+import { useCommentsQuery } from "hooks/useCommentsQuery";
 import { useAuthStore } from "store";
 
 const textAreaMaxLength = 500;

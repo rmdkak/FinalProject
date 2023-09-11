@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MdContactSupport, MdAnnouncement, MdFactCheck, MdLibraryAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-import { ADMIN_ID } from "api/supabase";
+import { ADMIN_ID } from "api/supabase/supabaseClient";
 import { useAuthStore } from "store";
 
 import { DataForm } from "./DataForm";

@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import noImage from "assets/no_image.png";
 import { DateConvertor, CommunitySkeleton } from "components";
-import { usePagination, usePostsQuery, useSearchBar } from "hooks";
 import { type Tables } from "types/supabase";
+
+import { usePagination } from "./usePagination";
+import { usePostsQuery } from "./usePostsQuery";
+import { useSearchBar } from "./useSearchBar";
 
 interface Props {
   dataLength: number;

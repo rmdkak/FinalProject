@@ -1,30 +1,22 @@
 import { useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteLikesData } from "api/supabase";
 import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypageQuery, usePagination, useSearchBar } from "hooks";
+import { useMypageQuery } from "hooks/useMypageQuery";
+import { usePagination } from "hooks/usePagination";
+import { useSearchBar } from "hooks/useSearchBar";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
 export const MyLike = () => {
-  const queryClient = useQueryClient();
   const [likeIdsToDelete, setLikeIdsToDelete] = useState<string[]>([]);
 
   const filteredLikeIdsHandler = (selectId: string) => {
     return likeIdsToDelete.filter((id) => id !== selectId);
   };
 
-  const { userLikesResponse } = useMypageQuery();
+  const { userLikesResponse, deleteUserLikeMutation } = useMypageQuery();
   const { data: userLikeData } = userLikesResponse;
-
-  const deleteUserLikeMutation = useMutation({
-    mutationFn: deleteLikesData,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["mypageLike"] });
-    },
-  });
 
   const deleteLikes = () => {
     deleteUserLikeMutation.mutate(likeIdsToDelete);
@@ -73,7 +65,10 @@ export const MyLike = () => {
                   }}
                 />
                 <label htmlFor={likedPost.id}>
-                  <CheckBoxIcon isCheck={likeIdsToDelete.find((id) => id === likedPost.id) !== undefined} />
+                  <CheckBoxIcon
+                    type="pointColor"
+                    isCheck={likeIdsToDelete.find((id) => id === likedPost.id) !== undefined}
+                  />
                 </label>
                 <p className="w-[80px]">{pageData.length - index}</p>
                 <Link to={`/detail/${post.id as string}`} className="w-[830px]">

@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Sync } from "@egjs/flicking-plugins";
 import Flicking, { type Plugin } from "@egjs/react-flicking";
 import { EventCardForm, HomeContentsTitle, HomeKvBanner } from "components/home";
-import { usePostsData, useMovePage } from "hooks";
+import { useMovePage } from "hooks/useMovePage";
+import { usePostsData } from "hooks/usePostsData";
 
 export const Home = () => {
   const { setCurrentPathname } = useMovePage();

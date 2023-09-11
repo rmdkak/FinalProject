@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { DateConvertor } from "components";
-import { useAdminQuery, usePagination } from "hooks";
+import { useAdminQuery } from "hooks/useAdminQuery";
+import { usePagination } from "hooks/usePagination";
 export const EventList = () => {
   const navigate = useNavigate();
   const { fetchEventMutation } = useAdminQuery();

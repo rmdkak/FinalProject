@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
-import { useAdminQuery } from "hooks";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
+import { useAdminQuery } from "hooks/useAdminQuery";
 
 export const EventCardForm = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchBookmark, addBookmark, deleteBookmark } from "api/supabase";
+import { addBookmark, deleteBookmark, fetchBookmark } from "api/supabase/bookmark";
 import { useAuthStore, useServiceStore } from "store";
 
 const queryKey = ["bookmark"];

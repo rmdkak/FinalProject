@@ -1,4 +1,4 @@
-import { githubLogin, googleLogin, kakaoLogin } from "api/supabase";
+import { githubLogin, googleLogin, kakaoLogin } from "api/supabase/auth";
 import githubLogo from "assets/svgs/githubLogo.svg";
 import googleLogo from "assets/svgs/googleLogo.svg";
 import kakaoLogo from "assets/svgs/kakaoLogo.svg";

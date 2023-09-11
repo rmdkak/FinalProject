@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { logout } from "api/supabase";
+import { logout } from "api/supabase/auth";
 import hambergerMenu from "assets/headersvg/cate.svg";
 import logOutIcon from "assets/headersvg/Logout.svg";
 import userIcon from "assets/headersvg/user.svg";

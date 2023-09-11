@@ -4,9 +4,9 @@ import type { SubmitHandler } from "react-hook-form";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
-import { login } from "api/supabase";
+import { login } from "api/supabase/auth";
 import { PasswordVisibleButton, InvalidText, useDialog, SocialLogin, CheckBoxIcon } from "components";
-import { useMovePage } from "hooks";
+import { useMovePage } from "hooks/useMovePage";
 import { useAuthStore } from "store";
 
 export interface LoginInputs {
@@ -119,7 +119,7 @@ export const Login = () => {
               htmlFor="logging"
               className="flex contents-center gap-2 text-[12px] leading-[110%] self-center cursor-pointer hover:text-black"
             >
-              <CheckBoxIcon isCheck={stayLoggedInStatus} />
+              <CheckBoxIcon type="black" isCheck={stayLoggedInStatus} />
               로그인 유지
             </label>
           </div>
