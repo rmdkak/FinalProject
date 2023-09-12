@@ -19,7 +19,10 @@ export const ShowRoom = (Props: Props) => {
     return `${STORAGE_URL}/${type}/${interiorId}`;
   };
 
-  const size = page === "detail" ? "w-[500px] h-[400px]" : "w-[860px] h-[603px]";
+  const size =
+    page === "detail"
+      ? "w-[500px] h-[400px]"
+      : "w-[860px] h-[603px] lg:w-[600px] lg:h-[500px] md:w-[60vw] md:h-[50vh] sm:w-[60vw] sm:h-[50vh]";
 
   if (
     leftWallpaperBg !== null &&
