@@ -1,7 +1,7 @@
 import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
+import { CheckBoxIcon, DateConvertor, EmptyData, SubTitle, Title } from "components";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
 import { useSearchBar } from "hooks/useSearchBar";
@@ -45,17 +45,20 @@ export const MyPost = () => {
   });
 
   return (
-    <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <MypageTitle title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="post" />
+    <div className={MYPAGE_LAYOUT_STYLE}>
+      <Title title="마이페이지" isBorder={false} />
+      <SubTitle type="myPost" />
 
       {pageData.length === 0 ? (
-        <EmptyData type="post" />
+        <EmptyData type="myPost" />
       ) : (
         <ul className="w-full">
           {pageData?.map((post, index) => {
             return (
-              <li key={post.id} className="flex contents-center border-y border-gray06 gap-[24px] h-[64px] px-[24px]">
+              <li
+                key={post.id}
+                className="flex w-full h-16 gap-6 px-6 sm:h-auto sm:px-3 sm:py-4 contents-center border-y border-gray06"
+              >
                 <input
                   id={post.id}
                   type="checkbox"
@@ -70,14 +73,23 @@ export const MyPost = () => {
                     isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined}
                   />
                 </label>
-                <p className="w-[80px]">{index + 1}</p>
-                <Link to={`/detail/${post.id as string}`} className="w-[830px]">
-                  {post.title}
-                </Link>
-                <DateConvertor className={"w-[100px]"} datetime={post.created_at} type={"dotDate"} />
+                <p className="flex w-[6%] h-full contents-center">{index + 1}</p>
+                <div className="flex items-center w-3/4 h-full gap-6 sm:flex-column sm:gap-2">
+                  <Link
+                    to={`/detail/${post.id as string}`}
+                    className="w-[87%] body-3 h-full flex items-center sm:w-full sm:justify-start"
+                  >
+                    {post.title}
+                  </Link>
+                  <DateConvertor
+                    className="w-[13%] h-full flex body-3 contents-center text-gray03 sm:w-full sm:justify-start sm:body-4"
+                    datetime={post.created_at}
+                    type={"dotDate"}
+                  />
+                </div>
                 <Link
                   to={`/updatepost/${post.id as string}`}
-                  className="flex contents-center w-[80px] h-8 gray-outline-button rounded-lg"
+                  className="flex w-20 h-8 rounded-lg contents-center gray-outline-button sm:hidden"
                 >
                   수정
                 </Link>
@@ -87,13 +99,13 @@ export const MyPost = () => {
         </ul>
       )}
 
-      <div className="flex items-center justify-between w-full mt-[68px]">
-        <button onClick={deletePosts} className="w-[100px] h-[48px] border border-gray05 rounded-[8px]">
+      <div className="flex items-center justify-between w-full mt-16 sm:flex-col sm:gap-10">
+        <button onClick={deletePosts} className="w-24 h-12 rounded-lg gray-outline-button body-3 sm:w-full">
           선택삭제
         </button>
         <SearchBar />
       </div>
-      <div className="mt-[120px]">{showPageComponent}</div>
+      <div className="mt-[120px] sm:mt-16">{showPageComponent}</div>
     </div>
   );
 };

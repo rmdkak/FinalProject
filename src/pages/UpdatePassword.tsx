@@ -43,16 +43,16 @@ export const UpdatePassword = () => {
   };
 
   return (
-    <section className="items-center flex-column mt-[80px] w-[480px] mx-auto">
+    <section className="items-center flex-column mt-20 max-w-[480px] w-[90%] mx-auto">
       <div className="w-full text-center underline-pb">
-        <p className="title-3 mt-[40px]">새로운 비밀번호</p>
+        <p className="mt-10 title-3">새로운 비밀번호</p>
       </div>
-      <div className="w-full mt-[40px] text-[14px] font-normal">
+      <div className="w-full mt-10 body-3">
         <div className="items-center flex-column">
           <p>비밀번호 재설정을 위한 본인 확인이 완료되었습니다.</p>
           <p>새로운 비밀번호를 등록 후 사용해주세요.</p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} action="#" className="w-full mt-[40px] flex-column">
+        <form onSubmit={handleSubmit(onSubmit)} action="#" className="w-full mt-10 flex-column">
           <label htmlFor="newPassword" className="self-start body-4 my-[8px]">
             새 비밀번호
           </label>
@@ -80,7 +80,7 @@ export const UpdatePassword = () => {
           </div>
           <InvalidText errorsMessage={errors.newPassword?.message} />
 
-          <label htmlFor="newPasswordConfirm" className="self-start body-4 my-[8px]">
+          <label htmlFor="newPasswordConfirm" className="self-start my-2 body-4">
             새 비밀번호 확인
           </label>
           <div className="flex w-full">

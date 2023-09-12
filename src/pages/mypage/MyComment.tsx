@@ -1,8 +1,8 @@
 import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, MypageSubTitle, MypageTitle, EmptyData, CheckBoxIcon } from "components";
-import { ArrowButton } from "components/common";
+import { DateConvertor, EmptyData, CheckBoxIcon } from "components";
+import { ArrowButton, SubTitle, Title } from "components/common";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
 import { useSearchBar } from "hooks/useSearchBar";
@@ -51,18 +51,18 @@ export const MyComment = () => {
 
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <MypageTitle title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="comment" />
+      <Title title="마이페이지" isBorder={false} />
+      <SubTitle type="myComment" />
 
       {pageData.length === 0 ? (
-        <EmptyData type="comment" />
+        <EmptyData type="myComment" />
       ) : (
         <ul className="w-full">
           {pageData.map((comment, index) => {
             const { POSTS: post } = comment;
             return (
               <li key={comment.id} className="flex-column contents-center border-y border-gray06">
-                <div className="flex contents-center w-full border-y border-gray06 gap-[24px] h-[72px] px-[24px]">
+                <div className="flex w-full h-16 gap-6 px-6 sm:h-auto contents-center border-y border-gray06">
                   <input
                     id={comment.id}
                     type="checkbox"
@@ -79,15 +79,19 @@ export const MyComment = () => {
                     />
                   </label>
                   <div
-                    className="flex contents-center gap-[24px] w-full h-full cursor-pointer"
+                    className="flex w-full h-full gap-6 cursor-pointer sm:py-4 contents-center"
                     onClick={() => {
                       isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id);
                     }}
                   >
-                    <p className="flex contents-center w-20 p-[10px] ">{index + 1}</p>
-                    <div className="w-[1044px] flex justify-between">
-                      <p className="body-3">{post.title}</p>
-                      <DateConvertor datetime={post.created_at} type={"dotDate"} className="body-3" />
+                    <p className="flex w-[6%] h-full contents-center">{index + 1}</p>
+                    <div className="flex items-center w-3/4 h-full gap-6 sm:flex-column sm:gap-2">
+                      <p className="w-[87%] body-3 h-full flex items-center sm:w-full sm:justify-start">{post.title}</p>
+                      <DateConvertor
+                        className="w-[13%] h-full flex body-3 contents-center text-gray03 sm:w-full sm:justify-start sm:body-4"
+                        datetime={post.created_at}
+                        type={"dotDate"}
+                      />
                     </div>
 
                     <div className="flex w-4 h-4 contents-center">
@@ -96,22 +100,26 @@ export const MyComment = () => {
                         openHandler={openCommentHandler}
                         statusToClose={""}
                         statusToOpen={comment.id}
-                        className={"flex w-4 h-4 contents-center"}
+                        className="flex w-4 h-4 contents-center"
                       />
                     </div>
                   </div>
                 </div>
                 {isOpenComment === comment.id && (
-                  <div className="flex items-center justify-between w-full h-[120px] p-[24px]">
+                  <div className="flex items-center justify-between w-full min-h-[120px] p-6 bg-gray08">
                     <p className="flex self-start">{comment.content}</p>
-                    <div className="flex contents-center gap-[12px]">
-                      <DateConvertor datetime={comment.created_at} type={"dotDate"} />
+                    <div className="gap-3 flex-column contents-center">
                       <Link
                         to={`/detail/${post.id as string}`}
-                        className="flex contents-center w-[80px] h-8 gray-outline-button rounded-lg"
+                        className="flex w-20 h-8 rounded-lg contents-center gray-outline-button sm:hidden"
                       >
                         수정
                       </Link>
+                      <DateConvertor
+                        datetime={comment.created_at}
+                        type={"dotDate"}
+                        className="flex h-full contents-center body-3 text-gray03 sm:w-full sm:items-end sm:justify-end sm:body-4"
+                      />
                     </div>
                   </div>
                 )}
@@ -122,7 +130,7 @@ export const MyComment = () => {
       )}
 
       <div className="flex items-center justify-between w-full mt-16 sm:flex-col sm:gap-10">
-        <button onClick={deleteComments} className="w-[100px] h-12 gray-outline-button rounded-lg body-3 sm:w-full">
+        <button onClick={deleteComments} className="w-24 h-12 rounded-lg gray-outline-button body-3 sm:w-full">
           선택삭제
         </button>
         <SearchBar />

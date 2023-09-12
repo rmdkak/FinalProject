@@ -43,13 +43,6 @@ export const SelfItem = ({ item }: Props): JSX.Element => {
           <source srcSet={`${checkTypeOfString}`} type="image/jpg"></source>
           <img src={`${checkTypeOfString}`} alt="셀프 조합 이미지"></img>
         </picture>
-
-        {/* <img
-        onClick={onClickItem}
-          className={`box-border block h-full cursor-pointer drag-none`}
-          src={checkTypeOfString}
-          alt="셀프 조합 이미지"
-        /> */}
       </div>
     </>
   );

@@ -1,4 +1,5 @@
-import { useState, type MouseEvent, type ChangeEvent, type Dispatch } from "react";
+import { useState } from "react";
+import type { MouseEvent, ChangeEvent, Dispatch } from "react";
 
 import { ArrowButton } from "../button";
 
@@ -43,7 +44,7 @@ export const Select = ({
   const commonStyle = "w-full px-[24px] py-[8px] cursor-pointer focus:outline-none hover:bg-gray05";
 
   return (
-    <div className={`relative w-full h-[50px]`}>
+    <div className="relative w-full h-[50px]">
       {selfEnterIsOpen ? (
         <>
           <input
@@ -61,15 +62,11 @@ export const Select = ({
             openHandler={changeToggleHandler}
             statusToClose={toggleIsOpen}
             statusToOpen={toggleIsOpen}
-            className={"absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"}
+            className={"absolute w-4 h-4 right-3 top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"}
           />
-          {/* <FaAngleDown
-            onClick={changeToggleHandler}
-            className="absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"
-          /> */}
         </>
       ) : (
-        <button className="flex items-center w-full h-[48px] auth-input" type="button" onClick={changeToggleHandler}>
+        <button className="flex items-center w-full h-12 auth-input" type="button" onClick={changeToggleHandler}>
           <p className="text-center whitespace-nowrap body-3">
             {selectedValue !== undefined ? selectedValue : placeholder}
           </p>
@@ -78,9 +75,8 @@ export const Select = ({
             openHandler={changeToggleHandler}
             statusToClose={toggleIsOpen}
             statusToOpen={toggleIsOpen}
-            className={"absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"}
+            className={"absolute w-4 h-4 right-3 top-1/2 text-gray02 -translate-y-1/2 cursor-pointer"}
           />
-          {/* <FaAngleDown className="absolute w-4 h-4 right-[24px] top-1/2 text-gray02 -translate-y-1/2 cursor-pointer" /> */}
         </button>
       )}
       <div className="absolute w-full top-[50px] bg-white z-50 shadow-lg body-3">

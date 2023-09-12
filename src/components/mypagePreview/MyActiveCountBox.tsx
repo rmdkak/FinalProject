@@ -23,7 +23,7 @@ export const MyActiveCountBox = ({ mypageInfoArray, adminCheck }: Props) => {
             >
               <div className="gap-3 flex-column contents-center">
                 <mypageInfo.icon className="w-6 h-6" />
-                <p className="body-2 sm:body-4">관리자 페이지</p>
+                <p className="text-center break-keep body-2 sm:body-4 sm:w-8 sm:h-8">관리자 페이지</p>
               </div>
               <div className={BR_STYLE}></div>
               <p className="title-4 sm:body-2">이동</p>
@@ -39,7 +39,7 @@ export const MyActiveCountBox = ({ mypageInfoArray, adminCheck }: Props) => {
           >
             <div className="gap-3 flex-column contents-center">
               <mypageInfo.icon className="w-6 h-6" />
-              <p className="body-2 sm:body-4">{mypageInfo.title}</p>
+              <p className="text-center break-keep body-2 sm:body-4 sm:w-8 sm:h-8">{mypageInfo.title}</p>
             </div>
             <div className={BR_STYLE}></div>
             <p className="title-4 sm:body-2">{mypageInfo.data === undefined ? 0 : mypageInfo.data.length}</p>

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import checkCircle from "assets/svgs/checkCircle.svg";
-import { SignupTitle } from "components";
+import { Title } from "components";
 import { useAuthStore } from "store";
 
 import { SignupStep } from "./SignupStep";
@@ -11,15 +11,13 @@ export const SignupComplete = () => {
   const name = currentSession?.user.user_metadata.name as string;
 
   return (
-    <div className="items-center flex-column my-20 w-[560px] mx-auto">
-      <SignupTitle />
+    <div className="items-center max-w-[560px] mx-auto flex-column my-14 sm:my-6 sm:w-[85%]">
+      <Title title="회원가입" isBorder={true} />
       <SignupStep step={2} />
-      <p className="text-[24px] font-normal leading-[130%]">{`${name}님, 환영합니다!`}</p>
-      <p className="text-[14px] font-light leading-[130%] mt-[12px]">
-        더 많은 인테리어 정보를 지금 바로 확인하러 가볼까요?
-      </p>
-      <img src={checkCircle} className="w-[80px] h-[80px] my-[40px]" />
-      <Link to={"/"} className="w-[480px]">
+      <p className="title-4">{`${name}님, 환영합니다!`}</p>
+      <p className="mt-3 body-3">더 많은 인테리어 정보를 지금 바로 확인하러 가볼까요?</p>
+      <img src={checkCircle} className="w-20 h-20 my-10" />
+      <Link to={"/"} className="w-full">
         <button className="text-black auth-button-text auth-button point-button">홈으로 돌아가기</button>
       </Link>
     </div>

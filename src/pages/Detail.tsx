@@ -28,7 +28,7 @@ export const Detail = () => {
 
   if (postData === undefined) return <></>;
   return (
-    <div className="w-[1280px] mx-auto mt-[30px]">
+    <div className="w-full max-w-[1280px] min-w-[360px] mx-auto mt-6 lg:px-6 md:px-6 sm:px-6">
       <PostData postData={postData} />
       <Comments postData={postData} />
       <PrevNextPostList />
