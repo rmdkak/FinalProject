@@ -56,8 +56,8 @@ export const Login = () => {
 
   return (
     <div className="max-w-[560px] min-w-[360px] box-border w-full flex-column my-10 items-center mx-auto sm:mt-2">
-      <h2 className="w-full pb-6 text-center border-b border-black title-3">로그인</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-10 sm:px-6 ">
+      <h2 className="w-full pb-6 text-center border-b border-black title-3 sm:hidden">로그인</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-10 sm:px-6 sm:mt-6">
         <label htmlFor="email" className="text-[12px] font-normal leading-[110%] text-gray01">
           이메일
         </label>

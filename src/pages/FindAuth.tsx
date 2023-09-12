@@ -6,7 +6,8 @@ import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase/
 import { DateConvertor, InvalidText, Select, idAnswerValid, idQuestionOptions, useDialog } from "components";
 import { type Tables } from "types/supabase";
 
-const TAB_STYLE = "w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center cursor-pointer";
+const TAB_STYLE =
+  "max-w-[280px] w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center cursor-pointer sm:text-[16px] sm:w-full max-w-auto";
 const TAB_FOCUSED_STYLE = `${TAB_STYLE} text-black border-b-[1px] border-black`;
 const TAB_UNFOCUSED_STYLE = `${TAB_STYLE} text-gray03`;
 
@@ -108,9 +109,15 @@ export const FindAuth = () => {
   }, []);
 
   return (
-    <div className="w-[560px] flex-column items-center gap-10 my-20 mx-auto text-xs font-normal leading-[110%]">
-      <h2 className="w-full text-center text-[32px] pb-[24px] font-normal leading-[130%]">회원정보 찾기</h2>
-      <div className="flex contents-center">
+    <div className="max-w-[560px] min-w-[360px] w-full box-border flex-column items-center gap-6 my-20 mx-auto text-xs font-normal leading-[110%] sm:mt-6 sm:px-6">
+      <h2
+        className="w-full text-center text-[32px] pb-[24px] font-normal leading-[130%]
+      sm:hidden
+      "
+      >
+        회원정보 찾기
+      </h2>
+      <div className="flex w-full contents-center">
         <div
           className={focusTab.focusEmail ? TAB_FOCUSED_STYLE : TAB_UNFOCUSED_STYLE}
           onClick={() => {
@@ -131,7 +138,10 @@ export const FindAuth = () => {
 
       {/* 아이디 찾기 */}
       {focusTab.focusEmail && !isDoneFind && (
-        <form onSubmit={emailHandleSubmit(findEmailHandler)} className="w-full gap-4 flex-column contents-center">
+        <form
+          onSubmit={emailHandleSubmit(findEmailHandler)}
+          className="w-full gap-4 flex-column contents-center sm:gap-0"
+        >
           <div className="w-full flex-column gap-[8px]">
             <label htmlFor="nicknameForEmail">닉네임</label>
             <input
@@ -143,7 +153,7 @@ export const FindAuth = () => {
           </div>
           <InvalidText errorsMessage={emailErrors.nicknameForEmail?.message} size={20} />
 
-          <div className="w-full flex-column gap-[8px]">
+          <div className="w-full flex-column gap-[8px] sm:mt-1">
             <label htmlFor="idAnswerForEmail">본인확인질문</label>
             <Select
               placeholder={"본인확인 질문을 선택해주세요."}
@@ -178,13 +188,15 @@ export const FindAuth = () => {
               <p className="text-gray03 min-w-[100px]">닉네임</p>
               <p className="w-full text-black">{findUser?.name}</p>
             </div>
-            <div className="flex h-[48px] items-center px-[24px] gap-[16px] text-[14px] font-normal leading-[110%]">
+            <div className="flex h-[48px] items-center px-[24px] gap-[16px] text-[14px] font-normal leading-[110%] sm:items-start sm:mt-6">
               <p className="text-gray03 min-w-[100px]">가입된 이메일</p>
-              <p className="text-black">{findUser?.email}</p>
-              <div className="text-gray03 text-[12px] w-full flex gap-1">
-                <span>(</span>
-                <DateConvertor datetime={findUser?.created_at as string} type="dotDate" />
-                <span>가입 )</span>
+              <div className="flex contents-center sm:flex-col">
+                <p className="mr-4 text-black">{findUser?.email}</p>
+                <div className="text-gray03 text-[12px] w-full flex gap-1 sm:mt-3">
+                  <span>(</span>
+                  <DateConvertor datetime={findUser?.created_at as string} type="dotDate" />
+                  <span>가입 )</span>
+                </div>
               </div>
             </div>
           </div>
@@ -196,7 +208,10 @@ export const FindAuth = () => {
 
       {/* 비밀번호 찾기 */}
       {focusTab.focusPassword && !isDoneFind && (
-        <form onSubmit={passwordHandleSubmit(findPasswordHandler)} className="w-full gap-4 flex-column contents-center">
+        <form
+          onSubmit={passwordHandleSubmit(findPasswordHandler)}
+          className="w-full gap-4 flex-column contents-center sm:gap-0"
+        >
           <div className="w-full flex-column gap-[8px]">
             <label htmlFor="email">이메일</label>
             <input
@@ -208,7 +223,7 @@ export const FindAuth = () => {
           </div>
           <InvalidText errorsMessage={passwordErrors.emailForPassword?.message} size={20} />
 
-          <div className="w-full flex-column gap-[8px]">
+          <div className="w-full flex-column gap-[8px] sm:mt-1">
             <label htmlFor="nicknameForPassword">닉네임</label>
             <input
               {...passwordRegister("nicknameForPassword")}
@@ -219,7 +234,7 @@ export const FindAuth = () => {
           </div>
           <InvalidText errorsMessage={passwordErrors.nicknameForPassword?.message} size={20} />
 
-          <div className="w-full flex-column gap-[8px]">
+          <div className="w-full flex-column gap-[8px] sm:mt-1">
             <label htmlFor="idAnswerForPassword">본인확인질문</label>
             <Select
               placeholder={"본인확인 질문을 선택해주세요."}
