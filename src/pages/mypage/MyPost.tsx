@@ -91,7 +91,7 @@ export const MyPost = () => {
                   to={`/updatepost/${post.id as string}`}
                   className="flex w-20 h-8 rounded-lg contents-center gray-outline-button sm:hidden"
                 >
-                  수정
+                  이동하기
                 </Link>
               </li>
             );

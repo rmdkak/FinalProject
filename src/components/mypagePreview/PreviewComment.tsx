@@ -60,7 +60,7 @@ export const PreviewComment = ({ commentData }: Props) => {
                         to={`/detail/${post.id}`}
                         className="flex w-20 h-8 rounded-lg contents-center gray-outline-button"
                       >
-                        수정
+                        이동하기
                       </Link>
                     </div>
                   </div>

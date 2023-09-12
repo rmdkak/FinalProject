@@ -108,7 +108,6 @@ export const UpdateUser = () => {
     }
   };
 
-  // 비밀번호 수정
   const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
     try {
       await changePassword(data.password);
@@ -120,7 +119,6 @@ export const UpdateUser = () => {
     toggleChangeHandler("password");
   };
 
-  // 닉네임 수정
   const changeNameHandler: SubmitHandler<UpdateInput> = async (data) => {
     const inputValue = { name: data.name };
     if (data.name !== currentName) {
