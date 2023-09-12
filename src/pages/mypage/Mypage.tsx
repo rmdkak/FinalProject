@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
-import { type IconType } from "react-icons/lib";
+import type { IconType } from "react-icons/lib";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import defaultImg from "assets/defaultImg.jpg";
-import { MypageTitle, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
+import { Title, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { useAuthStore } from "store";
@@ -68,9 +68,9 @@ export const Mypage = () => {
 
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <MypageTitle title={"마이페이지"} isBorder={true} />
-      <div className="flex gap-6 mt-8">
-        <div className="relative flex-column contents-center gap-4 w-[225px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
+      <Title title={"마이페이지"} isBorder={true} />
+      <div className="flex w-full gap-[2.5%] mt-8 contents-center sm:flex-col sm:gap-6">
+        <div className="relative flex-column contents-center gap-4 w-[17.5%] sm:w-[88%] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}
           <div className="gap-2 flex-column contents-center">
             <p className="text-black body-1">{`${name}님`}</p>
