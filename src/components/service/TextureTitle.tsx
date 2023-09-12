@@ -24,7 +24,6 @@ const TextureTitleMemoization = ({ data }: Props) => {
     <div
       className="box-border flex 
     sm:overflow-x-scroll sm:max-w-[100vw]
-    xs:overflow-x-scroll xs:max-w-[100vw]
     "
     >
       {data.map((item, index) => (

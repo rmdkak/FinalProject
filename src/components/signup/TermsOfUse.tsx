@@ -12,7 +12,7 @@ interface Props {
 
 const FLEX_CENTER = "flex items-center";
 const TEXTAREA_STYLE =
-  "w-full h-[300px] p-6 mt-[10px] bg-white border border-gray05 text-gray03 rounded-[4px] resize-none focus:outline-none";
+  "w-full h-[350px] p-6 mt-[10px] bg-white border border-gray05 text-gray03 rounded-[4px] resize-none focus:outline-none";
 
 /**
  * 이용약관 컴포넌트
