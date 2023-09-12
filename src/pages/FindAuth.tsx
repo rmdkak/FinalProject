@@ -84,7 +84,7 @@ export const FindAuth = () => {
 
     try {
       const data = await findPassword({ name, email, idAnswer, idQuestion: selectIdQuestion });
-      void sendEmailForFindPassword(data.email);
+      await sendEmailForFindPassword(data.email);
       toast("이메일이 전송되었습니다.", { theme: "warning", zIndex: 9999 });
       navigate("/");
     } catch (error) {
