@@ -6,7 +6,8 @@ import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase/
 import { DateConvertor, InvalidText, Select, idAnswerValid, idQuestionOptions, useDialog } from "components";
 import { type Tables } from "types/supabase";
 
-const TAB_STYLE = "w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center cursor-pointer";
+const TAB_STYLE =
+  "max-w-[280px] w-[280px] pb-[12px] text-[18px] font-normal leading-[130%] text-center cursor-pointer sm:text-[16px] sm:w-full max-w-auto";
 const TAB_FOCUSED_STYLE = `${TAB_STYLE} text-black border-b-[1px] border-black`;
 const TAB_UNFOCUSED_STYLE = `${TAB_STYLE} text-gray03`;
 
@@ -108,9 +109,15 @@ export const FindAuth = () => {
   }, []);
 
   return (
-    <div className="w-[560px] flex-column items-center gap-10 my-20 mx-auto text-xs font-normal leading-[110%]">
-      <h2 className="w-full text-center text-[32px] pb-[24px] font-normal leading-[130%]">회원정보 찾기</h2>
-      <div className="flex contents-center">
+    <div className="max-w-[560px] min-w-[360px] w-full box-border flex-column items-center gap-6 my-20 mx-auto text-xs font-normal leading-[110%] sm:mt-6 sm:px-6">
+      <h2
+        className="w-full text-center text-[32px] pb-[24px] font-normal leading-[130%]
+      sm:hidden
+      "
+      >
+        회원정보 찾기
+      </h2>
+      <div className="flex w-full contents-center">
         <div
           className={focusTab.focusEmail ? TAB_FOCUSED_STYLE : TAB_UNFOCUSED_STYLE}
           onClick={() => {
@@ -131,7 +138,10 @@ export const FindAuth = () => {
 
       {/* 아이디 찾기 */}
       {focusTab.focusEmail && !isDoneFind && (
-        <form onSubmit={emailHandleSubmit(findEmailHandler)} className="w-full gap-4 flex-column contents-center">
+        <form
+          onSubmit={emailHandleSubmit(findEmailHandler)}
+          className="w-full gap-4 flex-column contents-center sm:gap-0"
+        >
           <div className="w-full flex-column gap-[8px]">
             <label htmlFor="nicknameForEmail">닉네임</label>
             <input
@@ -143,7 +153,7 @@ export const FindAuth = () => {
           </div>
           <InvalidText errorsMessage={emailErrors.nicknameForEmail?.message} size={20} />
 
-          <div className="w-full flex-column gap-[8px]">
+          <div className="w-full flex-column gap-[8px] sm:mt-1">
             <label htmlFor="idAnswerForEmail">본인확인질문</label>
             <Select
               placeholder={"본인확인 질문을 선택해주세요."}
