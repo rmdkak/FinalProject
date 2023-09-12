@@ -7,7 +7,8 @@ import fillHeart from "assets/svgs/Heart.svg";
 import lineHeart from "assets/svgs/lineheart.svg";
 import share from "assets/svgs/share.svg";
 import { useDialog } from "components/common";
-import { usePostsLikeQuery, usePostsQuery } from "hooks";
+import { usePostsLikeQuery } from "hooks/usePostsLikeQuery";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { throttle } from "lodash";
 import { useAuthStore } from "store";
 

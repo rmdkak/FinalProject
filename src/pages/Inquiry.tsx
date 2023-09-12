@@ -3,9 +3,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { uploadManToManImg } from "api/supabase";
+import { uploadManToManImg } from "api/supabase/admin";
 import { MypageTitle } from "components";
-import { useAdminQuery, useMovePage } from "hooks";
+import { useAdminQuery } from "hooks/useAdminQuery";
+import { useMovePage } from "hooks/useMovePage";
 import { useAuthStore } from "store";
 
 interface Input {

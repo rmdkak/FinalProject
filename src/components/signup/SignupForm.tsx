@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { fetchUserCheckData, signup } from "api/supabase";
+import { fetchUserCheckData, signup } from "api/supabase/auth";
 import { type PasswordVisible, PasswordVisibleButton, Select, useDialog, SignupTitle } from "components";
 import { useAuthStore } from "store";
 

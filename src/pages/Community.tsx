@@ -1,9 +1,10 @@
 import { AutoPlay, Pagination } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Toolbar } from "components/sidebar";
-import { useMovePage, usePostsData } from "hooks";
 import "@egjs/react-flicking/dist/flicking.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
+import { useMovePage } from "hooks/useMovePage";
+import { usePostsData } from "hooks/usePostsData";
 
 const plugins = [
   new AutoPlay({ animationDuration: 3000, direction: "NEXT", stopOnHover: true }),

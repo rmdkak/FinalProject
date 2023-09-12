@@ -1,10 +1,12 @@
 import { AiOutlineCamera } from "react-icons/ai";
 
-import { ADMIN_ID, STORAGE_URL } from "api/supabase";
+import { ADMIN_ID, STORAGE_URL } from "api/supabase/supabaseClient";
 import comment_no_img from "assets/comment_no_img.png";
 import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor, type PostDataChain, ReComments } from "components";
-import { useCommentsQuery, usePostsQuery, useComments } from "hooks";
+import { useComments } from "hooks/useComments";
+import { useCommentsQuery } from "hooks/useCommentsQuery";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { useAuthStore } from "store";
 
 import { CommentForm } from "./CommentForm";

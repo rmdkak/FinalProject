@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import { Layout } from "components";
+import { Layout, ResourcesCalculator } from "components";
 import * as Pages from "pages";
 
 const Router = () => {
@@ -10,6 +10,7 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Pages.Home />} />
           <Route path="/interior-preview" element={<Pages.InteriorPreview />} />
+          <Route path="/interior-preview/calculator" element={<ResourcesCalculator />} />
           <Route path="/post" element={<Pages.Post />} />
           <Route path="/updatepost/:id" element={<Pages.UpdatePost />} />
           <Route path="/detail/:id" element={<Pages.Detail />} />

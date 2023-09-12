@@ -1,7 +1,7 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { changePassword } from "api/supabase";
+import { changePassword } from "api/supabase/auth";
 import { InvalidText, useDialog } from "components";
 
 interface UpdatePasswordInput {

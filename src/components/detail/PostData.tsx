@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";

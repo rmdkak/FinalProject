@@ -143,7 +143,7 @@ export const deleteUser = async (userUid: string) => {
  * @method get
  */
 export const fetchUser = async (userId: string) => {
-  const { data, error } = await supabase.from(TABLE).select().eq("id", userId).single();
+  const { data, error } = await supabase.from(TABLE).select("*").eq("id", userId).single();
   if (error !== null) throw new Error(error.message);
   return data;
 };
@@ -175,13 +175,7 @@ export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
  * @table "USERS"
  * @method patch
  */
-export const patchUser = async ({
-  inputValue,
-  userId,
-}: {
-  inputValue: Tables<"USERS", "Update">;
-  userId: string | undefined;
-}) => {
+export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"USERS", "Update">; userId: string }) => {
   if (userId === undefined) return;
   const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select("*");
 
