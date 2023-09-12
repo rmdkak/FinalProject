@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     screens: {
       //모바일 환경
+      xs: { max: "500px" },
       sm: { max: "768px" },
       // pc 환경
       md: { min: "769px", max: "1024px" },
