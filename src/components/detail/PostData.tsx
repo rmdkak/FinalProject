@@ -49,16 +49,15 @@ export const PostData = ({ postData }: Props) => {
 
   return (
     <>
-      <div className="items-center flex-column">
+      <div className="items-center border-b border-black flex-column sm:hidden">
         <p
-          className="font-medium text-[32px] hover:cursor-pointer"
+          className="font-medium text-[32px] hover:cursor-pointer mb-5"
           onClick={() => {
             navigate("/community");
           }}
         >
           커뮤니티
         </p>
-        <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
       <div className="xs:flex-column xs:items-start xs:gap-8 contents-between border-b border-gray06 py-[20px] items-center px-3">
         <div>

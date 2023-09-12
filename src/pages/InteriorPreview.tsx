@@ -8,12 +8,11 @@ import share from "assets/svgs/icon_share.svg";
 import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview, Share } from "components";
 import { useBookmark } from "hooks/useBookmark";
 import { useBookmarkQuery } from "hooks/useBookmarkQuery";
+import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { useMovePage } from "hooks/useMovePage";
 import { useModalStore, useServiceStore } from "store";
 import { useFurniture } from "store/useFurniture";
 import { type FetchItemBookmark } from "types/service";
-
-import { useInteriorPreview } from "./../hooks/useInteriorPreview";
 
 export const InteriorPreview = () => {
   const { setCurrentPathname } = useMovePage();

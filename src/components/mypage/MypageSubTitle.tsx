@@ -22,7 +22,7 @@ export const MypageSubTitle = ({ type }: Props) => {
     }
   };
   return (
-    <div className="w-full pb-3 border-b border-b-black body-1">
+    <div className="w-full max-w-[1280px] min-w-[312px] pb-3 border-b border-b-black body-1 font-medium mt-6 hidden sm:flex">
       <p>{titleText(type)}</p>
     </div>
   );
