@@ -90,7 +90,7 @@ export const usePostsData = () => {
             <img
               src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
               alt="postImg"
-              className="w-[400px] h-[400px] rounded-[8px] object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] "
+              className="w-[400px] h-[400px] rounded-lg object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] "
             />
 
             <div className="flex items-center justify-between h-12 my-3">
@@ -196,7 +196,7 @@ export const usePostsData = () => {
                   {post.postImage !== null && (
                     <img
                       src={`${STORAGE_URL}${post.postImage as string}`}
-                      className="h-[124px] w-[124px] rounded-[8px] object-cover sm:w-[80px] sm:min-w-[80px] sm:h-[80px] mr-auto"
+                      className="h-[124px] w-[124px] rounded-lg object-cover sm:w-[80px] sm:min-w-[80px] sm:h-[80px] mr-auto"
                     />
                   )}
                   {isExistCombination(post, "interior") && (
