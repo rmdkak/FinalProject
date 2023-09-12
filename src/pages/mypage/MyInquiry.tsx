@@ -1,6 +1,6 @@
 import { type ChangeEvent, useState } from "react";
 
-import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, Title } from "components";
+import { CheckBoxIcon, DateConvertor, EmptyData, SubTitle, Title } from "components";
 import { useMypageQuery } from "hooks/useMypageQuery";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
@@ -42,7 +42,7 @@ export const MyInquiry = () => {
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="myInquiry" />
+      <SubTitle type="myInquiry" />
 
       {userInquiryData.length === 0 ? (
         <EmptyData type="myInquiry" />

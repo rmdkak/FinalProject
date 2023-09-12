@@ -11,7 +11,7 @@ import {
   InteriorSection,
   InvalidText,
   Modal,
-  MypageSubTitle,
+  SubTitle,
   Title,
   useDialog,
 } from "components";
@@ -153,7 +153,7 @@ export const UpdatePost = () => {
   return (
     <div className="max-w-[1280px] w-[85%] mx-auto mt-10">
       <Title title="커뮤니티" isBorder={true} />
-      <MypageSubTitle type="post" />
+      <SubTitle type="post" />
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b border-gray06 h-[72px] items-center">
           <label htmlFor="title" className="w-10 text-[18px] font-normal">

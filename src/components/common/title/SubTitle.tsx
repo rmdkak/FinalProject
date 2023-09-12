@@ -1,10 +1,10 @@
-import { type DataType } from "./mypage.type";
+import type { DataType } from "components/mypage/mypage.type";
 
 interface Props {
   type: DataType;
 }
 
-export const MypageSubTitle = ({ type }: Props) => {
+export const SubTitle = ({ type }: Props) => {
   const titleText = (type: DataType) => {
     switch (type) {
       case "myPost":
@@ -22,7 +22,11 @@ export const MypageSubTitle = ({ type }: Props) => {
     }
   };
   return (
-    <div className="w-full max-w-[1280px] min-w-[312px] pb-3 border-b border-b-black body-1 font-medium mt-6 hidden sm:flex">
+    <div
+      className={`w-full max-w-[1280px] min-w-[312px] pb-3 border-b border-b-black body-1 font-medium mt-6 sm:flex ${
+        type === "post" ? "hidden" : ""
+      }`}
+    >
       <p>{titleText(type)}</p>
     </div>
   );

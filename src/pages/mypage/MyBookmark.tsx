@@ -1,6 +1,6 @@
 import { type ChangeEvent, useState } from "react";
 
-import { CheckBoxIcon, EmptyData, InteriorCombination, Modal, MypageSubTitle, Title } from "components";
+import { CheckBoxIcon, EmptyData, InteriorCombination, Modal, SubTitle, Title } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
@@ -44,7 +44,7 @@ export const MyBookmark = () => {
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="myBookmark" />
+      <SubTitle type="myBookmark" />
       {pageData.length === 0 ? (
         <EmptyData type="myBookmark" />
       ) : (
