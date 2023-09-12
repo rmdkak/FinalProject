@@ -42,14 +42,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   return (
     <>
       {/* 인테리어 헤더 */}
-      <div
-        className="box-border gap-8 text-gray-300 flex-column sm:gap-6 xs:gap-6
-      sm:box-border sm:pl-6
-      xs:box-border xs:pl-6 xs:max-w-[360px]
-      lg:box-border lg:px-6
-      md:box-border md:px-6
-      "
-      >
+      <div className="box-border gap-8 text-gray-300 flex-column sm:gap-6 sm:box-border sm:pl-6 lg:box-border lg:px-6 md:box-border md:px-6 ">
         <div className="flex gap-6">
           <InteriorTitle type="wallPaper">벽지</InteriorTitle>
           <InteriorTitle type="tile">바닥재</InteriorTitle>
@@ -90,7 +83,6 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
             interiorSelecteIndex === SELECT_PAINT_INDEX && checkType === "wallPaper" ? "" : "h-[176px]"
           } overflow-y-auto
           sm:px-6
-          xs:px-6
           `}
         >
           {checkType === "wallPaper" &&

@@ -36,13 +36,11 @@ const CalculatorArticleMamoization = ({
               selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
             } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]
             sm:justify-start
-            xs:justify-start 
             `}
           >
             <input
               className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow
               sm:w-[100%] sm:max-w-[60vw]
-              xs:w-[100%] xs:max-w-[40vw]
               "
               name="width"
               type="number"
@@ -57,13 +55,11 @@ const CalculatorArticleMamoization = ({
               selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
             } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]
           sm:justify-start
-          xs:justify-start 
           `}
           >
             <input
               className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow
               sm:w-[100%] sm:max-w-[60vw]
-              xs:w-[100%] xs:max-w-[40vw]
               "
               name="height"
               type="number"

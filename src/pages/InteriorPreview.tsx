@@ -81,10 +81,10 @@ export const InteriorPreview = () => {
 
   return (
     <div className="mx-auto flex-column max-w-[1280px] min-w-[360px] gap-10">
-      <h1 className="mt-20 text-3xl font-medium sm:pl-6 xs:pl-6 ">인테리어 조합</h1>
+      <h1 className="mt-20 text-3xl font-medium sm:pl-6">인테리어 조합</h1>
       <div className="flex-wrap gap-40 flex-column">
         {/* 벽지/ 타일 비교 박스 */}
-        <div className="flex w-full gap-20 mb-20 sm:flex-wrap md:flex-wrap lg:flex-wrap xs:flex-wrap ">
+        <div className="flex w-full gap-20 mb-20 sm:flex-wrap md:flex-wrap lg:flex-wrap">
           {/* 왼쪽 인터렉션 박스 */}
           <Preview leftWallPaperBg={leftWallPaperBg} RightWallPaperBg={RightWallPaperBg} tileBg={tileBg} />
           <div
@@ -100,7 +100,7 @@ export const InteriorPreview = () => {
             {/* 컬러 추출 */}
             <GetColor leftWall={leftWallPaperBg} rightWall={RightWallPaperBg} />
             {/* 자재 소모량 계산기 */}
-            <div className="box-border flex mb-6 sm:px-6 xs:px-6 ">
+            <div className="box-border flex mb-6 sm:px-6">
               <label className="flex hover:cursor-pointer text-gray02" htmlFor="calc">
                 <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
                 <span>자재 소모량 계산기</span>
