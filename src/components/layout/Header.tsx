@@ -130,7 +130,6 @@ const HeaderMemoization = () => {
     navigate(-1);
   }, []);
 
-  console.log(isBack);
   return (
     <>
       <header className="flex justify-center sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white px-6">

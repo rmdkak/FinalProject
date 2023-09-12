@@ -51,8 +51,6 @@ export const Mypage = () => {
       navigate("/");
     }
   }, []);
-
-  console.log(isLoading, isError);
   if (currentUser === undefined || isLoading) return <MypageSkeleton />;
 
   if (isError) return <MypageSkeleton />;
