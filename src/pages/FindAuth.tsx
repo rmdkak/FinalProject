@@ -188,13 +188,15 @@ export const FindAuth = () => {
               <p className="text-gray03 min-w-[100px]">닉네임</p>
               <p className="w-full text-black">{findUser?.name}</p>
             </div>
-            <div className="flex h-[48px] items-center px-[24px] gap-[16px] text-[14px] font-normal leading-[110%]">
+            <div className="flex h-[48px] items-center px-[24px] gap-[16px] text-[14px] font-normal leading-[110%] sm:items-start sm:mt-6">
               <p className="text-gray03 min-w-[100px]">가입된 이메일</p>
-              <p className="text-black">{findUser?.email}</p>
-              <div className="text-gray03 text-[12px] w-full flex gap-1">
-                <span>(</span>
-                <DateConvertor datetime={findUser?.created_at as string} type="dotDate" />
-                <span>가입 )</span>
+              <div className="flex contents-center sm:flex-col">
+                <p className="mr-4 text-black">{findUser?.email}</p>
+                <div className="text-gray03 text-[12px] w-full flex gap-1 sm:mt-3">
+                  <span>(</span>
+                  <DateConvertor datetime={findUser?.created_at as string} type="dotDate" />
+                  <span>가입 )</span>
+                </div>
               </div>
             </div>
           </div>
