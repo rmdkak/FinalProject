@@ -5,7 +5,7 @@ import uuid from "react-uuid";
 
 import { savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
-import { Button, InteriorSection, Modal, MypageSubTitle, useDialog } from "components";
+import { Button, InteriorSection, Modal, SubTitle, useDialog } from "components";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
@@ -154,7 +154,7 @@ export const Post = () => {
       <div className="items-center py-10 border-b border-black flex-column sm:hidden">
         <p className="font-medium text-[32px]">커뮤니티</p>
       </div>
-      <MypageSubTitle type="post" />
+      <SubTitle type="post" />
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b border-gray06 h-[72px] items-center">
           <label htmlFor="title" className="w-[40px] text-[18px] font-normal sm:text-[14px]">

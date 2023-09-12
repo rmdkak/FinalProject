@@ -1,1 +1,1 @@
-export type DataType = "post" | "comment" | "bookmark" | "like" | "inquiry";
+export type DataType = "myPost" | "myComment" | "myBookmark" | "myLike" | "myInquiry" | "post";
