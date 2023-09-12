@@ -27,6 +27,7 @@ export const Login = () => {
     handleSubmit,
     formState: { errors },
     resetField,
+    setError,
   } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
@@ -35,7 +36,7 @@ export const Login = () => {
       getCurrentPathname();
       toast("로그인 되었습니다.", { theme: "plain", zIndex: 9999 });
     } catch (error) {
-      toast("로그인에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
+      setError("root", { message: "로그인에 실패하였습니다." });
     }
   };
 
@@ -137,7 +138,10 @@ export const Login = () => {
             </Link>
           </div>
         </div>
+
         <button className="mt-6 text-black auth-button auth-button-text point-button">로그인</button>
+        <InvalidText errorsMessage={errors.root?.message} />
+
         <div className="w-full mt-[30px] h-[120px]">
           <div className="relative flex h-12 contents-center">
             <div className="absolute w-full h-[1px] bg-[#D9D9D9] z-0" />

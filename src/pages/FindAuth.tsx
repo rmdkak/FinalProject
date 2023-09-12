@@ -68,7 +68,7 @@ export const FindAuth = () => {
       setFindUser(data);
     } catch (error) {
       setIsDoneFind(false);
-      toast("해당 유저를 찾을 수 없습니다.", { theme: "failure", zIndex: 9999 });
+      emailSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
     }
     emailReset();
   };
@@ -88,7 +88,7 @@ export const FindAuth = () => {
       toast("이메일이 전송되었습니다.", { theme: "warning", zIndex: 9999 });
       navigate("/");
     } catch (error) {
-      toast("해당 유저를 찾을 수 없습니다.", { theme: "failure", zIndex: 9999 });
+      passwordSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
     }
     passwordReset();
   };
