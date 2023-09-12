@@ -44,9 +44,9 @@ export const MyBookmark = () => {
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="bookmark" />
+      <MypageSubTitle type="myBookmark" />
       {pageData.length === 0 ? (
-        <EmptyData type="bookmark" />
+        <EmptyData type="myBookmark" />
       ) : (
         <ul className="flex flex-wrap justify-center w-full mt-10 gap-y-16 gap-x-10 sm:gap-0">
           {pageData.map((bookmark) => {

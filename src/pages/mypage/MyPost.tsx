@@ -47,10 +47,10 @@ export const MyPost = () => {
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="post" />
+      <MypageSubTitle type="myPost" />
 
       {pageData.length === 0 ? (
-        <EmptyData type="post" />
+        <EmptyData type="myPost" />
       ) : (
         <ul className="w-full">
           {pageData?.map((post, index) => {

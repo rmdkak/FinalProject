@@ -73,7 +73,7 @@ export const Mypage = () => {
           <div className="gap-2 flex-column contents-center">
             <p className="text-black body-1">{`${name}님`}</p>
             {currentSession?.user.app_metadata.provider === "email" && (
-              <Link to="/mypage/update" className="px-2 py-1 border rounded-lg border-gray05 body-4">
+              <Link to="/mypage/update" className="px-2 py-1 border rounded-lg border-gray05 body-4 md:px-0.5">
                 회원정보수정
               </Link>
             )}

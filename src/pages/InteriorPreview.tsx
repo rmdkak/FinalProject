@@ -87,14 +87,7 @@ export const InteriorPreview = () => {
         <div className="flex w-full gap-20 mb-20 sm:flex-wrap md:flex-wrap lg:flex-wrap">
           {/* 왼쪽 인터렉션 박스 */}
           <Preview leftWallPaperBg={leftWallPaperBg} RightWallPaperBg={RightWallPaperBg} tileBg={tileBg} />
-          <div
-            className="flex-column w-[600px] gap-10
-          sm:w-full
-          md:w-full
-          lg:w-full
-          xm:w-full
-          "
-          >
+          <div className="flex-column w-[600px] gap-10 sm:w-full md:w-full lg:w-full xm:w-full ">
             {/* 인테리어 섹션 */}
             <InteriorSection onCheckCustom={true} />
             {/* 컬러 추출 */}

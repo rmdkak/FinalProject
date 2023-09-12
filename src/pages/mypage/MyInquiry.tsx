@@ -42,10 +42,10 @@ export const MyInquiry = () => {
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="inquiry" />
+      <MypageSubTitle type="myInquiry" />
 
       {userInquiryData.length === 0 ? (
-        <EmptyData type="inquiry" />
+        <EmptyData type="myInquiry" />
       ) : (
         <ul className="w-full">
           {userInquiryData?.map((post, index) => {

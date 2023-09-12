@@ -3,51 +3,51 @@ import { Link } from "react-router-dom";
 import type { DataType } from "./mypage.type";
 
 interface Props {
-  type: DataType;
+  type: Omit<DataType, "post">;
 }
 
 export const EmptyData = ({ type }: Props) => {
-  const infoText = (type: DataType) => {
+  const infoText = (type: Omit<DataType, "post">) => {
     switch (type) {
-      case "post":
+      case "myPost":
         return "현재 작성된 게시물이 없습니다.";
-      case "comment":
+      case "myComment":
         return "현재 작성된 댓글이 없습니다.";
-      case "bookmark":
+      case "myBookmark":
         return "현재 추가된 북마크가 없습니다.";
-      case "like":
+      case "myLike":
         return "현재 좋아요한 게시물이 없습니다.";
-      case "inquiry":
+      case "myInquiry":
         return "작성하신 문의 글이 없습니다.";
     }
   };
 
-  const linkSwitch = (type: DataType) => {
+  const linkSwitch = (type: Omit<DataType, "post">) => {
     switch (type) {
-      case "post":
+      case "myPost":
         return "/post";
-      case "comment":
+      case "myComment":
         return "/community";
-      case "bookmark":
+      case "myBookmark":
         return "/interior-preview";
-      case "like":
+      case "myLike":
         return "/community";
-      case "inquiry":
+      default:
         return "/inquire";
     }
   };
 
-  const buttonText = (type: DataType) => {
+  const buttonText = (type: Omit<DataType, "post">) => {
     switch (type) {
-      case "post":
+      case "myPost":
         return "글 작성하기";
-      case "comment":
+      case "myComment":
         return "게시물 보러가기";
-      case "bookmark":
+      case "myBookmark":
         return "추가하기";
-      case "like":
+      case "myLike":
         return "추가하기";
-      case "inquiry":
+      case "myInquiry":
         return "문의하기";
     }
   };

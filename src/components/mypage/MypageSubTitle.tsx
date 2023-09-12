@@ -7,16 +7,18 @@ interface Props {
 export const MypageSubTitle = ({ type }: Props) => {
   const titleText = (type: DataType) => {
     switch (type) {
-      case "post":
+      case "myPost":
         return "내가 쓴 글";
-      case "comment":
+      case "myComment":
         return "내가 쓴 댓글";
-      case "bookmark":
+      case "myBookmark":
         return "북마크";
-      case "like":
+      case "myLike":
         return "좋아요 누른 글";
-      case "inquiry":
+      case "myInquiry":
         return "내가 작성한 문의 & 신고 답변";
+      case "post":
+        return "글 작성하기";
     }
   };
   return (

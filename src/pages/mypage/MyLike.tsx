@@ -44,9 +44,9 @@ export const MyLike = () => {
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="like" />
+      <MypageSubTitle type="myLike" />
       {pageData.length === 0 ? (
-        <EmptyData type="like" />
+        <EmptyData type="myLike" />
       ) : (
         <ul className="w-full">
           {pageData.map((likedPost, index) => {
