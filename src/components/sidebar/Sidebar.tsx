@@ -13,7 +13,7 @@ interface Props {
 
 const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
   const navigate = useNavigate();
-  const { currentSession, setStayLoggedInStatus } = useAuthStore();
+  const { currentUserId, setStayLoggedInStatus } = useAuthStore();
   const { Alert } = useDialog();
 
   // 로그아웃
@@ -46,7 +46,7 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
 
         <div className="pb-3 mb-8 border-b border-black">
           <ul className="flex gap-4 text-black body-3">
-            {currentSession === null ? (
+            {currentUserId === undefined ? (
               <>
                 <li>
                   <Link onClick={closeSideBarHandler} to="/login">

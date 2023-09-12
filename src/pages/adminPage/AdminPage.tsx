@@ -17,13 +17,13 @@ export const AdminPage = () => {
   const [manToManDataLength, setManToManDataLength] = useState(0);
   const [reportDataLength, setReportDataLength] = useState(0);
 
-  const { currentSession } = useAuthStore();
+  const { currentUserId } = useAuthStore();
 
   useEffect(() => {
-    if (currentSession !== null && currentSession.user.id !== ADMIN_ID) {
+    if (currentUserId !== ADMIN_ID) {
       navigate("/");
     }
-  }, [currentSession]);
+  }, [currentUserId]);
 
   const adminPageInfoTabArray = [
     {

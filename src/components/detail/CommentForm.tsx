@@ -16,7 +16,7 @@ interface CommentFormProps {
 }
 
 export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps) => {
-  const { currentSession } = useAuthStore();
+  const { currentSession, currentUserId } = useAuthStore();
   const { createCommentMutation, createReplyMutation } = useCommentsQuery();
   const [content, setContent] = useState<string>("");
   const [commentImgFile, setCommentImgFile] = useState<File | null>(null);
@@ -60,12 +60,12 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
       return;
     }
 
-    const userId = currentSession?.user.id;
+    const userId = currentUserId;
     const id = uuid();
     const commentImg = commentImgFile === null ? null : `/commentImg/${id}`;
 
     if (postId == null) return;
-    if (userId == null) return;
+    if (userId === undefined) return;
 
     try {
       if (commentImgFile !== null) {

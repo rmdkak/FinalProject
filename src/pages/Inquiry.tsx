@@ -21,8 +21,8 @@ export const Inquiry = () => {
   const { getCurrentPathname } = useMovePage();
   const { addManToManMutation } = useAdminQuery();
 
-  const { currentSession } = useAuthStore();
-  if (currentSession === null) {
+  const { currentUserId } = useAuthStore();
+  if (currentUserId === undefined) {
     navigate("/");
     return <></>;
   }
@@ -31,7 +31,7 @@ export const Inquiry = () => {
     setValue("category", event.target.value);
   };
 
-  const userId = currentSession?.user.id;
+  const userId = currentUserId;
   const onSubmit: SubmitHandler<Input> = async (data) => {
     const { category, content } = data;
     const imgFile = data.imgFile[0];

@@ -14,9 +14,7 @@ const HeaderMemoization = () => {
   const navigate = useNavigate();
   const { Alert } = useDialog();
 
-  const { currentSession, setStayLoggedInStatus } = useAuthStore();
-
-  const userUid = currentSession?.user.id;
+  const { currentUserId, setStayLoggedInStatus } = useAuthStore();
 
   const logoutHandler = useCallback(async () => {
     navigate("/");
@@ -31,7 +29,7 @@ const HeaderMemoization = () => {
   }, []);
 
   const goToMypage = useCallback(() => {
-    if (userUid == null) return;
+    if (currentUserId === undefined) return;
     navigate("/mypage");
   }, []);
 
@@ -51,7 +49,7 @@ const HeaderMemoization = () => {
             STILE
           </Link>
 
-          {currentSession === null ? (
+          {currentUserId === undefined ? (
             <>
               <div className="flex gap-2 contents-center">
                 <button onClick={goToLogin}>

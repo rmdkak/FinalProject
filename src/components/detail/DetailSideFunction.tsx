@@ -25,7 +25,7 @@ interface ModalProps {
 
 export const DetailSideFunction = ({ paramsId, postData }: Props) => {
   const navigate = useNavigate();
-  const { currentSession } = useAuthStore();
+  const { currentUserId } = useAuthStore();
   const [isHaveBookmark, setIsHaveBookmark] = useState(false);
   const { Confirm } = useDialog();
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLikeQuery();
@@ -45,18 +45,18 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
   }
 
   useEffect(() => {
-    if (currentSession !== null && currentBookmarkData !== undefined) {
-      const userId = currentSession?.user.id;
+    if (currentUserId !== undefined && currentBookmarkData !== undefined) {
+      const userId = currentUserId;
       const bookmarkUserId = currentBookmarkData.userId;
 
       if (userId !== undefined && bookmarkUserId !== undefined) {
         setIsHaveBookmark(bookmarkUserId.includes(userId));
       }
     }
-  }, [currentSession, currentBookmarkData]);
+  }, [currentUserId, currentBookmarkData]);
 
   const addBookmark = throttle(async () => {
-    if (currentSession === null) {
+    if (currentUserId === undefined) {
       const goToLogin = await Confirm(
         <>
           <p>북마크 기능은 로그인 후 이용가능합니다.</p>
@@ -74,12 +74,12 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
       postData?.POSTLIKES[0]?.userId?.length === undefined
     )
       return;
-    const addIds = [...currentBookmarkData.userId, currentSession.user.id];
+    const addIds = [...currentBookmarkData.userId, currentUserId];
     addLikeMutation.mutate({ postId: paramsId, userId: addIds });
   }, 500);
 
   const deleteBookmark = throttle(async () => {
-    if (currentSession === null) {
+    if (currentUserId === undefined) {
       const goToLogin = await Confirm(
         <>
           <p>북마크 기능은 로그인 후 이용가능합니다.</p>
@@ -97,12 +97,12 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
       postData?.POSTLIKES[0]?.userId?.length === undefined
     )
       return;
-    const deletedIds = currentBookmarkData.userId.filter((id) => id !== currentSession.user.id);
+    const deletedIds = currentBookmarkData.userId.filter((id) => id !== currentUserId);
     deleteLikeMutation.mutate({ postId: paramsId, userId: deletedIds });
   }, 500);
 
   const movePostPageHandler = async () => {
-    if (currentSession === null) {
+    if (currentUserId === undefined) {
       const confirmCheck = await Confirm(
         <div>
           <div className="flex text-[18px] justify-center mb-[10px]">

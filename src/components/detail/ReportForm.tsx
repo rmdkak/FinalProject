@@ -5,14 +5,12 @@ import { useAdminQuery } from "hooks/useAdminQuery";
 import { useModalStore } from "store";
 import { type Tables } from "types/supabase";
 
-import type { Session } from "@supabase/supabase-js";
-
 interface ReportProps {
-  currentSession: Session | null;
+  currentUserId: string | undefined;
   postData: Tables<"POSTS", "Row">;
 }
 
-export const ReportForm = ({ currentSession, postData }: ReportProps) => {
+export const ReportForm = ({ currentUserId, postData }: ReportProps) => {
   const [reportSelected, setReportSelected] = useState<string | undefined>();
   const [reportComment, setReportComment] = useState<string>("");
 
@@ -27,7 +25,7 @@ export const ReportForm = ({ currentSession, postData }: ReportProps) => {
   };
 
   const updateCommentHandler = () => {
-    if (currentSession === null) return;
+    if (currentUserId === undefined) return;
     if (reportSelected === undefined) {
       void Alert("신고 항목을 선택해주세요.");
       return;
@@ -43,7 +41,7 @@ export const ReportForm = ({ currentSession, postData }: ReportProps) => {
       postContent: postData.content,
       postImg: postData.postImage,
       postId: postData.id,
-      userId: currentSession.user.id,
+      userId: currentUserId,
     };
 
     addReportMutation.mutate(reportData);

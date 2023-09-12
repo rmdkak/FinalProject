@@ -45,7 +45,7 @@ export const PostData = ({ postData }: Props) => {
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
   const [previewModal, setPreviewModal] = useState<boolean>(false);
-  const { currentSession } = useAuthStore();
+  const { currentUserId } = useAuthStore();
 
   return (
     <>
@@ -78,7 +78,7 @@ export const PostData = ({ postData }: Props) => {
               <FaRegHeart />
               <p>좋아요 {postData?.POSTLIKES[0]?.userId?.length}</p>
             </div>
-            {currentSession !== null ? (
+            {currentUserId !== undefined ? (
               <button onClick={onOpenModal} className="leading-[1px] hover:border-b border-gray02">
                 신고하기
               </button>
@@ -87,7 +87,7 @@ export const PostData = ({ postData }: Props) => {
             )}
             {
               <Modal title="신고하기">
-                <ReportForm currentSession={currentSession} postData={postData} />
+                <ReportForm currentUserId={currentUserId} postData={postData} />
               </Modal>
             }
           </div>

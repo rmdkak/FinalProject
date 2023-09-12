@@ -6,14 +6,14 @@ import { useAuthStore, useServiceStore } from "store";
 import { useBookmarkQuery } from "./useBookmarkQuery";
 
 export const useBookmark = () => {
-  const { currentSession } = useAuthStore();
+  const { currentUserId } = useAuthStore();
   const { Alert, Confirm } = useDialog();
   const navigate = useNavigate();
   const { tile, wallPaper, wallpaperPaint } = useServiceStore((state) => state);
   const { addBookmarkMutation, deleteBookmarkMutation } = useBookmarkQuery();
 
   const addBookmark = async () => {
-    if (currentSession === null) {
+    if (currentUserId === undefined) {
       const goToLogin = await Confirm(
         <>
           <p>북마크 기능은 로그인 후 이용가능합니다.</p>
@@ -30,7 +30,7 @@ export const useBookmark = () => {
       return;
     }
     addBookmarkMutation.mutate({
-      userId: currentSession.user.id,
+      userId: currentUserId,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
@@ -39,9 +39,10 @@ export const useBookmark = () => {
   };
 
   const deleteBookmark = async () => {
-    if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
+    if (currentUserId === undefined || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null)
+      return;
     deleteBookmarkMutation.mutate({
-      userId: currentSession.user.id,
+      userId: currentUserId,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
@@ -50,7 +51,7 @@ export const useBookmark = () => {
   };
 
   const recommendDesign = async () => {
-    if (currentSession === null) {
+    if (currentUserId === undefined) {
       const sessionCheck = await Confirm(
         <p>
           해당 서비스는 로그인 후 이용 가능합니다.

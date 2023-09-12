@@ -16,15 +16,14 @@ interface CommentProps {
 }
 
 export const Comments = ({ postData }: CommentProps) => {
-  const { currentSession } = useAuthStore();
-  const sessionId = currentSession?.user.id;
+  const { currentUserId } = useAuthStore();
 
   const { fetchCommentsMutation } = useCommentsQuery();
   const { data: commentsData } = fetchCommentsMutation;
 
   const { fetchDetailMutation } = usePostsQuery();
   const { data: detailData } = fetchDetailMutation;
-  const isAdmin = sessionId === ADMIN_ID;
+  const isAdmin = currentUserId === ADMIN_ID;
 
   const {
     selectedId,
@@ -152,7 +151,7 @@ export const Comments = ({ postData }: CommentProps) => {
                       >
                         {openReply === comment.id ? "닫기" : "답글 쓰기"}
                       </button>
-                      {(sessionId === comment.userId || isAdmin) && (
+                      {(currentUserId === comment.userId || isAdmin) && (
                         <>
                           {selectedId !== comment.id || isAdmin ? (
                             <>
@@ -220,7 +219,7 @@ export const Comments = ({ postData }: CommentProps) => {
                 <ReComments
                   comment={comment}
                   detailData={detailData}
-                  currentSession={currentSession}
+                  currentUserId={currentUserId}
                   openReply={openReply}
                   setOpenReply={setOpenReply}
                 />
@@ -238,7 +237,7 @@ export const Comments = ({ postData }: CommentProps) => {
         >
           커뮤니티 목록
         </button>
-        {((currentSession?.user.id === postData?.userId && postData !== undefined) || isAdmin) && (
+        {((currentUserId === postData?.userId && postData !== undefined) || isAdmin) && (
           <div>
             <button
               onClick={async () => {

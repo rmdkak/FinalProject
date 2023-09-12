@@ -8,8 +8,6 @@ import { type Tables } from "types/supabase";
 
 import { CommentForm } from "./CommentForm";
 
-import type { Session } from "@supabase/supabase-js";
-
 interface Props {
   comment: {
     commentImg: string | null;
@@ -29,12 +27,12 @@ interface Props {
     }>;
   };
   detailData: Tables<"POSTS", "Row">;
-  currentSession: Session | null;
+  currentUserId: string | undefined;
   openReply: string | null;
   setOpenReply: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const ReComments = ({ comment, detailData, currentSession, openReply, setOpenReply }: Props) => {
+export const ReComments = ({ comment, detailData, currentUserId, openReply, setOpenReply }: Props) => {
   const {
     selectedId,
     setSelectedId,
@@ -44,8 +42,7 @@ export const ReComments = ({ comment, detailData, currentSession, openReply, set
     openCommentUpdateForm,
   } = useComments();
 
-  const sessionId = currentSession?.user.id;
-  const isAdmin = sessionId === ADMIN_ID;
+  const isAdmin = currentUserId === ADMIN_ID;
 
   return (
     <div>
@@ -91,7 +88,7 @@ export const ReComments = ({ comment, detailData, currentSession, openReply, set
 
               <div className="flex gap-2 text-gray02 text-[14px]">
                 <DateConvertor datetime={reply.created_at} type="timeAgo" />
-                {(sessionId === reply.userId || isAdmin) && (
+                {(currentUserId === reply.userId || isAdmin) && (
                   <>
                     {selectedId !== reply.id || isAdmin ? (
                       <>
