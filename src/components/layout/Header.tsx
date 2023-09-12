@@ -45,10 +45,7 @@ const HeaderMemoization = () => {
 
   return (
     <>
-      <header
-        className="flex justify-center sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white
-      sm:px-6"
-      >
+      <header className="flex justify-center sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white px-6">
         <div className="w-[1280px] contents-between items-center">
           <Link
             to="/"
