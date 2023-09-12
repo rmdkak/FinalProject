@@ -51,7 +51,7 @@ export const AdminPage = () => {
   ];
 
   return (
-    <div className="flex-column items-center m-10 w-[1280px] mx-auto px-10">
+    <div className="flex-column items-center m-10 max-w-[1280px] w-[90%] mx-auto px-10">
       <div className="w-full pb-6 text-center">
         <p className="title-3">관리자 페이지</p>
       </div>
@@ -68,9 +68,9 @@ export const AdminPage = () => {
             >
               <div className="gap-3 flex-column contents-center">
                 <InfoTab.icon className="w-6 h-6 text-gray05" />
-                <p className="font-normal leading-[150%]">{InfoTab.title}</p>
+                <pre className="flex break-words contents-center body-2 sm:body-4">{InfoTab.title}</pre>
               </div>
-              {index !== 0 && <div className="absolute w-px h-10 bg-gray06 -left-[30px] top-1/2 -translate-y-1/2" />}
+              {index !== 0 && <div className="absolute left-0 w-px h-10 -translate-y-1/2 bg-gray06 top-1/2" />}
               <p className="absolute top-3/4 body-1">{InfoTab.length}</p>
             </div>
           );

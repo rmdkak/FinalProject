@@ -43,7 +43,7 @@ export const UpdatePassword = () => {
   };
 
   return (
-    <section className="items-center flex-column mt-20 w-[480px] mx-auto">
+    <section className="items-center flex-column mt-20 max-w-[480px] w-[90%] mx-auto">
       <div className="w-full text-center underline-pb">
         <p className="mt-10 title-3">새로운 비밀번호</p>
       </div>

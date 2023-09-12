@@ -1,8 +1,8 @@
 import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { DateConvertor, MypageSubTitle, EmptyData, CheckBoxIcon } from "components";
-import { ArrowButton, Title } from "components/common";
+import { DateConvertor, EmptyData, CheckBoxIcon } from "components";
+import { ArrowButton, SubTitle, Title } from "components/common";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
 import { useSearchBar } from "hooks/useSearchBar";
@@ -52,10 +52,10 @@ export const MyComment = () => {
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="comment" />
+      <SubTitle type="myComment" />
 
       {pageData.length === 0 ? (
-        <EmptyData type="comment" />
+        <EmptyData type="myComment" />
       ) : (
         <ul className="w-full">
           {pageData.map((comment, index) => {

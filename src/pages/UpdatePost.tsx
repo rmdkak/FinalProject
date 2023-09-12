@@ -1,11 +1,20 @@
-import { useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
 import { deletePostImage, savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
-import { Button, InteriorSection, InvalidText, Modal, useDialog } from "components";
+import {
+  Button,
+  InteriorCombination,
+  InteriorSection,
+  InvalidText,
+  Modal,
+  SubTitle,
+  Title,
+  useDialog,
+} from "components";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { useModalStore, useServiceStore } from "store";
 
@@ -120,18 +129,31 @@ export const UpdatePost = () => {
     resetTile();
   };
 
+  const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files === null) return;
+    setPreviewImg(URL.createObjectURL(event.target.files[0]));
+  };
+
+  const moveToCommunity = () => {
+    navigate("community");
+  };
+
+  const moveToBack = () => {
+    navigate(-1);
+  };
+
   useEffect(() => {
     if (postData === undefined) return;
     setValue("title", postData.title);
     setValue("content", postData.content);
   }, []);
+
   if (postData === undefined) return <p>데이터를 불러올 수 없습니다.</p>;
+
   return (
-    <div className="w-[1280px] mx-auto mt-10">
-      <div className="items-center flex-column">
-        <p className="font-medium text-[32px]">커뮤니티</p>
-        <div className="w-full mt-10 border-b-2 border-gray01"></div>
-      </div>
+    <div className="max-w-[1280px] w-[85%] mx-auto mt-10">
+      <Title title="커뮤니티" isBorder={true} />
+      <SubTitle type="post" />
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b border-gray06 h-[72px] items-center">
           <label htmlFor="title" className="w-10 text-[18px] font-normal">
@@ -146,81 +168,38 @@ export const UpdatePost = () => {
               })}
             />
             <p
-              className={`${
+              className={`flex-none text-base w-[160px] ${
                 errors.title?.type === "maxLength" ? "text-error" : "text-gray03"
-              } flex-none text-base w-[160px]`}
+              }`}
             >
               제목 글자 수: {titleValue.length ?? 0} / 100
             </p>
           </div>
         </div>
-        <div className="relative flex items-center justify-end my-3">
+        <div className="flex items-center justify-end my-3">
           <InvalidText className={"text-base "} errorsMessage={errors.title?.message} />
-          {/* 왼쪽 벽지 */}
-          {wallpaperPaint.left !== null ? (
-            <div
-              className="w-10 h-10 rounded-full absolute right-[200px] border border-gray05"
-              style={{ backgroundColor: wallpaperPaint.left }}
+          <div className="flex">
+            <InteriorCombination
+              interiorItemId={{
+                leftWallpaperId: postData.leftWallpaperId,
+                stateLeftWallpaperId: wallPaper.left.id,
+                rightWallpaperId: postData.rightWallpaperId,
+                stateRightWallpaperId: wallPaper.right.id,
+                tileId: postData.tileId,
+                stateTileId: tile.id,
+                wallpaperPaint: { left: postData.leftColorCode, right: postData.rightColorCode },
+                stateWallpaperPaint: { left: wallpaperPaint.left, right: wallpaperPaint.right },
+              }}
+              type="post"
             />
-          ) : wallPaper.left.image !== null ? (
-            <img
-              src={`${STORAGE_URL}${wallPaper.left.image}`}
-              alt="왼쪽벽지"
-              className="w-10 h-10 rounded-full absolute right-[200px] border border-gray05"
-            />
-          ) : postData.leftWallpaperId === null ? (
-            <div className="bg-gray06 w-10 h-10 rounded-full absolute right-[200px] border border-gray01" />
-          ) : (
-            <img
-              src={`${STORAGE_URL}/wallpaper/${postData.leftWallpaperId}`}
-              alt="왼쪽벽지"
-              className="w-10 h-10 rounded-full absolute right-[200px] border border-gray05"
-            />
-          )}
-          {/* 오른쪽 벽지 */}
-          {wallpaperPaint.right !== null ? (
-            <div
-              className="w-10 h-10 rounded-full absolute right-[170px] border border-gray05"
-              style={{ backgroundColor: wallpaperPaint.right }}
-            />
-          ) : wallPaper.right.image !== null ? (
-            <img
-              src={`${STORAGE_URL}${wallPaper.right.image}`}
-              alt="오른쪽벽지"
-              className="w-10 h-10 rounded-full absolute right-[170px] border border-gray05"
-            />
-          ) : postData.rightWallpaperId === null ? (
-            <div className="bg-gray06 w-10 h-10 rounded-full absolute right-[170px] border border-gray01" />
-          ) : (
-            <img
-              src={`${STORAGE_URL}/wallpaper/${postData.rightWallpaperId}`}
-              alt="오른쪽벽지"
-              className="w-10 h-10 rounded-full absolute right-[170px] border border-gray05"
-            />
-          )}
-          {/* 타일 */}
-          {tile.image !== null ? (
-            <img
-              src={`${STORAGE_URL}${tile.image}`}
-              alt="바닥재"
-              className="w-10 h-10 rounded-full absolute right-[140px] border border-gray05"
-            />
-          ) : postData.tileId === null ? (
-            <div className="bg-gray06 w-10 h-10 rounded-full absolute right-[140px] border border-gray01" />
-          ) : (
-            <img
-              src={`${STORAGE_URL}/tile/${postData.tileId}`}
-              alt="바닥재"
-              className="w-10 h-10 rounded-full absolute right-[140px] border border-gray05"
-            />
-          )}
-          <button
-            type="button"
-            onClick={onOpenModal}
-            className="text-[13px] w-[130px] h-10 gray-outline-button rounded-lg"
-          >
-            조합 변경하기
-          </button>
+            <button
+              type="button"
+              onClick={onOpenModal}
+              className="text-[13px] w-[130px] h-10 gray-outline-button rounded-lg"
+            >
+              조합 변경하기
+            </button>
+          </div>
         </div>
         <Modal title="인테리어 조합">
           <div className="gap-10 flex-column w-[528px]">
@@ -239,19 +218,19 @@ export const UpdatePost = () => {
           })}
         />
         <div className="mt-2 contents-between">
-          <InvalidText className="text-base " errorsMessage={errors.content?.message} />
-          <p className={`${errors.content?.type === "maxLength" ? "text-error" : "text-gray-400"} flex-none text-base`}>
+          <InvalidText className="text-base" errorsMessage={errors.content?.message} />
+          <p className={`${errors.content?.type === "maxLength" ? "text-error" : "text-gray03"} flex-none text-base`}>
             내용 글자 수: {contentValue.length ?? 0} / 1000
           </p>
         </div>
-        {previewImg === null ? (
-          postData?.postImage === null ? null : (
-            <img src={`${STORAGE_URL}${postData?.postImage}`} alt="포스트 이미지" className="object-contain w-80" />
-          )
-        ) : (
+
+        {previewImg !== null ? (
           <img src={previewImg} alt="미리보기 이미지" className="object-contain w-80" />
-        )}
-        <div className="flex w-full border-y border-gray06 h-[72px] justify-center items-center mt-5">
+        ) : postData?.postImage !== null ? (
+          <img src={`${STORAGE_URL}${postData?.postImage}`} alt="포스트 이미지" className="object-contain w-80" />
+        ) : null}
+
+        <div className="flex w-full h-[72px] mt-5 border-y border-gray06 contents-center">
           <label htmlFor="img" className="w-32 font-normal body-3">
             첨부파일
           </label>
@@ -259,36 +238,18 @@ export const UpdatePost = () => {
             type="file"
             accept="image/png, image/jpeg, image/gif"
             className="w-full body-3 focus:outline-none"
-            {...register("file", {
-              onChange: (event) => {
-                setPreviewImg(URL.createObjectURL(event.target.files[0]));
-              },
-            })}
+            {...register("file", { onChange: onFileChangeHandler })}
           />
         </div>
         <div className="my-10 contents-between">
-          <button
-            type="button"
-            className="w-40 h-12 mr-5 border border-gray-300 rounded-lg"
-            onClick={() => {
-              navigate("/community");
-            }}
-          >
+          <button type="button" className="w-40 h-12 rounded-lg gray-outline-button" onClick={moveToCommunity}>
             커뮤니티 이동
           </button>
-          <div>
-            <button
-              type="button"
-              className="w-40 h-12 mr-5 border border-gray-300 rounded-lg"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
+          <div className="flex gap-5">
+            <button type="button" className="w-40 h-12 rounded-lg gray-outline-button" onClick={moveToBack}>
               이전으로
             </button>
-            <button type="submit" className="bg-point w-[160px] h-12 rounded-lg">
-              수정하기
-            </button>
+            <button className="w-40 h-12 rounded-lg point-button">수정하기</button>
           </div>
         </div>
       </form>

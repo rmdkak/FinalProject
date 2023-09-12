@@ -196,7 +196,7 @@ export const usePostsData = () => {
                   {post.postImage !== null && (
                     <img
                       src={`${STORAGE_URL}${post.postImage as string}`}
-                      className="h-[124px] w-[124px] rounded-[8px] object-cover sm:w-[80px] sm:min-w-[80px] sm:h-[80px] mr-auto"
+                      className="h-[124px] w-[124px] rounded-lg object-cover sm:w-[80px] sm:min-w-[80px] sm:h-[80px] mr-auto"
                     />
                   )}
                   {isExistCombination(post, "interior") && (
