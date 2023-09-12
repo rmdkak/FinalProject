@@ -4,7 +4,7 @@ import { SignupComplete, SignupForm, TermsOfUse } from "components";
 
 export type Step = 0 | 1 | 2;
 
-export const BUTTON_COMMON_STYLE = "w-full h-[48px] text-white bg-[#888] mt-[24px] disabled:bg-[#bbb]";
+export const BUTTON_COMMON_STYLE = "w-full h-12 text-white bg-gray-02 mt-6 disabled:bg-gray04";
 
 export const Signup = () => {
   const [step, setStep] = useState<Step>(0);
