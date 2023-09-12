@@ -239,15 +239,6 @@ input[type="password"]::-ms-clear {
   border-image: url("assets/svgs/border.svg") 30 round;
 }
 
-/* @media (max-width: 500px) {
-  .detail-media {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 32px;
-  }
-} */
-
 @layer components {
   .flex-column {
     @apply flex flex-col;

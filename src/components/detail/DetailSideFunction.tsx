@@ -123,7 +123,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
 
   const PrevNextPostList = () => {
     return (
-      <div className="my-20 flex-column border-t-[1px] border-gray06 ">
+      <div className="my-20 border-t flex-column border-gray06 ">
         {prevPage !== undefined && (
           <div
             className="flex gap-[10px] items-center py-6 border-b-[1px] border-gray06 hover:cursor-pointer"
