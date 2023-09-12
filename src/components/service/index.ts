@@ -8,6 +8,7 @@ export * from "./TextureTitle";
 export * from "./SelfPattern";
 export * from "./ServiceSelectItem";
 export * from "./InteriorBgSizeController";
+export * from "./InteriorCombination";
 export * from "./BgSizeSelectcontrolBtn";
 export * from "./BgSizecontrolBtn";
 export * from "./Preview";

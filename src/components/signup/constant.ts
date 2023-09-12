@@ -102,7 +102,7 @@ export const passwordValid = () => ({
     value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
   },
-  minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
+  minLength: { value: 8, message: "비밀번호가 너무 짧습니다." },
 });
 
 export const nameValid = {

@@ -17,17 +17,11 @@ import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
-import {
-  type PasswordVisible,
-  PasswordVisibleButton,
-  InvalidText,
-  MypageTitle,
-  passwordValid,
-  nameValid,
-  useDialog,
-} from "components";
+import { PasswordVisibleButton, InvalidText, Title, passwordValid, nameValid, useDialog } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
 import { useAuthStore } from "store";
+
+import type { PasswordVisible } from "components";
 
 interface UpdateInput {
   name: string;
@@ -184,7 +178,7 @@ export const UpdateUser = () => {
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
-      <MypageTitle title="회원정보수정" isBorder={true} />
+      <Title title="회원정보수정" isBorder={true} />
       <div className="flex w-full mt-10">
         {/* 프로필 이미지 */}
         <div className="flex-column items-center w-[328px] gap-[36px]">
