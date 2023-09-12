@@ -89,12 +89,15 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
   };
 
   return (
-    <div className="w-full px-[25px] py-[20px] my-[30px] border-2 rounded-lg border-gray06">
+    <div className="w-full px-6 py-[20px] my-[30px] border-2 rounded-lg border-gray06">
       <div className="contents-between">
-        <p className="font-semibold text-[20px]">
+        <p className="font-semibold text-[20px] sm:text-[14px]">
           {currentSession !== null
             ? currentSession?.user.user_metadata.name
             : "댓글 기능을 이용하시려면 로그인 해주세요."}
+        </p>
+        <p className="flex items-end text-gray03 sm:text-[14px]">
+          {content.length}/{textAreaMaxLength}자
         </p>
       </div>
       <form onSubmit={createCommentHandler}>
@@ -105,56 +108,54 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
             autoResizeTextArea(e.target);
           }}
           placeholder={currentSession !== null ? placeHolder : ""}
-          className="w-full text-[20px] py-[12px] resize-none focus:outline-none"
+          className="w-full sm:text-[14px] text-[20px] py-[12px] resize-none focus:outline-none"
           disabled={currentSession === null}
         />
-        <div className="contents-between">
-          <div className="flex items-end text-gray03">
-            {content.length}/{textAreaMaxLength}자
-          </div>
-          {/* 대댓글 취소 버튼 */}
-          <div className="flex items-end gap-5">
-            {replyStatus && (
-              <button
-                onClick={() => {
-                  setOpenReply(null);
-                }}
-                type="button"
-                className="h-[48px] w-[120px] border border-gray03 rounded-[8px]"
-              >
-                취소하기
-              </button>
-            )}
-
-            {commentImgFile == null && commentStatus && (
-              <label htmlFor="imageInput">
-                <AiOutlineCamera className="text-gray-400 cursor-pointer text-[40px] mt-[40px]" />
-                <input
-                  type="file"
-                  accept="image/png, image/jpeg, image/gif"
-                  id="imageInput"
-                  className="hidden"
-                  onChange={handleImageChange}
-                />
-              </label>
-            )}
-            {commentImgFile != null && commentStatus && (
-              <div className="relative">
-                <img
-                  src={URL.createObjectURL(commentImgFile)}
-                  alt="미리보기"
-                  className="object-cover cursor-pointer w-[80px] h-[80px]"
-                  onClick={handleImageCancel}
-                />
-                <div className="absolute bottom-[60px] left-[85px]">
-                  <AiFillCloseCircle className="text-[25px] text-gray03 cursor-pointer" onClick={handleImageCancel} />
-                </div>
-              </div>
-            )}
-            <button type="submit" className="h-[48px] w-[120px] bg-point rounded-[8px]">
-              등록하기
+        {/* 대댓글 취소 버튼 */}
+        <div className="flex items-end justify-end gap-5">
+          {replyStatus && (
+            <button
+              onClick={() => {
+                setOpenReply(null);
+              }}
+              type="button"
+              className="h-[48px] w-[120px] border border-gray03 rounded-[8px]"
+            >
+              취소하기
             </button>
-          </div>
+          )}
+
+          {commentImgFile === null && commentStatus && (
+            <label htmlFor="imageInput">
+              <AiOutlineCamera className="text-gray-400 cursor-pointer text-[40px] sm:text-[24px]" />
+              <input
+                type="file"
+                accept="image/png, image/jpeg, image/gif"
+                id="imageInput"
+                className="hidden"
+                onChange={handleImageChange}
+              />
+            </label>
+          )}
+          {commentImgFile !== null && commentStatus && (
+            <div className="relative">
+              <img
+                src={URL.createObjectURL(commentImgFile)}
+                alt="미리보기"
+                className="object-cover cursor-pointer w-[80px] h-[80px]"
+                onClick={handleImageCancel}
+              />
+              <div className="absolute bottom-[60px] left-[85px]">
+                <AiFillCloseCircle className="text-[25px] text-gray03 cursor-pointer" onClick={handleImageCancel} />
+              </div>
+            </div>
+          )}
+          <button
+            type="submit"
+            className="h-[48px] w-[120px] sm:h-[40px] sm:w-[80px] bg-point rounded-[8px] sm:text-[14px]"
+          >
+            등록하기
+          </button>
         </div>
       </form>
     </div>

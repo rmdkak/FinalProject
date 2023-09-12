@@ -75,70 +75,69 @@ export const usePostsData = () => {
   const ShowBestPostElements = ({ dataLength }: Props) => {
     return (
       <>
-        {flickingPostList.length === 0 && flickingSkeleton}
-        {flickingPostList.slice(0, dataLength).map((post) => (
+        {flickingPostList?.length === 0 && flickingSkeleton}
+        {flickingPostList?.slice(0, dataLength).map((post) => (
           <div
             key={post.id}
-            className="w-[400px] mr-7 flex-column cursor-pointer"
+            className="w-[400px] cursor-pointer mr-7 flex-column md:!w-[260px] sm:!w-[260px]"
             onClick={() => {
               navigate(`/detail/${post.id}`);
             }}
           >
-            <div>
-              <img
-                src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
-                alt="postImg"
-                className="rounded-[8px] object-cover w-[400px] h-[400px]"
-              />
-            </div>
+            <img
+              src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
+              alt="postImg"
+              className="w-[400px] h-[400px] rounded-[8px] object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] "
+            />
 
-            <div className="w-[400px] gap-2 mt-3 flex-column">
-              <div className="flex h-12">
-                <p className="text-[20px] my-auto font-semibold truncate w-1/2">{post.title}</p>
-
-                {isExistCombination(post, "interior") && (
-                  <div className="inline-flex w-1/2">
-                    <img
-                      src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
-                      alt="벽지"
-                      className="relative w-[48px] h-[48px] left-[76px] rounded-full border border-gray05"
-                    />
-                    <img
-                      src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
-                      alt="벽지"
-                      className="relative w-[48px] h-[48px] left-[66px] rounded-full border border-gray05"
-                    />
-                    <img
-                      src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                      alt="바닥"
-                      className="relative w-[48px] h-[48px] left-[56px] rounded-full border border-gray05"
-                    />
-                  </div>
-                )}
-                {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
-                  <div className="inline-flex w-1/2">
-                    <div
-                      className="relative w-[48px] h-[48px] left-[76px] rounded-full border-gray05"
-                      style={{
-                        backgroundColor: post.leftColorCode,
-                      }}
-                    />
-                    <div
-                      className="relative w-[48px] h-[48px] left-[66px] rounded-full border-gray05"
-                      style={{
-                        backgroundColor: post.rightColorCode,
-                      }}
-                    />
-                    <img
-                      src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                      alt="바닥"
-                      className="relative w-[48px] h-[48px] left-[56px] rounded-full border-gray05"
-                    />
-                  </div>
-                )}
-              </div>
-              <p className="text-[16px] text-gray02 line-clamp-2 h-[46px]">{post.content}</p>
+            <div className="flex items-center justify-between h-12 my-3">
+              <p className="text-[20px] font-semibold line-clamp-2 sm:text-[16px] sm:w-[118px] md:text-[16px] md:w-[118px] w-[240px]">
+                {post.title}
+              </p>
+              {isExistCombination(post, "interior") && (
+                <div className="inline-flex">
+                  <img
+                    src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
+                    alt="벽지"
+                    className="relative w-[48px] left-[24px] h-[48px] md:w-8 md:h-8 sm:w-8 sm:h-8  rounded-full border border-gray05"
+                  />
+                  <img
+                    src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
+                    alt="벽지"
+                    className="relative w-[48px] left-[12px] h-[48px] sm:w-8 sm:h-8 md:w-8 md:h-8 rounded-full border border-gray05"
+                  />
+                  <img
+                    src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                    alt="바닥"
+                    className="relative w-[48px] h-[48px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border border-gray05"
+                  />
+                </div>
+              )}
+              {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
+                <div className="inline-flex w-1/2">
+                  <div
+                    className="relative w-[48px] h-[48px] left-[76px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border-gray05"
+                    style={{
+                      backgroundColor: post.leftColorCode,
+                    }}
+                  />
+                  <div
+                    className="relative w-[48px] h-[48px] left-[66px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border-gray05"
+                    style={{
+                      backgroundColor: post.rightColorCode,
+                    }}
+                  />
+                  <img
+                    src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                    alt="바닥"
+                    className="relative w-[48px] h-[48px] left-[56px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border-gray05"
+                  />
+                </div>
+              )}
             </div>
+            <p className="text-[16px] text-gray02 line-clamp-2 h-[46px] sm:text-[14px] md:text-[14px]">
+              {post.content}
+            </p>
           </div>
         ))}
       </>
@@ -154,96 +153,93 @@ export const usePostsData = () => {
   const CommunityPostsForm = () => {
     return (
       <>
-        <div className="flex justify-center">
-          <div className="w-[1280px] mt-20">
-            <div className="flex gap-3 text-[16px] items-center pb-3 border-b-[1px] border-gray02">
-              <select
-                value={selectedOption}
-                onChange={handleOptionChange}
-                className="p-1 w-[140px] text-[#888888] border shadow focus:outline-none"
+        <div className="w-full max-w-[1280px] min-w-[312px] mt-20 ">
+          <div className="flex gap-3 text-[16px] items-center pb-3 border-b border-gray02">
+            <select
+              value={selectedOption}
+              onChange={handleOptionChange}
+              className="p-1 w-[130px] text-[#888888] border shadow focus:outline-none"
+            >
+              <option value="whole">전체 게시글</option>
+              <option value="normal">일반 게시글</option>
+              <option value="recommendation">조합추천 게시글</option>
+            </select>
+            <p className="text-[#888888] sm: text-[14px] ">
+              총 <span className="font-semibold text-black">{filteredData?.length}</span>개의 게시물이 있습니다.
+            </p>
+          </div>
+          {pageData.length === 0 && postListSkeleton}
+          {pageData.map((post) => {
+            return (
+              <div
+                key={post.id}
+                className="flex justify-between py-8 border-b border-gray-200 cursor-pointer"
+                onClick={() => {
+                  navigate(`/detail/${post.id as string}`);
+                }}
               >
-                <option value="whole">전체 게시글</option>
-                <option value="normal">일반 게시글</option>
-                <option value="recommendation">조합추천 게시글</option>
-              </select>
-              <p className="text-[#888888]">
-                총 <span className="font-semibold text-black">{filteredData?.length}</span>개의 게시물이 있습니다.
-              </p>
-            </div>
-            {pageData.length === 0 && postListSkeleton}
-            {pageData.map((post) => {
-              return (
-                <div
-                  key={post.id}
-                  className="flex justify-between gap-4 py-8 ml-3 border-b border-gray-200 cursor-pointer"
-                  onClick={() => {
-                    navigate(`/detail/${post.id as string}`);
-                  }}
-                >
-                  <div className="flex-column w-[1028px] gap-8">
-                    <div className="gap-4 flex-column">
-                      <p className="text-[18px] font-semibold truncate">{post.title}</p>
-                      <p className="text-[16px] h-[52px] overflow-hidden text-[#888888]">{post.content}</p>
-                    </div>
-                    <div className="flex text-[#888888] text-[12px] gap-2">
-                      <p>{post.USERS?.name}</p>
-                      <DateConvertor datetime={post.created_at} type="dotDate" />
-                      <DateConvertor datetime={post.created_at} type={"hourMinute"} />
-                      <p>좋아요 {post.POSTLIKES[0]?.userId?.length}</p>
-                    </div>
+                <div className="max-w-[550px] min-w-0 w-full flex-column justify-between whitespace-nowrap">
+                  <div className="gap-4 flex-column">
+                    <p className="sm:w-[80%] text-[18px] font-semibold truncate">{post.title}</p>
+                    <p className="sm:w-[80%] text-[16px] h-[52px] truncate text-gray02">{post.content}</p>
                   </div>
-                  <div className="flex items-center justify-end gap-4">
-                    {post.postImage !== null && (
-                      <img
-                        src={`${STORAGE_URL}${post.postImage as string}`}
-                        className="h-[124px] w-[124px] rounded-[8px] object-cover mr-auto"
-                      />
-                    )}
-                    {isExistCombination(post, "interior") && (
-                      <div>
-                        <img
-                          src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
-                          alt="벽지"
-                          className="w-12 h-12 rounded-full relative top-[10px] border border-gray05"
-                        />
-                        <img
-                          src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
-                          alt="벽지"
-                          className="relative w-12 h-12 border rounded-full border-gray05"
-                        />
-                        <img
-                          src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                          alt="바닥"
-                          className="w-12 h-12 rounded-full relative bottom-[10px] border border-gray05"
-                        />
-                      </div>
-                    )}
-                    {isExistCombination(post, "paint") && (
-                      <div>
-                        <div
-                          className="w-12 h-12 rounded-full relative top-[10px]"
-                          style={{
-                            backgroundColor: post.leftColorCode,
-                          }}
-                        />
-                        <div
-                          className="relative w-12 h-12 rounded-full"
-                          style={{
-                            backgroundColor: post.rightColorCode,
-                          }}
-                        />
-                        <img
-                          src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                          alt="바닥"
-                          className="w-12 h-12 rounded-full relative bottom-[10px]"
-                        />
-                      </div>
-                    )}
+                  <div className="flex text-gray02 text-[12px] gap-2">
+                    <p className="truncate">{post.USERS?.name}</p>
+                    <DateConvertor datetime={post.created_at} type="dotDate" />
+                    <p>좋아요 {post.POSTLIKES[0]?.userId?.length}</p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+                <div className="flex items-center gap-4 sm:flex-col md:flex-col">
+                  {post.postImage !== null && (
+                    <img
+                      src={`${STORAGE_URL}${post.postImage as string}`}
+                      className="h-[124px] w-[124px] rounded-[8px] object-cover sm:w-[80px] sm:min-w-[80px] sm:h-[80px] mr-auto"
+                    />
+                  )}
+                  {isExistCombination(post, "interior") && (
+                    <div className="w-[46px] sm:w-8">
+                      <img
+                        src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
+                        alt="벽지"
+                        className="w-12 h-12 sm:w-8 sm:h-8 rounded-full relative top-[10px] border border-gray05"
+                      />
+                      <img
+                        src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
+                        alt="벽지"
+                        className="relative w-12 h-12 border rounded-full sm:w-8 sm:h-8 border-gray05"
+                      />
+                      <img
+                        src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                        alt="바닥"
+                        className="w-12 h-12 sm:w-8 sm:h-8 rounded-full relative bottom-[10px] border border-gray05"
+                      />
+                    </div>
+                  )}
+                  {isExistCombination(post, "paint") && (
+                    <div>
+                      <div
+                        className="w-12 h-12 sm:w-8 sm:h-8 rounded-full relative top-[10px]"
+                        style={{
+                          backgroundColor: post.leftColorCode,
+                        }}
+                      />
+                      <div
+                        className="relative w-12 h-12 rounded-full sm:w-8 sm:h-8"
+                        style={{
+                          backgroundColor: post.rightColorCode,
+                        }}
+                      />
+                      <img
+                        src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                        alt="바닥"
+                        className="w-12 h-12 sm:w-8 sm:h-8 rounded-full relative bottom-[10px]"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </>
     );

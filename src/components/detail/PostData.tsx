@@ -60,20 +60,19 @@ export const PostData = ({ postData }: Props) => {
         </p>
         <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
-      <div className="contents-between border-b border-gray06 py-[20px] items-center">
-        <div className="w-[1000px]">
-          <label htmlFor="title" className="text-[18px] font-semibold">
+      <div className="xs:flex-column xs:items-start xs:gap-8 contents-between border-b border-gray06 py-[20px] items-center px-3">
+        <div>
+          <label htmlFor="title" className="text-[18px] font-semibold xs:text-[16px]">
             {postData?.title}
           </label>
-          <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px]">
+          <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px] xs:text-[12px]">
             <img
               src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
               alt="userImg"
-              className="w-8 h-8 border rounded-full border-gray05 object"
+              className="w-8 h-8 border rounded-full xs:w-6 xs:h-6 border-gray05 object"
             />
             <p>{postData?.USERS !== null ? postData?.USERS.name : null}</p>
             <DateConvertor datetime={postData?.created_at} type="dotDate" />
-            <DateConvertor datetime={postData?.created_at} type="hourMinute" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
               <p>좋아요 {postData?.POSTLIKES[0]?.userId?.length}</p>
@@ -94,7 +93,7 @@ export const PostData = ({ postData }: Props) => {
         </div>
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
           <div
-            className="flex gap-4"
+            className="flex gap-3"
             onMouseEnter={() => {
               setPreviewModal(true);
             }}
@@ -102,29 +101,29 @@ export const PostData = ({ postData }: Props) => {
               setPreviewModal(false);
             }}
           >
-            <div>
+            <div className="items-center gap-2 flex-column">
               <img
-                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
+                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
                 src={`${STORAGE_URL}/wallpaper/${postData?.leftWallpaperId}`}
                 alt="왼쪽 벽지"
               />
-              <p className="text-[14px] text-center">좌측벽지</p>
+              <p className="sm:text-[12px] text-[14px] text-center">좌측벽지</p>
             </div>
-            <div>
+            <div className="items-center gap-2 flex-column">
               <img
-                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
+                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
                 src={`${STORAGE_URL}/wallpaper/${postData.rightWallpaperId as string}`}
                 alt="오른쪽 벽지"
               />
-              <p className="text-[14px] text-center">우측벽지</p>
+              <p className="sm:text-[12px] text-[14px] text-center">우측벽지</p>
             </div>
-            <div>
+            <div className="items-center gap-2 flex-column">
               <img
-                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
+                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
                 src={`${STORAGE_URL}/tile/${postData.tileId as string}`}
                 alt="바닥재"
               />
-              <p className="text-[14px] text-center">바닥재</p>
+              <p className="sm:text-[12px] text-[14px] text-center">바닥재</p>
             </div>
           </div>
         )}
@@ -133,7 +132,7 @@ export const PostData = ({ postData }: Props) => {
           postData?.rightColorCode !== null &&
           postData?.rightColorCode !== undefined && (
             <div
-              className="flex gap-4"
+              className="flex gap-3"
               onMouseEnter={() => {
                 setPreviewModal(true);
               }}
@@ -141,31 +140,31 @@ export const PostData = ({ postData }: Props) => {
                 setPreviewModal(false);
               }}
             >
-              <div>
+              <div className="items-center gap-2 flex-column">
                 <div
-                  className="w-16 h-16 rounded-full bg-gray06"
+                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
                   style={{
                     backgroundColor: postData.leftColorCode,
                   }}
                 />
-                <p className="text-[14px] text-center">좌측벽지</p>
+                <p className="sm:text-[12px] text-[14px] text-center">좌측벽지</p>
               </div>
-              <div>
+              <div className="items-center gap-2 flex-column">
                 <div
-                  className="w-16 h-16 rounded-full bg-gray06"
+                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
                   style={{
                     backgroundColor: postData.rightColorCode,
                   }}
                 />
-                <p className="text-[14px] text-center">우측벽지</p>
+                <p className="sm:text-[12px] text-[14px] text-center">우측벽지</p>
               </div>
-              <div>
+              <div className="items-center gap-2 flex-column">
                 <img
-                  className="w-16 h-16 rounded-full bg-gray06"
+                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
                   src={`${STORAGE_URL}/tile/${postData.tileId as string}`}
                   alt="바닥재"
                 />
-                <p className="text-[14px] text-center">바닥재</p>
+                <p className="sm:text-[12px] text-[14px] text-center">바닥재</p>
               </div>
             </div>
           )}
@@ -182,7 +181,7 @@ export const PostData = ({ postData }: Props) => {
           />
         </div>
       )}
-      <div className="flex-column gap-5 mt-[15px] mb-[50px]">
+      <div className="flex-column gap-5 mt-[15px] mb-[50px] px-3">
         {postData?.postImage !== null && postData?.postImage !== undefined && (
           <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
         )}

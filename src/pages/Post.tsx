@@ -25,6 +25,7 @@ interface SelectedData {
   rightWallPaint: string | null;
   tile: WallorTile | null;
 }
+
 export const Post = () => {
   const { Alert } = useDialog();
   const { currentSession } = useAuthStore();
@@ -69,6 +70,8 @@ export const Post = () => {
 
   const title = watch("title") ?? 0;
   const textarea = watch("textarea") ?? 0;
+
+  const titleValidationColor = title.length > 100 ? "text-red-600" : "text-gray03";
 
   const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
   const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
@@ -143,34 +146,35 @@ export const Post = () => {
         break;
     }
   };
-
   return (
     <div className="w-[1280px] mx-auto mt-[40px]">
       <div className="items-center flex-column">
         <p className="font-medium text-[32px]">커뮤니티</p>
-        <div className="w-full border-b-2 border-gray01 mt-[70px]"></div>
+        <div className="w-full mt-10 border-b-2 border-gray01"></div>
       </div>
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex w-full border-b border-gray06 h-[72px] justify-center items-center">
+        <div className="flex w-full border-b border-gray06 h-[72px] items-center">
           <label htmlFor="title" className="w-[40px] text-[18px] font-normal">
             제목
           </label>
-          <input
-            className="w-full h-[48px] text-[20px] px-[24px] py-[12px] border border-gray05 focus:outline-none"
-            {...register("title", { required: true, maxLength: 100 })}
-          />
+          <div className="flex items-center w-full border border-gray05">
+            <input
+              className="w-full text-[18px] px-3 py-2 focus:outline-none"
+              {...register("title", { required: true, maxLength: 100 })}
+            />
+            <p className={`${titleValidationColor} w-[180px]`}>제목 글자 수: {title.length} / 100</p>
+          </div>
         </div>
-        <div className="mt-2 contents-between">
-          {errors.title?.type === "maxLength" ? (
-            <div className="text-red-600">제목은 최대 100자 까지만 입력할 수 있습니다!</div>
-          ) : errors.title?.type === "required" ? (
-            <div className="text-red-600">제목은 최소 1자 이상 작성해 주세요.</div>
-          ) : (
-            <div></div>
-          )}
-          <p className={title.length > 100 ? "text-red-600" : "text-gray03"}>제목 글자 수: {title.length} / 100</p>
-        </div>
-        <div className="relative flex items-center justify-end h-[70px] border-y border-gray05 my-[20px]">
+        <div className="relative flex justify-between mt-3">
+          <div>
+            {errors.title?.type === "maxLength" ? (
+              <div className="text-red-600">제목은 최대 100자 까지만 입력할 수 있습니다!</div>
+            ) : errors.title?.type === "required" ? (
+              <div className="text-red-600">제목은 최소 1자 이상 작성해 주세요.</div>
+            ) : (
+              <></>
+            )}
+          </div>
           {wallpaperPaint.left !== null ? (
             <div
               className="w-[40px] h-[40px] rounded-full absolute right-[200px] border border-gray05"
@@ -211,7 +215,7 @@ export const Post = () => {
           <button
             type="button"
             onClick={onOpenModal}
-            className="text-[13px] w-[130px] h-[40px] border border-gray03 rounded-[8px]"
+            className="text-[13px] w-[130px] h-[40px] border border-gray03 rounded-[8px] mb-3"
           >
             조합 추가하기 +
           </button>
@@ -226,7 +230,7 @@ export const Post = () => {
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="h-[449px] border border-[#a7a7a7] focus:outline-none p-[20px] text-[18px] resize-none"
+          className="h-[350px] border border-[#a7a7a7] focus:outline-none p-[20px] text-[18px] resize-none"
           {...register("textarea", { required: true, maxLength: 1000 })}
         />
         <div className="mt-2 contents-between">
@@ -263,7 +267,7 @@ export const Post = () => {
             </button>
           </div>
         </div>
-        <div className="my-[60px] contents-between">
+        <div className="my-10 contents-between">
           <button
             type="button"
             className="w-[160px] h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"
