@@ -18,12 +18,12 @@ export const Community = () => {
 
   return (
     <>
-      <div className="w-full max-w-[1280px] min-w-[360px] gap-10 mx-auto mt-20 pl-6 flex-column">
-        <div className="text-center border-b border-gray-400 drop-shadow-xl">
+      <div className="w-full max-w-[1280px] min-w-[360px] gap-10 mx-auto mt-5 pl-6 flex-column">
+        <div className="text-center border-b border-gray-400 drop-shadow-xl sm:hidden">
           <p className="text-[32px] pb-6 font-medium">커뮤니티</p>
         </div>
         <div className="gap-4 flex-column">
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
             <p className="text-[20px] font-medium">BEST CONTENTS</p>
             <p className="text-gray01">현재 가장 인기있는 글을 먼저 만나보세요!</p>
           </div>
