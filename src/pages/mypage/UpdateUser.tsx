@@ -42,15 +42,16 @@ export const UpdateUser = () => {
 
   const { currentUserResponse, patchUserMutation } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
+  const { currentUserId } = useAuthStore();
 
-  const { currentSession } = useAuthStore();
-  if (currentSession === null) {
+  if (currentUser === undefined || currentUserId === undefined) {
     navigate("/");
     return <></>;
   }
 
-  const { avatar_url: currentProfileImg, name: currentName } = currentSession.user.user_metadata;
-  const userId = currentSession.user.id;
+  const { name: currentName, avatar_url: currentProfileImg } = currentUser;
+  const userId = currentUserId;
+
   const prevProfileImageId =
     currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
 
@@ -112,23 +113,8 @@ export const UpdateUser = () => {
     try {
       await changePassword(data.password);
       toast("비밀번호가 정상적으로 변경되었습니다.", { theme: "warning", zIndex: 9999 });
-    } catch (error) {
-      switch (error) {
-        case "Error: New password should be different from the old password.":
-          toast("이전 비밀번호와 동일합니다.", { theme: "failure", zIndex: 9999 });
-          break;
-        case "New password should be different from the old password.":
-          toast("이전 비밀번호와 동일합니다.", { theme: "failure", zIndex: 9999 });
-          break;
-        case "Auth session missing!":
-          toast("이메일 유효시간이 만료되었습니다.", { theme: "failure", zIndex: 9999 });
-          break;
-        default:
-          toast("비밀번호 변경에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
-          console.error(error);
-          break;
-      }
-    }
+    } catch (error) {}
+
     resetField("password");
     resetField("passwordConfirm");
     toggleChangeHandler("password");
@@ -145,6 +131,8 @@ export const UpdateUser = () => {
 
       await changeMetaName(data.name);
       patchUserMutation.mutate({ inputValue, userId });
+    } else {
+      toast("이전 닉네임과 동일합니다.", { theme: "failure", zIndex: 9999 });
     }
     toggleChangeHandler("name");
   };
@@ -204,7 +192,7 @@ export const UpdateUser = () => {
               <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
-          <p className="title-4">{`${currentName as string} 님`}</p>
+          <p className="title-4">{`${currentName} 님`}</p>
         </div>
         <div className="flex contents-center w-[624px]">
           <div className="w-full gap-6 flex-column">
