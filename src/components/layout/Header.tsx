@@ -1,22 +1,42 @@
-import React, { useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { logout } from "api/supabase/auth";
+import backImg from "assets/headersvg/back_page.svg";
 import hambergerMenu from "assets/headersvg/cate.svg";
 import logOutIcon from "assets/headersvg/Logout.svg";
 import userIcon from "assets/headersvg/user.svg";
 import { Sidebar, useDialog } from "components";
+import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { useAuthStore } from "store";
 
 const IMG_WIDTH_HEIGHT = 32;
+let headerTitle: string;
+let isBack: boolean = false;
+
 const HeaderMemoization = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [scrollY, setScrollY] = useState<number>(0);
+
   const navigate = useNavigate();
   const { Alert } = useDialog();
 
   const { currentSession, setStayLoggedInStatus } = useAuthStore();
+  const { windowWidth } = useInteriorPreview();
 
   const userUid = currentSession?.user.id;
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname === "/") window.addEventListener("scroll", scrollObserver);
+    return () => {
+      window.removeEventListener("scroll", scrollObserver);
+    };
+  }, [pathname]);
+
+  const scrollObserver = () => {
+    setScrollY(window.scrollY);
+  };
 
   const logoutHandler = useCallback(async () => {
     navigate("/");
@@ -30,6 +50,83 @@ const HeaderMemoization = () => {
     }
   }, []);
 
+  switch (pathname) {
+    case "/":
+      headerTitle = "STILE";
+      isBack = false;
+      break;
+
+    case "/interior-preview":
+      headerTitle = "STILE";
+      isBack = true;
+      break;
+
+    case "/login":
+      headerTitle = "로그인";
+      isBack = true;
+      break;
+
+    case "/find-auth/email":
+    case "/find-auth/password":
+      headerTitle = "회원정보 찾기";
+      isBack = true;
+      break;
+
+    case "/signup":
+      headerTitle = "회원가입";
+      isBack = true;
+      break;
+
+    case "/mypage":
+    case "/mypage/like":
+    case "/mypage/comment":
+    case "/mypage/post":
+      headerTitle = "마이페이지";
+      isBack = true;
+      break;
+
+    case "/mypage/inquiry":
+      headerTitle = "문의하기";
+      isBack = true;
+      break;
+    case "/mypage/bookmark":
+      headerTitle = "북마크";
+      isBack = true;
+      break;
+
+    case "/mypage/update":
+      headerTitle = "회원정보수정";
+      isBack = true;
+      break;
+
+    case "/community":
+    case "/post":
+      headerTitle = "커뮤니티";
+      isBack = true;
+      break;
+
+    case "/eventlist":
+      headerTitle = "이벤트";
+      isBack = true;
+      break;
+
+    default:
+      if (pathname.slice(0, 7) === "/detail") {
+        isBack = true;
+        headerTitle = "커뮤니티";
+        break;
+      }
+      if (pathname.slice(0, 6) === "/event") {
+        isBack = true;
+        headerTitle = "이벤트";
+        break;
+      }
+      isBack = true;
+      headerTitle = "STILE";
+
+      break;
+  }
+
   const goToMypage = useCallback(() => {
     if (userUid == null) return;
     navigate("/mypage");
@@ -42,17 +139,37 @@ const HeaderMemoization = () => {
   const openSideBarHandler = useCallback((): void => {
     setIsOpen(true);
   }, []);
+  const goToBackPage = useCallback(() => {
+    navigate(-1);
+  }, []);
 
   return (
     <>
-      <header className="flex justify-center sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white px-6">
+      <header
+        className={`flex justify-center sticky z-[9100] box-border top-0 left-0 w-full sm:h-16 px-6 ${
+          scrollY <= 100 && (windowWidth as number) <= 768 && pathname === "/"
+            ? "bg-transparent "
+            : "bg-white border-b border-b-gray06"
+        } transition-colors duration-500 ease-in-out`}
+      >
         <div className="w-[1280px] contents-between items-center">
           <Link
             to="/"
-            className="py-4 font-title text-[2rem] 
+            className="py-4 font-title text-[2rem] flex
             sm:py-2"
           >
-            STILE
+            {(windowWidth as number) >= 767 ? (
+              "STILE"
+            ) : (
+              <>
+                {isBack && (
+                  <button onClick={goToBackPage} className="flex contents-center">
+                    <img width={32} height={32} src={backImg} alt="뒤로가기 이미지" />
+                  </button>
+                )}
+                {headerTitle}
+              </>
+            )}
           </Link>
 
           {currentSession === null ? (

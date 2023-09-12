@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { type DataType } from "./mypage.type";
+import type { DataType } from "./mypage.type";
 
 interface Props {
   type: DataType;
@@ -54,12 +54,12 @@ export const EmptyData = ({ type }: Props) => {
 
   return (
     <>
-      <p className="text-[24px] my-[30px]">{infoText(type)}</p>
-      <div className="flex gap-[24px]">
-        <Link to={linkSwitch(type)} className="flex contents-center w-[130px] h-[48px] rounded-full bg-point">
+      <p className="title-4 my-[30px]">{infoText(type)}</p>
+      <div className="flex gap-6 sm:flex-col sm:w-full">
+        <Link to={linkSwitch(type)} className="flex contents-center w-[130px] h-12 rounded-full bg-point sm:w-full">
           {buttonText(type)}
         </Link>
-        <Link to="/mypage" className="flex contents-center w-[130px] h-[48px] rounded-full bg-gray07 border">
+        <Link to="/mypage" className="flex contents-center w-[130px] h-12 rounded-full bg-gray07 border sm:w-full">
           마이페이지
         </Link>
       </div>

@@ -81,7 +81,7 @@ input[type="password"]::-ms-clear {
 }
 
 .flicking-pagination-bullet {
-  width: 256px !important;
+  width: 20% !important;
   height: 2px !important;
   margin: 0 !important;
   border-radius: 0 !important;
@@ -380,5 +380,169 @@ input[type="password"]::-ms-clear {
 
   .interior-item {
     @apply w-[80px] h-[80px] rounded-full;
+  }
+}
+
+@media (max-width: 680px) {
+  /* 좌측 가구 */
+  .left-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(251deg) rotateY(66deg) translateZ(266px) translateY(-425px) translateX(-224px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+  .left-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(83px) translateY(-124px) translateX(15px) scale(0.85);
+    transform-style: preserve-3d;
+  }
+  .left-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-237px) translateX(-114px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .left-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-95px) translateX(-167px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .left-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(335px) translateY(-74px) translateX(-174px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .left-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(152px) translateY(-127px) translateX(-111px) scale(0.85);
+    transform-style: preserve-3d;
+  }
+
+  /* 우측 가구 */
+  .right-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(280deg) rotateY(-44deg) translateZ(277px) translateY(-228px) translateX(-172px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+  .right-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(279deg) rotateY(-66deg) rotateZ(7deg) translateZ(371px) translateY(-135px) translateX(-105px)
+      scale(0.85);
+    transform-style: preserve-3d;
+  }
+  .right-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(42deg) rotateZ(0) translateZ(50px) translateY(-139px) translateX(82px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .right-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(109px) translateY(-99px) translateX(19px)
+      scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .right-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(140px) translateY(-72px) translateX(-5px)
+      scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .right-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(15px) translateX(-92px)
+      scale(0.8);
+    transform-style: preserve-3d;
+  }
+}
+
+@media (max-width: 450px) {
+  /* 좌측 가구 */
+  .left-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(251deg) rotateY(66deg) translateZ(266px) translateY(-420px) translateX(-174px) scale(0.5);
+    transform-style: preserve-3d;
+  }
+  .left-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(83px) translateY(-124px) translateX(25px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+  .left-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-263px) translateX(-86px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .left-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-115px) translateX(-143px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .left-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(335px) translateY(-101px) translateX(-143px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .left-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(152px) translateY(-143px) translateX(-82px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+
+  /* 우측 가구 */
+  .right-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(280deg) rotateY(-44deg) translateZ(277px) translateY(-228px) translateX(-112px) scale(0.5);
+    transform-style: preserve-3d;
+  }
+  .right-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(280deg) rotateY(-66deg) rotateZ(7deg) translateZ(371px) translateY(-173px) translateX(-36px)
+      scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(42deg) rotateZ(0) translateZ(50px) translateY(-122px) translateX(73px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(161px) translateY(-152px) translateX(23px)
+      scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(278px) translateY(-159px) translateX(-3px)
+      scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(-7px) translateX(-67px)
+      scale(0.5);
+    transform-style: preserve-3d;
   }
 }

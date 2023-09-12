@@ -62,14 +62,16 @@ const App = () => {
       switch (event) {
         case "SIGNED_IN":
           setCurrentSession(session);
+          setCurrentUserId(session?.user.id);
           break;
         case "SIGNED_OUT":
           setCurrentSession(null);
+          setCurrentUserId(undefined);
           break;
         default:
       }
     });
-  }, [setCurrentSession]);
+  }, [setCurrentSession, setCurrentUserId, auth]);
 
   return <Router />;
 };

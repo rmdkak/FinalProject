@@ -17,17 +17,11 @@ import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
-import {
-  type PasswordVisible,
-  PasswordVisibleButton,
-  InvalidText,
-  MypageTitle,
-  passwordValid,
-  nameValid,
-  useDialog,
-} from "components";
+import { PasswordVisibleButton, InvalidText, Title, passwordValid, nameValid, useDialog } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
 import { useAuthStore } from "store";
+
+import type { PasswordVisible } from "components";
 
 interface UpdateInput {
   name: string;
@@ -184,10 +178,10 @@ export const UpdateUser = () => {
 
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
-      <MypageTitle title="회원정보수정" isBorder={true} />
+      <Title title="회원정보수정" isBorder={true} />
       <div className="flex w-full mt-10">
         {/* 프로필 이미지 */}
-        <div className="flex-column items-center w-[328px] gap-[36px]">
+        <div className="flex-column items-center w-[328px] gap-9">
           <div className="relative w-[120px]">
             {currentProfileImg === "" ? (
               <img src={defaultImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
@@ -209,7 +203,7 @@ export const UpdateUser = () => {
               <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
-          <p className="text-[24px] font-normal leading-[145%]">{`${currentName as string} 님`}</p>
+          <p className="title-4">{`${currentName as string} 님`}</p>
         </div>
         <div className="flex contents-center w-[624px]">
           <div className="w-full gap-6 flex-column">
@@ -356,7 +350,7 @@ export const UpdateUser = () => {
               >
                 이전
               </button>
-              <div className="right-[-33px] translate-x-full absolute flex items-center gap-3">
+              <div className="-right-[33px] translate-x-full absolute flex items-center gap-3">
                 <p className="body-3 text-gray02">더 이상 이용하지 않으시나요?</p>
                 <button
                   onClick={deleteAuth}

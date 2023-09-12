@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/svgs/calcArrow.svg";
+import smViewMore from "assets/svgs/more.svg";
 import smcalcArrow from "assets/svgs/smcalcArrow.svg";
 
 interface Props {
@@ -17,7 +18,7 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
       return (
         <div className="flex items-center sm:px-6 contents-between">
           <h2 className="section-title">{title}</h2>
-          <div>
+          <div className="sm:hidden">
             <label htmlFor={page} className="mr-[10px] text-[14px] text-gray02 hover:cursor-pointer">
               VIEW MORE
             </label>
@@ -30,6 +31,7 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
               <img src={calcArrow} className="view-more-icon" />
             </button>
           </div>
+          <img src={smViewMore} alt="view more" className="hidden sm:block" />
         </div>
       );
 

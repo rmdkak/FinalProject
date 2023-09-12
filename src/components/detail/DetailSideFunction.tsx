@@ -105,11 +105,11 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
     if (currentSession === null) {
       const confirmCheck = await Confirm(
         <div>
-          <div className="flex text-[18px] justify-center mb-[10px]">
+          <div className="flex text-lg justify-center mb-[10px]">
             <p className="font-medium mr-[10px]">STILE</p>
             <p>회원 이신가요?</p>
           </div>
-          <div className="text-[14px] text-gray02">
+          <div className="text-sm text-gray02">
             <p>해당 서비스는 로그인 후 진행 가능합니다.</p>
             <p>로그인 혹은 회원가입 해주세요.</p>
           </div>
@@ -123,33 +123,35 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
 
   const PrevNextPostList = () => {
     return (
-      <div className="mt-20 flex-column border-t-[1px] border-gray06">
+      <div className="my-20 border-t flex-column border-gray06 ">
         {prevPage !== undefined && (
           <div
-            className="flex gap-[10px] items-center py-6 border-b-[1px] border-gray06 hover:cursor-pointer"
+            className="flex gap-[10px] items-center py-6 border-b border-gray06 hover:cursor-pointer"
             onClick={() => {
               navigate(`/detail/${prevPage}`);
             }}
           >
             <SlArrowUp className="fill-gray02" />
-            <label className="text-gray02 w-[80px]">이전글 보기</label>
-            <span className="h-[8px] border border-gray08"></span>
-            <p className="line-clamp-1">
+            <label className="text-gray02 sm:text-xs min-w-[80px]">이전글 보기</label>
+            <span className="h-2 border border-gray08"></span>
+            <p className="line-clamp-1 sm:text-xs sm:w-full">
               {postList !== undefined ? postList[(findCurrentIdx as number) - 1].title : ""}
             </p>
           </div>
         )}
         {nextPage !== undefined && (
           <div
-            className="flex gap-[10px] items-center py-6 border-b-[1px] border-gray06 hover:cursor-pointer"
+            className="flex gap-[10px] items-center py-6 px-3 border-b border-gray06 hover:cursor-pointer "
             onClick={() => {
               navigate(`/detail/${nextPage}`);
             }}
           >
             <SlArrowDown className="fill-gray02" />
-            <label className="text-gray02">다음글 보기</label>
+            <p className="text-gray02 sm:text-xs min-w-[80px]">다음글 보기</p>
             <span className="h-[8px] border border-gray08"></span>
-            <p>{postList !== undefined ? postList[(findCurrentIdx as number) + 1].title : ""}</p>
+            <p className="line-clamp-1 sm:text-xs sm:w-full">
+              {postList !== undefined ? postList[(findCurrentIdx as number) + 1].title : ""}
+            </p>
           </div>
         )}
       </div>
@@ -158,26 +160,29 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
 
   const DetailSideBar = ({ setOpenShareModal }: ModalProps) => {
     return (
-      <div className="sticky gap-4 bottom-[50%] translate-x-[1350px] inline-flex flex-col">
-        <button className="w-12 h-12 rounded-full bg-point" onClick={movePostPageHandler}>
-          <BsPencilSquare className="w-5 h-5 mx-auto fill-gray01" />
+      <div className="fixed gap-4 bottom-[20%] sm:right-[40px] right-20 inline-flex flex-col">
+        <button className="w-12 h-12 rounded-full bg-point sm:w-8 sm:h-8" onClick={movePostPageHandler}>
+          <BsPencilSquare className="w-5 h-5 mx-auto fill-gray01 sm:w-4 sm:h-4" />
         </button>
         {isHaveBookmark ? (
-          <button onClick={deleteBookmark} className="w-12 h-12 border rounded-full border-gray06">
-            <img src={fillHeart} className="mx-auto text-point" />
+          <button
+            onClick={deleteBookmark}
+            className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8"
+          >
+            <img src={fillHeart} className="mx-auto text-point sm:w-4 sm:h-4" />
           </button>
         ) : (
-          <button onClick={addBookmark} className="w-12 h-12 border rounded-full border-gray06">
-            <img src={lineHeart} className="mx-auto text-gray01 " />
+          <button onClick={addBookmark} className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8">
+            <img src={lineHeart} className="mx-auto text-gray01 sm:w-4 sm:h-4" />
           </button>
         )}
         <button
           onClick={() => {
             setOpenShareModal(true);
           }}
-          className="w-12 h-12 border rounded-full border-gray06"
+          className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8"
         >
-          <img src={share} className="mx-auto fill-gray01" />
+          <img src={share} className="mx-auto fill-gray01 sm:w-4 sm:h-4" />
         </button>
       </div>
     );
