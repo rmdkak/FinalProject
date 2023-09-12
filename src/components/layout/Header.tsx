@@ -103,15 +103,16 @@ const HeaderMemoization = () => {
   const goToMypage = useCallback(() => {
     if (currentUserId === undefined) return;
     navigate("/mypage");
-  }, []);
+  }, [currentUserId]);
 
   const goToLogin = useCallback(() => {
     navigate("/login");
   }, []);
 
-  const openSideBarHandler = useCallback((): void => {
+  const openSideBarHandler = useCallback(() => {
     setIsOpen(true);
   }, []);
+
   const goToBackPage = useCallback(() => {
     navigate(-1);
   }, []);

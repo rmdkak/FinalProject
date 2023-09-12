@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
 import { login } from "api/supabase/auth";
 import { PasswordVisibleButton, InvalidText, useDialog, SocialLogin, CheckBoxIcon } from "components";
@@ -26,15 +27,15 @@ export const Login = () => {
     handleSubmit,
     formState: { errors },
     resetField,
-    setError,
   } = useForm<LoginInputs>();
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
       await login(data);
       getCurrentPathname();
+      toast("로그인 되었습니다.", { theme: "plain", zIndex: 9999 });
     } catch (error) {
-      setError("root", { message: "일치하는 회원정보가 없습니다." });
+      toast("로그인에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
     }
   };
 
@@ -136,10 +137,7 @@ export const Login = () => {
             </Link>
           </div>
         </div>
-
         <button className="mt-6 text-black auth-button auth-button-text point-button">로그인</button>
-        <InvalidText errorsMessage={errors.root?.message} />
-
         <div className="w-full mt-[30px] h-[120px]">
           <div className="relative flex h-12 contents-center">
             <div className="absolute w-full h-[1px] bg-[#D9D9D9] z-0" />

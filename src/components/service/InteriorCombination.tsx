@@ -49,9 +49,6 @@ export const InteriorCombination = ({ interiorItemId, type }: Props) => {
     tileId,
     stateTileId,
   } = interiorItemId;
-  console.log("leftWallpaperId :", stateLeftWallpaperId);
-  console.log("rightWallpaperId :", stateRightWallpaperId);
-  console.log("tileId :", tileId);
 
   const initialClass = {
     Box: "",

@@ -63,9 +63,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
           <p>로그인 하시겠습니까?</p>
         </>,
       );
-      if (goToLogin) {
-        navigate("/login");
-      }
+      if (goToLogin) navigate("/login");
       return;
     }
     if (
@@ -86,9 +84,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
           <p>로그인 하시겠습니까?</p>
         </>,
       );
-      if (goToLogin) {
-        navigate("/login");
-      }
+      if (goToLogin) navigate("/login");
       return;
     }
     if (

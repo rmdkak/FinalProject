@@ -126,9 +126,11 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
     try {
       await signup({ ...data, email, selectIdQuestion });
+      toast("회원가입 되었습니다.", { theme: "plain", zIndex: 9999 });
       nextStep();
     } catch (error) {
       console.error("error:", error);
+      toast("회원가입에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
       switch (error) {
         case "User already registered":
           setError("root", { message: "이미 등록된 사용자입니다." });
