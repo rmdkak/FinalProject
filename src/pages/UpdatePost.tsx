@@ -3,9 +3,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { deletePostImage, savePostImageHandler, STORAGE_URL } from "api/supabase";
+import { deletePostImage, savePostImageHandler } from "api/supabase/postData";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { Button, InteriorSection, InvalidText, Modal, useDialog } from "components";
-import { usePostsQuery } from "hooks";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { useModalStore, useServiceStore } from "store";
 
 interface Inputs {

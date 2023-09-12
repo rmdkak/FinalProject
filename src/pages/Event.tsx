@@ -1,10 +1,10 @@
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor } from "components";
-import { useAdminQuery } from "hooks";
+import { useAdminQuery } from "hooks/useAdminQuery";
 export const Event = () => {
   const { id: paramsId } = useParams();
   const navigate = useNavigate();

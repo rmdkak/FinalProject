@@ -1,10 +1,11 @@
-type dataType = "post" | "comment" | "bookmark" | "like" | "inquiry";
+import { type DataType } from "./mypage.type";
 
 interface Props {
-  type: dataType;
+  type: DataType;
 }
+
 export const MypageSubTitle = ({ type }: Props) => {
-  const titleText = (type: dataType) => {
+  const titleText = (type: DataType) => {
     switch (type) {
       case "post":
         return "내가 쓴 글";
@@ -19,7 +20,7 @@ export const MypageSubTitle = ({ type }: Props) => {
     }
   };
   return (
-    <div className="w-full border-b border-b-black pb-[24px]">
+    <div className="w-full pb-3 border-b border-b-black body-1">
       <p>{titleText(type)}</p>
     </div>
   );

@@ -17,7 +17,7 @@ export const GetColorForm = ({ wallpaperColor, children }: Props) => {
   if (wallpaperColor === null || wallpaperColor === undefined) return <></>;
   else {
     return (
-      <div className="w-full gap-6 flex-column border-y border-gray05">
+      <div className="box-border w-full gap-6 flex-column border-y border-gray05 sm:px-6">
         <div>
           <div className="flex items-center gap-3 my-6">
             <h2 className="text-lg font-medium">현재 색상 코드</h2>

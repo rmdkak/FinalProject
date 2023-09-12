@@ -1,9 +1,9 @@
 import { PiArrowBendDownRightThin } from "react-icons/pi";
 
-import { ADMIN_ID } from "api/supabase";
+import { ADMIN_ID } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor } from "components/common";
-import { useComments } from "hooks";
+import { useComments } from "hooks/useComments";
 import { type Tables } from "types/supabase";
 
 import { CommentForm } from "./CommentForm";

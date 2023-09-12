@@ -4,9 +4,9 @@ import type { SubmitHandler } from "react-hook-form";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
-import { login } from "api/supabase";
+import { login } from "api/supabase/auth";
 import { PasswordVisibleButton, InvalidText, useDialog, SocialLogin, CheckBoxIcon } from "components";
-import { useMovePage } from "hooks";
+import { useMovePage } from "hooks/useMovePage";
 import { useAuthStore } from "store";
 
 export interface LoginInputs {
@@ -55,9 +55,9 @@ export const Login = () => {
   }, []);
 
   return (
-    <div className="w-[560px] flex-column my-10 items-center mx-auto">
-      <h2 className="w-full pb-6 text-center border-b border-black title-3">로그인</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-10">
+    <div className="max-w-[560px] min-w-[360px] box-border w-full flex-column my-10 items-center mx-auto sm:mt-2">
+      <h2 className="w-full pb-6 text-center border-b border-black title-3 sm:hidden">로그인</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full mt-10 sm:px-6 sm:mt-6">
         <label htmlFor="email" className="text-[12px] font-normal leading-[110%] text-gray01">
           이메일
         </label>
@@ -106,7 +106,7 @@ export const Login = () => {
         </div>
         <InvalidText errorsMessage={errors.password?.message} />
 
-        <div className="flex items-center justify-between h-5 mt-4 text-gray02">
+        <div className="flex items-center justify-between h-5 mt-4 text-gray02 sm:mt-0">
           <div className="flex items-center h-full">
             <input
               id="logging"
@@ -119,7 +119,7 @@ export const Login = () => {
               htmlFor="logging"
               className="flex contents-center gap-2 text-[12px] leading-[110%] self-center cursor-pointer hover:text-black"
             >
-              <CheckBoxIcon isCheck={stayLoggedInStatus} />
+              <CheckBoxIcon type="black" isCheck={stayLoggedInStatus} />
               로그인 유지
             </label>
           </div>
@@ -150,7 +150,7 @@ export const Login = () => {
           <SocialLogin />
         </div>
 
-        <div className="gap-6 mt-6 flex-column contents-center">
+        <div className="gap-6 mt-6 flex-column contents-center sm:gap-0 sm:mt-0">
           <p className="text-gray03 text-[14px] text-center mb-4">회원가입하고 더 많은 인테리어 조합을 확인해보세요!</p>
           <Link
             to={"/signup"}

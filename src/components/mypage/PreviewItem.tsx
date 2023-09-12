@@ -1,4 +1,4 @@
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 
 interface Props {
   leftWallpaperId: string | undefined | null;

@@ -3,9 +3,10 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { savePostImageHandler, STORAGE_URL } from "api/supabase";
+import { savePostImageHandler } from "api/supabase/postData";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { Button, InteriorSection, Modal, useDialog } from "components";
-import { usePostsQuery } from "hooks";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
 
@@ -27,11 +28,11 @@ interface SelectedData {
 }
 export const Post = () => {
   const { Alert } = useDialog();
-  const { currentSession } = useAuthStore();
-  const userId = currentSession?.user.id;
+  const { currentSession, currentUserId } = useAuthStore();
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   const { createPostMutation } = usePostsQuery();
+
   const {
     register,
     handleSubmit,
@@ -92,7 +93,7 @@ export const Post = () => {
           title: data.title,
           content: data.textarea,
           postImage,
-          userId,
+          userId: currentUserId,
           tileId: tile.id,
           leftWallpaperId: wallPaper.left.id,
           rightWallpaperId: wallPaper.right.id,
@@ -130,7 +131,9 @@ export const Post = () => {
   );
 
   useEffect(() => {
-    if (currentSession === null) navigate("/login");
+    if (currentSession === null) {
+      navigate("/login");
+    }
   }, [currentSession]);
 
   const movePageHandler = (moveEvent: string) => {

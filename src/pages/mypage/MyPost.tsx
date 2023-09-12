@@ -2,7 +2,9 @@ import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypageQuery, usePagination, useSearchBar } from "hooks";
+import { useMypageQuery } from "hooks/useMypageQuery";
+import { usePagination } from "hooks/usePagination";
+import { useSearchBar } from "hooks/useSearchBar";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
@@ -14,6 +16,7 @@ export const MyPost = () => {
   };
 
   const { userPostsResponse, deleteUserPostsMutation } = useMypageQuery();
+
   const { data: userPostData } = userPostsResponse;
 
   // 선택 된 아이디 배열 삭제
@@ -45,7 +48,7 @@ export const MyPost = () => {
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <MypageTitle title="마이페이지" isBorder={false} />
       <MypageSubTitle type="post" />
-      {/* 글 목록 */}
+
       {pageData.length === 0 ? (
         <EmptyData type="post" />
       ) : (
@@ -62,7 +65,10 @@ export const MyPost = () => {
                   }}
                 />
                 <label htmlFor={post.id}>
-                  <CheckBoxIcon isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined} />
+                  <CheckBoxIcon
+                    type="pointColor"
+                    isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined}
+                  />
                 </label>
                 <p className="w-[80px]">{index + 1}</p>
                 <Link to={`/detail/${post.id as string}`} className="w-[830px]">
@@ -81,14 +87,12 @@ export const MyPost = () => {
         </ul>
       )}
 
-      {/* 버튼 박스 */}
       <div className="flex items-center justify-between w-full mt-[68px]">
         <button onClick={deletePosts} className="w-[100px] h-[48px] border border-gray05 rounded-[8px]">
           선택삭제
         </button>
         <SearchBar />
       </div>
-      {/* 페이지네이션 */}
       <div className="mt-[120px]">{showPageComponent}</div>
     </div>
   );

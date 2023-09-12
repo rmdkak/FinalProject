@@ -8,7 +8,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import defaultImg from "assets/defaultImg.jpg";
 import { MypageTitle, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
-import { useAuthQuery, useMypageQuery } from "hooks";
+import { useAuthQuery } from "hooks/useAuthQuery";
+import { useMypageQuery } from "hooks/useMypageQuery";
 import { useAuthStore } from "store";
 
 export interface MypageInfo {
@@ -18,7 +19,8 @@ export interface MypageInfo {
   data?: any[] | undefined;
 }
 
-export const MYPAGE_LAYOUT_STYLE: string = "flex-column items-center m-[60px] w-[1280px] mx-auto";
+export const MYPAGE_LAYOUT_STYLE: string =
+  "flex-column items-center m-[60px] max-w-[1280px] w-[90%] mx-auto sm:mt-6 sm:mb-20";
 
 export const Mypage = () => {
   const navigate = useNavigate();
