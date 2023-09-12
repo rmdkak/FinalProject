@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase";
+import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase/auth";
 import { DateConvertor, InvalidText, Select, idAnswerValid, idQuestionOptions, useDialog } from "components";
 import { type Tables } from "types/supabase";
 

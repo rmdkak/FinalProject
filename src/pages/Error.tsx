@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL, supabase } from "api/supabase";
+import { STORAGE_URL, supabase } from "api/supabase/supabaseClient";
 import { type Tables } from "types/supabase";
 
 type PickImg = Pick<Tables<"WALLPAPER", "Row">, "image">;

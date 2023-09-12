@@ -1,7 +1,7 @@
 import { type ChangeEvent, useState } from "react";
 
 import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, MypageTitle } from "components";
-import { useMypageQuery } from "hooks";
+import { useMypageQuery } from "hooks/useMypageQuery";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
@@ -61,7 +61,10 @@ export const MyInquiry = () => {
                     }}
                   />
                   <label htmlFor={post.id}>
-                    <CheckBoxIcon isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined} />
+                    <CheckBoxIcon
+                      type="pointColor"
+                      isCheck={postIdsToDelete.find((id) => id === post.id) !== undefined}
+                    />
                   </label>
                   <p className="w-[80px]">{index + 1}</p>
                   <p className="w-[40px]">{post.category}</p>

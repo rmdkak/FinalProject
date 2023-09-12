@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 
-import { supabase } from "api/supabase";
+import { supabase } from "api/supabase/supabaseClient";
 import { ServiceItemSkeleton } from "components/common";
 import { useServiceStore } from "store";
 import { type Tables } from "types/supabase";

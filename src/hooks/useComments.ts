@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-import { deleteCommentImageHandler, saveCommentImageHandler } from "api/supabase";
+import { deleteCommentImageHandler, saveCommentImageHandler } from "api/supabase/commentData";
 import { useDialog } from "components";
-import { useCommentsQuery, usePostsQuery } from "hooks";
+
+import { useCommentsQuery } from "./useCommentsQuery";
+import { usePostsQuery } from "./usePostsQuery";
 
 export const useComments = () => {
   const navigate = useNavigate();

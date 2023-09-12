@@ -43,7 +43,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
             type="checkbox"
           />
           <label htmlFor="allCheck" className="flex gap-3 cursor-pointer contents-center body-3">
-            <CheckBoxIcon isCheck={termsInputIsCheck.terms1 && termsInputIsCheck.terms2} />
+            <CheckBoxIcon type="black" isCheck={termsInputIsCheck.terms1 && termsInputIsCheck.terms2} />
             전체 동의
           </label>
         </li>
@@ -59,7 +59,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               type="checkbox"
             />
             <label htmlFor="terms1" className="flex gap-3 cursor-pointer contents-center body-3">
-              <CheckBoxIcon isCheck={termsInputIsCheck.terms1} />
+              <CheckBoxIcon type="black" isCheck={termsInputIsCheck.terms1} />
               [필수] <span className="text-gray02">이용약관 동의</span>
             </label>
             <ArrowButton
@@ -84,7 +84,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               type="checkbox"
             />
             <label htmlFor="terms2" className="flex gap-3 cursor-pointer contents-center body-3">
-              <CheckBoxIcon isCheck={termsInputIsCheck.terms2} />
+              <CheckBoxIcon type="black" isCheck={termsInputIsCheck.terms2} />
               [필수] <span className="text-gray02">개인정보 수집 및 이용 동의</span>
             </label>
             <img

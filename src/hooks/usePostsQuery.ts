@@ -1,7 +1,13 @@
 import { useParams } from "react-router-dom";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createPostHandler, deletePostHandler, fetchDetailData, fetchPostData, patchPostHandler } from "api/supabase";
+import {
+  createPostHandler,
+  deletePostHandler,
+  fetchDetailData,
+  fetchPostData,
+  patchPostHandler,
+} from "api/supabase/postData";
 
 export const usePostsQuery = () => {
   const { id: postId } = useParams();

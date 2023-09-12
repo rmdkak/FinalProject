@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Comments, DetailSideFunction, DetailSkeleton, PostData, Share } from "components";
-import { useMovePage, usePostsQuery } from "hooks";
+import { useMovePage } from "hooks/useMovePage";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { useLikeStore } from "store";
 
 export const Detail = () => {

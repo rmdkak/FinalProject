@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
 import { useDialog } from "components";
-import { useBookmarkQuery } from "hooks";
 import { useAuthStore, useServiceStore } from "store";
+
+import { useBookmarkQuery } from "./useBookmarkQuery";
 
 export const useBookmark = () => {
   const { currentSession } = useAuthStore();
