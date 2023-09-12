@@ -98,7 +98,6 @@ const HeaderMemoization = () => {
       break;
 
     default:
-      // console.error("올바른 접근이 아닙니다.");
       if (pathname.slice(0, 7) === "/detail") {
         isBack = true;
         headerTitle = "커뮤니티";
