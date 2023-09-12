@@ -257,7 +257,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         </div>
 
         {/* 비밀번호 확인 */}
-        <div className="relative flex w-full mt-[8px]">
+        <div className="relative flex w-full mt-2">
           <input
             type={showPassword.passwordConfirm ?? false ? "text" : "password"}
             placeholder="비밀번호 확인"
@@ -271,7 +271,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
           />
         </div>
         {errors.password?.message === undefined ? (
-          <p className="flex items-center w-full h-[30px] font-light text-black  body-4">
+          <p className="flex items-center w-full h-[30px] font-light text-black body-4">
             비밀번호는 영문,숫자,특수문자 포함 8자 이상으로 설정해주세요.
           </p>
         ) : (

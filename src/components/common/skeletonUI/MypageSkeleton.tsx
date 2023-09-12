@@ -8,7 +8,7 @@ import viewMore from "assets/svgs/viewMore.svg";
 import { Title } from "components";
 import { MYPAGE_LAYOUT_STYLE } from "pages";
 
-const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 translate-y-[-50%]";
+const BR_STYLE = "absolute w-px h-10 bg-gray06 -left-px top-1/2 -translate-y-1/2";
 const ICON_SIZE = "w-6 h-6";
 
 export const MypageSkeleton = () => {

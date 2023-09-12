@@ -3,9 +3,12 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     screens: {
+      //모바일 환경
+      xs: { max: "500px" },
       sm: { max: "768px" },
-      md: { max: "1024px" },
-      lg: { max: "1280px" },
+      // pc 환경
+      md: { min: "769px", max: "1024px" },
+      lg: { min: "1025px", max: "1280px" },
     },
     extend: {
       colors: {

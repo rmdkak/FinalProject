@@ -81,7 +81,7 @@ input[type="password"]::-ms-clear {
 }
 
 .flicking-pagination-bullet {
-  width: 256px !important;
+  width: 20% !important;
   height: 2px !important;
   margin: 0 !important;
   border-radius: 0 !important;
@@ -156,6 +156,82 @@ input[type="password"]::-ms-clear {
   width: 1070px;
   height: 1070px;
   background-color: #bcbcbc;
+}
+
+/* 좌측 가구 */
+.left-clock {
+  position: absolute;
+  z-index: 110;
+  transform: rotateX(251deg) rotateY(66deg) translateZ(260px) translateY(-495px) translateX(-257px);
+  transform-style: preserve-3d;
+}
+.left-closet {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(271deg) rotateY(40deg) translateZ(83px) translateY(-131px) translateX(10px);
+  transform-style: preserve-3d;
+}
+.left-ramp1 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-208px) translateX(-216px);
+  transform-style: preserve-3d;
+}
+.left-ramp2 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-56px) translateX(-267px);
+  transform-style: preserve-3d;
+}
+.left-table {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-91deg) rotateY(45deg) translateZ(335px) translateY(-38px) translateX(-267px);
+  transform-style: preserve-3d;
+}
+.left-sopa {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-91deg) rotateY(45deg) translateZ(134px) translateY(-98px) translateX(-126px);
+  transform-style: preserve-3d;
+}
+
+/* 우측 가구 */
+.right-clock {
+  position: absolute;
+  z-index: 110;
+  transform: rotateX(280deg) rotateY(-44deg) translateZ(277px) translateY(-237px) translateX(-217px);
+  transform-style: preserve-3d;
+}
+.right-closet {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(280deg) rotateY(-66deg) rotateZ(6deg) translateZ(371px) translateY(-95px) translateX(-173px);
+  transform-style: preserve-3d;
+}
+.right-ramp1 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-90deg) rotateY(53deg) rotateZ(0) translateZ(50px) translateY(-130px) translateX(87px);
+  transform-style: preserve-3d;
+}
+.right-ramp2 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(161px) translateY(-150px) translateX(30px);
+  transform-style: preserve-3d;
+}
+.right-table {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(278px) translateY(-131px) translateX(6px);
+  transform-style: preserve-3d;
+}
+.right-sopa {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(27px) translateX(-139px);
+  transform-style: preserve-3d;
 }
 
 .border-dashed {

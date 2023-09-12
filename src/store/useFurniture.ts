@@ -3,6 +3,7 @@ import { create } from "zustand";
 
 const IMAGE_BOOLEAN: boolean = false;
 const IMAGE_DIRECTION: LeftorRight = "left";
+
 interface Furniture {
   furnitureState: FurnitureState;
   setFurnitureState: (id: string, direction: LeftorRight) => void;
