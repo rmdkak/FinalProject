@@ -52,6 +52,7 @@ export const Mypage = () => {
     }
   }, []);
 
+  console.log(isLoading, isError);
   if (currentUser === undefined || isLoading) return <MypageSkeleton />;
 
   if (isError) return <MypageSkeleton />;
@@ -64,6 +65,7 @@ export const Mypage = () => {
   const imgStyle = { alt: "프로필 이미지", className: "w-[60px] h-[60px] rounded-full text-center justify-center" };
 
   const { name, avatar_url: profileImg } = currentUser;
+
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
       <MypageTitle title={"마이페이지"} isBorder={true} />
