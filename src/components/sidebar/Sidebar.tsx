@@ -1,9 +1,8 @@
 import React, { useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import { logout } from "api/supabase/auth";
 import close from "assets/svgs/close.svg";
-import { useDialog } from "components/common";
+import { useAuth } from "hooks/useAuth";
 import { useAuthStore } from "store";
 
 interface Props {
@@ -12,23 +11,13 @@ interface Props {
 }
 
 const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
-  const navigate = useNavigate();
-  const { currentUserId, setStayLoggedInStatus } = useAuthStore();
-  const { Alert } = useDialog();
+  const { currentUserId } = useAuthStore();
+  const { logoutWithMessage } = useAuth();
 
-  // 로그아웃
-  const logoutHandler = async () => {
+  const logoutHandler = useCallback(async () => {
     closeSideBarHandler();
-    navigate("/");
-    try {
-      await logout();
-      setStayLoggedInStatus(false);
-      await Alert("로그아웃 되었습니다.");
-    } catch (error) {
-      await Alert("로그아웃 실패");
-      console.error(error);
-    }
-  };
+    void logoutWithMessage();
+  }, []);
 
   const closeSideBarHandler = useCallback((): void => {
     setIsOpen(false);

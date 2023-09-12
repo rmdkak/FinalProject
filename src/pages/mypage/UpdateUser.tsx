@@ -1,6 +1,7 @@
 import { type ChangeEvent, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import {
@@ -33,7 +34,7 @@ const LABEL_STYLE = "self-center w-[136px] px-[24px] text-[14px] font-normal lea
 
 export const UpdateUser = () => {
   const navigate = useNavigate();
-  const { Alert, Confirm } = useDialog();
+  const { Confirm } = useDialog();
 
   const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
@@ -110,20 +111,20 @@ export const UpdateUser = () => {
   const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
     try {
       await changePassword(data.password);
-      await Alert("비밀번호가 정상적으로 변경되었습니다.");
+      toast("비밀번호가 정상적으로 변경되었습니다.", { theme: "warning", zIndex: 9999 });
     } catch (error) {
       switch (error) {
         case "Error: New password should be different from the old password.":
-          await Alert("이전 비밀번호와 동일합니다.");
+          toast("이전 비밀번호와 동일합니다.", { theme: "failure", zIndex: 9999 });
           break;
         case "New password should be different from the old password.":
-          await Alert("이전 비밀번호와 동일합니다.");
+          toast("이전 비밀번호와 동일합니다.", { theme: "failure", zIndex: 9999 });
           break;
         case "Auth session missing!":
-          await Alert("이메일 유효시간이 만료되었습니다.");
+          toast("이메일 유효시간이 만료되었습니다.", { theme: "failure", zIndex: 9999 });
           break;
         default:
-          await Alert("Error");
+          toast("비밀번호 변경에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
           console.error(error);
           break;
       }
@@ -164,7 +165,7 @@ export const UpdateUser = () => {
       patchUserMutation.mutate({ inputValue, userId });
       await logout();
       navigate("/");
-      await Alert("정상적으로 탈퇴되었습니다.");
+      toast("정상적으로 탈퇴되었습니다.", { theme: "plain", zIndex: 9999 });
       if (prevProfileImageId !== "defaultImg") {
         void deleteImage(prevProfileImageId);
       }

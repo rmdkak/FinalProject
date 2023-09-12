@@ -1,6 +1,7 @@
 import { useState } from "react";
+import toast from "react-simple-toasts";
 
-import { Select, useDialog } from "components";
+import { Select } from "components";
 import { useAdminQuery } from "hooks/useAdminQuery";
 import { useModalStore } from "store";
 import { type Tables } from "types/supabase";
@@ -16,7 +17,6 @@ export const ReportForm = ({ currentUserId, postData }: ReportProps) => {
 
   const { onCloseModal } = useModalStore();
   const { addReportMutation } = useAdminQuery();
-  const { Alert } = useDialog();
 
   const autoResizeTextArea = (element: HTMLTextAreaElement) => {
     element.style.height = "auto";
@@ -27,11 +27,11 @@ export const ReportForm = ({ currentUserId, postData }: ReportProps) => {
   const updateCommentHandler = () => {
     if (currentUserId === undefined) return;
     if (reportSelected === undefined) {
-      void Alert("신고 항목을 선택해주세요.");
+      toast("신고 항목을 선택해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
     if (reportComment === "") {
-      void Alert("댓글은 1글자 이상 입력해주세요.");
+      toast("댓글은 1글자 이상 입력해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
     const reportData = {
@@ -46,7 +46,7 @@ export const ReportForm = ({ currentUserId, postData }: ReportProps) => {
 
     addReportMutation.mutate(reportData);
     onCloseModal();
-    void Alert("신고가 접수되었습니다.");
+    toast("신고가 접수되었습니다.", { theme: "plain", zIndex: 9999 });
   };
 
   return (

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
 import { fetchUserCheckData, signup } from "api/supabase/auth";
-import { PasswordVisibleButton, Select, useDialog, Title } from "components";
+import { PasswordVisibleButton, Select, Title } from "components";
 import { useAuthStore } from "store";
 
 import { emailOptions, idQuestionOptions, idAnswerValid, idValid, nameValid, passwordValid } from "./constant";
@@ -33,7 +34,6 @@ const SIGNUP_BUTTON = "auth-button auth-button-text text-black my-3";
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
   const { currentSession } = useAuthStore();
-  const { Alert } = useDialog();
   const [selectEmail, setSelectEmail] = useState<string | undefined>();
   const [selectIdQuestion, setSelectIdQuestion] = useState<string | undefined>();
 
@@ -139,7 +139,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   useEffect(() => {
     if (currentSession !== null) {
-      void Alert("현재 로그인 상태입니다.");
+      toast("현재 로그인 상태입니다.", { theme: "failure", zIndex: 9999 });
       navigate("/");
     }
   }, []);

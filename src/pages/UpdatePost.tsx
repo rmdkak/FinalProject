@@ -1,20 +1,13 @@
 import { type ChangeEvent, useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { deletePostImage, savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
-import {
-  Button,
-  InteriorCombination,
-  InteriorSection,
-  InvalidText,
-  Modal,
-  SubTitle,
-  Title,
-  useDialog,
-} from "components";
+import { InteriorCombination, InteriorSection, InvalidText } from "components";
+import { Button, Modal, SubTitle, Title } from "components/common";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { useModalStore, useServiceStore } from "store";
 
@@ -25,7 +18,6 @@ interface Inputs {
 }
 
 export const UpdatePost = () => {
-  const { Alert } = useDialog();
   const navigate = useNavigate();
   const { fetchDetailMutation, updatePostMutation } = usePostsQuery();
   const { data: postData } = fetchDetailMutation;
@@ -50,32 +42,32 @@ export const UpdatePost = () => {
     const postImage = postImgFile === undefined ? postData.postImage : `/postImg/${fileUuid}`;
 
     if (wallPaper.left.id !== null && wallpaperPaint.right !== null) {
-      await Alert("벽지와 페인트는 동시 선택할 수 없습니다.");
+      toast("벽지와 페인트는 동시 선택할 수 없습니다.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
     if (wallPaper.right.id !== null && wallpaperPaint.left !== null) {
-      await Alert("벽지와 페인트는 동시 선택할 수 없습니다.");
+      toast("벽지와 페인트는 동시 선택할 수 없습니다.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
     if (wallPaper.left.id === null && wallPaper.right.id !== null) {
-      await Alert("왼쪽 벽지를 선택해 주세요.");
+      toast("왼쪽 벽지를 선택해 주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
     if (wallPaper.left.id !== null && wallPaper.right.id === null) {
-      await Alert("오른쪽 벽지를 선택해 주세요.");
+      toast("오른쪽 벽지를 선택해 주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
     if (wallpaperPaint.left === null && wallpaperPaint.right !== null) {
-      await Alert("왼쪽 페인트를 선택해 주세요.");
+      toast("왼쪽 페인트를 선택해 주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
     if (wallpaperPaint.left !== null && wallpaperPaint.right === null) {
-      await Alert("오른쪽 페인트를 선택해 주세요.");
+      toast("오른쪽 페인트를 선택해 주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 

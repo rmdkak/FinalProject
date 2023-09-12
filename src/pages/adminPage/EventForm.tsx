@@ -1,8 +1,8 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { uploadEventImg } from "api/supabase/admin";
-import { useDialog } from "components";
 import { useAdminQuery } from "hooks/useAdminQuery";
 import { useAuthStore } from "store";
 
@@ -31,7 +31,6 @@ export const EventForm = () => {
     setError,
     reset,
   } = useForm<Inputs>();
-  const { Alert } = useDialog();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { title, content, minDate, maxDate } = data;
@@ -51,7 +50,7 @@ export const EventForm = () => {
 
     if ((data.minDate !== "" && data.maxDate === "") || (data.minDate === "" && data.maxDate !== "")) {
       setError("minDate", { message: "이벤트 날짜는 하나만 들어갈 수 없습니다." });
-      await Alert("이벤트 날짜는 하나만 들어갈 수 없습니다.");
+      toast("이벤트 날짜는 하나만 들어갈 수 없습니다.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
@@ -59,8 +58,9 @@ export const EventForm = () => {
       await uploadEventImg({ UUID, eventImgFile });
 
       addEventMutation.mutate(eventData);
-      await Alert("작성이 완료되었습니다.");
+      toast("작성이 완료되었습니다.", { theme: "warning", zIndex: 9999 });
     } catch (error) {
+      toast("작성에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
       console.error("onSubmitError", error);
     }
     reset();

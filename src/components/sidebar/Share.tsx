@@ -1,17 +1,16 @@
 import { useEffect } from "react";
+import toast from "react-simple-toasts";
 
 import closeBtn from "assets/svgs/close.svg";
 import kakaoLogo from "assets/svgs/kakao.svg";
 import linkLogo from "assets/svgs/link.svg";
 import twitterLogo from "assets/svgs/twitter.svg";
-import { useDialog } from "components";
 
 interface Props {
   setOpenShareModal: (value: React.SetStateAction<boolean>) => void;
 }
 const { Kakao }: any = window;
 export const Share = ({ setOpenShareModal }: Props) => {
-  const { Alert } = useDialog();
   const realUrl = "https://www.stile.kr/";
 
   useEffect(() => {
@@ -41,9 +40,9 @@ export const Share = ({ setOpenShareModal }: Props) => {
   const handleCopyColorClipBoard = async () => {
     try {
       await navigator.clipboard.writeText("https://www.stile.kr/");
-      await Alert("복사되었습니다.");
+      toast("복사되었습니다.", { theme: "warning", zIndex: 9999 });
     } catch (error) {
-      await Alert("복사에 실패했습니다.");
+      toast("실패했습니다.", { theme: "failure", zIndex: 9999 });
       console.error("복사 실패", error);
     }
   };

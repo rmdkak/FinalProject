@@ -1,5 +1,6 @@
+import toast from "react-simple-toasts";
+
 import { type ArrayRGB } from "color-thief-react/lib/types";
-import { useDialog } from "components";
 import tinycolor from "tinycolor2";
 
 import { ColorItem } from "./ColorItem";
@@ -14,7 +15,6 @@ export const ColorPallet = ({ color }: props) => {
   const tetradColors: tinycolor.Instance[] = tinycolor(color as string).tetrad();
   const triadColors: tinycolor.Instance[] = tinycolor(color as string).triad();
   const analogColors: tinycolor.Instance[] = tinycolor(color as string).analogous();
-  const { Alert } = useDialog();
 
   tetradColors.map((color) => {
     return toneInTone.push(color.toHexString());
@@ -36,9 +36,9 @@ export const ColorPallet = ({ color }: props) => {
   const handleCopyColorClipBoard = async (color: string) => {
     try {
       await navigator.clipboard.writeText(color);
-      await Alert("컬러가 복사되었습니다.");
+      toast("컬러가 복사되었습니다.", { theme: "warning", zIndex: 9999 });
     } catch (error) {
-      await Alert("복사에 실패했습니다.");
+      toast("복사에 실패했습니다.", { theme: "failure", zIndex: 9999 });
       console.error("복사 실패", error);
     }
   };

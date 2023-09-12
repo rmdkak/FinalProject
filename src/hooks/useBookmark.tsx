@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
 import { useDialog } from "components";
 import { useAuthStore, useServiceStore } from "store";
@@ -35,7 +36,7 @@ export const useBookmark = () => {
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
-    void Alert("조합이 저장되었습니다.");
+    toast("조합이 저장되었습니다.", { theme: "warning", zIndex: 9999 });
   };
 
   const deleteBookmark = async () => {
@@ -47,7 +48,7 @@ export const useBookmark = () => {
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
-    void Alert("조합이 삭제되었습니다.");
+    toast("조합이 삭제되었습니다.", { theme: "warning", zIndex: 9999 });
   };
 
   const recommendDesign = async () => {

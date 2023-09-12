@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { deleteCommentImageHandler, saveCommentImageHandler } from "api/supabase/commentData";
@@ -47,7 +48,7 @@ export const useComments = () => {
 
   const updateCommentHandler = async (id: string, type: "comment" | "reply") => {
     if (newComment === "") {
-      await Alert("댓글은 1글자 이상 입력해주세요.");
+      toast("댓글은 1글자 이상 입력해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 

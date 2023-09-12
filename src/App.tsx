@@ -4,6 +4,9 @@ import { addUser, fetchUserCheckData } from "api/supabase/auth";
 import { auth } from "api/supabase/supabaseClient";
 import Router from "shared/Router";
 import { useAuthStore } from "store";
+import "react-simple-toasts/dist/theme/warning.css";
+import "react-simple-toasts/dist/theme/failure.css";
+import "react-simple-toasts/dist/theme/plain.css";
 
 const App = () => {
   const { setCurrentSession, stayLoggedInStatus, setCurrentUserId } = useAuthStore();

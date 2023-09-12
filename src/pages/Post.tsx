@@ -1,11 +1,12 @@
 import { useCallback, useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
-import { Button, InteriorSection, Modal, SubTitle, useDialog } from "components";
+import { Button, InteriorSection, Modal, SubTitle } from "components";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
@@ -28,7 +29,6 @@ interface SelectedData {
 }
 
 export const Post = () => {
-  const { Alert } = useDialog();
   const { currentSession, currentUserId } = useAuthStore();
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
@@ -113,13 +113,13 @@ export const Post = () => {
         }
       } else {
         if (tile.id === null) {
-          await Alert("타일이 선택되지 않았습니다.");
+          toast("타일이 선택되지 않았습니다.", { theme: "failure", zIndex: 9999 });
           return;
         } else if (wallPaper.left.id === null && wallpaperPaint.left === "") {
-          await Alert(`왼쪽 벽이 선택되지 않았습니다.`);
+          toast("왼쪽 벽이 선택되지 않았습니다.", { theme: "failure", zIndex: 9999 });
           return;
         } else if (wallPaper.right.id === null && wallpaperPaint.right === "") {
-          await Alert(`오른쪽 벽이 선택되지 않았습니다.`);
+          toast("오른쪽 벽이 선택되지 않았습니다.", { theme: "failure", zIndex: 9999 });
           return;
         }
         return;
