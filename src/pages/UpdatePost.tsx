@@ -55,10 +55,30 @@ export const UpdatePost = () => {
         content: data.content,
         postImage,
         tileId: tile.id === null ? postData?.tileId : tile.id,
-        leftWallpaperId: wallPaper.left.id === null ? postData?.leftWallpaperId : wallPaper.left.id,
-        rightWallpaperId: wallPaper.right.id === null ? postData?.rightWallpaperId : wallPaper.right.id,
-        leftColorCode: wallpaperPaint.left === null ? postData?.leftColorCode : wallpaperPaint.left,
-        rightColorCode: wallpaperPaint.right === null ? postData?.rightColorCode : wallpaperPaint.right,
+        leftWallpaperId:
+          wallpaperPaint.left !== null
+            ? null
+            : wallPaper.left.id === null
+            ? postData?.leftWallpaperId
+            : wallPaper.left.id,
+        rightWallpaperId:
+          wallpaperPaint.right !== null
+            ? null
+            : wallPaper.right.id === null
+            ? postData?.rightWallpaperId
+            : wallPaper.right.id,
+        leftColorCode:
+          wallPaper.left.id !== null
+            ? null
+            : wallpaperPaint.left === null
+            ? postData?.leftColorCode
+            : wallpaperPaint.left,
+        rightColorCode:
+          wallPaper.right.id !== null
+            ? null
+            : wallpaperPaint.right === null
+            ? postData?.rightColorCode
+            : wallpaperPaint.right,
       };
 
       try {

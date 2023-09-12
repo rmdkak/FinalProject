@@ -75,70 +75,69 @@ export const usePostsData = () => {
   const ShowBestPostElements = ({ dataLength }: Props) => {
     return (
       <>
-        {flickingPostList.length === 0 && flickingSkeleton}
-        {flickingPostList.slice(0, dataLength).map((post) => (
+        {flickingPostList?.length === 0 && flickingSkeleton}
+        {flickingPostList?.slice(0, dataLength).map((post) => (
           <div
             key={post.id}
-            className="w-[400px] mr-7 flex-column cursor-pointer"
+            className="w-[400px] cursor-pointer mr-6 flex-column sm:!w-[260px] sm:mr-4"
             onClick={() => {
               navigate(`/detail/${post.id}`);
             }}
           >
-            <div>
-              <img
-                src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
-                alt="postImg"
-                className="rounded-[8px] object-cover w-[400px] h-[400px]"
-              />
-            </div>
+            <img
+              src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
+              alt="postImg"
+              className="w-[400px] h-[400px] rounded-[8px] object-cover sm:w-[260px] sm:h-[260px] "
+            />
 
-            <div className="w-[400px] gap-2 mt-3 flex-column">
-              <div className="flex h-12">
-                <p className="text-[20px] my-auto font-semibold truncate w-1/2">{post.title}</p>
-
-                {isExistCombination(post, "interior") && (
-                  <div className="inline-flex w-1/2">
-                    <img
-                      src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
-                      alt="벽지"
-                      className="relative w-[48px] h-[48px] left-[76px] rounded-full border border-gray05"
-                    />
-                    <img
-                      src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
-                      alt="벽지"
-                      className="relative w-[48px] h-[48px] left-[66px] rounded-full border border-gray05"
-                    />
-                    <img
-                      src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                      alt="바닥"
-                      className="relative w-[48px] h-[48px] left-[56px] rounded-full border border-gray05"
-                    />
-                  </div>
-                )}
-                {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
-                  <div className="inline-flex w-1/2">
-                    <div
-                      className="relative w-[48px] h-[48px] left-[76px] rounded-full border-gray05"
-                      style={{
-                        backgroundColor: post.leftColorCode,
-                      }}
-                    />
-                    <div
-                      className="relative w-[48px] h-[48px] left-[66px] rounded-full border-gray05"
-                      style={{
-                        backgroundColor: post.rightColorCode,
-                      }}
-                    />
-                    <img
-                      src={`${STORAGE_URL}/tile/${post.tileId as string}`}
-                      alt="바닥"
-                      className="relative w-[48px] h-[48px] left-[56px] rounded-full border-gray05"
-                    />
-                  </div>
-                )}
-              </div>
-              <p className="text-[16px] text-gray02 line-clamp-2 h-[46px]">{post.content}</p>
+            <div className="flex items-center justify-between h-12 my-3">
+              <p className="text-[20px] font-semibold line-clamp-2 sm:text-[16px] sm:w-[118px] md:text-[16px] md:w-[118px] w-[240px]">
+                {post.title}
+              </p>
+              {isExistCombination(post, "interior") && (
+                <div className="inline-flex">
+                  <img
+                    src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
+                    alt="벽지"
+                    className="relative w-[48px] left-[24px] h-[48px] md:w-8 md:h-8 sm:w-8 sm:h-8  rounded-full border border-gray05"
+                  />
+                  <img
+                    src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
+                    alt="벽지"
+                    className="relative w-[48px] left-[12px] h-[48px] sm:w-8 sm:h-8 md:w-8 md:h-8 rounded-full border border-gray05"
+                  />
+                  <img
+                    src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                    alt="바닥"
+                    className="relative w-[48px] h-[48px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border border-gray05"
+                  />
+                </div>
+              )}
+              {isExistCombination(post, "paint") && post.leftColorCode !== null && post.rightColorCode !== null && (
+                <div className="inline-flex w-1/2">
+                  <div
+                    className="relative w-[48px] h-[48px] left-[76px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border-gray05"
+                    style={{
+                      backgroundColor: post.leftColorCode,
+                    }}
+                  />
+                  <div
+                    className="relative w-[48px] h-[48px] left-[66px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border-gray05"
+                    style={{
+                      backgroundColor: post.rightColorCode,
+                    }}
+                  />
+                  <img
+                    src={`${STORAGE_URL}/tile/${post.tileId as string}`}
+                    alt="바닥"
+                    className="relative w-[48px] h-[48px] left-[56px] md:w-8 md:h-8 sm:w-8 sm:h-8 rounded-full border-gray05"
+                  />
+                </div>
+              )}
             </div>
+            <p className="text-[16px] text-gray02 line-clamp-2 h-[46px] sm:text-[14px] md:text-[14px]">
+              {post.content}
+            </p>
           </div>
         ))}
       </>
@@ -260,25 +259,25 @@ export const usePostsData = () => {
     return (
       <>
         {rankingList?.map((post, idx) => (
-          <div key={post.id} className="mr-10 flicking-panel thumb has-background-primary">
-            <div className="items-center gap-4 flex-column w-[125px] h-[90px] hover:cursor-pointer">
+          <div key={post.id} className="mr-10 sm:mr-4 flicking-panel thumb has-background-primary">
+            <div className="items-center gap-4 flex-column w-[125px] h-[90px] hover:cursor-pointer sm:w-[95px] sm:h-[68px] sm:gap-3">
               <p className="relative w-6 h-6 text-center selected-ranking-point">{idx + 1}</p>
               {isExistCombination(post, "interior") && (
                 <div className="relative inline-flex">
                   <img
                     src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
                     alt="좌측 벽지"
-                    className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                    className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:right-[7px]"
                   ></img>
                   <img
                     src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
                     alt="우측 벽지"
-                    className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                    className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[-16px]"
                   ></img>
                   <img
                     src={`${STORAGE_URL}/tile/${post.tileId as string}`}
                     alt="바닥"
-                    className="absolute min-w-[48px] min-h-[48px] top-0 left-[15px] rounded-full border border-gray05"
+                    className="absolute min-w-[48px] min-h-[48px] top-0 left-[15px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[8px]"
                   ></img>
                 </div>
               )}
@@ -291,18 +290,18 @@ export const usePostsData = () => {
                       style={{
                         backgroundColor: post.leftColorCode,
                       }}
-                      className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                      className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:right-[7px]"
                     ></div>
                     <div
                       style={{
                         backgroundColor: post.rightColorCode,
                       }}
-                      className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                      className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[-16px]"
                     ></div>
                     <img
                       src={`${STORAGE_URL}/tile/${post.tileId}`}
                       alt="바닥"
-                      className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                      className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[8px]"
                     ></img>
                   </div>
                 )}
@@ -322,7 +321,7 @@ export const usePostsData = () => {
       <>
         {rankingList?.map((post) => (
           <div key={post.id} className="flicking-panel full has-background-primary">
-            <div className="flex contents-center overflow-hidden rounded-xl w-[1280px] h-[574px] mt-10">
+            <div className="flex contents-center overflow-hidden rounded-xl w-[1280px] h-[574px] mt-10 sm:mt-6 sm:w-[312px] sm:h-[220px] sm:mr-6">
               {isExistCombination(post, "interior") &&
                 post.leftWallpaperId !== null &&
                 post.rightWallpaperId !== null &&

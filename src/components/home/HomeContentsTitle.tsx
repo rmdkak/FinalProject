@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import calcArrow from "assets/svgs/calcArrow.svg";
+import smcalcArrow from "assets/svgs/smcalcArrow.svg";
 
 interface Props {
   page?: string;
@@ -14,7 +15,7 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
   switch (type) {
     case "useAll":
       return (
-        <div className="items-center contents-between">
+        <div className="flex items-center sm:mx-6 contents-between">
           <h2 className="section-title">{title}</h2>
           <div>
             <label htmlFor={page} className="mr-[10px] text-[14px] text-gray02 hover:cursor-pointer">
@@ -34,9 +35,11 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
 
     case "noTitle":
       return (
-        <>
-          {" "}
-          <label htmlFor="toInteriorPreview" className="mr-3 text-[12px] text-gray02 hover:cursor-pointer">
+        <div className="sm:inline-flex sm:items-center sm:px-2 sm:py-2 sm:bg-white sm:rounded-full ">
+          <label
+            htmlFor="toInteriorPreview"
+            className="mr-3 text-[14px] text-gray02 hover:cursor-pointer sm:mr-1 sm:text-black"
+          >
             VIEW MORE
           </label>
           <button
@@ -45,14 +48,15 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
               navigate("/interior-preview");
             }}
           >
-            <img src={calcArrow} className="view-more-icon" />
+            <img src={calcArrow} className="view-more-icon sm:hidden" />
+            <img src={smcalcArrow} className="hidden view-more-icon sm:block" />
           </button>
-        </>
+        </div>
       );
 
     case "noNavigate":
       return (
-        <div className="flex items-center">
+        <div className="flex items-center sm:mx-6">
           <h2 className="mr-auto section-title">{title}</h2>
         </div>
       );

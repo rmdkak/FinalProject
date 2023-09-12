@@ -14,9 +14,7 @@ export const HomeKvBanner = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // 다음 인덱스를 계산
       const nextIdx = (currentIdx + 1) % 3;
-      // widths 배열을 업데이트
       const updatedWidths = initialWidths.map((_, index) => {
         if (index === currentIdx) {
           return "w-[10%]";
@@ -44,7 +42,7 @@ export const HomeKvBanner = () => {
           key={idx}
           src={VannerImgs[idx]}
           alt="preview image"
-          className={`${widths} h-[800px] rounded-xl object-cover transition-[width] duration-1000 ease-in-out`}
+          className={`${widths} h-[800px] rounded-xl object-cover transition-[width] duration-1000 ease-in-out sm:h-[640px] sm:rounded-none`}
         />
       ))}
     </>
