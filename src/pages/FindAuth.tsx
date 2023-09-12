@@ -206,7 +206,10 @@ export const FindAuth = () => {
 
       {/* 비밀번호 찾기 */}
       {focusTab.focusPassword && !isDoneFind && (
-        <form onSubmit={passwordHandleSubmit(findPasswordHandler)} className="w-full gap-4 flex-column contents-center">
+        <form
+          onSubmit={passwordHandleSubmit(findPasswordHandler)}
+          className="w-full gap-4 flex-column contents-center sm:gap-0"
+        >
           <div className="w-full flex-column gap-[8px]">
             <label htmlFor="email">이메일</label>
             <input
@@ -218,7 +221,7 @@ export const FindAuth = () => {
           </div>
           <InvalidText errorsMessage={passwordErrors.emailForPassword?.message} size={20} />
 
-          <div className="w-full flex-column gap-[8px]">
+          <div className="w-full flex-column gap-[8px] sm:mt-1">
             <label htmlFor="nicknameForPassword">닉네임</label>
             <input
               {...passwordRegister("nicknameForPassword")}
@@ -229,7 +232,7 @@ export const FindAuth = () => {
           </div>
           <InvalidText errorsMessage={passwordErrors.nicknameForPassword?.message} size={20} />
 
-          <div className="w-full flex-column gap-[8px]">
+          <div className="w-full flex-column gap-[8px] sm:mt-1">
             <label htmlFor="idAnswerForPassword">본인확인질문</label>
             <Select
               placeholder={"본인확인 질문을 선택해주세요."}
