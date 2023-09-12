@@ -82,7 +82,7 @@ export const usePostsData = () => {
         {flickingPostList?.slice(0, dataLength).map((post) => (
           <div
             key={post.id}
-            className="w-[400px] cursor-pointer mr-6 flex-column sm:!w-[260px] sm:mr-4"
+            className="w-[400px] cursor-pointer mr-7 flex-column md:!w-[260px] sm:!w-[260px]"
             onClick={() => {
               navigate(`/detail/${post.id}`);
             }}
@@ -90,7 +90,7 @@ export const usePostsData = () => {
             <img
               src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
               alt="postImg"
-              className="w-[400px] h-[400px] rounded-[8px] object-cover sm:w-[260px] sm:h-[260px] "
+              className="w-[400px] h-[400px] rounded-lg object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] lg:h-[300px]"
             />
 
             <div className="flex items-center justify-between h-12 my-3">
@@ -324,7 +324,7 @@ export const usePostsData = () => {
       <>
         {rankingList?.map((post) => (
           <div key={post.id} className="flicking-panel full has-background-primary">
-            <div className="flex contents-center overflow-hidden rounded-xl w-[1280px] h-[574px] mt-10 sm:mt-6 sm:w-[312px] sm:h-[220px] sm:mr-6">
+            <div className="flex contents-center overflow-hidden rounded-xl w-[1280px] h-[574px] mt-10 sm:mt-6 sm:w-[312px] sm:h-[220px] sm:mr-6 md:w-full lg:w-full">
               {isExistCombination(post, "interior") &&
                 post.leftWallpaperId !== null &&
                 post.rightWallpaperId !== null &&

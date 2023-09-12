@@ -80,8 +80,8 @@ export const InteriorPreview = () => {
   }, []);
 
   return (
-    <div className="mx-auto flex-column max-w-[1280px] min-w-[360px] gap-10">
-      <h1 className="mt-20 text-3xl font-medium sm:pl-6">인테리어 조합</h1>
+    <div className="mx-auto flex-column max-w-[1280px] min-w-[360px] gap-10 sm:gap-6">
+      <h1 className="mt-20 text-3xl font-medium sm:pl-6 sm:mt-6">인테리어 조합</h1>
       <div className="flex-wrap gap-40 flex-column">
         {/* 벽지/ 타일 비교 박스 */}
         <div className="flex w-full gap-20 mb-20 sm:flex-wrap md:flex-wrap lg:flex-wrap">

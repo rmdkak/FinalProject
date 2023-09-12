@@ -15,7 +15,7 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
   switch (type) {
     case "useAll":
       return (
-        <div className="flex items-center sm:mx-6 contents-between">
+        <div className="flex items-center sm:px-6 contents-between">
           <h2 className="section-title">{title}</h2>
           <div>
             <label htmlFor={page} className="mr-[10px] text-[14px] text-gray02 hover:cursor-pointer">
@@ -35,7 +35,7 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
 
     case "noTitle":
       return (
-        <div className="sm:inline-flex sm:items-center sm:px-2 sm:py-2 sm:bg-white sm:rounded-full ">
+        <div className="sm:inline-flex sm:items-center sm:px-4 sm:py-2 sm:bg-white sm:rounded-full ">
           <label
             htmlFor="toInteriorPreview"
             className="mr-3 text-[14px] text-gray02 hover:cursor-pointer sm:mr-1 sm:text-black"
@@ -56,7 +56,7 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
 
     case "noNavigate":
       return (
-        <div className="flex items-center sm:mx-6">
+        <div className="flex items-center sm:px-6">
           <h2 className="mr-auto section-title">{title}</h2>
         </div>
       );

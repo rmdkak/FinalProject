@@ -30,7 +30,7 @@ export const EventCardForm = () => {
             />
             <div className="gap-2 flex-column hover:cursor-pointer">
               <h2 className="text-2xl font-medium line-clamp-2 sm:text-lg">{data.title}</h2>
-              <pre className="h-6 overflow-hidden text-gray02">{data.content}</pre>
+              <pre className="h-6 overflow-hidden break-words whitespace-pre-wrap text-gray02">{data.content}</pre>
             </div>
           </div>
         ))}
@@ -54,7 +54,7 @@ export const EventCardForm = () => {
             />
             <div className="gap-2 flex-column hover:cursor-pointer">
               <h2 className="text-2xl font-medium line-clamp-2 sm:text-lg">{data.title}</h2>
-              <pre className="h-6 overflow-hidden text-gray02">{data.content}</pre>
+              <pre className="h-6 overflow-hidden break-words whitespace-pre-wrap text-gray02">{data.content}</pre>
             </div>
           </div>
         ))}
