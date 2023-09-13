@@ -33,7 +33,9 @@ const TextureTitleMemoization = ({ data }: Props) => {
           }}
           key={item}
           className={`whitespace-nowrap ${
-            interiorSelecteIndex === index ? "px-6 pb-3 text-black border-b border-black" : "px-6 pb-3 text-gray03"
+            interiorSelecteIndex === index
+              ? "px-6 pb-3 text-black border-b border-black sm:border-none"
+              : "px-6 pb-3 text-gray03"
           } hover:cursor-pointer`}
         >
           {item}

@@ -379,7 +379,7 @@ input[type="password"]::-ms-clear {
   }
 
   .interior-item {
-    @apply w-[80px] h-[80px] rounded-full;
+    @apply w-[80px] h-[80px] aspect-square sm:w-[48px] sm:h-[48px] rounded-full;
   }
 }
 

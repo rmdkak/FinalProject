@@ -49,9 +49,6 @@ export const InteriorCombination = ({ interiorItemId, type }: Props) => {
     tileId,
     stateTileId,
   } = interiorItemId;
-  console.log("leftWallpaperId :", stateLeftWallpaperId);
-  console.log("rightWallpaperId :", stateRightWallpaperId);
-  console.log("tileId :", tileId);
 
   const initialClass = {
     Box: "",
@@ -90,15 +87,21 @@ export const InteriorCombination = ({ interiorItemId, type }: Props) => {
         setClassObject({
           Box: "relative flex items-center",
           wallpaperPaint: {
-            left: "min-w-[40px] min-h-[40px] rounded-full absolute right-[70px] border border-gray05",
-            right: "min-w-[40px] min-h-[40px] rounded-full absolute right-[40px] border border-gray05",
+            left: "min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[70px] xs:right-[60px] border border-gray05",
+            right:
+              "min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[40px] xs:right-[35px] border border-gray05",
           },
-          leftWallpaper: "min-w-[40px] min-h-[40px] rounded-full absolute right-[70px] border border-gray05",
-          rightWallpaper: "min-w-[40px] min-h-[40px] rounded-full absolute right-[40px] border border-gray05",
-          tile: "min-w-[40px] min-h-[40px] rounded-full absolute right-[10px] border border-gray05",
-          emptyLeftData: "bg-gray06 min-w-[40px] min-h-[40px] rounded-full absolute right-[70px] border border-gray01",
-          emptyRightData: "bg-gray06 min-w-[40px] min-h-[40px] rounded-full absolute right-[40px] border border-gray01",
-          emptyTileData: "bg-gray06 min-w-[40px] min-h-[40px] rounded-full absolute right-[10px] border border-gray01",
+          leftWallpaper:
+            "min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[70px] xs:right-[60px] border border-gray05",
+          rightWallpaper:
+            "min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[40px] xs:right-[35px] border border-gray05",
+          tile: "min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[10px] border border-gray05",
+          emptyLeftData:
+            "bg-gray06 min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[70px] xs:right-[60px] border border-gray01",
+          emptyRightData:
+            "bg-gray06 min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[40px] xs:right-[35px] border border-gray01",
+          emptyTileData:
+            "bg-gray06 min-w-[40px] min-h-[40px] xs:min-w-[32px] xs:min-h-[32px] rounded-full absolute right-[10px] border border-gray01",
         });
         break;
     }

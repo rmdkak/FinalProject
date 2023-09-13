@@ -132,24 +132,24 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
             }}
           >
             <SlArrowUp className="fill-gray02" />
-            <label className="text-gray02 sm:text-xs min-w-[80px]">이전글 보기</label>
+            <label className="text-gray02 sm:text-[12px] min-w-[80px]">이전글 보기</label>
             <span className="h-2 border border-gray08"></span>
-            <p className="line-clamp-1 sm:text-xs sm:w-full">
+            <p className="line-clamp-1 sm:text-[12px] sm:w-full">
               {postList !== undefined ? postList[(findCurrentIdx as number) - 1].title : ""}
             </p>
           </div>
         )}
         {nextPage !== undefined && (
           <div
-            className="flex gap-[10px] items-center py-6 px-3 border-b border-gray06 hover:cursor-pointer "
+            className="flex gap-[10px] items-center py-6 border-b border-gray06 hover:cursor-pointer "
             onClick={() => {
               navigate(`/detail/${nextPage}`);
             }}
           >
             <SlArrowDown className="fill-gray02" />
-            <p className="text-gray02 sm:text-xs min-w-[80px]">다음글 보기</p>
-            <span className="h-[8px] border border-gray08"></span>
-            <p className="line-clamp-1 sm:text-xs sm:w-full">
+            <p className="text-gray02 sm:text-[12px] min-w-[80px]">다음글 보기</p>
+            <span className="h-2 border border-gray08"></span>
+            <p className="line-clamp-1 sm:text-[12px] sm:w-full">
               {postList !== undefined ? postList[(findCurrentIdx as number) + 1].title : ""}
             </p>
           </div>

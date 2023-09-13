@@ -23,7 +23,7 @@ export const SubTitle = ({ type }: Props) => {
   };
   return (
     <div
-      className={`w-full max-w-[1280px] min-w-[312px] pb-3 border-b border-b-black body-1 font-medium mt-6 sm:flex ${
+      className={`text-[18px] w-full max-w-[1280px] min-w-[312px] pb-3 border-b border-b-black body-1 font-medium mt-6 sm:flex ${
         type === "post" ? "hidden" : ""
       }`}
     >

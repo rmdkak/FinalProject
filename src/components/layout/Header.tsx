@@ -153,11 +153,7 @@ const HeaderMemoization = () => {
         } transition-colors duration-500 ease-in-out`}
       >
         <div className="w-[1280px] contents-between items-center">
-          <Link
-            to="/"
-            className="py-4 font-title text-[2rem] flex
-            sm:py-2"
-          >
+          <Link to="/" className="py-4 font-medium text-[18px] flex items-center gap-4">
             {(windowWidth as number) >= 767 ? (
               "STILE"
             ) : (
