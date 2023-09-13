@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import arrowIcon from "assets/svgs/arrowIcon.svg";
-import { SignupTitle, CheckBoxIcon, ArrowButton } from "components";
+import { CheckBoxIcon, ArrowButton, Title } from "components";
 
 import { TERMS_1, TERMS_2 } from "./constant";
 import { SignupStep } from "./SignupStep";
@@ -10,9 +10,8 @@ interface Props {
   nextStep: () => void;
 }
 
-const FLEX_CENTER = "flex items-center";
 const TEXTAREA_STYLE =
-  "w-full h-[300px] p-6 mt-[10px] bg-white border border-gray05 text-gray03 rounded-[4px] resize-none focus:outline-none";
+  "w-full h-[300px] sm:h-[160px] p-6 mt-2.5 bg-white border border-gray05 text-gray03 rounded-[4px] resize-none focus:outline-none";
 
 /**
  * 이용약관 컴포넌트
@@ -28,11 +27,11 @@ export const TermsOfUse = ({ nextStep }: Props) => {
   };
 
   return (
-    <div className="items-center flex-column my-20 w-[560px] mx-auto">
-      <SignupTitle />
+    <div className="items-center max-w-[560px] mx-auto flex-column my-14 sm:my-6">
+      <Title title="회원가입" isBorder={true} />
       <SignupStep step={0} />
-      <ul className="w-[480px]">
-        <li className={`${FLEX_CENTER} border-b border-black w-full pb-7 pt-4`}>
+      <ul className="w-[85%]">
+        <li className="flex items-center w-full pt-4 border-b border-black pb-7">
           <input
             onChange={(event) => {
               setTermsInputIsCheck({ terms1: event.target.checked, terms2: event.target.checked });
@@ -43,7 +42,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
             type="checkbox"
           />
           <label htmlFor="allCheck" className="flex gap-3 cursor-pointer contents-center body-3">
-            <CheckBoxIcon isCheck={termsInputIsCheck.terms1 && termsInputIsCheck.terms2} />
+            <CheckBoxIcon type="black" isCheck={termsInputIsCheck.terms1 && termsInputIsCheck.terms2} />
             전체 동의
           </label>
         </li>
@@ -59,7 +58,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               type="checkbox"
             />
             <label htmlFor="terms1" className="flex gap-3 cursor-pointer contents-center body-3">
-              <CheckBoxIcon isCheck={termsInputIsCheck.terms1} />
+              <CheckBoxIcon type="black" isCheck={termsInputIsCheck.terms1} />
               [필수] <span className="text-gray02">이용약관 동의</span>
             </label>
             <ArrowButton
@@ -67,7 +66,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               openHandler={termsOpenHandler}
               statusToClose={"terms1"}
               statusToOpen={"terms1"}
-              className={"flex w-4 h-4 contents-center"}
+              className="flex w-4 h-4 contents-center"
             />
           </div>
           {termsToggleIsOpen.terms1 && <textarea className={TEXTAREA_STYLE} value={TERMS_1} disabled />}
@@ -84,7 +83,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               type="checkbox"
             />
             <label htmlFor="terms2" className="flex gap-3 cursor-pointer contents-center body-3">
-              <CheckBoxIcon isCheck={termsInputIsCheck.terms2} />
+              <CheckBoxIcon type="black" isCheck={termsInputIsCheck.terms2} />
               [필수] <span className="text-gray02">개인정보 수집 및 이용 동의</span>
             </label>
             <img

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchPostLike, changePostLike } from "api/supabase";
+import { changePostLike, fetchPostLike } from "api/supabase/postLike";
 import { useAuthStore, useLikeStore } from "store";
 import { type Tables } from "types/supabase";
 

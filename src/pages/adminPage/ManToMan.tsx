@@ -2,9 +2,9 @@ import { useState, Fragment, useEffect } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { ArrowButton, DateConvertor } from "components";
-import { useAdminQuery } from "hooks";
+import { useAdminQuery } from "hooks/useAdminQuery";
 
 interface Props {
   setLength: Dispatch<SetStateAction<number>>;

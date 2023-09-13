@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Comments, DetailSideFunction, DetailSkeleton, PostData, Share } from "components";
-import { useMovePage, usePostsQuery } from "hooks";
+import { useMovePage } from "hooks/useMovePage";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { useLikeStore } from "store";
 
 export const Detail = () => {
@@ -27,7 +28,7 @@ export const Detail = () => {
 
   if (postData === undefined) return <></>;
   return (
-    <div className="w-[1280px] mx-auto mt-[30px]">
+    <div className="w-full max-w-[1280px] min-w-[360px] mx-auto mt-6 lg:px-6 md:px-6 sm:px-6">
       <PostData postData={postData} />
       <Comments postData={postData} />
       <PrevNextPostList />

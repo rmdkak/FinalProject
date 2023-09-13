@@ -50,7 +50,6 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
       break;
   }
 
-  // const dataDate = new Date(data.created_at);
   const timeFilteredData =
     dataList === undefined ? [] : dataList.filter((data) => new Date(data.created_at) >= currentDate);
 
@@ -84,13 +83,13 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
 
   const SearchBar = () => {
     return (
-      <div className="flex gap-[22px]">
-        <form onSubmit={handleSubmit(searchOnKeywordHandler)} className="flex items-center gap-3">
+      <form onSubmit={handleSubmit(searchOnKeywordHandler)} className="flex items-center gap-3 sm:w-full sm:flex-col">
+        <div className="flex gap-4 sm:w-full">
           <select
             value={selectedOption}
             onChange={changMonthOption}
             name="month"
-            className="w-[100px] h-8 px-[10px] gray-outline-button rounded-md text-gray02 body-4"
+            className="w-[100px] h-8 sm:h-10 px-2.5 gray-outline-button rounded-md text-gray02 body-4 sm:w-1/2"
           >
             <option value={"선택하세요"}>선택하세요</option>
             <option value={"1일"}>1일</option>
@@ -104,7 +103,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           <select
             value={searchCategory}
             onChange={changeSearchCategory}
-            className="w-[100px] h-8 px-[10px] gray-outline-button rounded-md text-gray02 body-4"
+            className="w-[100px] h-8 sm:h-10 px-2.5 gray-outline-button rounded-md text-gray02 body-4 sm:w-1/2"
           >
             <option value={"title"}>제목</option>
 
@@ -116,14 +115,16 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
               <option value={"content"}>내용</option>
             )}
           </select>
+        </div>
+        <div className="flex gap-4 sm:gap-2 sm:w-full">
           <input
             {...register("searchKeyword")}
             type="text"
-            className="w-[180px] h-8 px-2 gray-outline-button rounded-md text-gray02 body-4"
+            className="w-[180px] sm:w-full sm:h-10 h-8 px-2 gray-outline-button rounded-md text-gray02 body-4"
           />
-          <button className="w-16 h-8 rounded-md gray-outline-button text-gray02 body-4">검색</button>
-        </form>
-      </div>
+          <button className="w-16 h-8 rounded-md sm:h-10 gray-outline-button text-gray02 body-4">검색</button>
+        </div>
+      </form>
     );
   };
 

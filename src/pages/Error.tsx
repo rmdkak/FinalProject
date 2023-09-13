@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL, supabase } from "api/supabase";
+import { STORAGE_URL, supabase } from "api/supabase/supabaseClient";
 import { type Tables } from "types/supabase";
 
 type PickImg = Pick<Tables<"WALLPAPER", "Row">, "image">;
@@ -42,7 +42,7 @@ export const Error = () => {
   }, [currentIdx, randomImg]);
 
   return (
-    <div className="flex-column items-center my-[195px]">
+    <div className="flex-column items-center my-[195px] sm:my-20">
       <div className="flex items-center gap-6">
         <span className="text-[120px] font-normal">4</span>
         <img src={`${STORAGE_URL}${errorImg}`} className="w-20 h-20 rounded-full" alt="error0" />

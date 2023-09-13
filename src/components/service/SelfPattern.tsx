@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
 import photoImage from "assets/svgs/photoImage.svg";

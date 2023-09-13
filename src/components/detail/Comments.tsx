@@ -1,10 +1,12 @@
 import { AiOutlineCamera } from "react-icons/ai";
 
-import { ADMIN_ID, STORAGE_URL } from "api/supabase";
+import { ADMIN_ID, STORAGE_URL } from "api/supabase/supabaseClient";
 import comment_no_img from "assets/comment_no_img.png";
 import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor, type PostDataChain, ReComments } from "components";
-import { useCommentsQuery, usePostsQuery, useComments } from "hooks";
+import { useComments } from "hooks/useComments";
+import { useCommentsQuery } from "hooks/useCommentsQuery";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { useAuthStore } from "store";
 
 import { CommentForm } from "./CommentForm";
@@ -46,7 +48,7 @@ export const Comments = ({ postData }: CommentProps) => {
   return (
     <>
       <div className="border-t border-gray06">
-        <p className="mt-[70px] font-normal text-gray02">
+        <p className="mt-[70px] font-normal text-gray02 sm:text-[14px]">
           댓글 <span className="text-black">{commentsData?.length}</span>개
         </p>
         <CommentForm kind="comment" commentId="" setOpenReply={setOpenReply} />
@@ -227,22 +229,22 @@ export const Comments = ({ postData }: CommentProps) => {
           })}
         </div>
       </div>
-      <div className="flex justify-between mt-[40px]">
+      <div className="flex justify-between mt-[40px] sm:flex-col gap-6">
         <button
-          className="h-[48px] px-[30px] rounded-lg border border-gray05"
+          className="h-[48px] sm:w-full sm:text-[14px] px-[30px] rounded-lg border border-gray05"
           onClick={() => {
             movePageHandler("community", postData.id);
           }}
         >
-          커뮤니티 목록
+          목록
         </button>
         {((currentSession?.user.id === postData?.userId && postData !== undefined) || isAdmin) && (
-          <div>
+          <div className="sm:flex">
             <button
               onClick={async () => {
                 await deletePostHandler(postData.id);
               }}
-              className="w-[160px] h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"
+              className="w-[160px] sm:text-[14px] sm:w-full h-[48px] border border-gray-300 mr-5 rounded-[8px]"
             >
               삭제
             </button>
@@ -252,7 +254,7 @@ export const Comments = ({ postData }: CommentProps) => {
                   movePageHandler("update", postData.id);
                 }}
                 type="button"
-                className="mr-2 bg-point w-[160px] h-[48px] rounded-[8px]"
+                className="mr-2 bg-point sm:text-[14px] sm:w-full w-[160px] h-[48px] rounded-[8px]"
               >
                 수정
               </button>

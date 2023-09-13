@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MdContactSupport, MdAnnouncement, MdFactCheck, MdLibraryAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-import { ADMIN_ID } from "api/supabase";
+import { ADMIN_ID } from "api/supabase/supabaseClient";
 import { useAuthStore } from "store";
 
 import { DataForm } from "./DataForm";
@@ -51,12 +51,12 @@ export const AdminPage = () => {
   ];
 
   return (
-    <div className="flex-column items-center m-10 w-[1280px] mx-auto px-10">
+    <div className="flex-column items-center m-10 max-w-[1280px] w-[90%] mx-auto px-10">
       <div className="w-full pb-6 text-center">
-        <p className="text-[32px] font-normal leading-[130%]">관리자 페이지</p>
+        <p className="title-3">관리자 페이지</p>
       </div>
 
-      <div className="w-full flex justify-around border border-gray05 rounded-[12px] p-5">
+      <div className="flex justify-around w-full p-5 border border-gray05 rounded-xl">
         {adminPageInfoTabArray.map((InfoTab, index) => {
           return (
             <div
@@ -64,16 +64,14 @@ export const AdminPage = () => {
               onClick={() => {
                 setCurrentTab(InfoTab.title);
               }}
-              className="relative flex-column contents-center h-36 w-[254px] gap-[10px] cursor-pointer"
+              className="relative flex-column contents-center w-[254px] h-36 gap-2.5 cursor-pointer"
             >
               <div className="gap-3 flex-column contents-center">
                 <InfoTab.icon className="w-6 h-6 text-gray05" />
-                <p className="font-normal leading-[150%]">{InfoTab.title}</p>
+                <pre className="flex break-words contents-center body-2 sm:body-4">{InfoTab.title}</pre>
               </div>
-              {index !== 0 && (
-                <div className="absolute w-[1px] h-[40px] bg-gray06 left-[-30px] top-1/2 translate-y-[-50%]" />
-              )}
-              <p className="absolute top-3/4 text-[18px] leading-[145%]">{InfoTab.length}</p>
+              {index !== 0 && <div className="absolute left-0 w-px h-10 -translate-y-1/2 bg-gray06 top-1/2" />}
+              <p className="absolute top-3/4 body-1">{InfoTab.length}</p>
             </div>
           );
         })}

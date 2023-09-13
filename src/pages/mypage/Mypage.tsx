@@ -2,13 +2,14 @@ import { useEffect } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { HiOutlineChatBubbleLeftRight } from "react-icons/hi2";
-import { type IconType } from "react-icons/lib";
+import type { IconType } from "react-icons/lib";
 import { RxBookmark, RxPencil2 } from "react-icons/rx";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import defaultImg from "assets/defaultImg.jpg";
-import { MypageTitle, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
-import { useAuthQuery, useMypageQuery } from "hooks";
+import { Title, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
+import { useAuthQuery } from "hooks/useAuthQuery";
+import { useMypageQuery } from "hooks/useMypageQuery";
 import { useAuthStore } from "store";
 
 export interface MypageInfo {
@@ -18,7 +19,8 @@ export interface MypageInfo {
   data?: any[] | undefined;
 }
 
-export const MYPAGE_LAYOUT_STYLE: string = "flex-column items-center m-[60px] w-[1280px] mx-auto";
+export const MYPAGE_LAYOUT_STYLE: string =
+  "flex-column items-center m-[60px] max-w-[1280px] w-[90%] mx-auto sm:mt-6 sm:mb-20";
 
 export const Mypage = () => {
   const navigate = useNavigate();
@@ -49,7 +51,6 @@ export const Mypage = () => {
       navigate("/");
     }
   }, []);
-
   if (currentUser === undefined || isLoading) return <MypageSkeleton />;
 
   if (isError) return <MypageSkeleton />;
@@ -62,16 +63,17 @@ export const Mypage = () => {
   const imgStyle = { alt: "프로필 이미지", className: "w-[60px] h-[60px] rounded-full text-center justify-center" };
 
   const { name, avatar_url: profileImg } = currentUser;
+
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <MypageTitle title={"마이페이지"} isBorder={true} />
-      <div className="flex gap-6 mt-8">
-        <div className="relative flex-column contents-center gap-4 w-[225px] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
+      <Title title={"마이페이지"} isBorder={true} />
+      <div className="flex w-full gap-[2.5%] mt-8 contents-center sm:flex-col sm:gap-6">
+        <div className="relative flex-column contents-center gap-4 w-[17.5%] sm:w-[88%] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}
           <div className="gap-2 flex-column contents-center">
             <p className="text-black body-1">{`${name}님`}</p>
             {currentSession?.user.app_metadata.provider === "email" && (
-              <Link to="/mypage/update" className="px-2 py-1 border rounded-lg border-gray05 body-4">
+              <Link to="/mypage/update" className="px-2 py-1 border rounded-lg border-gray05 body-4 md:px-0.5">
                 회원정보수정
               </Link>
             )}

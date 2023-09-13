@@ -32,12 +32,16 @@ const CalculatorArticleMamoization = ({
 
         <div className="flex items-center mb-6">
           <div
-            className={`relative flex items-center  justify-center w-full ${
+            className={`relative  justify-center w-full  ${
               selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
-            } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
+            } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]
+            sm:justify-start
+            `}
           >
             <input
-              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
+              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow
+              sm:w-[100%] sm:max-w-[60vw]
+              "
               name="width"
               type="number"
               placeholder={firstPlaceholder}
@@ -47,12 +51,16 @@ const CalculatorArticleMamoization = ({
           </div>
           <span className="mx-2">X</span>
           <div
-            className={`relative flex items-center  justify-center w-full ${
+            className={`relative  justify-center w-full  ${
               selectItem === 0 ? "after:content-['m']" : "after:content-['mm']"
-            } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]`}
+            } after:absolute after:top-[50%] after:right-4 after:translate-y-[-50%]
+          sm:justify-start
+          `}
           >
             <input
-              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow"
+              className="box-border rounded-lg pl-4 pr-12 max-w-[187px] flex h-10 border border-gray05 text-black appearance-none inputNumberArrow
+              sm:w-[100%] sm:max-w-[60vw]
+              "
               name="height"
               type="number"
               placeholder={secondPlaceholder}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Select, useDialog } from "components";
-import { useAdminQuery } from "hooks";
+import { useAdminQuery } from "hooks/useAdminQuery";
 import { useModalStore } from "store";
 import { type Tables } from "types/supabase";
 

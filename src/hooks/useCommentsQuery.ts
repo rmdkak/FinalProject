@@ -4,12 +4,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createCommentsHandler,
   createReplyHandler,
-  patchCommentsHandler,
   deleteCommentHandler,
-  patchReplyHandler,
   deleteReplyHandler,
   fetchComments,
-} from "api/supabase";
+  patchCommentsHandler,
+  patchReplyHandler,
+} from "api/supabase/commentData";
 
 export const useCommentsQuery = () => {
   const queryClient = useQueryClient();

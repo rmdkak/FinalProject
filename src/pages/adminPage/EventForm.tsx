@@ -1,9 +1,9 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 import uuid from "react-uuid";
 
-import { uploadEventImg } from "api/supabase";
+import { uploadEventImg } from "api/supabase/admin";
 import { useDialog } from "components";
-import { useAdminQuery } from "hooks";
+import { useAdminQuery } from "hooks/useAdminQuery";
 import { useAuthStore } from "store";
 
 interface Inputs {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import uuid from "react-uuid";
 
-import { uploadTileImageHandler, uploadWallpaperImageHandler, addTileData, addWallpaperData } from "api/supabase";
+import { addTileData, addWallpaperData, uploadTileImageHandler, uploadWallpaperImageHandler } from "api/supabase/admin";
 import { Select, useDialog } from "components";
 
 export const DataForm = () => {

@@ -2,14 +2,15 @@ import { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 
 import {
-  ADMIN_ID,
   filteredMyBookmarksData,
   filteredMyCommentsData,
   filteredMyInquiryData,
   filteredMyLikesData,
   filteredMyPostsData,
-} from "api/supabase";
+} from "api/supabase/mypageData";
+import { ADMIN_ID } from "api/supabase/supabaseClient";
 import viewMore from "assets/svgs/viewMore.svg";
+import xmark from "assets/svgs/xmark.svg";
 import { type MypageInfo } from "pages";
 import { type Tables } from "types/supabase";
 
@@ -60,7 +61,7 @@ export const PreviewBox = ({ mypageInfoArray, userId }: Props) => {
   }, [filteredMyPostsData, filteredMyCommentsData, filteredMyBookmarksData, filteredMyLikesData]);
 
   return (
-    <div className="flex-column w-[1280px]">
+    <div className="w-full flex-column">
       {mypageInfoArray.map((mypageInfo) => {
         return (
           <Fragment key={mypageInfo.title}>
@@ -68,11 +69,14 @@ export const PreviewBox = ({ mypageInfoArray, userId }: Props) => {
               <></>
             ) : (
               <div className="flex-column">
-                <div className="flex items-center justify-between border-b border-black pb-[24px] mt-[80px]">
-                  <p className="text-[18px] font-normal leading-[150%]">{mypageInfo.title}</p>
-                  <Link to={mypageInfo.link} className="flex contents-center gap-[12px] body-4 text-gray02">
+                <div className="flex items-center justify-between pb-6 mt-20 border-b border-black sm:mt-12">
+                  <p className="body-1">{mypageInfo.title}</p>
+                  <Link to={mypageInfo.link} className="flex gap-3 contents-center body-4 text-gray02 sm:hidden">
                     VIEW MORE
-                    <img src={viewMore} className="w-[24px] h-[24px]" />
+                    <img src={viewMore} className="w-6 h-6" />
+                  </Link>
+                  <Link to={mypageInfo.link} className="hidden gap-3 sm:flex contents-center body-4 text-gray02">
+                    <img src={xmark} className="w-6 h-6 rotate-45" />
                   </Link>
                 </div>
                 {mypageInfo.title === "내가 쓴 글" && <PreviewPost postData={filteredPost} />}
