@@ -156,7 +156,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
 
   const DetailSideBar = ({ setOpenShareModal }: ModalProps) => {
     return (
-      <div className="fixed gap-4 bottom-[20%] sm:right-[40px] right-20 inline-flex flex-col">
+      <div className="fixed gap-4 bottom-[20%] right-[10%] inline-flex flex-col">
         <button className="w-12 h-12 rounded-full bg-point sm:w-8 sm:h-8" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-5 h-5 mx-auto fill-gray01 sm:w-4 sm:h-4" />
         </button>

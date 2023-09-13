@@ -29,10 +29,10 @@ export const CommunitySkeleton = () => {
         <div key={idx} className="flex justify-between gap-4 py-8 ml-3 border-b border-gray-200">
           <div className="max-w-[550px] min-w-0 w-full flex-column justify-between">
             <div className="gap-4 flex-column">
-              <div className="skeleton-effect h-[20px] rounded" />
+              <div className="skeleton-effect h-5 rounded" />
               <div className="skeleton-effect h-[70px] rounded" />
             </div>
-            <div className="skeleton-effect h-[20px] rounded" />
+            <div className="skeleton-effect h-5 rounded" />
           </div>
           <div className="flex items-center justify-end gap-4">
             <div className="h-[124px] w-[124px] rounded-lg object-cover skeleton-effect" />

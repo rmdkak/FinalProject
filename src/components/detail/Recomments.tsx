@@ -61,12 +61,12 @@ export const ReComments = ({ comment, detailData, currentUserId, openReply, setO
               <div className="flex gap-2">
                 <p className="font-semibold">{reply.USERS?.name}</p>
                 {reply.userId === ADMIN_ID && (
-                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                     <p className="text-[12px]">관리자</p>
                   </div>
                 )}
                 {detailData?.userId === reply.userId && (
-                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                     <p className="text-[12px]">글쓴이</p>
                   </div>
                 )}

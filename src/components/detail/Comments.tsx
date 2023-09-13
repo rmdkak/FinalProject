@@ -71,12 +71,12 @@ export const Comments = ({ postData }: CommentProps) => {
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{comment.USERS?.name}</p>
                       {comment.userId === ADMIN_ID && (
-                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                           <p className="text-[12px]">관리자</p>
                         </div>
                       )}
                       {detailData?.userId === comment.userId && (
-                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                           <p className="text-[12px]">글쓴이</p>
                         </div>
                       )}
