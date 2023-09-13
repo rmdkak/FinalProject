@@ -64,7 +64,6 @@ export const UpdateUser = () => {
     formState: { errors },
   } = useForm<UpdateInput>();
 
-  // 프로필 이미지 변경
   const changeProfileImgHandler = async (event: ChangeEvent<HTMLInputElement>) => {
     const uid = uuid();
     if (event.target.files === null) return;
@@ -78,7 +77,6 @@ export const UpdateUser = () => {
     void uploadImage({ file: imgFile, userId: uid });
   };
 
-  // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
   const resetImgFile = async () => {
     if (currentProfileImg !== "") {
       await deleteImage(prevProfileImageId);
@@ -87,7 +85,6 @@ export const UpdateUser = () => {
     }
   };
 
-  // 중복체크
   const duplicateCheck = async () => {
     const getUserData = await fetchUserCheckData();
 

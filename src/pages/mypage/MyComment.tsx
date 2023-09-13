@@ -24,13 +24,11 @@ export const MyComment = () => {
   const { userCommentsResponse, deleteUserCommentMutation } = useMypageQuery();
   const { data: userCommentData } = userCommentsResponse;
 
-  // 선택 된 아이디 배열 삭제
   const deleteComments = () => {
     deleteUserCommentMutation.mutate(commentIdsToDelete);
   };
 
-  // 체크 상태 변경
-  const onChange = (event: ChangeEvent<HTMLInputElement>, id: string) => {
+  const onChangeCheckHandler = (event: ChangeEvent<HTMLInputElement>, id: string) => {
     const filteredCommentIds = filteredCommentIdsHandler(id);
     if (event.target.checked) {
       setCommentIdsToDelete([...commentIdsToDelete, id]);
@@ -68,7 +66,7 @@ export const MyComment = () => {
                     type="checkbox"
                     className="hidden"
                     onChange={(event) => {
-                      onChange(event, comment.id);
+                      onChangeCheckHandler(event, comment.id);
                     }}
                   />
 

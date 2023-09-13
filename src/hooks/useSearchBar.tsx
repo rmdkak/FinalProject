@@ -14,9 +14,7 @@ interface Input {
 }
 
 export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => {
-  console.log("dataList :", dataList);
   const [selectedOption, setSelectedOption] = useState("선택하세요");
-  console.log("selectedOption :", selectedOption);
 
   const [conditionWord, setConditionWord] = useState<string>();
   const [searchCategory, setSearchCategory] = useState<string>("title");
@@ -54,9 +52,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
 
   const timeFilteredData =
     dataList === undefined ? [] : dataList.filter((data) => new Date(data.created_at) >= currentDate);
-  console.log("timeFilteredData :", timeFilteredData);
 
-  // 검색 조건 필터링
   const filteredData = timeFilteredData.filter((data) => {
     if (conditionWord === undefined) return data;
     switch (type) {

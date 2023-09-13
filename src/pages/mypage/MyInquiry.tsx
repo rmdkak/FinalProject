@@ -20,13 +20,11 @@ export const MyInquiry = () => {
     return postIdsToDelete.filter((id) => id !== selectId);
   };
 
-  // 선택 된 아이디 배열 삭제
   const deletePosts = () => {
     deleteUserInquiryMutation.mutate(postIdsToDelete);
   };
 
-  // 체크 상태 변경
-  const onChange = (event: ChangeEvent<HTMLInputElement>, id: string) => {
+  const onChangeCheckHandler = (event: ChangeEvent<HTMLInputElement>, id: string) => {
     const filteredPostIds = filteredPostIdsHandler(id);
     if (event.target.checked) {
       setPostIdsToDelete([...postIdsToDelete, id]);
@@ -57,7 +55,7 @@ export const MyInquiry = () => {
                     type="checkbox"
                     className="hidden"
                     onChange={(event) => {
-                      onChange(event, post.id);
+                      onChangeCheckHandler(event, post.id);
                     }}
                   />
                   <label htmlFor={post.id}>

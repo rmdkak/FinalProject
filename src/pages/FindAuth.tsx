@@ -53,7 +53,6 @@ export const FindAuth = () => {
     formState: { errors: passwordErrors },
   } = useForm<FindPasswordInput>();
 
-  // 이메일 찾기
   const findEmailHandler: SubmitHandler<FindEmailInput> = async (data) => {
     const { nicknameForEmail: name, idAnswerForEmail: idAnswer } = data;
 
@@ -73,7 +72,6 @@ export const FindAuth = () => {
     emailReset();
   };
 
-  // 비밀번호 찾기
   const findPasswordHandler: SubmitHandler<FindPasswordInput> = async (data) => {
     const { emailForPassword: email, nicknameForPassword: name, idAnswerForPassword: idAnswer } = data;
 
