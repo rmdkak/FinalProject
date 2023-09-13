@@ -164,4 +164,6 @@ export const ResourcesCalculatorMamoization = (): JSX.Element => {
   );
 };
 
-export const ResourcesCalculator = React.memo(ResourcesCalculatorMamoization);
+const ResourcesCalculator = React.memo(ResourcesCalculatorMamoization);
+
+export default ResourcesCalculator;

@@ -7,6 +7,7 @@ import logOutIcon from "assets/headersvg/Logout.svg";
 import userIcon from "assets/headersvg/user.svg";
 import { Sidebar } from "components";
 import { useAuth } from "hooks/useAuth";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { useAuthStore } from "store";
 
@@ -25,6 +26,7 @@ const HeaderMemoization = () => {
   const { windowWidth } = useInteriorPreview();
   const { logoutWithMessage } = useAuth();
   const { pathname } = useLocation();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   useEffect(() => {
     if (pathname === "/") window.addEventListener("scroll", scrollObserver);
@@ -161,7 +163,13 @@ const HeaderMemoization = () => {
           {currentUserId === undefined ? (
             <>
               <div className="flex gap-2 contents-center">
-                <button className="sm:w-[24px]" onClick={goToLogin}>
+                <button
+                  className="sm:w-[24px]"
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("login");
+                  }}
+                  onClick={goToLogin}
+                >
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그인</span>
 
                   <img src={logOutIcon} alt="로그인" />
@@ -179,7 +187,13 @@ const HeaderMemoization = () => {
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
                   <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={logOutIcon} alt="로그아웃" />
                 </button>
-                <button className="sm:w-[24px]" onClick={goToMypage}>
+                <button
+                  className="sm:w-[24px]"
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("mypage");
+                  }}
+                  onClick={goToMypage}
+                >
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">마이페이지버튼</span>
                   <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={userIcon} alt="마이 페이지" />
                 </button>

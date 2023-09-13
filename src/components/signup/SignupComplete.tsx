@@ -12,7 +12,7 @@ export const SignupComplete = () => {
 
   return (
     <div className="items-center max-w-[560px] mx-auto flex-column my-14 sm:my-6 sm:w-[85%]">
-      <Title title="회원가입" isBorder={true} />
+      <Title title="회원가입" isBorder={true} pathName="signup" />
       <SignupStep step={2} />
       <p className="title-4">{`${name}님, 환영합니다!`}</p>
       <p className="mt-3 body-3">더 많은 인테리어 정보를 지금 바로 확인하러 가볼까요?</p>

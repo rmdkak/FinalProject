@@ -10,7 +10,7 @@ interface UpdatePasswordInput {
   newPasswordConfirm: string;
 }
 
-export const UpdatePassword = () => {
+const UpdatePassword = () => {
   const navigate = useNavigate();
   const {
     register,
@@ -101,3 +101,5 @@ export const UpdatePassword = () => {
     </section>
   );
 };
+
+export default UpdatePassword;

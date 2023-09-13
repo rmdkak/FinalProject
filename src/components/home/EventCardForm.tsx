@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { useAdminQuery } from "hooks/useAdminQuery";
+import { useDynamicImport } from "hooks/useDynamicImport";
 
 export const EventCardForm = () => {
   const navigate = useNavigate();
 
   const { fetchEventMutation } = useAdminQuery();
   const { data: eventData } = fetchEventMutation;
+  const { preFetchPageBeforeEnter } = useDynamicImport();
   const filterEventData = eventData?.slice(0, 2);
 
   if (filterEventData?.length === 0) {
@@ -19,6 +21,9 @@ export const EventCardForm = () => {
           <div
             key={data.id}
             className="w-full gap-6 flex-column sm:mx-6 sm:gap-4"
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("event");
+            }}
             onClick={() => {
               navigate(`/event/${data.id}`);
             }}
@@ -43,6 +48,9 @@ export const EventCardForm = () => {
           <div
             key={data.id}
             className="w-full gap-6 flex-column sm:mx-6 sm:gap-4 sm:w-[312px]"
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("event");
+            }}
             onClick={() => {
               navigate(`/event/${data.id}`);
             }}

@@ -5,12 +5,15 @@ import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor } from "components";
 import { useAdminQuery } from "hooks/useAdminQuery";
-export const Event = () => {
+import { useDynamicImport } from "hooks/useDynamicImport";
+
+const Event = () => {
   const { id: paramsId } = useParams();
   const navigate = useNavigate();
   const { fetchEventDetailMutation, fetchEventMutation } = useAdminQuery();
   const { data: eventDetailData } = fetchEventDetailMutation;
   const { data: eventAllData } = fetchEventMutation;
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   if (eventDetailData === undefined) return <></>;
 
@@ -65,6 +68,9 @@ export const Event = () => {
           이전으로
         </button>
         <button
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter("eventlist");
+          }}
           className="w-40 h-12 text-sm border rounded-lg border-gray05 sm:w-full"
           onClick={() => {
             navigate("/eventlist");
@@ -108,3 +114,4 @@ export const Event = () => {
     </div>
   );
 };
+export default Event;

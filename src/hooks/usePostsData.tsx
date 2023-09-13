@@ -5,6 +5,7 @@ import { STORAGE_URL } from "api/supabase/supabaseClient";
 import noImage from "assets/no_image.png";
 import { DateConvertor, CommunitySkeleton, type PostDataChain } from "components";
 
+import { useDynamicImport } from "./useDynamicImport";
 import { usePagination } from "./usePagination";
 import { usePostsQuery } from "./usePostsQuery";
 import { useSearchBar } from "./useSearchBar";
@@ -21,6 +22,7 @@ export const usePostsData = () => {
   const [selectedOption, setSelectedOption] = useState<string>("whole");
   const [filteredPosts, setFilteredPosts] = useState<PostDataChain[]>([]);
 
+  const { preFetchPageBeforeEnter } = useDynamicImport();
   const { SearchBar, filteredData } = useSearchBar({ dataList: filteredPosts, type: "post" });
   const { postListSkeleton, flickingSkeleton } = CommunitySkeleton();
   const { fetchPostsMutation } = usePostsQuery();
@@ -83,6 +85,9 @@ export const usePostsData = () => {
           <div
             key={post.id}
             className="w-[400px] cursor-pointer mr-7 flex-column md:!w-[260px] sm:!w-[260px]"
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("detail");
+            }}
             onClick={() => {
               navigate(`/detail/${post.id}`);
             }}
@@ -177,6 +182,9 @@ export const usePostsData = () => {
               <div
                 key={post.id}
                 className="flex justify-between py-8 border-b border-gray-200 cursor-pointer"
+                onMouseEnter={async () => {
+                  await preFetchPageBeforeEnter("detail");
+                }}
                 onClick={() => {
                   navigate(`/detail/${post.id as string}`);
                 }}
@@ -250,7 +258,7 @@ export const usePostsData = () => {
 
   const rankingList = newPostList
     ?.sort((a, b) => b.POSTLIKES[0]?.userId?.length - a.POSTLIKES[0]?.userId?.length)
-    .filter((post, idx) => isExistCombination(post, "all") && idx < 12);
+    .filter((post, idx) => isExistCombination(post, "all") && idx < 10);
   /**
    * flicking 라이브러리에 적용할 수 있도록, 반복되는 element 컴포넌트를 대신합니다.
    * @returns Home화면에 보여지는 베스트 조합 랭킹 요소들을 반환합니다.

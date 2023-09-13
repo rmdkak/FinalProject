@@ -5,6 +5,7 @@ import uuid from "react-uuid";
 
 import { deleteCommentImageHandler, saveCommentImageHandler } from "api/supabase/commentData";
 import { useDialog } from "components";
+import { useDynamicImport } from "hooks/useDynamicImport";
 
 import { useCommentsQuery } from "./useCommentsQuery";
 import { usePostsQuery } from "./usePostsQuery";
@@ -20,6 +21,7 @@ export const useComments = () => {
   const { Confirm, Alert } = useDialog();
   const { deleteCommentMutation, deleteReplyMutation, updateCommentMutation, updateReplyMutation } = useCommentsQuery();
   const { deletePostMutation } = usePostsQuery();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const UUID = uuid();
 
@@ -89,6 +91,7 @@ export const useComments = () => {
   const deletePostHandler = async (id: string) => {
     try {
       const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
+      await preFetchPageBeforeEnter("community");
       if (checkDelete) {
         deletePostMutation.mutate(id);
         navigate("/community");

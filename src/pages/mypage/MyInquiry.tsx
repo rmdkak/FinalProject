@@ -5,7 +5,7 @@ import { useMypageQuery } from "hooks/useMypageQuery";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
-export const MyInquiry = () => {
+const MyInquiry = () => {
   const { userInquiryResponse, deleteUserInquiryMutation } = useMypageQuery();
   const { data: userInquiryData } = userInquiryResponse;
 
@@ -39,7 +39,7 @@ export const MyInquiry = () => {
 
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <Title title="마이페이지" isBorder={false} />
+      <Title title="마이페이지" isBorder={false} pathName="mypage" />
       <SubTitle type="myInquiry" />
 
       {userInquiryData.length === 0 ? (
@@ -115,3 +115,5 @@ export const MyInquiry = () => {
     </div>
   );
 };
+
+export default MyInquiry;

@@ -9,12 +9,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import defaultImg from "assets/defaultImg.jpg";
 import { Title, MypageSkeleton, PreviewBox, MyActiveCountBox } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
+import { useDynamicImport, type PathName } from "hooks/useDynamicImport";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { useAuthStore } from "store";
 
 export interface MypageInfo {
   title: string;
-  link: string;
+  link: PathName;
   icon: IconType;
   data?: any[] | undefined;
 }
@@ -22,9 +23,10 @@ export interface MypageInfo {
 export const MYPAGE_LAYOUT_STYLE: string =
   "flex-column items-center m-[60px] max-w-[1280px] w-[90%] mx-auto sm:mt-6 sm:mb-20";
 
-export const Mypage = () => {
+const Mypage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const { currentSession } = useAuthStore();
   const { currentUserResponse } = useAuthQuery();
@@ -66,14 +68,20 @@ export const Mypage = () => {
 
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <Title title={"마이페이지"} isBorder={true} />
+      <Title title="마이페이지" isBorder={false} pathName="mypage" />
       <div className="flex w-full gap-[2.5%] mt-8 contents-center sm:flex-col sm:gap-6">
         <div className="relative flex-column contents-center gap-4 w-[17.5%] sm:w-[88%] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           {profileImg === "" ? <img src={defaultImg} {...imgStyle} /> : <img src={profileImg} {...imgStyle} />}
           <div className="gap-2 flex-column contents-center">
             <p className="text-black body-1">{`${name}님`}</p>
             {currentSession?.user.app_metadata.provider === "email" && (
-              <Link to="/mypage/update" className="px-2 py-1 border rounded-lg border-gray05 body-4 md:px-0.5">
+              <Link
+                to="/mypage/update"
+                className="px-2 py-1 border rounded-lg border-gray05 body-4 md:px-0.5"
+                onMouseEnter={async () => {
+                  await preFetchPageBeforeEnter("/mypage/update");
+                }}
+              >
                 회원정보수정
               </Link>
             )}
@@ -85,3 +93,5 @@ export const Mypage = () => {
     </div>
   );
 };
+
+export default Mypage;

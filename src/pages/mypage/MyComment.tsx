@@ -3,15 +3,18 @@ import { Link } from "react-router-dom";
 
 import { DateConvertor, EmptyData, CheckBoxIcon } from "components";
 import { ArrowButton, SubTitle, Title } from "components/common";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
 import { useSearchBar } from "hooks/useSearchBar";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
-export const MyComment = () => {
+const MyComment = () => {
   const [isOpenComment, setIsOpenComment] = useState<string>();
   const [commentIdsToDelete, setCommentIdsToDelete] = useState<string[]>([]);
+
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const openCommentHandler = (commentId: string) => {
     setIsOpenComment(commentId);
@@ -49,7 +52,7 @@ export const MyComment = () => {
 
   return (
     <div className={`${MYPAGE_LAYOUT_STYLE}`}>
-      <Title title="마이페이지" isBorder={false} />
+      <Title title="마이페이지" isBorder={false} pathName="mypage" />
       <SubTitle type="myComment" />
 
       {pageData.length === 0 ? (
@@ -110,6 +113,9 @@ export const MyComment = () => {
                       <Link
                         to={`/detail/${post.id as string}`}
                         className="flex w-20 h-8 rounded-lg contents-center gray-outline-button sm:hidden"
+                        onMouseEnter={async () => {
+                          await preFetchPageBeforeEnter("detail");
+                        }}
                       >
                         이동하기
                       </Link>
@@ -137,3 +143,5 @@ export const MyComment = () => {
     </div>
   );
 };
+
+export default MyComment;

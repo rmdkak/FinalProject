@@ -6,6 +6,7 @@ import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore, useModalStore } from "store";
 
 export interface PostDataChain {
@@ -46,12 +47,16 @@ export const PostData = ({ postData }: Props) => {
   const { onOpenModal } = useModalStore((state) => state);
   const [previewModal, setPreviewModal] = useState<boolean>(false);
   const { currentUserId } = useAuthStore();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   return (
     <>
       <div className="items-center border-b border-black flex-column sm:hidden">
         <p
           className="font-medium text-[32px] hover:cursor-pointer mb-5"
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter("community");
+          }}
           onClick={() => {
             navigate("/community");
           }}

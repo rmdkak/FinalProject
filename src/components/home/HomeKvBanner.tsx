@@ -7,7 +7,7 @@ import { useInteriorPreview } from "hooks/useInteriorPreview";
 
 export const HomeKvBanner = () => {
   const { windowWidth } = useInteriorPreview();
-  if (windowWidth === undefined) return;
+  if (windowWidth === undefined) return <></>;
   const isWindowWidthChange = windowWidth <= 768;
   const initialWidths = windowWidth <= 768 ? ["w-full", "w-0", "w-0"] : ["w-[70%]", "w-[10%]", "w-[10%]"];
   const finalWidth = windowWidth <= 768 ? "w-full" : "w-[70%]";
