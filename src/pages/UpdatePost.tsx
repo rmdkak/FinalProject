@@ -5,16 +5,8 @@ import uuid from "react-uuid";
 
 import { deletePostImage, savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
-import {
-  Button,
-  InteriorCombination,
-  InteriorSection,
-  InvalidText,
-  Modal,
-  SubTitle,
-  Title,
-  useDialog,
-} from "components";
+import { Button, InteriorCombination, InteriorSection, InvalidText, Modal, Title, useDialog } from "components";
+import { SubTitle } from "components/common";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { useModalStore, useServiceStore } from "store";
 

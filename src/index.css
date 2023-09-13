@@ -193,19 +193,19 @@ input[type="password"]::-ms-clear {
 .left-ramp1 {
   position: absolute;
   z-index: 100;
-  transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-208px) translateX(-216px);
+  transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-208px) translateX(-158px);
   transform-style: preserve-3d;
 }
 .left-ramp2 {
   position: absolute;
   z-index: 100;
-  transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-56px) translateX(-267px);
+  transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-57px) translateX(-213px);
   transform-style: preserve-3d;
 }
 .left-table {
   position: absolute;
   z-index: 100;
-  transform: rotateX(-91deg) rotateY(45deg) translateZ(335px) translateY(-38px) translateX(-267px);
+  transform: rotateX(-91deg) rotateY(45deg) translateZ(800px) translateY(-298px) translateX(-202px);
   transform-style: preserve-3d;
 }
 .left-sopa {
@@ -249,7 +249,7 @@ input[type="password"]::-ms-clear {
 .right-sopa {
   position: absolute;
   z-index: 100;
-  transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(27px) translateX(-139px);
+  transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(37px) translateX(-139px);
   transform-style: preserve-3d;
 }
 
