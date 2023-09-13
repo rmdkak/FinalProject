@@ -134,11 +134,7 @@ const HeaderMemoization = () => {
     <>
       <header className="flex justify-center sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white px-6">
         <div className="w-[1280px] contents-between items-center">
-          <Link
-            to="/"
-            className="py-4 font-title text-[2rem] flex
-            sm:py-2"
-          >
+          <Link to="/" className="py-4 font-medium text-[18px] flex items-center gap-4">
             {(windowWidth as number) >= 767 ? (
               "STILE"
             ) : (
