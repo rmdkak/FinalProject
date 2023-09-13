@@ -57,6 +57,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
     if (conditionWord === undefined) return data;
     switch (type) {
       case "post":
+        if (searchCategory === "name") return data.USERS[searchCategory].includes(conditionWord);
         return data[searchCategory].includes(conditionWord);
       case "comment":
         if (searchCategory === "content") return data[searchCategory].includes(conditionWord);
@@ -106,7 +107,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           >
             <option value={"title"}>제목</option>
 
-            {type === "post" && isUseMypage ? null : <option value={"nickname"}>글 작성자</option>}
+            {type === "post" && isUseMypage ? null : <option value={"name"}>글 작성자</option>}
 
             {type === "comment" ? (
               <option value={"content"}>댓글 내용</option>
