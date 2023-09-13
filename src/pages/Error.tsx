@@ -42,7 +42,7 @@ export const Error = () => {
   }, [currentIdx, randomImg]);
 
   return (
-    <div className="flex-column items-center my-[195px]">
+    <div className="flex-column items-center my-[195px] sm:my-20">
       <div className="flex items-center gap-6">
         <span className="text-[120px] font-normal">4</span>
         <img src={`${STORAGE_URL}${errorImg}`} className="w-20 h-20 rounded-full" alt="error0" />

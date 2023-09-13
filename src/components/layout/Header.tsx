@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { logout } from "api/supabase/auth";
@@ -17,6 +17,8 @@ let isBack: boolean = false;
 
 const HeaderMemoization = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [scrollY, setScrollY] = useState<number>(0);
+
   const navigate = useNavigate();
   const { Alert } = useDialog();
 
@@ -25,6 +27,17 @@ const HeaderMemoization = () => {
 
   const userUid = currentSession?.user.id;
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname === "/") window.addEventListener("scroll", scrollObserver);
+    return () => {
+      window.removeEventListener("scroll", scrollObserver);
+    };
+  }, [pathname]);
+
+  const scrollObserver = () => {
+    setScrollY(window.scrollY);
+  };
 
   const logoutHandler = useCallback(async () => {
     navigate("/");
@@ -135,9 +148,15 @@ const HeaderMemoization = () => {
 
   return (
     <>
-      <header className="flex justify-center sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white px-6">
-        <div className="w-[1280px] contents-between items-center m:py-4">
-          <Link to="/" className="py-4 font-title text-[2rem] flex">
+      <header
+        className={`flex justify-center sticky z-[9100] box-border top-0 left-0 w-full sm:h-16 px-6 ${
+          scrollY <= 100 && (windowWidth as number) <= 768 && pathname === "/"
+            ? "bg-transparent "
+            : "bg-white border-b border-b-gray06"
+        } transition-colors duration-500 ease-in-out`}
+      >
+        <div className="w-[1280px] contents-between items-center">
+          <Link to="/" className="flex items-center text-[32px] font-title gap-4 py-4 font-medium">
             {(windowWidth as number) >= 767 ? (
               "STILE"
             ) : (

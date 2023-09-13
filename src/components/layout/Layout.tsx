@@ -14,8 +14,8 @@ export const Layout = ({ children }: Props) => {
     <div className="w-full">
       <Header />
       {children}
-      <Footer />
       <ScrollToTop />
+      <Footer />
     </div>
   );
 };

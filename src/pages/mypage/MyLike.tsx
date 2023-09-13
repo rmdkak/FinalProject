@@ -1,7 +1,7 @@
 import { useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
-import { CheckBoxIcon, DateConvertor, EmptyData, MypageSubTitle, Title } from "components";
+import { CheckBoxIcon, DateConvertor, EmptyData, SubTitle, Title } from "components";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
 import { useSearchBar } from "hooks/useSearchBar";
@@ -44,9 +44,9 @@ export const MyLike = () => {
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
       <Title title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="like" />
+      <SubTitle type="myLike" />
       {pageData.length === 0 ? (
-        <EmptyData type="like" />
+        <EmptyData type="myLike" />
       ) : (
         <ul className="w-full">
           {pageData.map((likedPost, index) => {
