@@ -56,7 +56,7 @@ export const Toolbar = () => {
   };
 
   return (
-    <div className="fixed gap-4 bottom-[20%] right-[10px] w-12 inline-flex flex-col z-[9100]">
+    <div className="fixed gap-4 bottom-[20%] right-[20px] w-12 inline-flex flex-col z-[9100]">
       <button className="w-12 h-12 rounded-full sm:w-8 sm:h-8 bg-point" onClick={movePostPageHandler}>
         <BsPencilSquare className="w-5 h-5 mx-auto sm:w-4 sm:h-4 fill-gray01" />
       </button>

@@ -150,23 +150,23 @@ export const Post = () => {
     }
   };
   return (
-    <div className="w-full max-w-[1280px] min-w-[360px] mx-auto px-6 xs:text-[11px]">
+    <div className="w-full max-w-[1280px] min-w-[360px] mx-auto px-6 xs:text-[14px]">
       <div className="items-center py-10 border-b border-black flex-column sm:hidden">
         <p className="font-medium text-[32px]">커뮤니티</p>
       </div>
       <SubTitle type="post" />
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b border-gray06 h-[72px] items-center">
-          <label htmlFor="title" className="w-[40px] text-[18px] font-normal sm:text-[14px]">
+          <label htmlFor="title" className="w-[40px] text-[18px] font-normal">
             제목
           </label>
           <div className="flex items-center w-full border border-gray05">
             <input
-              className="w-full text-[18px] px-3 py-2 focus:outline-none xs:text-[14px]"
+              className="w-full text-[18px] p-2 focus:outline-none xs:text-[14px]"
               {...register("title", { required: true, maxLength: 100 })}
             />
             <div
-              className={`${titleValidationColor} flex sm:flex-col sm:w-[140px] sm:text-[13px] items-center justify-end w-[205px]`}
+              className={`${titleValidationColor} flex sm:flex-col sm:w-[140px] sm:text-[14px] items-center justify-end w-[205px]`}
             >
               <p>제목 글자 수: </p>
               <p className="mx-1">{title.length} / 100</p>
@@ -185,60 +185,60 @@ export const Post = () => {
           </div>
           {wallpaperPaint.left !== null ? (
             <div
-              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[170px] xs:right-[150px] border border-gray05"
+              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[170px] xs:right-[160px] border border-gray05"
               style={{ backgroundColor: wallpaperPaint.left }}
             />
           ) : wallPaper.left.image !== null ? (
             <img
               src={`${STORAGE_URL}${wallPaper.left.image}`}
               alt="왼쪽벽지"
-              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[170px] xs:right-[150px] border border-gray05"
+              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[170px] xs:right-[160px] border border-gray05"
             />
           ) : (
-            <div className="bg-gray06 w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[170px] xs:right-[150px] border border-gray01" />
+            <div className="bg-gray06 w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[170px] xs:right-[160px] border border-gray01" />
           )}
           {wallpaperPaint.right !== null ? (
             <div
-              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[140px] xs:right-[125px] border border-gray05"
+              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[140px] xs:right-[135px] border border-gray05"
               style={{ backgroundColor: wallpaperPaint.right }}
             />
           ) : wallPaper.right.image !== null ? (
             <img
               src={`${STORAGE_URL}${wallPaper.right.image}`}
               alt="오른쪽벽지"
-              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[140px] xs:right-[125px] border border-gray05"
+              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[140px] xs:right-[135px] border border-gray05"
             />
           ) : (
-            <div className="bg-gray07 w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[140px] xs:right-[125px] border border-gray01" />
+            <div className="bg-gray07 w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[140px] xs:right-[135px] border border-gray01" />
           )}
           {tile.image !== null ? (
             <img
               src={`${STORAGE_URL}${tile.image}`}
               alt="바닥재"
-              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[110px] xs:right-[100px] border border-gray05"
+              className="w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[110px] border border-gray05"
             />
           ) : (
-            <div className="bg-gray08 w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[110px] xs:right-[100px] border border-gray01" />
+            <div className="bg-gray08 w-[40px] h-[40px] xs:w-8 xs:h-8 rounded-full absolute right-[110px] border border-gray01" />
           )}
           <button
             type="button"
             onClick={onOpenModal}
-            className="text-[13px] xs:text-[11px] w-[100px] xs:w-[90px] h-[40px] border border-gray03 rounded-[8px]"
+            className="text-[12px] w-[100px] h-10 border border-gray03 rounded-lg"
           >
             조합 추가하기 +
           </button>
         </div>
-        <Modal title="인테리어 조합">
-          <div className="gap-10 flex-column w-[528px]">
+        <Modal title="인테리어 조합" type="mobile">
+          <div className="gap-10 flex-column w-[528px] sm:w-[90%] scale sm:mb-10 sm:min-w-[322px]">
             <InteriorSection />
-            <div className="flex justify-end">
+            <div className="flex justify-end sm:hidden">
               <Button onClick={onCloseModal}>확인</Button>
             </div>
           </div>
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="h-[350px] border border-[#a7a7a7] focus:outline-none p-[20px] text-[18px] xs:text-[14px] resize-none"
+          className="h-[350px] border border-[#a7a7a7] focus:outline-none p-4 text-[18px] xs:text-[14px] resize-none"
           {...register("textarea", { required: true, maxLength: 1000 })}
         />
         <div className="my-5 contents-between">
@@ -254,14 +254,14 @@ export const Post = () => {
           </p>
         </div>
         <div className="flex w-full border-y border-gray06 h-[72px] items-center">
-          <label htmlFor="img" className="min-w-[60px] text-[14px] xs:text-[11px] font-normal">
+          <label htmlFor="img" className="min-w-[60px] text-[14px] xs:text-[14px] font-normal">
             첨부파일
           </label>
           <div className="flex items-center justify-between w-full">
             <input
               type="file"
               accept="image/png, image/jpeg, image/gif"
-              className="w-[170px] xs:w-[150px] text-[14px] xs:text-[11px] focus:outline-none"
+              className="w-[170px] xs:w-[165px] text-[14px] xs:text-[14px] focus:outline-none"
               {...register("file")}
             />
             <button
@@ -269,7 +269,7 @@ export const Post = () => {
               onClick={() => {
                 resetField("file");
               }}
-              className="w-[160px] h-[48px] xs:w-[100px] border border-gray-300 rounded-[8px]"
+              className="w-[160px] h-12 xs:w-[80px] border border-gray-300 rounded-lg"
             >
               선택해제
             </button>
@@ -278,7 +278,7 @@ export const Post = () => {
         <div className="my-10 contents-between sm:flex-column">
           <button
             type="button"
-            className="w-[160px] sm:w-full h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"
+            className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
             onClick={() => {
               movePageHandler("community");
             }}
@@ -288,14 +288,14 @@ export const Post = () => {
           <div className="sm:flex sm:mt-6">
             <button
               type="button"
-              className="w-[160px] sm:w-full h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"
+              className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
               onClick={() => {
                 movePageHandler("back");
               }}
             >
               이전으로
             </button>
-            <button type="submit" className="bg-point w-[160px] sm:w-full h-[48px] rounded-[8px]">
+            <button type="submit" className="bg-point w-[160px] sm:w-full h-12 rounded-lg">
               작성하기
             </button>
           </div>

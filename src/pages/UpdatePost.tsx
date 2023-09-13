@@ -28,6 +28,7 @@ export const UpdatePost = () => {
     handleSubmit,
     setValue,
     watch,
+    resetField,
     formState: { errors },
   } = useForm<Inputs>({ mode: "all" });
   const titleValue = watch("title") ?? 0;
@@ -143,33 +144,33 @@ export const UpdatePost = () => {
   if (postData === undefined) return <p>데이터를 불러올 수 없습니다.</p>;
 
   return (
-    <div className="max-w-[1280px] w-[85%] mx-auto mt-10">
+    <div className="max-w-[1280px] w-full min-w-[360px] mx-auto px-6 xs:text-[12px] pt-6">
       <Title title="커뮤니티" isBorder={true} />
       <SubTitle type="post" />
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b border-gray06 h-[72px] items-center">
-          <label htmlFor="title" className="w-10 text-[18px] font-normal">
+          <label htmlFor="title" className="w-10 text-[18px] font-normal xs:text-[14px]">
             제목
           </label>
           <div className="flex items-center w-full border border-gray05">
             <input
-              className="w-full text-[18px] px-3 py-2 focus:outline-none"
+              className="w-full text-[18px] p-2 focus:outline-none xs:text-[14px]"
               {...register("title", {
-                required: "제목을 입력해주세요",
-                maxLength: { value: 100, message: "제목은 최대 100자 까지만 입력할 수 있습니다!" },
+                required: "제목을 입력해주세요.",
+                maxLength: { value: 100, message: "100자 까지만 입력할 수 있습니다!" },
               })}
             />
             <p
-              className={`flex-none text-base w-[160px] ${
+              className={`flex-none text-base mr-2 xs:text-[14px] ${
                 errors.title?.type === "maxLength" ? "text-error" : "text-gray03"
               }`}
             >
-              제목 글자 수: {titleValue.length ?? 0} / 100
+              글자 수: {titleValue.length ?? 0} / 100
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-end my-3">
-          <InvalidText className={"text-base "} errorsMessage={errors.title?.message} />
+        <div className="flex items-center justify-between my-3">
+          <InvalidText className={"text-base"} errorsMessage={errors.title?.message} />
           <div className="flex">
             <InteriorCombination
               interiorItemId={{
@@ -187,32 +188,36 @@ export const UpdatePost = () => {
             <button
               type="button"
               onClick={onOpenModal}
-              className="text-[13px] w-[130px] h-10 gray-outline-button rounded-lg"
+              className="text-[14px] w-[100px] h-10 border border-gray03 rounded-lg"
             >
               조합 변경하기
             </button>
           </div>
         </div>
-        <Modal title="인테리어 조합">
-          <div className="gap-10 flex-column w-[528px]">
+        <Modal title="인테리어 조합" type="mobile">
+          <div className="gap-10 flex-column w-[528px] sm:w-[90%] scale sm:mb-10 sm:min-w-[322px]">
             <InteriorSection />
-            <div className="flex justify-end">
+            <div className="flex justify-end sm:hidden">
               <Button onClick={onCloseModal}>확인</Button>
             </div>
           </div>
         </Modal>
         <textarea
           placeholder="게시물 내용을 입력하세요"
-          className="h-[350px] border border-gray06 focus:outline-none p-5 text-[18px] resize-none"
+          className="h-[350px] border border-gray06 focus:outline-none p-4 text-[18px] xs:text-[14px] resize-none"
           {...register("content", {
             required: "내용을 입력해주세요.",
-            maxLength: { value: 1000, message: "내용은 1000자 이내로 작성해 주세요!" },
+            maxLength: { value: 1000, message: "1000자 이내로 작성해 주세요!" },
           })}
         />
-        <div className="mt-2 contents-between">
+        <div className="items-center gap-2 my-2 contents-between">
           <InvalidText className="text-base" errorsMessage={errors.content?.message} />
-          <p className={`${errors.content?.type === "maxLength" ? "text-error" : "text-gray03"} flex-none text-base`}>
-            내용 글자 수: {contentValue.length ?? 0} / 1000
+          <p
+            className={`${
+              errors.content?.type === "maxLength" ? "text-error" : "text-gray03"
+            } flex-none text-base xs:text-[14px]`}
+          >
+            글자 수: {contentValue.length ?? 0} / 1000
           </p>
         </div>
 
@@ -232,16 +237,34 @@ export const UpdatePost = () => {
             className="w-full body-3 focus:outline-none"
             {...register("file", { onChange: onFileChangeHandler })}
           />
+          <button
+            type="button"
+            onClick={() => {
+              resetField("file");
+              setPreviewImg(null);
+            }}
+            className="w-[160px] h-12 xs:w-[100px] border border-gray-300 rounded-[8px]"
+          >
+            선택해제
+          </button>
         </div>
-        <div className="my-10 contents-between">
-          <button type="button" className="w-40 h-12 rounded-lg gray-outline-button" onClick={moveToCommunity}>
+        <div className="my-10 contents-between sm:flex-column">
+          <button
+            type="button"
+            className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
+            onClick={moveToCommunity}
+          >
             커뮤니티 이동
           </button>
-          <div className="flex gap-5">
-            <button type="button" className="w-40 h-12 rounded-lg gray-outline-button" onClick={moveToBack}>
+          <div className="sm:flex sm:mt-6">
+            <button
+              type="button"
+              className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
+              onClick={moveToBack}
+            >
               이전으로
             </button>
-            <button className="w-40 h-12 rounded-lg point-button">수정하기</button>
+            <button className="bg-point w-[160px] sm:w-full h-12 rounded-lg">수정하기</button>
           </div>
         </div>
       </form>
