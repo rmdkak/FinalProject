@@ -124,6 +124,12 @@ input[type="password"]::-ms-clear {
   background-color: #f3f3f3;
   transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-300px) translateX(-23px) translateZ(-256px);
   transform-style: preserve-3d;
+
+  @media screen and (max-width: 768px) {
+    width: 230px;
+    height: 230px;
+    transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-24px) translateX(-12px) translateZ(161px);
+  }
 }
 .right-wall {
   position: absolute;
@@ -140,6 +146,12 @@ input[type="password"]::-ms-clear {
   background-color: #e5e5e5;
   transform: rotateX(-90deg) translateZ(-300px) translateY(-436px) translateX(75px);
   transform-style: preserve-3d;
+
+  @media screen and (max-width: 768px) {
+    width: 230px;
+    height: 230px;
+    transform: rotateX(-90deg) translateZ(21px) translateY(-124px) translateX(75px);
+  }
 }
 .floor {
   position: absolute;
@@ -156,6 +168,13 @@ input[type="password"]::-ms-clear {
   width: 1070px;
   height: 1070px;
   background-color: #bcbcbc;
+
+  @media screen and (max-width: 768px) {
+    top: 124px;
+    left: 62px;
+    width: 250px;
+    height: 250px;
+  }
 }
 
 /* 좌측 가구 */
@@ -250,16 +269,16 @@ input[type="password"]::-ms-clear {
     @apply flex justify-between;
   }
   .home-section {
-    @apply gap-10 w-[1280px] flex-column;
+    @apply gap-10 w-[1280px] flex-column sm:gap-6;
   }
   .vanner-preview {
     @apply w-[800px] h-[450px] rounded-xl mx-5;
   }
   .section-title {
-    @apply text-[32px] font-medium;
+    @apply text-[32px] font-medium sm:text-xl;
   }
   .view-more-icon {
-    @apply text-xl translate-y-[6px];
+    @apply text-xl translate-y-[6px] sm:-translate-y-[1px];
   }
   .service-item {
     @apply w-[120px] h-[120px] rounded-full bg-gray-200;

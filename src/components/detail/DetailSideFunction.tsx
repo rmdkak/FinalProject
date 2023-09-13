@@ -105,11 +105,11 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
     if (currentSession === null) {
       const confirmCheck = await Confirm(
         <div>
-          <div className="flex text-[18px] justify-center mb-[10px]">
+          <div className="flex text-lg justify-center mb-[10px]">
             <p className="font-medium mr-[10px]">STILE</p>
             <p>회원 이신가요?</p>
           </div>
-          <div className="text-[14px] text-gray02">
+          <div className="text-sm text-gray02">
             <p>해당 서비스는 로그인 후 진행 가능합니다.</p>
             <p>로그인 혹은 회원가입 해주세요.</p>
           </div>
@@ -160,7 +160,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
 
   const DetailSideBar = ({ setOpenShareModal }: ModalProps) => {
     return (
-      <div className="fixed gap-4 bottom-[20%] sm:right-[40px] right-[80px] inline-flex flex-col">
+      <div className="fixed gap-4 bottom-[20%] sm:right-[40px] right-20 inline-flex flex-col">
         <button className="w-12 h-12 rounded-full bg-point sm:w-8 sm:h-8" onClick={movePostPageHandler}>
           <BsPencilSquare className="w-5 h-5 mx-auto fill-gray01 sm:w-4 sm:h-4" />
         </button>

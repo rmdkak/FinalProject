@@ -7,11 +7,11 @@ import notion from "assets/footerIcon/notionIcon.svg";
 export const Footer = () => {
   return (
     <>
-      <footer className="box-border px-6 my-10 bg-gray08 flex-column ">
+      <footer className="box-border px-6 mt-10 bg-gray08 flex-column ">
         {/* footHead */}
         <div className="box-border relative max-w-[1280px] w-full min-w-[360px] mx-auto">
-          <div className="contents-between mb-[34px] border-b border-[#d9d9d9] pb-6">
-            <h2 className="item text-[2rem] leading-none">
+          <div className="contents-between mb-[34px] mt-10 border-b border-[#d9d9d9] pb-6">
+            <h2 className="text-xl leading-none item">
               <Link to="/" className="font-title">
                 STILE
               </Link>

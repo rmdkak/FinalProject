@@ -90,7 +90,7 @@ export const usePostsData = () => {
             <img
               src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
               alt="postImg"
-              className="w-[400px] h-[400px] rounded-lg object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] "
+              className="w-[400px] h-[400px] rounded-lg object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] lg:h-[300px]"
             />
 
             <div className="flex items-center justify-between h-12 my-3">
@@ -250,7 +250,7 @@ export const usePostsData = () => {
 
   const rankingList = newPostList
     ?.sort((a, b) => b.POSTLIKES[0]?.userId?.length - a.POSTLIKES[0]?.userId?.length)
-    .filter((post, idx) => isExistCombination(post, "all") && idx < 13);
+    .filter((post, idx) => isExistCombination(post, "all") && idx < 12);
   /**
    * flicking 라이브러리에 적용할 수 있도록, 반복되는 element 컴포넌트를 대신합니다.
    * @returns Home화면에 보여지는 베스트 조합 랭킹 요소들을 반환합니다.
@@ -259,25 +259,25 @@ export const usePostsData = () => {
     return (
       <>
         {rankingList?.map((post, idx) => (
-          <div key={post.id} className="mr-10 flicking-panel thumb has-background-primary">
-            <div className="items-center gap-4 flex-column w-[125px] h-[90px] hover:cursor-pointer">
+          <div key={post.id} className="mr-10 sm:mr-4 flicking-panel thumb has-background-primary">
+            <div className="items-center gap-4 flex-column w-[125px] h-[90px] hover:cursor-pointer sm:w-[95px] sm:h-[68px] sm:gap-3">
               <p className="relative w-6 h-6 text-center selected-ranking-point">{idx + 1}</p>
               {isExistCombination(post, "interior") && (
                 <div className="relative inline-flex">
                   <img
                     src={`${STORAGE_URL}/wallpaper/${post.leftWallpaperId as string}`}
                     alt="좌측 벽지"
-                    className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                    className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:right-[7px]"
                   ></img>
                   <img
                     src={`${STORAGE_URL}/wallpaper/${post.rightWallpaperId as string}`}
                     alt="우측 벽지"
-                    className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                    className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[-16px]"
                   ></img>
                   <img
                     src={`${STORAGE_URL}/tile/${post.tileId as string}`}
                     alt="바닥"
-                    className="absolute min-w-[48px] min-h-[48px] top-0 left-[15px] rounded-full border border-gray05"
+                    className="absolute min-w-[48px] min-h-[48px] top-0 left-[15px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[8px]"
                   ></img>
                 </div>
               )}
@@ -290,18 +290,18 @@ export const usePostsData = () => {
                       style={{
                         backgroundColor: post.leftColorCode,
                       }}
-                      className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                      className="absolute top-0 right-[13px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:right-[7px]"
                     ></div>
                     <div
                       style={{
                         backgroundColor: post.rightColorCode,
                       }}
-                      className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                      className="absolute top-0 left-[-22.5px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[-16px]"
                     ></div>
                     <img
                       src={`${STORAGE_URL}/tile/${post.tileId}`}
                       alt="바닥"
-                      className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05"
+                      className="absolute top-0 left-[15px] min-w-[48px] min-h-[48px] rounded-full border border-gray05 sm:min-w-[32px] sm:min-h-[32px] sm:left-[8px]"
                     ></img>
                   </div>
                 )}
@@ -321,7 +321,7 @@ export const usePostsData = () => {
       <>
         {rankingList?.map((post) => (
           <div key={post.id} className="flicking-panel full has-background-primary">
-            <div className="flex contents-center overflow-hidden rounded-xl w-[1280px] h-[574px] mt-10">
+            <div className="flex contents-center overflow-hidden rounded-xl w-[1280px] h-[574px] mt-10 sm:mt-6 sm:w-[312px] sm:h-[220px] sm:mr-6 md:w-full lg:w-full">
               {isExistCombination(post, "interior") &&
                 post.leftWallpaperId !== null &&
                 post.rightWallpaperId !== null &&
