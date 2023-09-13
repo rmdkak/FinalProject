@@ -7,8 +7,7 @@ const queryKey = ["bookmark"];
 export const useBookmarkQuery = () => {
   const queryClient = useQueryClient();
 
-  const { currentSession } = useAuthStore();
-  const userId = currentSession?.user.id;
+  const { currentUserId: userId } = useAuthStore();
   const { wallPaper, tile } = useServiceStore();
 
   const bookmarkResponse = useQuery({

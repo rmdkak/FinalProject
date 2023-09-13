@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AiOutlineCamera, AiFillCloseCircle } from "react-icons/ai";
 import { useParams } from "react-router-dom";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { saveCommentImageHandler } from "api/supabase/commentData";
@@ -16,7 +17,7 @@ interface CommentFormProps {
 }
 
 export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps) => {
-  const { currentSession } = useAuthStore();
+  const { currentSession, currentUserId } = useAuthStore();
   const { createCommentMutation, createReplyMutation } = useCommentsQuery();
   const [content, setContent] = useState<string>("");
   const [commentImgFile, setCommentImgFile] = useState<File | null>(null);
@@ -32,7 +33,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
     if (value.length <= textAreaMaxLength) {
       setContent(value);
     } else {
-      await Alert(`글자 수 제한(${textAreaMaxLength}자)을 초과했습니다.`);
+      toast(`글자 수 제한(${textAreaMaxLength}자)을 초과했습니다.`, { theme: "failure", zIndex: 9999 });
     }
   };
 
@@ -56,16 +57,16 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
     event.preventDefault();
 
     if (content === "") {
-      await Alert("댓글은 1글자 이상 입력해주세요.");
+      toast("댓글은 1글자 이상 입력해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
-    const userId = currentSession?.user.id;
+    const userId = currentUserId;
     const id = uuid();
     const commentImg = commentImgFile === null ? null : `/commentImg/${id}`;
 
     if (postId == null) return;
-    if (userId == null) return;
+    if (userId === undefined) return;
 
     try {
       if (commentImgFile !== null) {

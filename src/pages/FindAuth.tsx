@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import toast from "react-simple-toasts";
 
 import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase/auth";
-import { DateConvertor, InvalidText, Select, idAnswerValid, idQuestionOptions, useDialog } from "components";
+import { DateConvertor, InvalidText, Select, idAnswerValid, idQuestionOptions } from "components";
 import { type Tables } from "types/supabase";
 
 const TAB_STYLE =
@@ -29,7 +30,6 @@ interface FindPasswordInput {
 export const FindAuth = () => {
   const param = useParams();
   const navigate = useNavigate();
-  const { Alert } = useDialog();
   const initialFocus =
     param.focus === "email" ? { focusEmail: true, focusPassword: false } : { focusEmail: false, focusPassword: true };
   const [focusTab, setFocusTab] = useState<FocusTab>(initialFocus);
@@ -53,7 +53,6 @@ export const FindAuth = () => {
     formState: { errors: passwordErrors },
   } = useForm<FindPasswordInput>();
 
-  // 이메일 찾기
   const findEmailHandler: SubmitHandler<FindEmailInput> = async (data) => {
     const { nicknameForEmail: name, idAnswerForEmail: idAnswer } = data;
 
@@ -73,7 +72,6 @@ export const FindAuth = () => {
     emailReset();
   };
 
-  // 비밀번호 찾기
   const findPasswordHandler: SubmitHandler<FindPasswordInput> = async (data) => {
     const { emailForPassword: email, nicknameForPassword: name, idAnswerForPassword: idAnswer } = data;
 
@@ -84,8 +82,8 @@ export const FindAuth = () => {
 
     try {
       const data = await findPassword({ name, email, idAnswer, idQuestion: selectIdQuestion });
-      void sendEmailForFindPassword(data.email);
-      void Alert("이메일이 전송되었습니다.");
+      await sendEmailForFindPassword(data.email);
+      toast("이메일이 전송되었습니다.", { theme: "warning", zIndex: 9999 });
       navigate("/");
     } catch (error) {
       passwordSetError("root", { message: "해당 유저를 찾을 수 없습니다." });
@@ -166,7 +164,6 @@ export const FindAuth = () => {
           <InvalidText errorsMessage={emailErrors.idAnswerForEmail?.message} size={20} />
 
           <button className="text-center auth-button body-3 point-button">아이디 찾기</button>
-          <InvalidText errorsMessage={emailErrors.root?.message} size={20} />
           <div className="text-gray03 body-4">
             <p>SNS로 가입하신 계정은 비밀번호를 재설정할 수 없습니다.</p>
             <p>로그인 화면에서 SNS계정으로 로그인 하신 후 이용해주세요.</p>
@@ -247,7 +244,6 @@ export const FindAuth = () => {
           <InvalidText errorsMessage={passwordErrors.idAnswerForPassword?.message} size={20} />
 
           <button className="text-center auth-button body-3 point-button">메일로 새 비밀번호 받기</button>
-          <InvalidText errorsMessage={passwordErrors.root?.message} size={20} />
           <div className="text-gray03 body-4">
             <p>SNS로 가입하신 계정은 비밀번호를 재설정할 수 없습니다.</p>
             <p>로그인 화면에서 SNS계정으로 로그인 하신 후 이용해주세요.</p>

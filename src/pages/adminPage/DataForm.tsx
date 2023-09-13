@@ -1,24 +1,24 @@
 import { useState } from "react";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { addTileData, addWallpaperData, uploadTileImageHandler, uploadWallpaperImageHandler } from "api/supabase/admin";
-import { Select, useDialog } from "components";
+import { Select } from "components";
 
 export const DataForm = () => {
   const [newImg, setNewImg] = useState<Blob | null>();
   const [selectType, setSelectType] = useState<string | undefined>();
   const [selectTexture, setSelectTexture] = useState<string | undefined>();
 
-  const { Alert } = useDialog();
   const UUID = uuid();
 
   const uploadImgHandler = async () => {
     if (newImg === null || newImg === undefined) {
-      void Alert("파일을 선택해주세요.");
+      toast("파일을 선택해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
     if (selectType === undefined || selectTexture === undefined) {
-      void Alert("타입, 텍스쳐를 선택해주세요.");
+      toast("타입, 텍스쳐를 선택해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 

@@ -8,10 +8,8 @@ type Like = Tables<"POSTLIKES", "Insert"> | undefined;
 export const usePostsLikeQuery = () => {
   const queryClient = useQueryClient();
 
-  const { currentSession } = useAuthStore();
+  const { currentUserId } = useAuthStore();
   const { detailPostId } = useLikeStore();
-
-  const userId = currentSession?.user.id;
 
   const queryKey = ["postLike", detailPostId];
 
@@ -31,7 +29,10 @@ export const usePostsLikeQuery = () => {
       const previousLike: Like = queryClient.getQueryData(queryKey);
 
       if (previousLike === undefined || previousLike === null) return;
-      const backupLike = { postId: previousLike.postId, userId: previousLike.userId.filter((id) => id !== userId) };
+      const backupLike = {
+        postId: previousLike.postId,
+        userId: previousLike.userId.filter((id) => id !== currentUserId),
+      };
 
       queryClient.setQueryData(queryKey, newLike);
 
@@ -56,10 +57,10 @@ export const usePostsLikeQuery = () => {
       await queryClient.cancelQueries({ queryKey });
       const previousLike: Like = queryClient.getQueryData(queryKey);
       if (previousLike === undefined || previousLike === null) return;
-      if (userId === undefined) return;
+      if (currentUserId === undefined) return;
       const backupLike = {
         postId: previousLike.postId,
-        userId: [...previousLike.userId, userId],
+        userId: [...previousLike.userId, currentUserId],
       };
 
       queryClient.setQueryData(queryKey, deleteLike);

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { IoMdCloseCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
 import { login } from "api/supabase/auth";
 import { PasswordVisibleButton, InvalidText, useDialog, SocialLogin, CheckBoxIcon } from "components";
@@ -33,8 +34,9 @@ export const Login = () => {
     try {
       await login(data);
       getCurrentPathname();
+      toast("로그인 되었습니다.", { theme: "plain", zIndex: 9999 });
     } catch (error) {
-      setError("root", { message: "일치하는 회원정보가 없습니다." });
+      setError("root", { message: "로그인에 실패하였습니다." });
     }
   };
 

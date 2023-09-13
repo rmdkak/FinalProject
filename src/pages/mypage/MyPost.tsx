@@ -19,12 +19,10 @@ export const MyPost = () => {
 
   const { data: userPostData } = userPostsResponse;
 
-  // 선택 된 아이디 배열 삭제
   const deletePosts = () => {
     deleteUserPostsMutation.mutate(postIdsToDelete);
   };
 
-  // 체크 상태 변경
   const onChange = (event: ChangeEvent<HTMLInputElement>, id: string) => {
     const filteredPostIds = filteredPostIdsHandler(id);
     if (event.target.checked) {
@@ -91,7 +89,7 @@ export const MyPost = () => {
                   to={`/updatepost/${post.id as string}`}
                   className="flex w-20 h-8 rounded-lg contents-center gray-outline-button sm:hidden"
                 >
-                  수정
+                  이동하기
                 </Link>
               </li>
             );

@@ -8401,6 +8401,11 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
+react-simple-toasts@^5.9.0:
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/react-simple-toasts/-/react-simple-toasts-5.9.0.tgz#33bf12283698ecb92817a71a9da39e2a27faf7d6"
+  integrity sha512-gaWUMU0buRcE8sgoOAquR9XEiK4tna55R/vst0h+j+Okv1KrehjruVLEqGpiMWDuq7nVnyT+eMHAPzoxn6YhsA==
+
 react-uuid@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-uuid/-/react-uuid-2.0.0.tgz#e3c97e190db9eef53cb9dacfcc7314d913a411fa"

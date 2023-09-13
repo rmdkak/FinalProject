@@ -16,8 +16,8 @@ export const Toolbar = () => {
     if (currentSession === null) {
       const confirmCheck = await Confirm(
         <div>
-          <div className="flex text-[18px] justify-center mb-[10px]">
-            <p className="font-medium mr-[10px]">STILE</p>
+          <div className="flex text-[18px] justify-center mb-2.5">
+            <p className="font-medium mr-2.5">STILE</p>
             <p>회원 이신가요?</p>
           </div>
           <div className="text-[14px] text-gray02">
@@ -56,7 +56,7 @@ export const Toolbar = () => {
   };
 
   return (
-    <div className="fixed gap-4 bottom-[20%] right-[20px] w-12 inline-flex flex-col z-[9100]">
+    <div className="fixed gap-4 bottom-[20%] right-[10%] w-12 inline-flex flex-col z-[9100]">
       <button className="w-12 h-12 rounded-full sm:w-8 sm:h-8 bg-point" onClick={movePostPageHandler}>
         <BsPencilSquare className="w-5 h-5 mx-auto sm:w-4 sm:h-4 fill-gray01" />
       </button>

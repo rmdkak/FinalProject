@@ -1,8 +1,9 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
 import { changePassword } from "api/supabase/auth";
-import { InvalidText, useDialog } from "components";
+import { InvalidText } from "components";
 
 interface UpdatePasswordInput {
   newPassword: string;
@@ -11,7 +12,6 @@ interface UpdatePasswordInput {
 
 export const UpdatePassword = () => {
   const navigate = useNavigate();
-  const { Alert } = useDialog();
   const {
     register,
     handleSubmit,
@@ -24,18 +24,18 @@ export const UpdatePassword = () => {
 
     try {
       await changePassword(newPassword);
-      await Alert("비밀번호가 정상적으로 변경되었습니다.");
+      toast("비밀번호가 정상적으로 변경되었습니다.", { theme: "plain", zIndex: 9999 });
       navigate("/");
     } catch (error) {
       switch (error) {
         case "New password should be different from the old password.":
-          void Alert("이전 비밀번호와 동일합니다.");
+          toast("이전 비밀번호와 동일합니다.", { theme: "failure", zIndex: 9999 });
           break;
         case "Auth session missing!":
-          void Alert("이메일 유효시간이 만료되었습니다.");
+          toast("이메일 유효시간이 만료되었습니다.", { theme: "failure", zIndex: 9999 });
           break;
         default:
-          void Alert("Error");
+          toast("비밀번호 변경에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
           console.error("newError : ", error);
           break;
       }

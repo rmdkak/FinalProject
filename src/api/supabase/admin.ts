@@ -13,6 +13,7 @@ export const fetchEventAllData = async () => {
   }
   return data;
 };
+
 // 이벤트 GET
 export const fetchEventDetailData = async (id: string) => {
   const { data, error } = await supabase.from("EVENT").select("*,USERS (*)").eq("id", id).single();

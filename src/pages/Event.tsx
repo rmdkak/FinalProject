@@ -83,7 +83,7 @@ export const Event = () => {
           >
             <SlArrowUp className="fill-gray02" />
             <label className="text-gray02 w-[80px] sm:text-xs">이전글 보기</label>
-            <span className="h-[8px] border border-gray08"></span>
+            <span className="h-2 border border-gray08"></span>
             <p className="line-clamp-1 sm:text-xs">
               {eventAllData !== undefined ? eventAllData[(findCurrentIdx as number) - 1].title : ""}
             </p>
@@ -98,7 +98,7 @@ export const Event = () => {
           >
             <SlArrowDown className="fill-gray02" />
             <label className="text-gray02 w-[80px] sm:text-xs">다음글 보기</label>
-            <span className="h-[8px] border border-gray08"></span>
+            <span className="h-2 border border-gray08"></span>
             <p className="line-clamp-1 sm:text-xs">
               {eventAllData !== undefined ? eventAllData[(findCurrentIdx as number) + 1].title : ""}
             </p>

@@ -1,6 +1,7 @@
 import { type ChangeEvent, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import {
@@ -33,7 +34,7 @@ const LABEL_STYLE = "self-center w-[136px] px-[24px] text-[14px] font-normal lea
 
 export const UpdateUser = () => {
   const navigate = useNavigate();
-  const { Alert, Confirm } = useDialog();
+  const { Confirm } = useDialog();
 
   const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
@@ -41,15 +42,16 @@ export const UpdateUser = () => {
 
   const { currentUserResponse, patchUserMutation } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
+  const { currentUserId } = useAuthStore();
 
-  const { currentSession } = useAuthStore();
-  if (currentSession === null) {
+  if (currentUser === undefined || currentUserId === undefined) {
     navigate("/");
     return <></>;
   }
 
-  const { avatar_url: currentProfileImg, name: currentName } = currentSession.user.user_metadata;
-  const userId = currentSession.user.id;
+  const { name: currentName, avatar_url: currentProfileImg } = currentUser;
+  const userId = currentUserId;
+
   const prevProfileImageId =
     currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
 
@@ -62,7 +64,6 @@ export const UpdateUser = () => {
     formState: { errors },
   } = useForm<UpdateInput>();
 
-  // 프로필 이미지 변경
   const changeProfileImgHandler = async (event: ChangeEvent<HTMLInputElement>) => {
     const uid = uuid();
     if (event.target.files === null) return;
@@ -76,7 +77,6 @@ export const UpdateUser = () => {
     void uploadImage({ file: imgFile, userId: uid });
   };
 
-  // 프로필 이미지가 디폴트가 아니면 디폴트로 바꾸어줌
   const resetImgFile = async () => {
     if (currentProfileImg !== "") {
       await deleteImage(prevProfileImageId);
@@ -85,7 +85,6 @@ export const UpdateUser = () => {
     }
   };
 
-  // 중복체크
   const duplicateCheck = async () => {
     const getUserData = await fetchUserCheckData();
 
@@ -106,34 +105,17 @@ export const UpdateUser = () => {
     }
   };
 
-  // 비밀번호 수정
   const changePasswordHandler: SubmitHandler<UpdateInput> = async (data) => {
     try {
       await changePassword(data.password);
-      await Alert("비밀번호가 정상적으로 변경되었습니다.");
-    } catch (error) {
-      switch (error) {
-        case "Error: New password should be different from the old password.":
-          await Alert("이전 비밀번호와 동일합니다.");
-          break;
-        case "New password should be different from the old password.":
-          await Alert("이전 비밀번호와 동일합니다.");
-          break;
-        case "Auth session missing!":
-          await Alert("이메일 유효시간이 만료되었습니다.");
-          break;
-        default:
-          await Alert("Error");
-          console.error(error);
-          break;
-      }
-    }
+      toast("비밀번호가 정상적으로 변경되었습니다.", { theme: "warning", zIndex: 9999 });
+    } catch (error) {}
+
     resetField("password");
     resetField("passwordConfirm");
     toggleChangeHandler("password");
   };
 
-  // 닉네임 수정
   const changeNameHandler: SubmitHandler<UpdateInput> = async (data) => {
     const inputValue = { name: data.name };
     if (data.name !== currentName) {
@@ -144,6 +126,8 @@ export const UpdateUser = () => {
 
       await changeMetaName(data.name);
       patchUserMutation.mutate({ inputValue, userId });
+    } else {
+      toast("이전 닉네임과 동일합니다.", { theme: "failure", zIndex: 9999 });
     }
     toggleChangeHandler("name");
   };
@@ -164,7 +148,7 @@ export const UpdateUser = () => {
       patchUserMutation.mutate({ inputValue, userId });
       await logout();
       navigate("/");
-      await Alert("정상적으로 탈퇴되었습니다.");
+      toast("정상적으로 탈퇴되었습니다.", { theme: "plain", zIndex: 9999 });
       if (prevProfileImageId !== "defaultImg") {
         void deleteImage(prevProfileImageId);
       }
@@ -203,7 +187,7 @@ export const UpdateUser = () => {
               <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
-          <p className="title-4">{`${currentName as string} 님`}</p>
+          <p className="title-4">{`${currentName} 님`}</p>
         </div>
         <div className="flex contents-center w-[624px]">
           <div className="w-full gap-6 flex-column">

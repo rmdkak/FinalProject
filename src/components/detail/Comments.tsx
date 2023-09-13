@@ -16,15 +16,14 @@ interface CommentProps {
 }
 
 export const Comments = ({ postData }: CommentProps) => {
-  const { currentSession } = useAuthStore();
-  const sessionId = currentSession?.user.id;
+  const { currentUserId } = useAuthStore();
 
   const { fetchCommentsMutation } = useCommentsQuery();
   const { data: commentsData } = fetchCommentsMutation;
 
   const { fetchDetailMutation } = usePostsQuery();
   const { data: detailData } = fetchDetailMutation;
-  const isAdmin = sessionId === ADMIN_ID;
+  const isAdmin = currentUserId === ADMIN_ID;
 
   const {
     selectedId,
@@ -72,12 +71,12 @@ export const Comments = ({ postData }: CommentProps) => {
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{comment.USERS?.name}</p>
                       {comment.userId === ADMIN_ID && (
-                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                           <p className="text-[12px]">관리자</p>
                         </div>
                       )}
                       {detailData?.userId === comment.userId && (
-                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                           <p className="text-[12px]">글쓴이</p>
                         </div>
                       )}
@@ -152,7 +151,7 @@ export const Comments = ({ postData }: CommentProps) => {
                       >
                         {openReply === comment.id ? "닫기" : "답글 쓰기"}
                       </button>
-                      {(sessionId === comment.userId || isAdmin) && (
+                      {(currentUserId === comment.userId || isAdmin) && (
                         <>
                           {selectedId !== comment.id || isAdmin ? (
                             <>
@@ -220,7 +219,7 @@ export const Comments = ({ postData }: CommentProps) => {
                 <ReComments
                   comment={comment}
                   detailData={detailData}
-                  currentSession={currentSession}
+                  currentUserId={currentUserId}
                   openReply={openReply}
                   setOpenReply={setOpenReply}
                 />
@@ -238,7 +237,7 @@ export const Comments = ({ postData }: CommentProps) => {
         >
           목록
         </button>
-        {((currentSession?.user.id === postData?.userId && postData !== undefined) || isAdmin) && (
+        {((currentUserId === postData?.userId && postData !== undefined) || isAdmin) && (
           <div className="sm:flex">
             <button
               onClick={async () => {

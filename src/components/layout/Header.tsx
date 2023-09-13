@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { logout } from "api/supabase/auth";
 import backImg from "assets/headersvg/back_page.svg";
 import hambergerMenu from "assets/headersvg/cate.svg";
 import logOutIcon from "assets/headersvg/Logout.svg";
 import userIcon from "assets/headersvg/user.svg";
-import { Sidebar, useDialog } from "components";
+import { Sidebar } from "components";
+import { useAuth } from "hooks/useAuth";
 import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { useAuthStore } from "store";
 
@@ -20,12 +20,10 @@ const HeaderMemoization = () => {
   const [scrollY, setScrollY] = useState<number>(0);
 
   const navigate = useNavigate();
-  const { Alert } = useDialog();
 
-  const { currentSession, setStayLoggedInStatus } = useAuthStore();
+  const { currentUserId } = useAuthStore();
   const { windowWidth } = useInteriorPreview();
-
-  const userUid = currentSession?.user.id;
+  const { logoutWithMessage } = useAuth();
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -38,18 +36,6 @@ const HeaderMemoization = () => {
   const scrollObserver = () => {
     setScrollY(window.scrollY);
   };
-
-  const logoutHandler = useCallback(async () => {
-    navigate("/");
-    try {
-      await logout();
-      setStayLoggedInStatus(false);
-      await Alert("로그아웃 되었습니다.");
-    } catch (error) {
-      await Alert("로그아웃 실패");
-      console.error(error);
-    }
-  }, []);
 
   switch (pathname) {
     case "/":
@@ -129,17 +115,18 @@ const HeaderMemoization = () => {
   }
 
   const goToMypage = useCallback(() => {
-    if (userUid == null) return;
+    if (currentUserId === undefined) return;
     navigate("/mypage");
-  }, []);
+  }, [currentUserId]);
 
   const goToLogin = useCallback(() => {
     navigate("/login");
   }, []);
 
-  const openSideBarHandler = useCallback((): void => {
+  const openSideBarHandler = useCallback(() => {
     setIsOpen(true);
   }, []);
+
   const goToBackPage = useCallback(() => {
     navigate(-1);
   }, []);
@@ -171,7 +158,7 @@ const HeaderMemoization = () => {
             )}
           </Link>
 
-          {currentSession === null ? (
+          {currentUserId === undefined ? (
             <>
               <div className="flex gap-2 contents-center">
                 <button className="sm:w-[24px]" onClick={goToLogin}>
@@ -188,7 +175,7 @@ const HeaderMemoization = () => {
           ) : (
             <>
               <div className="flex gap-2 contents-center">
-                <button className="sm:w-[24px]" onClick={logoutHandler}>
+                <button className="sm:w-[24px]" onClick={logoutWithMessage}>
                   <span className="absolute top-[-9999px] left-[-9999px] poindent-[-9999px]">로그아웃버튼</span>
                   <img width={IMG_WIDTH_HEIGHT} height={IMG_WIDTH_HEIGHT} src={logOutIcon} alt="로그아웃" />
                 </button>

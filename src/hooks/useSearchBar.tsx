@@ -29,7 +29,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
       currentDate.setFullYear(currentDate.getFullYear() - 10);
       break;
     case "1일":
-      currentDate.setDate(currentDate.getDate() - 1);
+      currentDate.setDate(currentDate.getDate());
       break;
     case "1주일":
       currentDate.setDate(currentDate.getDate() - 7);
@@ -53,16 +53,18 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
   const timeFilteredData =
     dataList === undefined ? [] : dataList.filter((data) => new Date(data.created_at) >= currentDate);
 
-  // 검색 조건 필터링
   const filteredData = timeFilteredData.filter((data) => {
     if (conditionWord === undefined) return data;
     switch (type) {
       case "post":
+        if (searchCategory === "name") return data.USERS[searchCategory].includes(conditionWord);
         return data[searchCategory].includes(conditionWord);
       case "comment":
         if (searchCategory === "content") return data[searchCategory].includes(conditionWord);
+        else if (searchCategory === "name") return data.POSTS.USERS[searchCategory].includes(conditionWord);
         else return data.POSTS[searchCategory].includes(conditionWord);
       case "like":
+        if (searchCategory === "name") return data.POSTS.USERS[searchCategory].includes(conditionWord);
         return data.POSTS[searchCategory].includes(conditionWord);
       default:
         return data;
@@ -107,7 +109,7 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
           >
             <option value={"title"}>제목</option>
 
-            {type === "post" && isUseMypage ? null : <option value={"nickname"}>글 작성자</option>}
+            {type === "post" || isUseMypage ? null : <option value={"name"}>글 작성자</option>}
 
             {type === "comment" ? (
               <option value={"content"}>댓글 내용</option>
