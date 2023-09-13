@@ -9,10 +9,11 @@ interface Props {
 }
 
 const InteriorTitleMemoization = ({ children, type }: Props): JSX.Element => {
-  const { checkType, setTypeCheck } = useServiceStore((state) => state);
+  const { checkType, setTypeCheck, setInteriorSelecteIndex } = useServiceStore((state) => state);
 
   const onClickTypeSwitch = useCallback((type: WallOrTileOrFurniture) => {
     setTypeCheck(type);
+    setInteriorSelecteIndex(0);
   }, []);
 
   return (
