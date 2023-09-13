@@ -33,7 +33,7 @@ const WALLPAPER_TEXTURE_LIST: string[] = ["전체 보기", "벽지", "타일", "
 const TILE_TEXTURE_LIST: string[] = ["전체 보기", "장판", "마루", "포세린", "데코타일", "셀프조합"];
 const FURNITURE_LIST: string[] = ["전체 보기", "가구", "조명"];
 
-const RESOURCES_CALCULATOR_LIST: string[] = ["벽지", "타일, 가구"];
+const RESOURCES_CALCULATOR_LIST: string[] = ["벽지", "타일"];
 
 const SELECT_PAINT_INDEX: number = 4;
 
