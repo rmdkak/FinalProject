@@ -55,10 +55,6 @@ export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => 
 
   const filteredData = timeFilteredData.filter((data) => {
     if (conditionWord === undefined) return data;
-    console.log("type :", type);
-    console.log("data :", data);
-    console.log("conditionWord :", conditionWord);
-    console.log("searchCategory :", searchCategory);
     switch (type) {
       case "post":
         if (searchCategory === "name") return data.USERS[searchCategory].includes(conditionWord);
