@@ -11,6 +11,7 @@ import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { useAuthStore } from "store";
 
 const IMG_WIDTH_HEIGHT = 32;
+const REG_ENGLISH = /[a-zA-Z]/;
 let headerTitle: string;
 let isBack: boolean = false;
 
@@ -130,15 +131,13 @@ const HeaderMemoization = () => {
     navigate(-1);
   }, []);
 
+  const headerTitleRegCheck = REG_ENGLISH.test(headerTitle) ? "font-title" : "font-kr";
+
   return (
     <>
       <header className="flex justify-center sticky z-[9100] box-border border-b border-b-gray06 top-0 left-0 w-full bg-white px-6">
-        <div className="w-[1280px] contents-between items-center">
-          <Link
-            to="/"
-            className="py-4 font-title text-[2rem] flex
-            sm:py-2"
-          >
+        <div className="w-[1280px] contents-between items-center m:py-4">
+          <Link to="/" className="py-4 font-title text-[2rem] flex">
             {(windowWidth as number) >= 767 ? (
               "STILE"
             ) : (
@@ -148,7 +147,7 @@ const HeaderMemoization = () => {
                     <img width={32} height={32} src={backImg} alt="뒤로가기 이미지" />
                   </button>
                 )}
-                {headerTitle}
+                <span className={`flex contents-center text-[18px] ${headerTitleRegCheck}`}>{headerTitle}</span>
               </>
             )}
           </Link>

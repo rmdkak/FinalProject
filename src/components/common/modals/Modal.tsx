@@ -18,6 +18,8 @@ export const Modal = ({ children, title }: Props): JSX.Element => {
     };
   }, []);
 
+  modalState ? (document.body.style.overflowY = "hidden") : (document.body.style.overflowY = "auto");
+
   if (!modalState) return <></>;
 
   let titleBorder: string = "";
