@@ -3,9 +3,10 @@ import type { Dispatch, SetStateAction } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { ArrowButton, DateConvertor } from "components";
-import { useAdminQuery } from "hooks";
+import { useAdminQuery } from "hooks/useAdminQuery";
+import { useDynamicImport } from "hooks/useDynamicImport";
 
 const reportCategory = [
   "나체 이미지 또는 성적 행위",
@@ -26,15 +27,16 @@ interface Input {
   adminAnswer: string;
 }
 
-export const Report = ({ setLength }: Props) => {
+const Report = ({ setLength }: Props) => {
   const { fetchReportMutation, addManToManMutation, deleteReportMutation } = useAdminQuery();
   const { data: reportData } = fetchReportMutation;
 
   const [currentCategory, setCurrentCategory] = useState<string>("");
+  const [isOpenAnswer, setIsOpenAnswer] = useState<string>();
+
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const { register, handleSubmit, reset } = useForm<Input>();
-
-  const [isOpenAnswer, setIsOpenAnswer] = useState<string>();
 
   useEffect(() => {
     if (reportData !== undefined) {
@@ -122,7 +124,13 @@ export const Report = ({ setLength }: Props) => {
                           >
                             답변하기
                           </button>
-                          <Link to={`/detail/${report.postId}`} className="px-3 rounded-lg gray-outline-button">
+                          <Link
+                            to={`/detail/${report.postId}`}
+                            className="px-3 rounded-lg gray-outline-button"
+                            onMouseEnter={async () => {
+                              await preFetchPageBeforeEnter("detail");
+                            }}
+                          >
                             해당 페이지 이동
                           </Link>
                           <button
@@ -174,3 +182,4 @@ export const Report = ({ setLength }: Props) => {
     </div>
   );
 };
+export default Report;

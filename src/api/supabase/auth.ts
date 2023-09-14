@@ -1,5 +1,7 @@
+import toast from "react-simple-toasts";
+
 import { AuthError } from "@supabase/supabase-js";
-import { type LoginInputs } from "pages";
+import { type LoginInputs } from "pages/Login";
 import { type Tables } from "types/supabase";
 
 import { auth, supabase } from "./supabaseClient";
@@ -28,8 +30,16 @@ interface FindAuth {
  */
 export const login = async (inputValue: LoginInputs) => {
   const { error } = await auth.signInWithPassword(inputValue);
-
-  if (error !== null) throw new AuthError(error.message);
+  if (error !== null) {
+    switch (error.message) {
+      case "Invalid login credentials":
+        toast("해당 이용자를 찾을 수 없습니다.", { theme: "failure", zIndex: 9999 });
+        throw new AuthError(error.message);
+      default:
+        toast(error.message, { theme: "failure", zIndex: 9999 });
+        throw new AuthError(error.message);
+    }
+  }
 };
 
 /**
@@ -38,7 +48,7 @@ export const login = async (inputValue: LoginInputs) => {
 export const logout = async () => {
   const { error } = await auth.signOut();
 
-  if (error !== null) throw new Error(error.message);
+  if (error !== null) throw new AuthError(error.message);
 };
 
 /**
@@ -51,7 +61,8 @@ export const signup = async (inputValue: SignupInputs) => {
     password,
     options: { data: { name, avatar_url: "" } },
   });
-  if (data.user != null) {
+
+  if (data.user !== null) {
     await addUser({
       id: data.user.id,
       email,
@@ -61,7 +72,22 @@ export const signup = async (inputValue: SignupInputs) => {
       idQuestion: selectIdQuestion,
     });
   }
-  if (error !== null) throw new Error(printErrorMessage(error.message));
+
+  if (error !== null) {
+    switch (error.message) {
+      case "Signup requires a valid password":
+        toast("비밀번호가 잘못되었습니다.", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+      case "To signup, please provide your email":
+        toast("이메일이 잘못되었습니다.", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+      case "Invalid API key":
+        toast("관리자 문의(code:API KEY)", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+      default:
+        throw new Error(error.message);
+    }
+  }
 };
 
 export const findEmail = async ({ name, idQuestion, idAnswer }: Omit<FindAuth, "email">) => {
@@ -72,8 +98,17 @@ export const findEmail = async ({ name, idQuestion, idAnswer }: Omit<FindAuth, "
     .eq("idQuestion", idQuestion)
     .eq("idAnswer", idAnswer)
     .single();
-  console.error("error.message :", error?.message);
-  if (error !== null) throw new Error(error.message);
+
+  if (error !== null) {
+    switch (error.message) {
+      case "JSON object requested, multiple (or no) rows returned":
+        toast("해당 유저를 찾을 수 없습니다.", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+      default:
+        throw new Error(error.message);
+    }
+  }
+
   return data;
 };
 
@@ -86,8 +121,17 @@ export const findPassword = async ({ name, email, idQuestion, idAnswer }: FindAu
     .eq("idQuestion", idQuestion)
     .eq("idAnswer", idAnswer)
     .single();
-  console.error("error.message :", error?.message);
-  if (error !== null) throw new Error(error.message);
+
+  if (error !== null) {
+    switch (error.message) {
+      case "JSON object requested, multiple (or no) rows returned":
+        toast("해당 유저를 찾을 수 없습니다.", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+      default:
+        throw new Error(error.message);
+    }
+  }
+
   return data;
 };
 
@@ -112,7 +156,20 @@ export const changeEmail = async (email: string) => {
  */
 export const changePassword = async (password: string) => {
   const { error } = await auth.updateUser({ password });
-  if (error !== null) throw new Error(error.message);
+
+  if (error !== null) {
+    switch (error.message) {
+      case "New password should be different from the old password.":
+        toast("이전 비밀번호와 동일합니다.", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+      case "Auth session missing!":
+        toast("이메일 유효시간이 만료되었습니다.", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+      default:
+        toast("비밀번호 변경에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
+        throw new Error(error.message);
+    }
+  }
 };
 
 /**
@@ -143,7 +200,7 @@ export const deleteUser = async (userUid: string) => {
  * @method get
  */
 export const fetchUser = async (userId: string) => {
-  const { data, error } = await supabase.from(TABLE).select().eq("id", userId).single();
+  const { data, error } = await supabase.from(TABLE).select("*").eq("id", userId).single();
   if (error !== null) throw new Error(error.message);
   return data;
 };
@@ -175,13 +232,7 @@ export const addUser = async (inputValue: Tables<"USERS", "Insert">) => {
  * @table "USERS"
  * @method patch
  */
-export const patchUser = async ({
-  inputValue,
-  userId,
-}: {
-  inputValue: Tables<"USERS", "Update">;
-  userId: string | undefined;
-}) => {
+export const patchUser = async ({ inputValue, userId }: { inputValue: Tables<"USERS", "Update">; userId: string }) => {
   if (userId === undefined) return;
   const { error } = await supabase.from(TABLE).update(inputValue).eq("id", userId).select("*");
 
@@ -239,17 +290,4 @@ export const kakaoLogin = async () => {
   const { error } = await auth.signInWithOAuth({ provider: "kakao", options: OAUTH_OPTIONS });
 
   if (error !== null) throw new Error("로그인 정보가 잘못되었습니다.");
-};
-
-const printErrorMessage = (message: string) => {
-  switch (message) {
-    case "Signup requires a valid password":
-      return "비밀번호가 잘못되었습니다.";
-    case "To signup, please provide your email":
-      return "이메일이 잘못되었습니다.";
-    case "Invalid API key":
-      return "관리자 문의(code:API KEY)";
-    default:
-      return message;
-  }
 };

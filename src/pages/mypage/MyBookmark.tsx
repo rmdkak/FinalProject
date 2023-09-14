@@ -1,15 +1,14 @@
 import { type ChangeEvent, useState } from "react";
 
-import checkboxtrue from "assets/svgs/checkboxtrue.svg";
-import ckeckboxfalse from "assets/svgs/ckeckboxfalse.svg";
-import { EmptyData, Modal, MypageSubTitle, MypageTitle, PreviewItem } from "components";
+import { CheckBoxIcon, EmptyData, InteriorCombination, Modal, SubTitle, Title } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
-import { useMypageQuery, usePagination } from "hooks";
+import { useMypageQuery } from "hooks/useMypageQuery";
+import { usePagination } from "hooks/usePagination";
 import { useModalStore } from "store";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
-export const MyBookmark = () => {
+const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const { targetModal, setTargetModal, onOpenModal } = useModalStore();
@@ -44,22 +43,19 @@ export const MyBookmark = () => {
 
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
-      <MypageTitle title="마이페이지" isBorder={false} />
-      <MypageSubTitle type="bookmark" />
+      <Title title="마이페이지" isBorder={false} pathName="mypage" />
+      <SubTitle type="myBookmark" />
       {pageData.length === 0 ? (
-        <EmptyData type="bookmark" />
+        <EmptyData type="myBookmark" />
       ) : (
-        <ul className="flex flex-wrap gap-y-[64px] gap-x-[40px] w-full mt-[40px]">
+        <ul className="flex flex-wrap justify-center w-full mt-10 gap-y-16 gap-x-10 sm:gap-0">
           {pageData.map((bookmark) => {
+            const { leftWallpaperId, rightWallpaperId, tileId } = bookmark;
+            const isSelectBookmark = bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined;
             return (
-              <li
-                key={bookmark.id}
-                className={`relative border ${
-                  bookmarkIdsToDelete.find((id) => id === bookmark.id) === undefined ? "border-gray05" : "border-black"
-                } rounded-[12px] w-[400px] gap-[16px] h-[200px]`}
-              >
-                {isDeleteMode ? (
-                  <div className="w-full h-full">
+              <li key={bookmark.id} className="relative w-56 h-40 gap-4 sm:w-1/3 sm:h-20">
+                {isDeleteMode && (
+                  <div className="relative w-full h-full">
                     <input
                       id={bookmark.id}
                       type="checkbox"
@@ -69,17 +65,13 @@ export const MyBookmark = () => {
                       }}
                     />
                     <label
-                      className={`relative flex w-full h-full ${isDeleteMode ? "z-[1]" : ""}`}
+                      className={`absolute left-4 top-4 flex w-full h-full ${isDeleteMode && "z-10"}`}
                       htmlFor={bookmark.id}
                     >
-                      {bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined ? (
-                        <img className="absolute bg-white left-[16px] top-[16px]" src={checkboxtrue} alt="checkbox" />
-                      ) : (
-                        <img className="absolute bg-white left-[16px] top-[16px]" src={ckeckboxfalse} alt="checkbox" />
-                      )}
+                      <CheckBoxIcon isCheck={isSelectBookmark} type="black" />
                     </label>
                   </div>
-                ) : null}
+                )}
 
                 <button
                   onMouseUp={() => {
@@ -90,13 +82,9 @@ export const MyBookmark = () => {
                     if (isDeleteMode) return;
                     setTargetModal(bookmark.id);
                   }}
-                  className={`absolute top-0 flex w-full h-full mx-auto contents-center ${isDeleteMode ? "z-[0]" : ""}`}
+                  className={`absolute top-0 flex w-full h-full mx-auto contents-center ${isDeleteMode ? "z-0" : ""}`}
                 >
-                  <PreviewItem
-                    leftWallpaperId={bookmark.leftWallpaperId}
-                    rightWallpaperId={bookmark.rightWallpaperId}
-                    tileId={bookmark.tileId}
-                  />
+                  <InteriorCombination type="mypage" interiorItemId={{ leftWallpaperId, rightWallpaperId, tileId }} />
                 </button>
 
                 {targetModal === bookmark.id && (
@@ -115,19 +103,19 @@ export const MyBookmark = () => {
         </ul>
       )}
 
-      <div className="flex items-center w-full mt-[68px]">
+      <div className="flex items-center w-full mt-16">
         {isDeleteMode ? (
-          <div className="flex gap-3">
+          <div className="flex w-full gap-3">
             <button
               onClick={() => {
                 setIsDeleteMode(false);
                 setBookmarkIdsToDelete([]);
               }}
-              className="w-24 h-12 rounded-lg gray-outline-button body-3"
+              className="w-24 h-12 rounded-lg gray-outline-button body-3 sm:w-1/2"
             >
               취소하기
             </button>
-            <button onClick={deletePosts} className="w-24 h-12 rounded-lg point-button body-3">
+            <button onClick={deletePosts} className="w-24 h-12 rounded-lg point-button body-3 sm:w-1/2">
               선택삭제
             </button>
           </div>
@@ -136,13 +124,15 @@ export const MyBookmark = () => {
             onClick={() => {
               setIsDeleteMode(true);
             }}
-            className="w-24 h-12 rounded-lg gray-outline-button body-3"
+            className="w-24 h-12 rounded-lg gray-outline-button body-3 sm:w-full"
           >
             편집하기
           </button>
         )}
       </div>
-      <div className="mt-[120px]">{showPageComponent}</div>
+      <div className="mt-[120px] sm:mt-16">{showPageComponent}</div>
     </div>
   );
 };
+
+export default MyBookmark;

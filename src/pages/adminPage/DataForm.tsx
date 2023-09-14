@@ -1,29 +1,29 @@
 import { useState } from "react";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
-import { uploadTileImageHandler, uploadWallpaperImageHandler, addTileData, addWallpaperData } from "api/supabase";
-import { Select, useDialog } from "components";
+import { addTileData, addWallpaperData, uploadTileImageHandler, uploadWallpaperImageHandler } from "api/supabase/admin";
+import { Select } from "components";
+import { useImageResize } from "hooks/useImageResize";
 
-export const DataForm = () => {
-  const [newImg, setNewImg] = useState<Blob | null>();
+const DataForm = () => {
   const [selectType, setSelectType] = useState<string | undefined>();
   const [selectTexture, setSelectTexture] = useState<string | undefined>();
-
-  const { Alert } = useDialog();
+  const { resizePixelHandler, imageSizeSaveHandler, resizeFile, imageFile } = useImageResize();
   const UUID = uuid();
 
   const uploadImgHandler = async () => {
-    if (newImg === null || newImg === undefined) {
-      void Alert("파일을 선택해주세요.");
+    if (imageFile === null) {
+      toast("타일, 벽지를 선택해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
     if (selectType === undefined || selectTexture === undefined) {
-      void Alert("타입, 텍스쳐를 선택해주세요.");
+      toast("타입, 텍스쳐를 선택해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
     const imgData = {
-      category: [],
+      category: ["test"],
       id: UUID,
       image: `/${selectType}/${UUID}`,
       texture: selectTexture,
@@ -31,16 +31,32 @@ export const DataForm = () => {
 
     if (selectType === "tile") {
       try {
-        await uploadTileImageHandler({ UUID, postImgFile: newImg });
-        await addTileData(imgData);
+        if (imageFile !== null) {
+          const resizePixel = await resizePixelHandler(160);
+          const resizeImageFile = await resizeFile(imageFile, resizePixel);
+          if (resizeImageFile !== undefined) {
+            await uploadTileImageHandler({ UUID, postImgFile: resizeImageFile });
+            await addTileData(imgData);
+            toast("타일 등록 성공", { theme: "warning", zIndex: 9999 });
+          }
+        }
       } catch (error) {
+        toast("타일 등록 실패", { theme: "failure", zIndex: 9999 });
         console.error(error);
       }
     } else {
       try {
-        await uploadWallpaperImageHandler({ UUID, postImgFile: newImg });
-        await addWallpaperData(imgData);
+        if (imageFile !== null) {
+          const resizePixel = await resizePixelHandler(160);
+          const resizeImageFile = await resizeFile(imageFile, resizePixel);
+          if (resizeImageFile !== undefined) {
+            await uploadWallpaperImageHandler({ UUID, postImgFile: resizeImageFile });
+            await addWallpaperData(imgData);
+            toast("벽지 등록 성공", { theme: "warning", zIndex: 9999 });
+          }
+        }
       } catch (error) {
+        toast("벽지 등록 실패", { theme: "failure", zIndex: 9999 });
         console.error(error);
       }
     }
@@ -59,9 +75,7 @@ export const DataForm = () => {
             type="file"
             required
             onChange={(e) => {
-              if (e.target.files !== null) {
-                setNewImg(e.target.files[0]);
-              }
+              imageSizeSaveHandler(e);
             }}
             className="text-sm"
           />
@@ -80,7 +94,7 @@ export const DataForm = () => {
           <label className="text-sm text-black w-[70px]">텍스쳐 선택</label>
           <div className="flex w-[150px]">
             <Select
-              option={selectType !== "tile" ? ["장판", "마루", "포세린", "데코타일"] : ["벽지", "타일", "포세린"]}
+              option={selectType !== "tile" ? ["벽지", "타일", "포세린"] : ["장판", "마루", "포세린", "데코타일"]}
               selectedValue={selectTexture}
               setSelectedValue={setSelectTexture}
               selfEnterOption={false}
@@ -89,7 +103,7 @@ export const DataForm = () => {
           </div>
         </div>
         <button
-          type="submit"
+          type="button"
           className="bg-point w-[160px] h-[48px] rounded-[8px] ml-auto mt-5"
           onClick={uploadImgHandler}
         >
@@ -99,3 +113,4 @@ export const DataForm = () => {
     </>
   );
 };
+export default DataForm;

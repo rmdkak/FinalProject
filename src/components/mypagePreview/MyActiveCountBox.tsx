@@ -1,32 +1,38 @@
 import { Link } from "react-router-dom";
 
-import { ADMIN_ID } from "api/supabase";
-import { type MypageInfo } from "pages";
+import { ADMIN_ID } from "api/supabase/supabaseClient";
+import { useDynamicImport } from "hooks/useDynamicImport";
+import { type MypageInfo } from "pages/mypage/Mypage";
 
 interface Props {
   mypageInfoArray: MypageInfo[];
   adminCheck: string;
 }
 
-const BR_STYLE = "absolute w-[1px] h-[40px] bg-gray06 left-[-1px] top-1/2 translate-y-[-50%]";
+const BR_STYLE = "absolute w-px h-10 bg-gray06 -left-px top-1/2 -translate-y-1/2";
 
 export const MyActiveCountBox = ({ mypageInfoArray, adminCheck }: Props) => {
+  const { preFetchPageBeforeEnter } = useDynamicImport();
+
   return (
-    <div className="flex items-start border border-gray05 rounded-xl">
+    <div className="flex w-[80%] sm:w-[88%] h-[200px] items-start py-3 border border-gray05 rounded-xl sm:h-full">
       {mypageInfoArray.map((mypageInfo) => {
         if (mypageInfo.title === "문의&신고" && adminCheck === ADMIN_ID) {
           return (
             <Link
-              to={"/adminpage"}
+              to="/adminpage"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("adminpage");
+              }}
               key={mypageInfo.title}
-              className="relative flex-column contents-center h-full w-[206px] gap-6"
+              className="relative w-[206px] h-full gap-6 flex-column contents-center"
             >
               <div className="gap-3 flex-column contents-center">
                 <mypageInfo.icon className="w-6 h-6" />
-                <p className="text-[16px] font-normal leading-[150%]">관리자 페이지</p>
+                <p className="text-center break-keep body-2 sm:body-4 sm:w-8 sm:h-8">관리자 페이지</p>
               </div>
               <div className={BR_STYLE}></div>
-              <p className="text-[24px] font-medium leading-[145%]">이동</p>
+              <p className="title-4 sm:body-2">이동</p>
             </Link>
           );
         }
@@ -35,16 +41,17 @@ export const MyActiveCountBox = ({ mypageInfoArray, adminCheck }: Props) => {
           <Link
             to={mypageInfo.link}
             key={mypageInfo.title}
-            className="relative flex-column contents-center h-full w-[206px] gap-6"
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter(mypageInfo.link);
+            }}
+            className="relative w-[206px] h-full gap-6 flex-column contents-center"
           >
             <div className="gap-3 flex-column contents-center">
               <mypageInfo.icon className="w-6 h-6" />
-              <p className="text-[16px] font-normal leading-[150%]">{mypageInfo.title}</p>
+              <p className="text-center break-keep body-2 sm:body-4 sm:w-8 sm:h-8">{mypageInfo.title}</p>
             </div>
             <div className={BR_STYLE}></div>
-            <p className="text-[24px] font-medium leading-[145%]">
-              {mypageInfo.data === undefined ? 0 : mypageInfo.data.length}
-            </p>
+            <p className="title-4 sm:body-2">{mypageInfo.data === undefined ? 0 : mypageInfo.data.length}</p>
           </Link>
         );
       })}

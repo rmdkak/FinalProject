@@ -1,9 +1,10 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
-import { uploadEventImg } from "api/supabase";
-import { useDialog } from "components";
-import { useAdminQuery } from "hooks";
+import { uploadEventImg } from "api/supabase/admin";
+import { useAdminQuery } from "hooks/useAdminQuery";
+import { useImageResize } from "hooks/useImageResize";
 import { useAuthStore } from "store";
 
 interface Inputs {
@@ -20,10 +21,10 @@ const TEXTAREA_PLACEHOLDER = `이벤트 내용 or 서브 타이틀 내용을 입
 
 본문 내용`;
 
-export const EventForm = () => {
-  const { currentSession } = useAuthStore();
+const EventForm = () => {
+  const { currentUserId } = useAuthStore();
   const { addEventMutation } = useAdminQuery();
-
+  const { resizePixelHandler, imageSizeSaveHandler, resizeFile } = useImageResize();
   const {
     register,
     handleSubmit,
@@ -31,14 +32,13 @@ export const EventForm = () => {
     setError,
     reset,
   } = useForm<Inputs>();
-  const { Alert } = useDialog();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { title, content, minDate, maxDate } = data;
     const UUID = uuid();
     const eventImgFile = data.file[0];
     const eventImg = `/eventImg/${UUID}`;
-    const userId = currentSession?.user.id;
+    const userId = currentUserId;
 
     const eventData = {
       title,
@@ -51,16 +51,20 @@ export const EventForm = () => {
 
     if ((data.minDate !== "" && data.maxDate === "") || (data.minDate === "" && data.maxDate !== "")) {
       setError("minDate", { message: "이벤트 날짜는 하나만 들어갈 수 없습니다." });
-      await Alert("이벤트 날짜는 하나만 들어갈 수 없습니다.");
+      toast("이벤트 날짜는 하나만 들어갈 수 없습니다.", { theme: "failure", zIndex: 9999 });
       return;
     }
 
     try {
-      await uploadEventImg({ UUID, eventImgFile });
-
+      const resizePixel = await resizePixelHandler(2464);
+      const resizeImageFile = await resizeFile(eventImgFile, resizePixel);
+      if (resizeImageFile !== undefined) {
+        await uploadEventImg({ UUID, eventImgFile: resizeImageFile });
+      }
       addEventMutation.mutate(eventData);
-      await Alert("작성이 완료되었습니다.");
+      toast("작성이 완료되었습니다.", { theme: "warning", zIndex: 9999 });
     } catch (error) {
+      toast("작성에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
       console.error("onSubmitError", error);
     }
     reset();
@@ -101,6 +105,9 @@ export const EventForm = () => {
             className="w-full text-[14px] focus:outline-none"
             {...register("file", {
               required: "이미지 파일을 넣어주세요.",
+              onChange: (e) => {
+                imageSizeSaveHandler(e);
+              },
             })}
           />
         </div>
@@ -126,3 +133,4 @@ export const EventForm = () => {
     </>
   );
 };
+export default EventForm;

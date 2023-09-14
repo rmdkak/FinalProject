@@ -1,14 +1,13 @@
 import { PiArrowBendDownRightThin } from "react-icons/pi";
 
-import { ADMIN_ID } from "api/supabase";
+import { ADMIN_ID } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor } from "components/common";
-import { useComments } from "hooks";
+import { useComments } from "hooks/useComments";
 import { type Tables } from "types/supabase";
 
 import { CommentForm } from "./CommentForm";
-
-import type { Session } from "@supabase/supabase-js";
 
 interface Props {
   comment: {
@@ -29,12 +28,12 @@ interface Props {
     }>;
   };
   detailData: Tables<"POSTS", "Row">;
-  currentSession: Session | null;
+  currentUserId: string | undefined;
   openReply: string | null;
   setOpenReply: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-export const ReComments = ({ comment, detailData, currentSession, openReply, setOpenReply }: Props) => {
+export const ReComments = ({ comment, detailData, currentUserId, openReply, setOpenReply }: Props) => {
   const {
     selectedId,
     setSelectedId,
@@ -44,8 +43,7 @@ export const ReComments = ({ comment, detailData, currentSession, openReply, set
     openCommentUpdateForm,
   } = useComments();
 
-  const sessionId = currentSession?.user.id;
-  const isAdmin = sessionId === ADMIN_ID;
+  const isAdmin = currentUserId === ADMIN_ID;
 
   return (
     <div>
@@ -53,23 +51,28 @@ export const ReComments = ({ comment, detailData, currentSession, openReply, set
         <div key={reply.id} className="border-b border-[#E5E5E5]">
           <div className="flex py-[15px]">
             <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
-
-            {reply.USERS?.avatar_url === "" ? (
-              <img src={defaultImg} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
-            ) : (
-              <img src={reply.USERS?.avatar_url} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
-            )}
+            <picture>
+              <source
+                srcSet={reply.USERS?.avatar_url === "" ? defaultImgWebp : reply.USERS?.avatar_url}
+                type="image/webp"
+              />
+              <img
+                src={reply.USERS?.avatar_url === "" ? defaultImg : reply.USERS?.avatar_url}
+                alt="프로필이미지"
+                className="w-[40px] h-[40px] rounded-full"
+              />
+            </picture>
 
             <div className="flex flex-col w-full gap-1 ml-3">
               <div className="flex gap-2">
                 <p className="font-semibold">{reply.USERS?.name}</p>
                 {reply.userId === ADMIN_ID && (
-                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                     <p className="text-[12px]">관리자</p>
                   </div>
                 )}
                 {detailData?.userId === reply.userId && (
-                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                  <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                     <p className="text-[12px]">글쓴이</p>
                   </div>
                 )}
@@ -91,7 +94,7 @@ export const ReComments = ({ comment, detailData, currentSession, openReply, set
 
               <div className="flex gap-2 text-gray02 text-[14px]">
                 <DateConvertor datetime={reply.created_at} type="timeAgo" />
-                {(sessionId === reply.userId || isAdmin) && (
+                {(currentUserId === reply.userId || isAdmin) && (
                   <>
                     {selectedId !== reply.id || isAdmin ? (
                       <>

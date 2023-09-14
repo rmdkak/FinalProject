@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ArrowButton, DateConvertor } from "components/common";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { type Tables } from "types/supabase";
 
 import { dateStyle, linkStyle, OUTER_BOX_STYLE } from "./preview.style";
@@ -13,10 +14,14 @@ interface Props {
 
 export const PreviewComment = ({ commentData }: Props) => {
   if (commentData === undefined) return <PreviewEmpty />;
+
   const [isOpenComment, setIsOpenComment] = useState<string>();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
+
   const openCommentHandler = (commentId: string) => {
     setIsOpenComment(commentId);
   };
+
   return (
     <ul className={OUTER_BOX_STYLE}>
       {commentData.length === 0 ? <PreviewEmpty /> : null}
@@ -26,21 +31,25 @@ export const PreviewComment = ({ commentData }: Props) => {
           <Fragment key={comment.id}>
             {post !== null && (
               <li key={comment.id} className="flex-column contents-center border-y border-gray06">
-                {/* 포스트 */}
-                <div className="flex contents-center w-full border-y border-gray06 gap-[24px] h-[64px] px-[24px]">
-                  {/* 체크 박스 */}
+                <div className="flex w-full h-16 gap-6 px-6 contents-center border-y border-gray06">
                   <div
-                    className="flex items-center justify-between gap-[24px] w-full h-full cursor-pointer"
+                    className="flex items-center justify-between w-full h-full gap-6 cursor-pointer"
                     onClick={() => {
                       isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id);
                     }}
                   >
-                    <Link to={`/detail/${post.id}`} className={linkStyle}>
+                    <Link
+                      to={`/detail/${post.id}`}
+                      className={linkStyle}
+                      onMouseEnter={async () => {
+                        await preFetchPageBeforeEnter("detail");
+                      }}
+                    >
                       {post.title}
                     </Link>
                     <div className="flex">
                       <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
-                      <div className="flex contents-center w-[16px] h-[16px] ml-[12px]">
+                      <div className="flex w-4 h-4 ml-4 contents-center">
                         <ArrowButton
                           isOpen={isOpenComment === comment.id}
                           openHandler={openCommentHandler}
@@ -52,17 +61,17 @@ export const PreviewComment = ({ commentData }: Props) => {
                     </div>
                   </div>
                 </div>
-                {/* 댓글 */}
+
                 {isOpenComment === comment.id && (
-                  <div className="flex items-center justify-between w-full h-[120px] p-[24px]">
+                  <div className="flex items-center justify-between w-full h-[120px] p-6">
                     <p className="flex self-start">{comment.content}</p>
-                    <div className="flex contents-center gap-[12px]">
+                    <div className="flex gap-3 contents-center">
                       <DateConvertor datetime={comment.created_at} type={"dotDate"} />
                       <Link
                         to={`/detail/${post.id}`}
-                        className="flex contents-center w-[80px] h-8 gray-outline-button rounded-lg"
+                        className="flex w-20 h-8 rounded-lg contents-center gray-outline-button"
                       >
-                        수정
+                        이동하기
                       </Link>
                     </div>
                   </div>

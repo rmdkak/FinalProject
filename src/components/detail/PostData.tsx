@@ -2,10 +2,12 @@ import { useState } from "react";
 import { FaRegHeart } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore, useModalStore } from "store";
 
 export interface PostDataChain {
@@ -45,86 +47,97 @@ export const PostData = ({ postData }: Props) => {
   const navigate = useNavigate();
   const { onOpenModal } = useModalStore((state) => state);
   const [previewModal, setPreviewModal] = useState<boolean>(false);
-  const { currentSession } = useAuthStore();
+  const { currentUserId } = useAuthStore();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   return (
     <>
-      <div className="items-center flex-column">
+      <div className="items-center border-b border-black flex-column sm:hidden">
         <p
-          className="font-medium text-[32px] hover:cursor-pointer"
+          className="font-medium text-[32px] hover:cursor-pointer mb-5"
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter("community");
+          }}
           onClick={() => {
             navigate("/community");
           }}
         >
           커뮤니티
         </p>
-        <div className="w-full border-b border-black mt-[40px]"></div>
       </div>
-      <div className="contents-between border-b border-gray06 py-[20px] items-center">
-        <div className="w-[1000px]">
-          <label htmlFor="title" className="text-[18px] font-semibold">
+      <div className="items-center px-3 py-10 border-b xs:flex-column xs:items-start xs:gap-8 contents-between border-gray06">
+        <div>
+          <label htmlFor="title" className="text-[18px] font-semibold xs:text-[16px]">
             {postData?.title}
           </label>
-          <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px]">
-            <img
-              src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
-              alt="userImg"
-              className="w-8 h-8 border rounded-full border-gray05 object"
-            />
+          <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px] xs:text-[12px]">
+            <picture>
+              <source
+                srcSet={postData?.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                type="image/webp"
+              />
+              <img
+                src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
+                alt="userImg"
+                className="w-8 h-8 border rounded-full xs:w-6 xs:h-6 border-gray05 object"
+              />
+            </picture>
             <p>{postData?.USERS !== null ? postData?.USERS.name : null}</p>
             <DateConvertor datetime={postData?.created_at} type="dotDate" />
-            <DateConvertor datetime={postData?.created_at} type="hourMinute" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
               <p>좋아요 {postData?.POSTLIKES[0]?.userId?.length}</p>
             </div>
-            {currentSession !== null ? (
+            {currentUserId !== undefined && (
               <button onClick={onOpenModal} className="leading-[1px] hover:border-b border-gray02">
                 신고하기
               </button>
-            ) : (
-              <></>
             )}
-            {
-              <Modal title="신고하기">
-                <ReportForm currentSession={currentSession} postData={postData} />
-              </Modal>
-            }
+
+            <Modal title="신고하기">
+              <ReportForm currentUserId={currentUserId} postData={postData} />
+            </Modal>
           </div>
         </div>
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
           <div
-            className="flex gap-4"
+            className="flex gap-3"
+            onTouchStart={() => {
+              setPreviewModal(true);
+            }}
             onMouseEnter={() => {
               setPreviewModal(true);
+            }}
+            onTouchEnd={() => {
+              setPreviewModal(false);
             }}
             onMouseLeave={() => {
               setPreviewModal(false);
             }}
           >
-            <div>
+            <div className="items-center gap-2 flex-column">
               <img
-                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
+                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
                 src={`${STORAGE_URL}/wallpaper/${postData?.leftWallpaperId}`}
                 alt="왼쪽 벽지"
               />
-              <p className="text-[14px] text-center">좌측벽지</p>
+              <p className="sm:text-[12px] text-[14px] text-center">좌측벽지</p>
             </div>
-            <div>
+            <div className="items-center gap-2 flex-column">
               <img
-                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
+                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
                 src={`${STORAGE_URL}/wallpaper/${postData.rightWallpaperId as string}`}
                 alt="오른쪽 벽지"
               />
-              <p className="text-[14px] text-center">우측벽지</p>
+              <p className="sm:text-[12px] text-[14px] text-center">우측벽지</p>
             </div>
-            <div>
+            <div className="items-center gap-2 flex-column">
               <img
-                className="w-16 h-16 border rounded-full bg-gray06 border-gray05"
+                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
                 src={`${STORAGE_URL}/tile/${postData.tileId as string}`}
                 alt="바닥재"
               />
-              <p className="text-[14px] text-center">바닥재</p>
+              <p className="sm:text-[12px] text-[14px] text-center">바닥재</p>
             </div>
           </div>
         )}
@@ -133,45 +146,51 @@ export const PostData = ({ postData }: Props) => {
           postData?.rightColorCode !== null &&
           postData?.rightColorCode !== undefined && (
             <div
-              className="flex gap-4"
+              className="flex gap-3"
+              onTouchStart={() => {
+                setPreviewModal(true);
+              }}
               onMouseEnter={() => {
                 setPreviewModal(true);
+              }}
+              onTouchEnd={() => {
+                setPreviewModal(false);
               }}
               onMouseLeave={() => {
                 setPreviewModal(false);
               }}
             >
-              <div>
+              <div className="items-center gap-2 flex-column">
                 <div
-                  className="w-16 h-16 rounded-full bg-gray06"
+                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
                   style={{
                     backgroundColor: postData.leftColorCode,
                   }}
                 />
-                <p className="text-[14px] text-center">좌측벽지</p>
+                <p className="sm:text-[12px] text-[14px] text-center">좌측벽지</p>
               </div>
-              <div>
+              <div className="items-center gap-2 flex-column">
                 <div
-                  className="w-16 h-16 rounded-full bg-gray06"
+                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
                   style={{
                     backgroundColor: postData.rightColorCode,
                   }}
                 />
-                <p className="text-[14px] text-center">우측벽지</p>
+                <p className="sm:text-[12px] text-[14px] text-center">우측벽지</p>
               </div>
-              <div>
+              <div className="items-center gap-2 flex-column">
                 <img
-                  className="w-16 h-16 rounded-full bg-gray06"
+                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
                   src={`${STORAGE_URL}/tile/${postData.tileId as string}`}
                   alt="바닥재"
                 />
-                <p className="text-[14px] text-center">바닥재</p>
+                <p className="sm:text-[12px] text-[14px] text-center">바닥재</p>
               </div>
             </div>
           )}
       </div>
       {previewModal && (
-        <div className="absolute top-[380px] translate-x-[780px]">
+        <div className="absolute top-[322px] translate-x-[770px] lg:translate lg:right-[805px] md:right-[805px] sm:right-[805px] sm:top-[217px] xs:left-[-734px] xs:!top-[280px]">
           <ShowRoom
             leftWallpaperBg={postData.leftWallpaperId}
             rightWallpaperBg={postData.rightWallpaperId}
@@ -182,9 +201,9 @@ export const PostData = ({ postData }: Props) => {
           />
         </div>
       )}
-      <div className="flex-column gap-5 mt-[15px] mb-[50px]">
+      <div className="flex-column gap-5 mt-[15px] mb-[50px] px-3">
         {postData?.postImage !== null && postData?.postImage !== undefined && (
-          <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
+          <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[500px]" />
         )}
         <pre className="w-full break-words whitespace-pre-wrap ">{postData?.content}</pre>
       </div>

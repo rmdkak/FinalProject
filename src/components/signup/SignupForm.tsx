@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { type SubmitHandler } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
-import { fetchUserCheckData, signup } from "api/supabase";
-import { type PasswordVisible, PasswordVisibleButton, Select, useDialog, SignupTitle } from "components";
+import { fetchUserCheckData, signup } from "api/supabase/auth";
+import { PasswordVisibleButton, Select, Title } from "components";
 import { useAuthStore } from "store";
 
 import { emailOptions, idQuestionOptions, idAnswerValid, idValid, nameValid, passwordValid } from "./constant";
 import { InvalidText } from "./InvalidText";
 import { SignupStep } from "./SignupStep";
+
+import type { PasswordVisible } from "components";
 
 export interface SignupInputs {
   id: string;
@@ -25,13 +28,12 @@ interface Props {
 }
 
 const DUPLICATE_CHECK_BUTTON =
-  "auth-button-text h-12 text-black px-5 whitespace-nowrap rounded-lg white-outline-button";
+  "auth-button-text h-12 text-black px-5 whitespace-nowrap rounded-lg white-outline-button sm:w-full";
 const SIGNUP_BUTTON = "auth-button auth-button-text text-black my-3";
 
 export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const navigate = useNavigate();
   const { currentSession } = useAuthStore();
-  const { Alert } = useDialog();
   const [selectEmail, setSelectEmail] = useState<string | undefined>();
   const [selectIdQuestion, setSelectIdQuestion] = useState<string | undefined>();
 
@@ -124,9 +126,11 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
     try {
       await signup({ ...data, email, selectIdQuestion });
+      toast("회원가입 되었습니다.", { theme: "plain", zIndex: 9999 });
       nextStep();
     } catch (error) {
       console.error("error:", error);
+      toast("회원가입에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
       switch (error) {
         case "User already registered":
           setError("root", { message: "이미 등록된 사용자입니다." });
@@ -137,22 +141,22 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   useEffect(() => {
     if (currentSession !== null) {
-      void Alert("현재 로그인 상태입니다.");
+      toast("현재 로그인 상태입니다.", { theme: "failure", zIndex: 9999 });
       navigate("/");
     }
   }, []);
 
   return (
-    <div className="items-center flex-column m-5 w-[560px] mx-auto">
-      <SignupTitle />
+    <div className="items-center mx-auto max-w-[560px] flex-column my-14 sm:my-6">
+      <Title title="회원가입" isBorder={true} pathName="signup" />
       <SignupStep step={1} />
-      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[480px] flex-col items-center my-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex w-[85%] flex-col items-center my-5">
         {/* 이메일 */}
         <label htmlFor="email" className="self-start my-2 body-4">
-          이메일
+          이메일 주소
         </label>
-        <div className="flex items-center w-full gap-2">
-          <div className="flex-column w-[610px]">
+        <div className="flex items-center w-full gap-2 sm:flex-col">
+          <div className="flex items-center self-stretch contents-center">
             <input
               {...register("id", {
                 ...idValid,
@@ -163,18 +167,18 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
               id="email"
               type="id"
               placeholder="이메일"
-              className="auth-input body-3"
+              className="w-full auth-input body-3"
+            />
+            <span className="w-[13px] mx-2 text-center body-3">@</span>
+            <Select
+              option={emailOptions}
+              selectedValue={selectEmail}
+              setSelectedValue={setSelectEmail}
+              selfEnterOption={true}
+              checkedDuplicate={checkedDuplicate}
+              setCheckedDuplicate={setCheckedDuplicate}
             />
           </div>
-          <span className="body-3">@</span>
-          <Select
-            option={emailOptions}
-            selectedValue={selectEmail}
-            setSelectedValue={setSelectEmail}
-            selfEnterOption={true}
-            checkedDuplicate={checkedDuplicate}
-            setCheckedDuplicate={setCheckedDuplicate}
-          />
           <button
             type="button"
             className={DUPLICATE_CHECK_BUTTON}
@@ -190,9 +194,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
           errors.id?.message !== undefined ? (
             <InvalidText errorsMessage={errors.id?.message} size={30} />
           ) : (
-            <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
-              사용 가능한 이메일입니다.
-            </p>
+            <p className="flex items-center w-full h-[30px] text-green-500 body-3">사용 가능한 이메일입니다.</p>
           )
         ) : (
           <InvalidText errorsMessage={errors.id?.message} size={30} />
@@ -202,19 +204,21 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         <label htmlFor="nickname" className="self-start my-2 body-4">
           닉네임
         </label>
-        <div className="flex items-center w-full gap-2">
-          <input
-            id="nickname"
-            type="text"
-            placeholder="닉네임"
-            className="auth-input body-3"
-            {...register("name", {
-              ...nameValid,
-              onChange: () => {
-                setCheckedDuplicate({ ...checkedDuplicate, name: false });
-              },
-            })}
-          />
+        <div className="flex items-center w-full gap-2 sm:flex-col">
+          <div className="flex items-center self-stretch w-full contents-center">
+            <input
+              id="nickname"
+              type="text"
+              placeholder="닉네임"
+              className="w-full auth-input body-3"
+              {...register("name", {
+                ...nameValid,
+                onChange: () => {
+                  setCheckedDuplicate({ ...checkedDuplicate, name: false });
+                },
+              })}
+            />
+          </div>
           <button
             type="button"
             className={DUPLICATE_CHECK_BUTTON}
@@ -226,9 +230,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
           </button>
         </div>
         {checkedDuplicate.name && errors.name?.message !== null ? (
-          <p className={"h-[30px] w-full flex items-center text-[12px] text-green-500 font-normal"}>
-            사용 가능한 닉네임입니다.
-          </p>
+          <p className="flex items-center w-full h-[30px] text-green-500  body-4">사용 가능한 닉네임입니다.</p>
         ) : (
           <InvalidText errorsMessage={errors.name?.message} size={30} />
         )}
@@ -241,6 +243,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
           <input
             type={showPassword.password ? "text" : "password"}
             id="password"
+            autoComplete="off"
             placeholder="비밀번호"
             className="auth-input body-3"
             {...register("password", {
@@ -257,9 +260,10 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         </div>
 
         {/* 비밀번호 확인 */}
-        <div className="relative flex w-full mt-[8px]">
+        <div className="relative flex w-full mt-2">
           <input
             type={showPassword.passwordConfirm ?? false ? "text" : "password"}
+            autoComplete="off"
             placeholder="비밀번호 확인"
             className="auth-input body-3"
             {...register("passwordCheck")}
@@ -270,7 +274,13 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             setIsVisibleState={setShowPassword}
           />
         </div>
-        <InvalidText errorsMessage={errors.password?.message} size={30} />
+        {errors.password?.message === undefined ? (
+          <p className="flex items-center w-full h-[30px] font-light text-black body-4">
+            비밀번호는 영문,숫자,특수문자 포함 8자 이상으로 설정해주세요.
+          </p>
+        ) : (
+          <InvalidText errorsMessage={errors.password?.message} size={30} />
+        )}
 
         <div className="w-full gap-2 flex-column">
           <Select

@@ -1,7 +1,8 @@
-import { STORAGE_URL } from "api/supabase";
-import { type Tables } from "types/supabase";
+import { InteriorCombination } from "components/service";
 
 import { PreviewEmpty } from "./PreviewEmpty";
+
+import type { Tables } from "types/supabase";
 
 interface Props {
   bookmarkData: Array<Tables<"BOOKMARKS", "Row">> | undefined;
@@ -9,28 +10,18 @@ interface Props {
 
 export const PreviewBookmark = ({ bookmarkData }: Props) => {
   if (bookmarkData === undefined) return <PreviewEmpty />;
+
   return (
-    <ul className="flex h-60">
+    <ul className="flex w-full h-20 gap-5 mt-6 contents-center sm:h-10 sm:gap-6">
       {bookmarkData.length === 0 ? <PreviewEmpty /> : null}
       {bookmarkData.map((bookmark) => {
+        const { leftWallpaperId, rightWallpaperId, tileId } = bookmark;
         return (
-          <li key={bookmark.id} className="relative flex contents-center w-[400px] gap-4 h-[200px] mt-10 mx-5">
-            <img
-              src={`${STORAGE_URL}/wallpaper/${bookmark.leftWallpaperId}`}
-              alt="왼쪽 벽지"
-              className="absolute translate-x-[-40%] translate-y-[-30%] w-24 border-4 h-24 rounded-full border-white"
-            />
-            <img
-              src={`${STORAGE_URL}/wallpaper/${bookmark.rightWallpaperId}`}
-              alt="오른쪽 벽지"
-              className="absolute translate-x-[40%] translate-y-[-30%] w-24 border-4 h-24 rounded-full border-white"
-            />
-            <img
-              src={`${STORAGE_URL}/tile/${bookmark.tileId}`}
-              alt="타일"
-              className="absolute translate-y-[30%] w-24 border-4 h-24 rounded-full border-white"
-            />
-          </li>
+          <InteriorCombination
+            key={bookmark.id}
+            type="mypage"
+            interiorItemId={{ leftWallpaperId, rightWallpaperId, tileId }}
+          />
         );
       })}
     </ul>

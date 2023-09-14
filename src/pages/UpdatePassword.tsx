@@ -1,17 +1,17 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
-import { changePassword } from "api/supabase";
-import { InvalidText, useDialog } from "components";
+import { changePassword } from "api/supabase/auth";
+import { InvalidText } from "components";
 
 interface UpdatePasswordInput {
   newPassword: string;
   newPasswordConfirm: string;
 }
 
-export const UpdatePassword = () => {
+const UpdatePassword = () => {
   const navigate = useNavigate();
-  const { Alert } = useDialog();
   const {
     register,
     handleSubmit,
@@ -24,18 +24,18 @@ export const UpdatePassword = () => {
 
     try {
       await changePassword(newPassword);
-      await Alert("비밀번호가 정상적으로 변경되었습니다.");
+      toast("비밀번호가 정상적으로 변경되었습니다.", { theme: "plain", zIndex: 9999 });
       navigate("/");
     } catch (error) {
       switch (error) {
         case "New password should be different from the old password.":
-          void Alert("이전 비밀번호와 동일합니다.");
+          toast("이전 비밀번호와 동일합니다.", { theme: "failure", zIndex: 9999 });
           break;
         case "Auth session missing!":
-          void Alert("이메일 유효시간이 만료되었습니다.");
+          toast("이메일 유효시간이 만료되었습니다.", { theme: "failure", zIndex: 9999 });
           break;
         default:
-          void Alert("Error");
+          toast("비밀번호 변경에 실패하였습니다.", { theme: "failure", zIndex: 9999 });
           console.error("newError : ", error);
           break;
       }
@@ -43,16 +43,16 @@ export const UpdatePassword = () => {
   };
 
   return (
-    <section className="items-center flex-column mt-[80px] w-[480px] mx-auto">
+    <section className="items-center flex-column mt-20 max-w-[480px] w-[90%] mx-auto">
       <div className="w-full text-center underline-pb">
-        <p className="title-3 mt-[40px]">새로운 비밀번호</p>
+        <p className="mt-10 title-3">새로운 비밀번호</p>
       </div>
-      <div className="w-full mt-[40px] text-[14px] font-normal">
+      <div className="w-full mt-10 body-3">
         <div className="items-center flex-column">
           <p>비밀번호 재설정을 위한 본인 확인이 완료되었습니다.</p>
           <p>새로운 비밀번호를 등록 후 사용해주세요.</p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} action="#" className="w-full mt-[40px] flex-column">
+        <form onSubmit={handleSubmit(onSubmit)} action="#" className="w-full mt-10 flex-column">
           <label htmlFor="newPassword" className="self-start body-4 my-[8px]">
             새 비밀번호
           </label>
@@ -80,7 +80,7 @@ export const UpdatePassword = () => {
           </div>
           <InvalidText errorsMessage={errors.newPassword?.message} />
 
-          <label htmlFor="newPasswordConfirm" className="self-start body-4 my-[8px]">
+          <label htmlFor="newPasswordConfirm" className="self-start my-2 body-4">
             새 비밀번호 확인
           </label>
           <div className="flex w-full">
@@ -101,3 +101,5 @@ export const UpdatePassword = () => {
     </section>
   );
 };
+
+export default UpdatePassword;

@@ -1,10 +1,14 @@
 import { AiOutlineCamera } from "react-icons/ai";
 
-import { ADMIN_ID, STORAGE_URL } from "api/supabase";
-import comment_no_img from "assets/comment_no_img.png";
+import { ADMIN_ID, STORAGE_URL } from "api/supabase/supabaseClient";
+import comment_no_img from "assets/comment_no_img.jpg";
+import comment_no_img_webp from "assets/comment_no_img_webp.webp";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor, type PostDataChain, ReComments } from "components";
-import { useCommentsQuery, usePostsQuery, useComments } from "hooks";
+import { useComments } from "hooks/useComments";
+import { useCommentsQuery } from "hooks/useCommentsQuery";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { useAuthStore } from "store";
 
 import { CommentForm } from "./CommentForm";
@@ -14,15 +18,14 @@ interface CommentProps {
 }
 
 export const Comments = ({ postData }: CommentProps) => {
-  const { currentSession } = useAuthStore();
-  const sessionId = currentSession?.user.id;
+  const { currentUserId } = useAuthStore();
 
   const { fetchCommentsMutation } = useCommentsQuery();
   const { data: commentsData } = fetchCommentsMutation;
 
   const { fetchDetailMutation } = usePostsQuery();
   const { data: detailData } = fetchDetailMutation;
-  const isAdmin = sessionId === ADMIN_ID;
+  const isAdmin = currentUserId === ADMIN_ID;
 
   const {
     selectedId,
@@ -41,12 +44,12 @@ export const Comments = ({ postData }: CommentProps) => {
     movePageHandler,
   } = useComments();
 
-  if (detailData === undefined) return;
+  if (detailData === undefined) return <></>;
 
   return (
     <>
       <div className="border-t border-gray06">
-        <p className="mt-[70px] font-normal text-gray02">
+        <p className="mt-[70px] font-normal text-gray02 sm:text-[14px]">
           댓글 <span className="text-black">{commentsData?.length}</span>개
         </p>
         <CommentForm kind="comment" commentId="" setOpenReply={setOpenReply} />
@@ -56,26 +59,28 @@ export const Comments = ({ postData }: CommentProps) => {
             return (
               <div key={comment.id}>
                 <div className="flex py-5 border-b border-gray06 ">
-                  {comment.USERS?.avatar_url === "" ? (
-                    <img src={defaultImg} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
-                  ) : (
+                  <picture>
+                    <source
+                      srcSet={comment.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                      type="image/webp"
+                    />
                     <img
-                      src={comment.USERS?.avatar_url}
+                      src={comment.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
                       alt="프로필이미지"
                       className="w-[40px] h-[40px] rounded-full"
                     />
-                  )}
+                  </picture>
 
                   <div className="flex flex-col justify-between w-full gap-2 ml-3">
                     <div className="flex items-center gap-2">
                       <p className="font-semibold">{comment.USERS?.name}</p>
                       {comment.userId === ADMIN_ID && (
-                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                           <p className="text-[12px]">관리자</p>
                         </div>
                       )}
                       {detailData?.userId === comment.userId && (
-                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-[20px] flex justify-center items-center">
+                        <div className=" bg-point border-none rounded-[4px] w-[50px] h-5 flex justify-center items-center">
                           <p className="text-[12px]">글쓴이</p>
                         </div>
                       )}
@@ -94,7 +99,7 @@ export const Comments = ({ postData }: CommentProps) => {
                         />
                         <div className="relative">
                           <label htmlFor="inputImg">
-                            <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute top-[245px] left-[305px]" />
+                            <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute top-[245px] left-[305px] xs:left-[190px] xs:top-[300px] xs:text-[30px]" />
                             <input
                               type="file"
                               accept="image/png, image/jpeg, image/gif"
@@ -110,15 +115,18 @@ export const Comments = ({ postData }: CommentProps) => {
                     )}
                     {comment.commentImg === null ? (
                       selectedId === comment.id ? (
-                        <img
-                          src={
-                            selectedCommentImgFile === null
-                              ? comment_no_img
-                              : URL.createObjectURL(selectedCommentImgFile)
-                          }
-                          alt="미리보기"
-                          className="my-[20px] w-[300px] h-[250px]"
-                        />
+                        <picture>
+                          <source srcSet={comment_no_img_webp} type="image/webp" />
+                          <img
+                            src={
+                              selectedCommentImgFile === null
+                                ? comment_no_img
+                                : URL.createObjectURL(selectedCommentImgFile)
+                            }
+                            alt="미리보기"
+                            className="my-[20px] w-[300px] h-[250px] border border-gray07"
+                          />
+                        </picture>
                       ) : (
                         <></>
                       )
@@ -132,10 +140,13 @@ export const Comments = ({ postData }: CommentProps) => {
                             ? URL.createObjectURL(selectedCommentImgFile)
                             : `${STORAGE_URL}${comment.commentImg}`
                         }
-                        className="my-[20px] w-[300px] h-[250px]"
+                        className="my-[20px] w-[300px] h-[250px]  border border-gray07"
                       />
                     ) : (
-                      <img src={`${STORAGE_URL}${comment.commentImg}`} className="my-[20px] w-[300px] h-[250px]" />
+                      <img
+                        src={`${STORAGE_URL}${comment.commentImg}`}
+                        className="my-[20px] w-[300px] h-[250px] border border-gray07"
+                      />
                     )}
 
                     <div className="flex gap-2 text-gray02 text-[14px]">
@@ -150,7 +161,7 @@ export const Comments = ({ postData }: CommentProps) => {
                       >
                         {openReply === comment.id ? "닫기" : "답글 쓰기"}
                       </button>
-                      {(sessionId === comment.userId || isAdmin) && (
+                      {(currentUserId === comment.userId || isAdmin) && (
                         <>
                           {selectedId !== comment.id || isAdmin ? (
                             <>
@@ -218,7 +229,7 @@ export const Comments = ({ postData }: CommentProps) => {
                 <ReComments
                   comment={comment}
                   detailData={detailData}
-                  currentSession={currentSession}
+                  currentUserId={currentUserId}
                   openReply={openReply}
                   setOpenReply={setOpenReply}
                 />
@@ -227,22 +238,22 @@ export const Comments = ({ postData }: CommentProps) => {
           })}
         </div>
       </div>
-      <div className="flex justify-between mt-[40px]">
+      <div className="flex justify-between mt-[40px] sm:flex-col gap-6">
         <button
-          className="h-[48px] px-[30px] rounded-lg border border-gray05"
+          className="h-[48px] sm:w-full sm:text-[14px] px-[30px] w-[160px] rounded-lg border border-gray05"
           onClick={() => {
             movePageHandler("community", postData.id);
           }}
         >
-          커뮤니티 목록
+          목록
         </button>
-        {((currentSession?.user.id === postData?.userId && postData !== undefined) || isAdmin) && (
-          <div>
+        {((currentUserId === postData?.userId && postData !== undefined) || isAdmin) && (
+          <div className="sm:flex">
             <button
               onClick={async () => {
                 await deletePostHandler(postData.id);
               }}
-              className="w-[160px] h-[48px] border border-gray-300 mr-[20px] rounded-[8px]"
+              className="w-[160px] sm:text-[14px] sm:w-full h-[48px] border border-gray-300 mr-5 rounded-[8px]"
             >
               삭제
             </button>
@@ -252,7 +263,7 @@ export const Comments = ({ postData }: CommentProps) => {
                   movePageHandler("update", postData.id);
                 }}
                 type="button"
-                className="mr-2 bg-point w-[160px] h-[48px] rounded-[8px]"
+                className="mr-2 bg-point sm:text-[14px] sm:w-full w-[160px] h-[48px] rounded-[8px]"
               >
                 수정
               </button>

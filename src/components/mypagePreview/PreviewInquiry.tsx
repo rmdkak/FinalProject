@@ -16,7 +16,7 @@ export const PreviewInquiry = ({ inquiryData }: Props) => {
       {inquiryData.map((post) => {
         return (
           <li key={post.id} className={innerBoxStyle}>
-            <p className="text-black body-3">{post.content}</p>
+            <p className="text-black cursor-default body-3">{post.content}</p>
             <DateConvertor datetime={post.created_at} type={"dotDate"} className={dateStyle} />
           </li>
         );

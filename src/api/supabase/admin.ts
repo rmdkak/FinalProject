@@ -1,4 +1,4 @@
-import { manToManCategory } from "pages";
+import { manToManCategory } from "pages/adminPage/ManToMan";
 
 import { supabase } from "./supabaseClient";
 
@@ -13,6 +13,7 @@ export const fetchEventAllData = async () => {
   }
   return data;
 };
+
 // 이벤트 GET
 export const fetchEventDetailData = async (id: string) => {
   const { data, error } = await supabase.from("EVENT").select("*,USERS (*)").eq("id", id).single();
@@ -144,7 +145,7 @@ export const addWallpaperData = async (imgData: Tables<"WALLPAPER", "Insert">) =
 };
 
 export const addTileData = async (imgData: Tables<"TILE", "Insert">) => {
-  const { error } = await supabase.from("Tile").insert(imgData).select();
+  const { error } = await supabase.from("TILE").insert(imgData).select();
   if (error !== null) {
     console.error(error);
   }

@@ -3,6 +3,7 @@ import React, { useState, useCallback } from "react";
 import CloseBtn from "assets/svgs/close.svg";
 import tileIMG from "assets/svgs/tileCalculator.svg";
 import wallPaperIMG from "assets/svgs/wallpaperCalculator.svg";
+import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { type ResultCalculator, type WidthHeight } from "types/calculator";
 import { resultConsumpTionCalculate, workingAreaCalculator } from "utils/servise/resourcesCalculator";
 
@@ -28,6 +29,8 @@ export const ResourcesCalculatorMamoization = (): JSX.Element => {
     resultArea: "",
     resultConsumption: "",
   });
+
+  const { windowWidth } = useInteriorPreview();
 
   const resetState = useCallback(() => {
     setResult({
@@ -86,7 +89,9 @@ export const ResourcesCalculatorMamoization = (): JSX.Element => {
   };
   return (
     <>
-      <div>
+      <div
+        className={`max-w-[520px] min-w-[360px] box-border m-auto ${(windowWidth as number) >= 520 ? "" : "mt-6 px-6"}`}
+      >
         {/* 계산기 헤더 */}
         <div className="mb-10">
           <ul className="flex items-center justify-between">
@@ -159,4 +164,6 @@ export const ResourcesCalculatorMamoization = (): JSX.Element => {
   );
 };
 
-export const ResourcesCalculator = React.memo(ResourcesCalculatorMamoization);
+const ResourcesCalculator = React.memo(ResourcesCalculatorMamoization);
+
+export default ResourcesCalculator;

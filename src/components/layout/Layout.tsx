@@ -9,13 +9,14 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const Layout = ({ children }: Props) => {
+const Layout = ({ children }: Props) => {
   return (
     <div className="w-full">
       <Header />
       {children}
-      <Footer />
       <ScrollToTop />
+      <Footer />
     </div>
   );
 };
+export default Layout;

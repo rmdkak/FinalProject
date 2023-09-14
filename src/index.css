@@ -81,7 +81,7 @@ input[type="password"]::-ms-clear {
 }
 
 .flicking-pagination-bullet {
-  width: 256px !important;
+  width: 20% !important;
   height: 2px !important;
   margin: 0 !important;
   border-radius: 0 !important;
@@ -108,6 +108,35 @@ input[type="password"]::-ms-clear {
   height: 400px;
   transform: rotateX(60deg) rotateZ(45deg);
   transform-origin: 0% 0%;
+
+  @media screen and (max-width: 1280px) {
+    top: 145px;
+    left: 100px;
+    width: 200px;
+  }
+  @media screen and (max-width: 768px) {
+    top: 180px;
+  }
+}
+.show-room-cube {
+  position: relative;
+  top: 200px;
+  left: 108px;
+  transform-style: preserve-3d;
+  width: 200px;
+  height: 400px;
+  transform: rotateX(60deg) rotateZ(45deg);
+  transform-origin: 0% 0%;
+}
+.home-preview-cube {
+  position: relative;
+  top: 150px;
+  left: 200px;
+  transform-style: preserve-3d;
+  width: 400px;
+  height: 400px;
+  transform: rotateX(60deg) rotateZ(45deg);
+  transform-origin: 0% 0%;
 }
 .left-wall {
   position: absolute;
@@ -124,6 +153,12 @@ input[type="password"]::-ms-clear {
   background-color: #f3f3f3;
   transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-300px) translateX(-23px) translateZ(-256px);
   transform-style: preserve-3d;
+
+  @media screen and (max-width: 768px) {
+    width: 230px;
+    height: 230px;
+    transform: rotateX(-90deg) rotateY(90deg) translateZ(-325px) translateY(-24px) translateX(-12px) translateZ(161px);
+  }
 }
 .right-wall {
   position: absolute;
@@ -140,6 +175,12 @@ input[type="password"]::-ms-clear {
   background-color: #e5e5e5;
   transform: rotateX(-90deg) translateZ(-300px) translateY(-436px) translateX(75px);
   transform-style: preserve-3d;
+
+  @media screen and (max-width: 768px) {
+    width: 230px;
+    height: 230px;
+    transform: rotateX(-90deg) translateZ(21px) translateY(-124px) translateX(75px);
+  }
 }
 .floor {
   position: absolute;
@@ -156,6 +197,89 @@ input[type="password"]::-ms-clear {
   width: 1070px;
   height: 1070px;
   background-color: #bcbcbc;
+
+  @media screen and (max-width: 768px) {
+    top: 124px;
+    left: 62px;
+    width: 250px;
+    height: 250px;
+  }
+}
+
+/* 좌측 가구 */
+.left-clock {
+  position: absolute;
+  z-index: 110;
+  transform: rotateX(251deg) rotateY(66deg) translateZ(260px) translateY(-495px) translateX(-257px);
+  transform-style: preserve-3d;
+}
+.left-closet {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(271deg) rotateY(40deg) translateZ(83px) translateY(-131px) translateX(10px);
+  transform-style: preserve-3d;
+}
+.left-ramp1 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-208px) translateX(-158px);
+  transform-style: preserve-3d;
+}
+.left-ramp2 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-57px) translateX(-213px);
+  transform-style: preserve-3d;
+}
+.left-table {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-91deg) rotateY(45deg) translateZ(800px) translateY(-298px) translateX(-202px);
+  transform-style: preserve-3d;
+}
+.left-sopa {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-91deg) rotateY(45deg) translateZ(134px) translateY(-98px) translateX(-126px);
+  transform-style: preserve-3d;
+}
+
+/* 우측 가구 */
+.right-clock {
+  position: absolute;
+  z-index: 110;
+  transform: rotateX(280deg) rotateY(-44deg) translateZ(277px) translateY(-237px) translateX(-217px);
+  transform-style: preserve-3d;
+}
+.right-closet {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(280deg) rotateY(-66deg) rotateZ(6deg) translateZ(371px) translateY(-95px) translateX(-173px);
+  transform-style: preserve-3d;
+}
+.right-ramp1 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-90deg) rotateY(53deg) rotateZ(0) translateZ(50px) translateY(-130px) translateX(87px);
+  transform-style: preserve-3d;
+}
+.right-ramp2 {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(161px) translateY(-150px) translateX(30px);
+  transform-style: preserve-3d;
+}
+.right-table {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(278px) translateY(-131px) translateX(6px);
+  transform-style: preserve-3d;
+}
+.right-sopa {
+  position: absolute;
+  z-index: 100;
+  transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(37px) translateX(-139px);
+  transform-style: preserve-3d;
 }
 
 .border-dashed {
@@ -174,16 +298,16 @@ input[type="password"]::-ms-clear {
     @apply flex justify-between;
   }
   .home-section {
-    @apply gap-10 w-[1280px] flex-column;
+    @apply gap-10 w-[1280px] flex-column sm:gap-6;
   }
   .vanner-preview {
     @apply w-[800px] h-[450px] rounded-xl mx-5;
   }
   .section-title {
-    @apply text-[32px] font-medium;
+    @apply text-[32px] font-medium sm:text-xl;
   }
   .view-more-icon {
-    @apply text-xl translate-y-[6px];
+    @apply text-xl translate-y-[6px] sm:-translate-y-[1px];
   }
   .service-item {
     @apply w-[120px] h-[120px] rounded-full bg-gray-200;
@@ -284,6 +408,170 @@ input[type="password"]::-ms-clear {
   }
 
   .interior-item {
-    @apply w-[80px] h-[80px] rounded-full;
+    @apply w-[80px] h-[80px] aspect-square sm:w-[48px] sm:h-[48px] rounded-full;
+  }
+}
+
+@media (max-width: 680px) {
+  /* 좌측 가구 */
+  .left-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(251deg) rotateY(66deg) translateZ(266px) translateY(-425px) translateX(-224px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+  .left-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(83px) translateY(-124px) translateX(15px) scale(0.85);
+    transform-style: preserve-3d;
+  }
+  .left-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-237px) translateX(-114px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .left-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-95px) translateX(-167px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .left-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(335px) translateY(-74px) translateX(-174px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .left-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(152px) translateY(-127px) translateX(-111px) scale(0.85);
+    transform-style: preserve-3d;
+  }
+
+  /* 우측 가구 */
+  .right-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(280deg) rotateY(-44deg) translateZ(277px) translateY(-228px) translateX(-172px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+  .right-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(279deg) rotateY(-66deg) rotateZ(7deg) translateZ(371px) translateY(-135px) translateX(-105px)
+      scale(0.85);
+    transform-style: preserve-3d;
+  }
+  .right-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(42deg) rotateZ(0) translateZ(50px) translateY(-139px) translateX(82px) scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .right-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(109px) translateY(-99px) translateX(19px)
+      scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .right-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(140px) translateY(-72px) translateX(-5px)
+      scale(0.8);
+    transform-style: preserve-3d;
+  }
+  .right-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(15px) translateX(-92px)
+      scale(0.8);
+    transform-style: preserve-3d;
+  }
+}
+
+@media (max-width: 450px) {
+  /* 좌측 가구 */
+  .left-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(251deg) rotateY(66deg) translateZ(266px) translateY(-420px) translateX(-174px) scale(0.5);
+    transform-style: preserve-3d;
+  }
+  .left-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(83px) translateY(-124px) translateX(25px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+  .left-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(271deg) rotateY(40deg) translateZ(504px) translateY(-263px) translateX(-86px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .left-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(270deg) rotateY(45deg) translateZ(283px) translateY(-115px) translateX(-143px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .left-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(335px) translateY(-101px) translateX(-143px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .left-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-91deg) rotateY(45deg) translateZ(152px) translateY(-143px) translateX(-82px) scale(0.7);
+    transform-style: preserve-3d;
+  }
+
+  /* 우측 가구 */
+  .right-clock {
+    position: absolute;
+    z-index: 110;
+    transform: rotateX(280deg) rotateY(-44deg) translateZ(277px) translateY(-228px) translateX(-112px) scale(0.5);
+    transform-style: preserve-3d;
+  }
+  .right-closet {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(280deg) rotateY(-66deg) rotateZ(7deg) translateZ(371px) translateY(-173px) translateX(-36px)
+      scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-ramp1 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(42deg) rotateZ(0) translateZ(50px) translateY(-122px) translateX(73px) scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-ramp2 {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(161px) translateY(-152px) translateX(23px)
+      scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-table {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-90deg) rotateY(46deg) rotateZ(0deg) translateZ(278px) translateY(-159px) translateX(-3px)
+      scale(0.6);
+    transform-style: preserve-3d;
+  }
+  .right-sopa {
+    position: absolute;
+    z-index: 100;
+    transform: rotateX(-32deg) rotateY(-19deg) rotateZ(37deg) translateZ(100px) translateY(-7px) translateX(-67px)
+      scale(0.5);
+    transform-style: preserve-3d;
   }
 }

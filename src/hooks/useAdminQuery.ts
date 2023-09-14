@@ -1,8 +1,7 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  addEventData,
   addManToManData,
   addReportData,
   addTileData,
@@ -18,25 +17,30 @@ import {
   fetchReportData,
   patchManToManData,
   fetchEventDetailData,
-} from "api/supabase";
+  addEventData,
+} from "api/supabase/admin";
 
 export const useAdminQuery = () => {
   const { id } = useParams();
+  const { pathname } = useLocation();
   const queryClient = useQueryClient();
 
   // 이벤트 GET
   const fetchEventMutation = useQuery({
-    queryKey: ["event", null],
+    queryKey: ["event"],
     queryFn: async () => {
       return await fetchEventAllData();
     },
   });
+
   // 이벤트 GET
   const fetchEventDetailMutation = useQuery({
     queryKey: ["event", id],
     queryFn: async () => {
-      return await fetchEventDetailData(id as string);
+      if (id === undefined) return;
+      return await fetchEventDetailData(id);
     },
+    enabled: id !== undefined && pathname.includes("event"),
   });
 
   // 이벤트 post

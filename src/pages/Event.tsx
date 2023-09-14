@@ -1,16 +1,20 @@
 import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { STORAGE_URL } from "api/supabase";
+import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor } from "components";
-import { useAdminQuery } from "hooks";
-export const Event = () => {
+import { useAdminQuery } from "hooks/useAdminQuery";
+import { useDynamicImport } from "hooks/useDynamicImport";
+
+const Event = () => {
   const { id: paramsId } = useParams();
   const navigate = useNavigate();
   const { fetchEventDetailMutation, fetchEventMutation } = useAdminQuery();
   const { data: eventDetailData } = fetchEventDetailMutation;
   const { data: eventAllData } = fetchEventMutation;
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   if (eventDetailData === undefined) return <></>;
 
@@ -24,19 +28,25 @@ export const Event = () => {
     nextPage = eventAllData[(findCurrentIdx as number) + 1]?.id;
   }
   return (
-    <div className="flex-column w-[1280px] mx-auto my-20 ">
-      <div className="border-b border-black">
+    <div className="flex-column w-[1280px] mx-auto my-20 px-6 lg:w-full md:w-full sm:w-full sm:min-w-[312px] sm:mt-6 sm:mb-20">
+      <div className="border-b border-black sm:hidden">
         <h1 className="mb-6 text-2xl text-center">EVENT</h1>
       </div>
       <div className="gap-4 border-b flex-column border-gray05">
-        <div className="gap-4 flex-column my-9">
-          <h2 className="text-[18px] font-semibold">{eventDetailData?.title}</h2>
-          <div className="flex items-center gap-2 text-gray02 text-[14px]">
-            <img
-              src={eventDetailData?.USERS?.avatar_url === "" ? defaultImg : eventDetailData?.USERS?.avatar_url}
-              alt="userImg"
-              className="w-8 h-8 border rounded-full border-gray05"
-            />
+        <div className="gap-4 flex-column my-9 sm:my-4 sm:mx-3">
+          <h2 className="text-[18px] font-semibold sm:text-base">{eventDetailData?.title}</h2>
+          <div className="flex items-center gap-2 text-gray02 text-[14px] sm:text-xs">
+            <picture>
+              <source
+                srcSet={eventDetailData?.USERS?.avatar_url === "" ? defaultImgWebp : eventDetailData?.USERS?.avatar_url}
+                type="image/webp"
+              />
+              <img
+                src={eventDetailData?.USERS?.avatar_url === "" ? defaultImg : eventDetailData?.USERS?.avatar_url}
+                alt="userImg"
+                className="w-8 h-8 border rounded-full border-gray05 sm:w-6 sm:h-6"
+              />
+            </picture>
             <p>{eventDetailData?.USERS?.name}</p>
             {eventDetailData?.minDate !== null && eventDetailData?.maxDate !== null && (
               <>
@@ -49,13 +59,15 @@ export const Event = () => {
           </div>
         </div>
       </div>
-      <div className="flex-column gap-10 mt-[15px] mb-[50px] border-b border-gray05 py-10">
-        <img src={`${STORAGE_URL}${eventDetailData?.eventImg}`} alt="eventImg" />
-        <pre className="w-full break-words whitespace-pre-wrap text-[18px] mb-10">{eventDetailData?.content}</pre>
+      <div className="flex-column gap-10 mt-[15px] mb-[50px] border-b border-gray05 py-10 sm:py-6 sm:px-3 sm:mb-16 sm:mt-0">
+        <img src={`${STORAGE_URL}${eventDetailData?.eventImg}`} alt="eventImg" className="sm:min-w-[288px]" />
+        <pre className="w-full break-words whitespace-pre-wrap text-[18px] mb-10 sm:mb-0 sm:text-xs">
+          {eventDetailData?.content}
+        </pre>
       </div>
       <div className="flex gap-4">
         <button
-          className="w-40 h-12 text-sm border rounded-lg border-gray05"
+          className="w-40 h-12 text-sm border rounded-lg border-gray05 sm:hidden"
           onClick={() => {
             navigate(-1);
           }}
@@ -63,7 +75,10 @@ export const Event = () => {
           이전으로
         </button>
         <button
-          className="w-40 h-12 text-sm border rounded-lg border-gray05"
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter("eventlist");
+          }}
+          className="w-40 h-12 text-sm border rounded-lg border-gray05 sm:w-full"
           onClick={() => {
             navigate("/eventlist");
           }}
@@ -71,18 +86,18 @@ export const Event = () => {
           목록으로
         </button>
       </div>
-      <div className="mt-20 flex-column border-t-[1px] border-gray06">
+      <div className="mt-20 border-t flex-column border-gray06 sm:mt-10">
         {prevPage !== undefined && (
           <div
-            className="flex gap-[10px] items-center py-6 border-b-[1px] border-gray06 hover:cursor-pointer"
+            className="flex gap-[10px] items-center py-6 border-b border-gray06 hover:cursor-pointer sm:py-5"
             onClick={() => {
               navigate(`/event/${prevPage}`);
             }}
           >
             <SlArrowUp className="fill-gray02" />
-            <label className="text-gray02 w-[80px]">이전글 보기</label>
-            <span className="h-[8px] border border-gray08"></span>
-            <p className="line-clamp-1">
+            <label className="text-gray02 w-[80px] sm:text-xs">이전글 보기</label>
+            <span className="h-2 border border-gray08"></span>
+            <p className="line-clamp-1 sm:text-xs">
               {eventAllData !== undefined ? eventAllData[(findCurrentIdx as number) - 1].title : ""}
             </p>
           </div>
@@ -95,12 +110,15 @@ export const Event = () => {
             }}
           >
             <SlArrowDown className="fill-gray02" />
-            <label className="text-gray02 w-[80px]">다음글 보기</label>
-            <span className="h-[8px] border border-gray08"></span>
-            <p>{eventAllData !== undefined ? eventAllData[(findCurrentIdx as number) + 1].title : ""}</p>
+            <label className="text-gray02 w-[80px] sm:text-xs">다음글 보기</label>
+            <span className="h-2 border border-gray08"></span>
+            <p className="line-clamp-1 sm:text-xs">
+              {eventAllData !== undefined ? eventAllData[(findCurrentIdx as number) + 1].title : ""}
+            </p>
           </div>
         )}
       </div>
     </div>
   );
 };
+export default Event;

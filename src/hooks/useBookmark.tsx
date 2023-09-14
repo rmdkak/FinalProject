@@ -1,18 +1,23 @@
 import { useNavigate } from "react-router-dom";
+import toast from "react-simple-toasts";
 
 import { useDialog } from "components";
-import { useBookmarkQuery } from "hooks";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore, useServiceStore } from "store";
 
+import { useBookmarkQuery } from "./useBookmarkQuery";
+
 export const useBookmark = () => {
-  const { currentSession } = useAuthStore();
-  const { Alert, Confirm } = useDialog();
   const navigate = useNavigate();
-  const { tile, wallPaper, wallpaperPaint } = useServiceStore((state) => state);
+  const { currentUserId } = useAuthStore();
+  const { Alert, Confirm } = useDialog();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
   const { addBookmarkMutation, deleteBookmarkMutation } = useBookmarkQuery();
+  const { tile, wallPaper, wallpaperPaint } = useServiceStore((state) => state);
 
   const addBookmark = async () => {
-    if (currentSession === null) {
+    if (currentUserId === undefined) {
+      await preFetchPageBeforeEnter("login");
       const goToLogin = await Confirm(
         <>
           <p>북마크 기능은 로그인 후 이용가능합니다.</p>
@@ -29,27 +34,29 @@ export const useBookmark = () => {
       return;
     }
     addBookmarkMutation.mutate({
-      userId: currentSession.user.id,
+      userId: currentUserId,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
-    void Alert("조합이 저장되었습니다.");
+    toast("조합이 저장되었습니다.", { theme: "warning", zIndex: 9999 });
   };
 
   const deleteBookmark = async () => {
-    if (currentSession === null || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
+    if (currentUserId === undefined || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null)
+      return;
     deleteBookmarkMutation.mutate({
-      userId: currentSession.user.id,
+      userId: currentUserId,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
     });
-    void Alert("조합이 삭제되었습니다.");
+    toast("조합이 삭제되었습니다.", { theme: "warning", zIndex: 9999 });
   };
 
   const recommendDesign = async () => {
-    if (currentSession === null) {
+    if (currentUserId === undefined) {
+      await preFetchPageBeforeEnter("login");
       const sessionCheck = await Confirm(
         <p>
           해당 서비스는 로그인 후 이용 가능합니다.

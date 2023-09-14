@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
 
-import img01 from "assets/kv_img01.png";
-import img02 from "assets/kv_img02.png";
-import img03 from "assets/kv_img03.png";
+import img01 from "assets/kv_img01.jpg";
+import img01_webp from "assets/kv_img01_webp.webp";
+import img02 from "assets/kv_img02.jpg";
+import img02_webp from "assets/kv_img02_webp.webp";
+import img03 from "assets/kv_img03.jpg";
+import img03_webp from "assets/kv_img03_webp.webp";
+import { useInteriorPreview } from "hooks/useInteriorPreview";
 
 export const HomeKvBanner = () => {
-  const initialWidths = ["w-[70%]", "w-[10%]", "w-[10%]"];
-  const finalWidth = "w-[70%]";
+  const { windowWidth } = useInteriorPreview();
+  if (windowWidth === undefined) return <></>;
+  const isWindowWidthChange = windowWidth <= 768;
+  const initialWidths = windowWidth <= 768 ? ["w-full", "w-0", "w-0"] : ["w-[70%]", "w-[10%]", "w-[10%]"];
+  const finalWidth = windowWidth <= 768 ? "w-full" : "w-[70%]";
   const transitionInterval = 3000;
 
   const [widths, setWidths] = useState<string[]>(initialWidths);
@@ -14,16 +21,14 @@ export const HomeKvBanner = () => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // 다음 인덱스를 계산
       const nextIdx = (currentIdx + 1) % 3;
-      // widths 배열을 업데이트
       const updatedWidths = initialWidths.map((_, index) => {
         if (index === currentIdx) {
-          return "w-[10%]";
+          return windowWidth <= 768 ? "w-0" : "w-[10%]";
         } else if (index === nextIdx) {
           return finalWidth;
         } else {
-          return "w-[10%]";
+          return windowWidth <= 768 ? "w-0" : "w-[10%]";
         }
       });
 
@@ -36,16 +41,23 @@ export const HomeKvBanner = () => {
     };
   }, [currentIdx, initialWidths]);
 
-  const VannerImgs = [img01, img02, img03];
+  useEffect(() => {
+    isWindowWidthChange ? setWidths(["w-full", "w-0", "w-0"]) : setWidths(["w-[70%]", "w-[10%]", "w-[10%]"]);
+  }, [isWindowWidthChange]);
+
+  const bannerWebpArr = [img01_webp, img02_webp, img03_webp];
+  const bannerImgArr = [img01, img02, img03];
   return (
     <>
       {widths.map((widths, idx) => (
-        <img
-          key={idx}
-          src={VannerImgs[idx]}
-          alt="preview image"
-          className={`${widths} h-[800px] rounded-xl object-cover transition-[width] duration-1000 ease-in-out`}
-        />
+        <picture key={idx} className={`${widths} h-[800px] transition-[width] duration-1000 ease-in-out sm:h-[640px]`}>
+          <source srcSet={bannerWebpArr[idx]} type="image/webp" />
+          <img
+            src={bannerImgArr[idx]}
+            alt="preview image"
+            className="w-full object-cover h-[800px] sm:h-[640px] rounded-xl sm:rounded-none"
+          />
+        </picture>
       ))}
     </>
   );

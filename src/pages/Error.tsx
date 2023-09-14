@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { STORAGE_URL, supabase } from "api/supabase";
+import { STORAGE_URL, supabase } from "api/supabase/supabaseClient";
 import { type Tables } from "types/supabase";
 
 type PickImg = Pick<Tables<"WALLPAPER", "Row">, "image">;
 
-export const Error = () => {
+const Error = () => {
   const [randomImg, setRandomImg] = useState<PickImg[]>();
   const [currentIdx, setCurrentIdx] = useState<number>(0);
   const [errorImg, setErrorImg] = useState<string>("/wallpaper/003b3abe-d70a-49e5-98b6-059bf055d32b");
@@ -42,7 +42,7 @@ export const Error = () => {
   }, [currentIdx, randomImg]);
 
   return (
-    <div className="flex-column items-center my-[195px]">
+    <div className="flex-column items-center my-[195px] sm:my-20">
       <div className="flex items-center gap-6">
         <span className="text-[120px] font-normal">4</span>
         <img src={`${STORAGE_URL}${errorImg}`} className="w-20 h-20 rounded-full" alt="error0" />
@@ -67,3 +67,4 @@ export const Error = () => {
     </div>
   );
 };
+export default Error;

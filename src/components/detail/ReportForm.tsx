@@ -1,24 +1,22 @@
 import { useState } from "react";
+import toast from "react-simple-toasts";
 
-import { Select, useDialog } from "components";
-import { useAdminQuery } from "hooks";
+import { Select } from "components";
+import { useAdminQuery } from "hooks/useAdminQuery";
 import { useModalStore } from "store";
 import { type Tables } from "types/supabase";
 
-import type { Session } from "@supabase/supabase-js";
-
 interface ReportProps {
-  currentSession: Session | null;
+  currentUserId: string | undefined;
   postData: Tables<"POSTS", "Row">;
 }
 
-export const ReportForm = ({ currentSession, postData }: ReportProps) => {
+export const ReportForm = ({ currentUserId, postData }: ReportProps) => {
   const [reportSelected, setReportSelected] = useState<string | undefined>();
   const [reportComment, setReportComment] = useState<string>("");
 
   const { onCloseModal } = useModalStore();
   const { addReportMutation } = useAdminQuery();
-  const { Alert } = useDialog();
 
   const autoResizeTextArea = (element: HTMLTextAreaElement) => {
     element.style.height = "auto";
@@ -27,13 +25,13 @@ export const ReportForm = ({ currentSession, postData }: ReportProps) => {
   };
 
   const updateCommentHandler = () => {
-    if (currentSession === null) return;
+    if (currentUserId === undefined) return;
     if (reportSelected === undefined) {
-      void Alert("신고 항목을 선택해주세요.");
+      toast("신고 항목을 선택해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
     if (reportComment === "") {
-      void Alert("댓글은 1글자 이상 입력해주세요.");
+      toast("댓글은 1글자 이상 입력해주세요.", { theme: "failure", zIndex: 9999 });
       return;
     }
     const reportData = {
@@ -43,16 +41,16 @@ export const ReportForm = ({ currentSession, postData }: ReportProps) => {
       postContent: postData.content,
       postImg: postData.postImage,
       postId: postData.id,
-      userId: currentSession.user.id,
+      userId: currentUserId,
     };
 
     addReportMutation.mutate(reportData);
     onCloseModal();
-    void Alert("신고가 접수되었습니다.");
+    toast("신고가 접수되었습니다.", { theme: "plain", zIndex: 9999 });
   };
 
   return (
-    <div className="flex-column w-[600px] gap-5">
+    <div className="flex-column w-[600px] gap-5 sm:w-[310px]">
       <Select
         option={[
           "나체 이미지 또는 성적 행위",
