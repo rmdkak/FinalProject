@@ -7,6 +7,7 @@ import fillHeart from "assets/svgs/Heart.svg";
 import lineHeart from "assets/svgs/lineheart.svg";
 import share from "assets/svgs/share.svg";
 import { useDialog } from "components/common";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { usePostsLikeQuery } from "hooks/usePostsLikeQuery";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { throttle } from "lodash";
@@ -31,6 +32,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
   const { postLikeResponse, addLikeMutation, deleteLikeMutation } = usePostsLikeQuery();
   const { data: currentBookmarkData } = postLikeResponse;
   const { fetchPostsMutation } = usePostsQuery();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const { data: postList } = fetchPostsMutation;
 
@@ -123,6 +125,9 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
         {prevPage !== undefined && (
           <div
             className="flex gap-[10px] items-center py-6 border-b border-gray06 hover:cursor-pointer"
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("detail");
+            }}
             onClick={() => {
               navigate(`/detail/${prevPage}`);
             }}
@@ -138,6 +143,9 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
         {nextPage !== undefined && (
           <div
             className="flex gap-[10px] items-center py-6 border-b border-gray06 hover:cursor-pointer "
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("detail");
+            }}
             onClick={() => {
               navigate(`/detail/${nextPage}`);
             }}

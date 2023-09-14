@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import close from "assets/svgs/close.svg";
 import { useAuth } from "hooks/useAuth";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore } from "store";
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
   const { currentUserId } = useAuthStore();
   const { logoutWithMessage } = useAuth();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const logoutHandler = useCallback(async () => {
     closeSideBarHandler();
@@ -37,12 +39,20 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
           <ul className="flex gap-4 text-black body-3">
             {currentUserId === undefined ? (
               <>
-                <li>
+                <li
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("login");
+                  }}
+                >
                   <Link onClick={closeSideBarHandler} to="/login">
                     로그인
                   </Link>
                 </li>
-                <li>
+                <li
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("signup");
+                  }}
+                >
                   <Link onClick={closeSideBarHandler} to="/signup">
                     회원가입
                   </Link>
@@ -50,7 +60,11 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
               </>
             ) : (
               <>
-                <li>
+                <li
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("mypage");
+                  }}
+                >
                   <Link onClick={closeSideBarHandler} to={"/mypage"}>
                     마이페이지
                   </Link>
@@ -67,22 +81,42 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
 
         <div>
           <ul className="gap-4 text-black flex-column body-1">
-            <li className="duration-500 text-gray03 hover:text-black">
+            <li
+              className="duration-500 text-gray03 hover:text-black"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("interior-preview");
+              }}
+            >
               <Link onClick={closeSideBarHandler} to="/interior-preview">
                 인테리어 조합
               </Link>
             </li>
-            <li className="duration-500 text-gray03 hover:text-black">
+            <li
+              className="duration-500 text-gray03 hover:text-black"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("community");
+              }}
+            >
               <Link onClick={closeSideBarHandler} to="/community">
                 커뮤니티
               </Link>
             </li>
-            <li className="duration-500 text-gray03 hover:text-black">
+            <li
+              className="duration-500 text-gray03 hover:text-black"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("eventlist");
+              }}
+            >
               <Link onClick={closeSideBarHandler} to="/eventlist">
                 이벤트
               </Link>
             </li>
-            <li className="duration-500 text-gray03 hover:text-black">
+            <li
+              className="duration-500 text-gray03 hover:text-black"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("inquire");
+              }}
+            >
               <Link onClick={closeSideBarHandler} to="/inquire">
                 1:1문의하기
               </Link>

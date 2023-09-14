@@ -1,7 +1,7 @@
 import toast from "react-simple-toasts";
 
 import { AuthError } from "@supabase/supabase-js";
-import { type LoginInputs } from "pages";
+import { type LoginInputs } from "pages/Login";
 import { type Tables } from "types/supabase";
 
 import { auth, supabase } from "./supabaseClient";

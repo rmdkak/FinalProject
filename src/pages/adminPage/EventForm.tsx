@@ -21,7 +21,7 @@ const TEXTAREA_PLACEHOLDER = `이벤트 내용 or 서브 타이틀 내용을 입
 
 본문 내용`;
 
-export const EventForm = () => {
+const EventForm = () => {
   const { currentUserId } = useAuthStore();
   const { addEventMutation } = useAdminQuery();
   const { resizePixelHandler, imageSizeSaveHandler, resizeFile } = useImageResize();
@@ -133,3 +133,4 @@ export const EventForm = () => {
     </>
   );
 };
+export default EventForm;

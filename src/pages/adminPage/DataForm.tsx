@@ -6,7 +6,7 @@ import { addTileData, addWallpaperData, uploadTileImageHandler, uploadWallpaperI
 import { Select } from "components";
 import { useImageResize } from "hooks/useImageResize";
 
-export const DataForm = () => {
+const DataForm = () => {
   const [selectType, setSelectType] = useState<string | undefined>();
   const [selectTexture, setSelectTexture] = useState<string | undefined>();
   const { resizePixelHandler, imageSizeSaveHandler, resizeFile, imageFile } = useImageResize();
@@ -113,3 +113,4 @@ export const DataForm = () => {
     </>
   );
 };
+export default DataForm;

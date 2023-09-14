@@ -2,19 +2,22 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-simple-toasts";
 
 import { useDialog } from "components";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore, useServiceStore } from "store";
 
 import { useBookmarkQuery } from "./useBookmarkQuery";
 
 export const useBookmark = () => {
+  const navigate = useNavigate();
   const { currentUserId } = useAuthStore();
   const { Alert, Confirm } = useDialog();
-  const navigate = useNavigate();
-  const { tile, wallPaper, wallpaperPaint } = useServiceStore((state) => state);
+  const { preFetchPageBeforeEnter } = useDynamicImport();
   const { addBookmarkMutation, deleteBookmarkMutation } = useBookmarkQuery();
+  const { tile, wallPaper, wallpaperPaint } = useServiceStore((state) => state);
 
   const addBookmark = async () => {
     if (currentUserId === undefined) {
+      await preFetchPageBeforeEnter("login");
       const goToLogin = await Confirm(
         <>
           <p>북마크 기능은 로그인 후 이용가능합니다.</p>
@@ -53,6 +56,7 @@ export const useBookmark = () => {
 
   const recommendDesign = async () => {
     if (currentUserId === undefined) {
+      await preFetchPageBeforeEnter("login");
       const sessionCheck = await Confirm(
         <p>
           해당 서비스는 로그인 후 이용 가능합니다.

@@ -3,18 +3,21 @@ import { useNavigate } from "react-router-dom";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import smViewMore from "assets/svgs/more.svg";
 import smcalcArrow from "assets/svgs/smcalcArrow.svg";
+import { type PathName, useDynamicImport } from "hooks/useDynamicImport";
 
 interface Props {
-  page?: string;
+  page?: PathName;
   title?: string;
   type: "noTitle" | "noNavigate" | "useAll";
 }
 
 export const HomeContentsTitle = ({ title, page, type }: Props) => {
   const navigate = useNavigate();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   switch (type) {
     case "useAll":
+      if (page === undefined) return <></>;
       return (
         <div className="flex items-center sm:px-6 contents-between">
           <h2 className="section-title">{title}</h2>
@@ -24,6 +27,9 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
             </label>
             <button
               id={page}
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter(page);
+              }}
               onClick={() => {
                 navigate(`/${page as string}`);
               }}
@@ -36,6 +42,7 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
       );
 
     case "noTitle":
+      if (page === undefined) return <></>;
       return (
         <div className="sm:inline-flex sm:items-center sm:px-4 sm:py-2 sm:bg-white sm:rounded-full ">
           <label
@@ -45,6 +52,9 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
             VIEW MORE
           </label>
           <button
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter(page);
+            }}
             id="toInteriorPreview"
             onClick={() => {
               navigate("/interior-preview");

@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore, useModalStore } from "store";
 
 export interface PostDataChain {
@@ -46,12 +48,16 @@ export const PostData = ({ postData }: Props) => {
   const { onOpenModal } = useModalStore((state) => state);
   const [previewModal, setPreviewModal] = useState<boolean>(false);
   const { currentUserId } = useAuthStore();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   return (
     <>
       <div className="items-center border-b border-black flex-column sm:hidden">
         <p
           className="font-medium text-[32px] hover:cursor-pointer mb-5"
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter("community");
+          }}
           onClick={() => {
             navigate("/community");
           }}
@@ -59,35 +65,38 @@ export const PostData = ({ postData }: Props) => {
           커뮤니티
         </p>
       </div>
-      <div className="xs:flex-column xs:items-start xs:gap-8 contents-between border-b border-gray06 py-[20px] items-center px-3">
+      <div className="items-center px-3 py-10 border-b xs:flex-column xs:items-start xs:gap-8 contents-between border-gray06">
         <div>
           <label htmlFor="title" className="text-[18px] font-semibold xs:text-[16px]">
             {postData?.title}
           </label>
           <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px] xs:text-[12px]">
-            <img
-              src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
-              alt="userImg"
-              className="w-8 h-8 border rounded-full xs:w-6 xs:h-6 border-gray05 object"
-            />
+            <picture>
+              <source
+                srcSet={postData?.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                type="image/webp"
+              />
+              <img
+                src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
+                alt="userImg"
+                className="w-8 h-8 border rounded-full xs:w-6 xs:h-6 border-gray05 object"
+              />
+            </picture>
             <p>{postData?.USERS !== null ? postData?.USERS.name : null}</p>
             <DateConvertor datetime={postData?.created_at} type="dotDate" />
             <div className="flex items-center gap-1">
               <FaRegHeart />
               <p>좋아요 {postData?.POSTLIKES[0]?.userId?.length}</p>
             </div>
-            {currentUserId !== undefined ? (
+            {currentUserId !== undefined && (
               <button onClick={onOpenModal} className="leading-[1px] hover:border-b border-gray02">
                 신고하기
               </button>
-            ) : (
-              <></>
             )}
-            {
-              <Modal title="신고하기">
-                <ReportForm currentUserId={currentUserId} postData={postData} />
-              </Modal>
-            }
+
+            <Modal title="신고하기">
+              <ReportForm currentUserId={currentUserId} postData={postData} />
+            </Modal>
           </div>
         </div>
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
@@ -97,6 +106,12 @@ export const PostData = ({ postData }: Props) => {
               setPreviewModal(true);
             }}
             onMouseLeave={() => {
+              setPreviewModal(false);
+            }}
+            onTouchStart={() => {
+              setPreviewModal(true);
+            }}
+            onTouchEnd={() => {
               setPreviewModal(false);
             }}
           >

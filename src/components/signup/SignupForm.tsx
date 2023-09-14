@@ -148,7 +148,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
 
   return (
     <div className="items-center mx-auto max-w-[560px] flex-column my-14 sm:my-6">
-      <Title title="회원가입" isBorder={true} />
+      <Title title="회원가입" isBorder={true} pathName="signup" />
       <SignupStep step={1} />
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-[85%] flex-col items-center my-5">
         {/* 이메일 */}

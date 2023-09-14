@@ -1,4 +1,4 @@
-import { manToManCategory } from "pages";
+import { manToManCategory } from "pages/adminPage/ManToMan";
 
 import { supabase } from "./supabaseClient";
 

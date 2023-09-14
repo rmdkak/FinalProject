@@ -5,6 +5,7 @@ import toast from "react-simple-toasts";
 
 import { findEmail, findPassword, sendEmailForFindPassword } from "api/supabase/auth";
 import { DateConvertor, InvalidText, Select, idAnswerValid, idQuestionOptions } from "components";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { type Tables } from "types/supabase";
 
 const TAB_STYLE =
@@ -27,15 +28,19 @@ interface FindPasswordInput {
   idAnswerForPassword: string;
 }
 
-export const FindAuth = () => {
+const FindAuth = () => {
   const param = useParams();
   const navigate = useNavigate();
+
   const initialFocus =
     param.focus === "email" ? { focusEmail: true, focusPassword: false } : { focusEmail: false, focusPassword: true };
+
   const [focusTab, setFocusTab] = useState<FocusTab>(initialFocus);
   const [isDoneFind, setIsDoneFind] = useState(false);
   const [findUser, setFindUser] = useState<Tables<"USERS", "Row">>();
   const [selectIdQuestion, setSelectIdQuestion] = useState<string | undefined>();
+
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const {
     register: emailRegister,
@@ -191,7 +196,13 @@ export const FindAuth = () => {
               </div>
             </div>
           </div>
-          <Link to="/login" className="text-center auth-button body-3 point-button">
+          <Link
+            to="/login"
+            className="text-center auth-button body-3 point-button"
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("signup");
+            }}
+          >
             로그인
           </Link>
         </>
@@ -253,3 +264,4 @@ export const FindAuth = () => {
     </div>
   );
 };
+export default FindAuth;
