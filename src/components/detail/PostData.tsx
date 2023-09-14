@@ -102,16 +102,16 @@ export const PostData = ({ postData }: Props) => {
         {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
           <div
             className="flex gap-3"
-            onMouseEnter={() => {
-              setPreviewModal(true);
-            }}
-            onMouseLeave={() => {
-              setPreviewModal(false);
-            }}
             onTouchStart={() => {
               setPreviewModal(true);
             }}
+            onMouseEnter={() => {
+              setPreviewModal(true);
+            }}
             onTouchEnd={() => {
+              setPreviewModal(false);
+            }}
+            onMouseLeave={() => {
               setPreviewModal(false);
             }}
           >
@@ -147,8 +147,14 @@ export const PostData = ({ postData }: Props) => {
           postData?.rightColorCode !== undefined && (
             <div
               className="flex gap-3"
+              onTouchStart={() => {
+                setPreviewModal(true);
+              }}
               onMouseEnter={() => {
                 setPreviewModal(true);
+              }}
+              onTouchEnd={() => {
+                setPreviewModal(false);
               }}
               onMouseLeave={() => {
                 setPreviewModal(false);
@@ -184,7 +190,7 @@ export const PostData = ({ postData }: Props) => {
           )}
       </div>
       {previewModal && (
-        <div className="absolute top-[380px] translate-x-[780px]">
+        <div className="absolute top-[322px] translate-x-[770px] lg:translate lg:right-[805px] md:right-[805px] sm:right-[805px] sm:top-[217px] xs:left-[-734px] xs:!top-[280px]">
           <ShowRoom
             leftWallpaperBg={postData.leftWallpaperId}
             rightWallpaperBg={postData.rightWallpaperId}

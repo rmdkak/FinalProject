@@ -50,7 +50,7 @@ export const ReportForm = ({ currentUserId, postData }: ReportProps) => {
   };
 
   return (
-    <div className="flex-column w-[600px] gap-5">
+    <div className="flex-column w-[600px] gap-5 sm:w-[310px]">
       <Select
         option={[
           "나체 이미지 또는 성적 행위",

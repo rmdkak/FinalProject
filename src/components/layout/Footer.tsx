@@ -4,8 +4,10 @@ import blog from "assets/footerIcon/blogIcon.svg";
 import github from "assets/footerIcon/githubIcon.svg";
 import notion from "assets/footerIcon/notionIcon.svg";
 import { useDynamicImport } from "hooks/useDynamicImport";
+import { useAuthStore } from "store";
 
 export const Footer = () => {
+  const { currentSession } = useAuthStore();
   const { preFetchPageBeforeEnter } = useDynamicImport();
   return (
     <>
@@ -55,15 +57,20 @@ export const Footer = () => {
                   <li className="mr-[18px] text-[#888] text-xs">이용약관</li>
                   <li className="text-[13px]">개인정보 처리방침</li>
                 </ul>
-                <Link
-                  to="/inquire"
-                  className="sm:absolute sm:top-0 px-6 py-2 text-xs text-[#888] border rounded-lg border-gray05"
-                  onMouseEnter={async () => {
-                    await preFetchPageBeforeEnter("inquire");
-                  }}
-                >
-                  1:1문의하기
-                </Link>
+                {currentSession !== null && (
+                  <Link
+                    to="/inquire"
+                    className="sm:absolute sm:top-0 px-6 py-2 text-xs text-[#888] border rounded-lg border-gray05"
+                    onTouchStart={async () => {
+                      await preFetchPageBeforeEnter("inquire");
+                    }}
+                    onMouseEnter={async () => {
+                      await preFetchPageBeforeEnter("inquire");
+                    }}
+                  >
+                    1:1문의하기
+                  </Link>
+                )}
               </div>
             </div>
             <p className="text-[#888] mb-10 text-[12px]">COPYRIGHT(C) STILE ALL RIGHT RESERVED</p>

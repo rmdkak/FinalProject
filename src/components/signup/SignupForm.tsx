@@ -243,6 +243,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
           <input
             type={showPassword.password ? "text" : "password"}
             id="password"
+            autoComplete="off"
             placeholder="비밀번호"
             className="auth-input body-3"
             {...register("password", {
@@ -262,6 +263,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
         <div className="relative flex w-full mt-2">
           <input
             type={showPassword.passwordConfirm ?? false ? "text" : "password"}
+            autoComplete="off"
             placeholder="비밀번호 확인"
             className="auth-input body-3"
             {...register("passwordCheck")}
