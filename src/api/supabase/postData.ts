@@ -34,8 +34,8 @@ export const createPostHandler = async (postData: Tables<"POSTS", "Insert">) => 
 };
 
 // post(D스토리지 저장)
-export const savePostImageHandler = async ({ UUID, postImgFile }: { UUID: string; postImgFile: Blob }) => {
-  await supabase.storage.from("Images").upload(`postImg/${UUID}`, postImgFile, {
+export const savePostImageHandler = async ({ UUID, resizeImageFile }: { UUID: string; resizeImageFile: Blob }) => {
+  await supabase.storage.from("Images").upload(`postImg/${UUID}`, resizeImageFile, {
     cacheControl: "3600",
     upsert: false,
   });
@@ -59,5 +59,13 @@ export const deletePostHandler = async (postId: string) => {
   const { error } = await supabase.from("POSTS").delete().eq("id", postId);
   if (error != null) {
     console.error("error.message :", error.message);
+  }
+};
+
+// delete
+export const deletePostImageHandler = async (id: string) => {
+  const { error } = await supabase.storage.from("Images").remove([`postImg/${id}`]);
+  if (error !== null) {
+    console.error(error);
   }
 };

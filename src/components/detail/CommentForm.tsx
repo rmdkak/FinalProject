@@ -5,8 +5,8 @@ import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { saveCommentImageHandler } from "api/supabase/commentData";
-import { useDialog } from "components";
 import { useCommentsQuery } from "hooks/useCommentsQuery";
+import { useImageResize } from "hooks/useImageResize";
 import { useAuthStore } from "store";
 
 const textAreaMaxLength = 500;
@@ -17,15 +17,15 @@ interface CommentFormProps {
 }
 
 export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps) => {
+  const { resizePixelHandler, imageSizeSaveHandler, resizeFile, imageFile, setImageFile } = useImageResize();
   const { currentSession, currentUserId } = useAuthStore();
   const { createCommentMutation, createReplyMutation } = useCommentsQuery();
   const [content, setContent] = useState<string>("");
-  const [commentImgFile, setCommentImgFile] = useState<File | null>(null);
+
   const { id: postId } = useParams();
   const commentStatus = kind === "comment";
   const replyStatus = kind === "reply";
   const placeHolder = commentStatus ? "댓글을 남겨보세요." : "답글을 남겨보세요.";
-  const { Alert } = useDialog();
 
   const handleTextAreaChange = async (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
@@ -35,17 +35,6 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
     } else {
       toast(`글자 수 제한(${textAreaMaxLength}자)을 초과했습니다.`, { theme: "failure", zIndex: 9999 });
     }
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file != null) {
-      setCommentImgFile(file);
-    }
-  };
-
-  const handleImageCancel = () => {
-    setCommentImgFile(null);
   };
 
   const autoResizeTextArea = (element: HTMLTextAreaElement) => {
@@ -63,21 +52,17 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
 
     const userId = currentUserId;
     const id = uuid();
-    const commentImg = commentImgFile === null ? null : `/commentImg/${id}`;
+    const commentImg = imageFile === null ? null : `/commentImg/${id}`;
 
     if (postId == null) return;
     if (userId === undefined) return;
 
     try {
-      if (commentImgFile !== null) {
-        const allowedExtensions = ["png", "jpeg", "jpg", "gif"];
-        const fileExtension = commentImgFile.name.split(".").pop()?.toLowerCase();
-        if (fileExtension === undefined) return;
-        if (!allowedExtensions.includes(fileExtension)) {
-          await Alert("이미지 파일(.png, .jpeg, .jpg, .gif)만 업로드 가능합니다.");
-          return;
-        }
-        await saveCommentImageHandler({ id, commentImgFile });
+      if (imageFile !== null) {
+        const resizePixel = await resizePixelHandler(600);
+        const resizeImageFile = await resizeFile(imageFile, resizePixel);
+        if (resizeImageFile === undefined) return;
+        await saveCommentImageHandler({ id, resizeImageFile });
       }
       if (commentStatus) createCommentMutation.mutate({ id, userId, content, postId, commentImg });
       if (replyStatus) createReplyMutation.mutate({ userId, content, commentId });
@@ -85,7 +70,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
       console.error("error", error);
     }
     setContent("");
-    setCommentImgFile(null);
+    setImageFile(null);
     setOpenReply(null);
   };
 
@@ -120,13 +105,13 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
                 setOpenReply(null);
               }}
               type="button"
-              className="h-[48px] w-[120px] border border-gray03 rounded-[8px]"
+              className="h-[48px] w-[120px] sm:h-[40px] sm:w-[80px] border border-gray03 rounded-[8px] sm:text-[14px]"
             >
               취소하기
             </button>
           )}
 
-          {commentImgFile === null && commentStatus && (
+          {imageFile === null && commentStatus && (
             <label htmlFor="imageInput">
               <AiOutlineCamera className="text-gray-400 cursor-pointer text-[40px] sm:text-[24px]" />
               <input
@@ -134,20 +119,29 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
                 accept="image/png, image/jpeg, image/gif"
                 id="imageInput"
                 className="hidden"
-                onChange={handleImageChange}
+                onChange={(e) => {
+                  imageSizeSaveHandler(e);
+                }}
               />
             </label>
           )}
-          {commentImgFile !== null && commentStatus && (
+          {imageFile !== null && commentStatus && (
             <div className="relative">
               <img
-                src={URL.createObjectURL(commentImgFile)}
+                src={URL.createObjectURL(imageFile)}
                 alt="미리보기"
                 className="object-cover cursor-pointer w-[80px] h-[80px]"
-                onClick={handleImageCancel}
+                onClick={() => {
+                  setImageFile(null);
+                }}
               />
               <div className="absolute bottom-[60px] left-[85px]">
-                <AiFillCloseCircle className="text-[25px] text-gray03 cursor-pointer" onClick={handleImageCancel} />
+                <AiFillCloseCircle
+                  className="text-[25px] text-gray03 cursor-pointer"
+                  onClick={() => {
+                    setImageFile(null);
+                  }}
+                />
               </div>
             </div>
           )}

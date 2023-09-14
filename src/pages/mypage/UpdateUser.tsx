@@ -1,4 +1,4 @@
-import { type ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-simple-toasts";
@@ -20,6 +20,7 @@ import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
 import { PasswordVisibleButton, InvalidText, Title, passwordValid, nameValid, useDialog } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
+import { useImageResize } from "hooks/useImageResize";
 import { useAuthStore } from "store";
 
 import type { PasswordVisible } from "components";
@@ -39,6 +40,7 @@ export const UpdateUser = () => {
   const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
+  const { imageFile, setImageFile, resizePixelHandler, imageSizeSaveHandler, resizeFile } = useImageResize();
 
   const { currentUserResponse, patchUserMutation } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
@@ -64,20 +66,26 @@ export const UpdateUser = () => {
     formState: { errors },
   } = useForm<UpdateInput>();
 
-  const changeProfileImgHandler = async (event: ChangeEvent<HTMLInputElement>) => {
+  const submitProfileImgHandler: SubmitHandler<UpdateInput> = async () => {
     const uid = uuid();
-    if (event.target.files === null) return;
-    const imgFile = event.target.files[0];
-    if (imgFile === undefined) return;
+    if (imageFile === null) return;
+
+    const resizePixel = await resizePixelHandler(160);
+    const resizeImageFile = await resizeFile(imageFile, resizePixel);
+    if (resizeImageFile === undefined) return;
 
     const profileImg = `${STORAGE_URL}/profileImg/${uid}`;
     await deleteImage(prevProfileImageId);
     patchUserMutation.mutate({ inputValue: { name: currentName, avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
-    void uploadImage({ file: imgFile, userId: uid });
+    void uploadImage({ file: resizeImageFile, userId: uid });
+    setImageFile(null);
   };
 
   const resetImgFile = async () => {
+    if (imageFile !== null) {
+      setImageFile(null);
+    }
     if (currentProfileImg !== "") {
       await deleteImage(prevProfileImageId);
       await changeMetaAvatar("");
@@ -165,9 +173,11 @@ export const UpdateUser = () => {
       <Title title="회원정보수정" isBorder={true} />
       <div className="flex w-full mt-10">
         {/* 프로필 이미지 */}
-        <div className="flex-column items-center w-[328px] gap-9">
+        <form onSubmit={handleSubmit(submitProfileImgHandler)} className="flex-column items-center w-[328px] gap-9">
           <div className="relative w-[120px]">
-            {currentProfileImg === "" ? (
+            {imageFile !== null ? (
+              <img src={URL.createObjectURL(imageFile)} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
+            ) : currentProfileImg === "" ? (
               <img src={defaultImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
             ) : (
               <img src={currentProfileImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
@@ -180,7 +190,9 @@ export const UpdateUser = () => {
                 id="profileImgButton"
                 type="file"
                 accept="image/png, image/jpeg, image/gif"
-                onChange={changeProfileImgHandler}
+                onChange={(event) => {
+                  imageSizeSaveHandler(event);
+                }}
                 className="hidden"
               />
               <div className="h-2 border bg-gray06" />
@@ -188,7 +200,8 @@ export const UpdateUser = () => {
             </div>
           </div>
           <p className="title-4">{`${currentName} 님`}</p>
-        </div>
+          {imageFile !== null && <button className="w-32 h-12 rounded-lg point-button body-3">이미지 변경하기</button>}
+        </form>
         <div className="flex contents-center w-[624px]">
           <div className="w-full gap-6 flex-column">
             {/* 닉네임 form */}

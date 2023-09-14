@@ -7,6 +7,7 @@ import uuid from "react-uuid";
 import { savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { Button, InteriorSection, Modal, SubTitle } from "components";
+import { useImageResize } from "hooks/useImageResize";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
@@ -33,7 +34,7 @@ export const Post = () => {
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   const { createPostMutation } = usePostsQuery();
-
+  const { resizePixelHandler, imageSizeSaveHandler, imagePixel, resizeFile } = useImageResize();
   const {
     register,
     handleSubmit,
@@ -41,6 +42,7 @@ export const Post = () => {
     watch,
     resetField,
   } = useForm<Inputs>();
+
   const {
     wallPaper,
     tile,
@@ -83,8 +85,8 @@ export const Post = () => {
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     debounce(async (data) => {
       const UUID = uuid();
-      const postImgFile = data?.file[0];
-      const postImage = data?.file[0] == null ? null : `/postImg/${UUID}`;
+      const imageFile = data.file[0];
+      const postImage = imageFile === undefined ? null : `/postImg/${UUID}`;
 
       if (
         (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
@@ -103,9 +105,13 @@ export const Post = () => {
           leftColorCode: wallpaperPaint.left,
           rightColorCode: wallpaperPaint.right,
         };
+
         try {
-          if (postImgFile !== undefined) {
-            await savePostImageHandler({ UUID, postImgFile });
+          if (imageFile !== undefined) {
+            const resizePixel = await resizePixelHandler(1000);
+            const resizeImageFile = await resizeFile(imageFile, resizePixel);
+            if (resizeImageFile === undefined) return;
+            await savePostImageHandler({ UUID, resizeImageFile });
           }
           createPostMutation.mutate(postData);
         } catch (error) {
@@ -130,7 +136,7 @@ export const Post = () => {
       localStorage.removeItem("selectedData");
       navigate("/community");
     }, 500),
-    [tile.id, wallPaper.left.id, wallPaper.right.id, wallpaperPaint.left, wallpaperPaint.right],
+    [tile.id, wallPaper.left.id, wallPaper.right.id, wallpaperPaint.left, wallpaperPaint.right, imagePixel],
   );
 
   useEffect(() => {
@@ -149,6 +155,7 @@ export const Post = () => {
         break;
     }
   };
+
   return (
     <div className="w-full max-w-[1280px] min-w-[360px] mx-auto px-6 xs:text-[14px]">
       <div className="items-center py-10 border-b border-black flex-column sm:hidden">
@@ -261,8 +268,12 @@ export const Post = () => {
             <input
               type="file"
               accept="image/png, image/jpeg, image/gif"
-              className="w-[170px] xs:w-[165px] text-[14px] xs:text-[14px] focus:outline-none"
-              {...register("file")}
+              className="sm:w-[170px] text-[14px] focus:outline-none"
+              {...register("file", {
+                onChange: (e) => {
+                  imageSizeSaveHandler(e);
+                },
+              })}
             />
             <button
               type="button"

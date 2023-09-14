@@ -95,7 +95,7 @@ export const Comments = ({ postData }: CommentProps) => {
                         />
                         <div className="relative">
                           <label htmlFor="inputImg">
-                            <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute top-[245px] left-[305px]" />
+                            <AiOutlineCamera className="text-gray02 cursor-pointer text-[40px] absolute top-[245px] left-[305px] xs:left-[190px] xs:top-[300px] xs:text-[30px]" />
                             <input
                               type="file"
                               accept="image/png, image/jpeg, image/gif"
@@ -118,7 +118,7 @@ export const Comments = ({ postData }: CommentProps) => {
                               : URL.createObjectURL(selectedCommentImgFile)
                           }
                           alt="미리보기"
-                          className="my-[20px] w-[300px] h-[250px]"
+                          className="my-[20px] w-[300px] h-[250px] border border-gray07"
                         />
                       ) : (
                         <></>
@@ -133,10 +133,13 @@ export const Comments = ({ postData }: CommentProps) => {
                             ? URL.createObjectURL(selectedCommentImgFile)
                             : `${STORAGE_URL}${comment.commentImg}`
                         }
-                        className="my-[20px] w-[300px] h-[250px]"
+                        className="my-[20px] w-[300px] h-[250px]  border border-gray07"
                       />
                     ) : (
-                      <img src={`${STORAGE_URL}${comment.commentImg}`} className="my-[20px] w-[300px] h-[250px]" />
+                      <img
+                        src={`${STORAGE_URL}${comment.commentImg}`}
+                        className="my-[20px] w-[300px] h-[250px] border border-gray07"
+                      />
                     )}
 
                     <div className="flex gap-2 text-gray02 text-[14px]">
@@ -230,7 +233,7 @@ export const Comments = ({ postData }: CommentProps) => {
       </div>
       <div className="flex justify-between mt-[40px] sm:flex-col gap-6">
         <button
-          className="h-[48px] sm:w-full sm:text-[14px] px-[30px] rounded-lg border border-gray05"
+          className="h-[48px] sm:w-full sm:text-[14px] px-[30px] w-[160px] rounded-lg border border-gray05"
           onClick={() => {
             movePageHandler("community", postData.id);
           }}

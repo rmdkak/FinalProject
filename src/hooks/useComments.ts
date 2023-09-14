@@ -4,6 +4,7 @@ import toast from "react-simple-toasts";
 import uuid from "react-uuid";
 
 import { deleteCommentImageHandler, saveCommentImageHandler } from "api/supabase/commentData";
+import { deletePostImageHandler } from "api/supabase/postData";
 import { useDialog } from "components";
 
 import { useCommentsQuery } from "./useCommentsQuery";
@@ -15,7 +16,7 @@ export const useComments = () => {
   const [selectedId, setSelectedId] = useState<string>("");
   const [currentImg, setCurrentImg] = useState<string | null>(null);
   const [newComment, setNewComment] = useState<string>("");
-  const [selectedCommentImgFile, setSelectedCommentImgFile] = useState<File | null>(null);
+  const [selectedCommentImgFile, setSelectedCommentImgFile] = useState<Blob | null>(null);
 
   const { Confirm, Alert } = useDialog();
   const { deleteCommentMutation, deleteReplyMutation, updateCommentMutation, updateReplyMutation } = useCommentsQuery();
@@ -55,15 +56,14 @@ export const useComments = () => {
     const newCommentImg = selectedCommentImgFile === null ? currentImg : `/commentImg/${UUID}`;
 
     if (selectedCommentImgFile !== null) {
-      const allowedExtensions = ["png", "jpeg", "jpg", "gif"];
-      const fileExtension = selectedCommentImgFile.name.split(".").pop()?.toLowerCase();
-      if (fileExtension === undefined) return;
-      if (!allowedExtensions.includes(fileExtension)) {
+      const allowedExtensions = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
+      if (selectedCommentImgFile.type === undefined) return;
+      if (!allowedExtensions.includes(selectedCommentImgFile.type)) {
         await Alert("이미지 파일(.png, .jpeg, .jpg, .gif)만 업로드 가능합니다.");
         return;
       }
 
-      await saveCommentImageHandler({ id: UUID, commentImgFile: selectedCommentImgFile });
+      await saveCommentImageHandler({ id: UUID, resizeImageFile: selectedCommentImgFile });
       await deleteCommentImageHandler(currentImg as string);
     }
 
@@ -91,6 +91,7 @@ export const useComments = () => {
       const checkDelete = await Confirm("정말로 삭제하시겠습니까?");
       if (checkDelete) {
         deletePostMutation.mutate(id);
+        await deletePostImageHandler(id);
         navigate("/community");
       }
     } catch (error) {
