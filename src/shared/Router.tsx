@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { DotLoader } from "react-spinners";
 
 const Layout = lazy(async () => await import("../components/layout/Layout"));
 const ResourcesCalculator = lazy(async () => await import("../components/service/ResourcesCalculator"));
@@ -25,10 +26,9 @@ const Error = lazy(async () => await import("../pages/Error"));
 const MyPost = lazy(async () => await import("../pages/mypage/MyPost"));
 const Event = lazy(async () => await import("../pages/Event"));
 const EventList = lazy(async () => await import("../pages/EventList"));
-//
 const Router = () => {
   return (
-    <Suspense fallback={<p>로딩중!!!!!!!!로딩중로딩중로딩중로딩중로딩중로딩중</p>}>
+    <Suspense fallback={<DotLoader color="#ffd75e" className="absolute mx-auto top-[300px]" size={200} />}>
       <BrowserRouter>
         <Layout>
           <Routes>

@@ -1,4 +1,4 @@
-import { type ChangeEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-simple-toasts";
@@ -9,6 +9,7 @@ import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { InteriorCombination, InteriorSection, InvalidText } from "components";
 import { Button, Modal, SubTitle, Title } from "components/common";
 import { useDynamicImport } from "hooks/useDynamicImport";
+import { useImageResize } from "hooks/useImageResize";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { useModalStore, useServiceStore } from "store";
 
@@ -23,7 +24,6 @@ const UpdatePost = () => {
   const { fetchDetailMutation, updatePostMutation } = usePostsQuery();
   const { data: postData } = fetchDetailMutation;
 
-  const [previewImg, setPreviewImg] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -35,14 +35,16 @@ const UpdatePost = () => {
   const titleValue = watch("title") ?? 0;
   const contentValue = watch("content") ?? 0;
   const { onOpenModal, onCloseModal } = useModalStore();
+  const { resizePixelHandler, resizeFile, imageSizeSaveHandler, imageFile, setImageFile } = useImageResize();
   const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
   const { preFetchPageBeforeEnter } = useDynamicImport();
 
+  if (postData === undefined) return;
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if (postData === undefined) return;
-    const postImgFile = data.file[0];
+    const imageFile = data.file[0];
     const fileUuid = uuid();
-    const postImage = postImgFile === undefined ? postData.postImage : `/postImg/${fileUuid}`;
+    const postImage = imageFile === undefined ? postData.postImage : `/postImg/${fileUuid}`;
 
     if (wallPaper.left.id !== null && wallpaperPaint.right !== null) {
       toast("벽지와 페인트는 동시 선택할 수 없습니다.", { theme: "failure", zIndex: 9999 });
@@ -110,8 +112,11 @@ const UpdatePost = () => {
       if (postData.postImage !== null) {
         await deletePostImage(postData.postImage);
       }
-      if (postImgFile !== null) {
-        await savePostImageHandler({ UUID: fileUuid, postImgFile });
+      if (imageFile !== null && imageFile !== undefined) {
+        const resizePixel = await resizePixelHandler(1000);
+        const resizeImageFile = await resizeFile(imageFile, resizePixel);
+        if (resizeImageFile === undefined) return;
+        await savePostImageHandler({ UUID: fileUuid, resizeImageFile });
       }
       updatePostMutation.mutate(updateData);
       navigate("/community");
@@ -122,19 +127,6 @@ const UpdatePost = () => {
     resetWallPaper();
     resetWallpaperPaint();
     resetTile();
-  };
-
-  const onFileChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files === null) return;
-    setPreviewImg(URL.createObjectURL(event.target.files[0]));
-  };
-
-  const moveToCommunity = () => {
-    navigate("community");
-  };
-
-  const moveToBack = () => {
-    navigate(-1);
   };
 
   useEffect(() => {
@@ -224,8 +216,8 @@ const UpdatePost = () => {
           </p>
         </div>
 
-        {previewImg !== null ? (
-          <img src={previewImg} alt="미리보기 이미지" className="object-contain w-80" />
+        {imageFile !== null ? (
+          <img src={URL.createObjectURL(imageFile)} alt="미리보기 이미지" className="object-contain w-80" />
         ) : postData?.postImage !== null ? (
           <img src={`${STORAGE_URL}${postData?.postImage}`} alt="포스트 이미지" className="object-contain w-80" />
         ) : null}
@@ -238,13 +230,17 @@ const UpdatePost = () => {
             type="file"
             accept="image/png, image/jpeg, image/gif"
             className="w-full body-3 focus:outline-none"
-            {...register("file", { onChange: onFileChangeHandler })}
+            {...register("file", {
+              onChange: (e) => {
+                imageSizeSaveHandler(e);
+              },
+            })}
           />
           <button
             type="button"
             onClick={() => {
               resetField("file");
-              setPreviewImg(null);
+              setImageFile(null);
             }}
             className="w-[160px] h-12 xs:w-[100px] border border-gray-300 rounded-[8px]"
           >
@@ -255,7 +251,9 @@ const UpdatePost = () => {
           <button
             type="button"
             className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
-            onClick={moveToCommunity}
+            onClick={() => {
+              navigate("/community");
+            }}
           >
             커뮤니티 이동
           </button>
@@ -263,7 +261,9 @@ const UpdatePost = () => {
             <button
               type="button"
               className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
-              onClick={moveToBack}
+              onClick={() => {
+                navigate(-1);
+              }}
             >
               이전으로
             </button>

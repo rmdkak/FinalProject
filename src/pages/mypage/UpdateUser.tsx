@@ -1,4 +1,4 @@
-import { type ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-simple-toasts";
@@ -29,6 +29,7 @@ import {
   DeleteConfirmText,
 } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
+import { useImageResize } from "hooks/useImageResize";
 import Error from "pages/Error";
 import { useAuthStore } from "store";
 
@@ -49,6 +50,7 @@ const UpdateUser = () => {
   const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
   const [checkedDuplicate, setCheckedDuplicate] = useState(false);
   const [isOpenToggle, setIsOpenToggle] = useState({ name: false, password: false });
+  const { imageFile, setImageFile, resizePixelHandler, imageSizeSaveHandler, resizeFile } = useImageResize();
 
   const { currentUserResponse, patchUserMutation } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
@@ -74,20 +76,26 @@ const UpdateUser = () => {
     formState: { errors },
   } = useForm<UpdateInput>();
 
-  const changeProfileImgHandler = async (event: ChangeEvent<HTMLInputElement>) => {
+  const submitProfileImgHandler: SubmitHandler<UpdateInput> = async () => {
     const uid = uuid();
-    if (event.target.files === null) return;
-    const imgFile = event.target.files[0];
-    if (imgFile === undefined) return;
+    if (imageFile === null) return;
+
+    const resizePixel = await resizePixelHandler(160);
+    const resizeImageFile = await resizeFile(imageFile, resizePixel);
+    if (resizeImageFile === undefined) return;
 
     const profileImg = `${STORAGE_URL}/profileImg/${uid}`;
     await deleteImage(prevProfileImageId);
     patchUserMutation.mutate({ inputValue: { avatar_url: profileImg }, userId });
     await changeMetaAvatar(profileImg);
-    void uploadImage({ file: imgFile, userId: uid });
+    void uploadImage({ file: resizeImageFile, userId: uid });
+    setImageFile(null);
   };
 
   const resetImgFile = async () => {
+    if (imageFile !== null) {
+      setImageFile(null);
+    }
     if (currentProfileImg !== "") {
       await deleteImage(prevProfileImageId);
       await changeMetaAvatar("");
@@ -160,7 +168,7 @@ const UpdateUser = () => {
     <div className="relative mx-auto flex-column m-[60px] max-w-[1280px] w-[90%] sm:my-6">
       <Title title="회원정보수정" isBorder={true} pathName="/mypage/update" />
       <div className="flex w-full mt-10 sm:flex-col sm:gap-10 sm:contents-center">
-        <div className="flex-column items-center w-[328px] gap-9">
+        <form onSubmit={handleSubmit(submitProfileImgHandler)} className="flex-column items-center w-[328px] gap-9">
           <div className="relative w-[120px]">
             <picture>
               <source srcSet={currentProfileImg === "" ? defaultImgWebp : currentProfileImg} type="image/webp" />
@@ -178,7 +186,9 @@ const UpdateUser = () => {
                 id="profileImgButton"
                 type="file"
                 accept="image/png, image/jpeg, image/gif"
-                onChange={changeProfileImgHandler}
+                onChange={(event) => {
+                  imageSizeSaveHandler(event);
+                }}
                 className="hidden"
               />
               <div className="h-2 border bg-gray06" />
@@ -186,7 +196,8 @@ const UpdateUser = () => {
             </div>
           </div>
           <p className="title-4">{`${currentName} 님`}</p>
-        </div>
+          {imageFile !== null && <button className="w-32 h-12 rounded-lg point-button body-3">이미지 변경하기</button>}
+        </form>
         <div className="flex-column contents-center w-[624px] sm:w-full lg:w-full md:w-full">
           <div className="w-full gap-6 flex-column sm:w-full">
             <div className="gap-2 border-b pb-7 flex-column border-b-gray06 md:contents-center sm:contents-center sm:w-full">

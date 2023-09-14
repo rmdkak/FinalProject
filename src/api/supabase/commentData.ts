@@ -23,8 +23,8 @@ export const createCommentsHandler = async (commentData: Tables<"COMMENTS", "Ins
 };
 
 // post(스토리지 저장)
-export const saveCommentImageHandler = async ({ id, commentImgFile }: { id: string; commentImgFile: Blob }) => {
-  const { error } = await supabase.storage.from("Images").upload(`commentImg/${id}`, commentImgFile, {
+export const saveCommentImageHandler = async ({ id, resizeImageFile }: { id: string; resizeImageFile: Blob }) => {
+  const { error } = await supabase.storage.from("Images").upload(`commentImg/${id}`, resizeImageFile, {
     cacheControl: "3600",
     upsert: false,
   });

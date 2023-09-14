@@ -197,7 +197,7 @@ export const PostData = ({ postData }: Props) => {
       )}
       <div className="flex-column gap-5 mt-[15px] mb-[50px] px-3">
         {postData?.postImage !== null && postData?.postImage !== undefined && (
-          <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[640px]" />
+          <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[500px]" />
         )}
         <pre className="w-full break-words whitespace-pre-wrap ">{postData?.content}</pre>
       </div>

@@ -4,6 +4,7 @@ import uuid from "react-uuid";
 
 import { uploadEventImg } from "api/supabase/admin";
 import { useAdminQuery } from "hooks/useAdminQuery";
+import { useImageResize } from "hooks/useImageResize";
 import { useAuthStore } from "store";
 
 interface Inputs {
@@ -23,7 +24,7 @@ const TEXTAREA_PLACEHOLDER = `이벤트 내용 or 서브 타이틀 내용을 입
 const EventForm = () => {
   const { currentUserId } = useAuthStore();
   const { addEventMutation } = useAdminQuery();
-
+  const { resizePixelHandler, imageSizeSaveHandler, resizeFile } = useImageResize();
   const {
     register,
     handleSubmit,
@@ -55,8 +56,11 @@ const EventForm = () => {
     }
 
     try {
-      await uploadEventImg({ UUID, eventImgFile });
-
+      const resizePixel = await resizePixelHandler(2464);
+      const resizeImageFile = await resizeFile(eventImgFile, resizePixel);
+      if (resizeImageFile !== undefined) {
+        await uploadEventImg({ UUID, eventImgFile: resizeImageFile });
+      }
       addEventMutation.mutate(eventData);
       toast("작성이 완료되었습니다.", { theme: "warning", zIndex: 9999 });
     } catch (error) {
@@ -101,6 +105,9 @@ const EventForm = () => {
             className="w-full text-[14px] focus:outline-none"
             {...register("file", {
               required: "이미지 파일을 넣어주세요.",
+              onChange: (e) => {
+                imageSizeSaveHandler(e);
+              },
             })}
           />
         </div>

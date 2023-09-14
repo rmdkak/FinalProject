@@ -81,10 +81,10 @@ const Home = () => {
               {ShowBestRankingPreview()}
             </Flicking>
           </div>
-          <Flicking inputType={["touch", "mouse"]} ref={flicking1} align={"prev"} circular={true}>
-            {ShowBestRankingElements()}
-          </Flicking>
         </div>
+        <Flicking inputType={["touch", "mouse"]} ref={flicking1} align={"prev"} circular={true} interruptable={false}>
+          {ShowBestRankingElements()}
+        </Flicking>
       </div>
       <div className="home-section mb-[120px] sm:w-full sm:mb-5 md:w-full md:px-6 lg:w-full lg:px-6">
         <HomeContentsTitle title={"이벤트"} page={"eventlist"} type={"useAll"} />
