@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase/supabaseClient";
-import noImage from "assets/no_image.png";
+import noImage from "assets/no_image.jpg";
+import noImage_webp from "assets/no_image_webp.webp";
 import { DateConvertor, CommunitySkeleton, type PostDataChain } from "components";
 
 import { useDynamicImport } from "./useDynamicImport";
@@ -92,11 +93,17 @@ export const usePostsData = () => {
               navigate(`/detail/${post.id}`);
             }}
           >
-            <img
-              src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
-              alt="postImg"
-              className="w-[400px] h-[400px] rounded-lg object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] lg:h-[300px]"
-            />
+            <picture>
+              <source
+                srcSet={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage_webp}
+                type="image/webp"
+              />
+              <img
+                src={post.postImage !== null ? `${STORAGE_URL}${post.postImage}` : noImage}
+                alt="postImg"
+                className="w-[400px] h-[400px] rounded-lg object-cover md:w-[260px] md:h-[260px] sm:w-[260px] sm:h-[260px] lg:h-[300px]"
+              />
+            </picture>
 
             <div className="flex items-center justify-between h-12 my-3">
               <p className="text-[20px] font-semibold line-clamp-2 sm:text-[16px] sm:w-[118px] md:text-[16px] md:w-[118px] w-[240px]">

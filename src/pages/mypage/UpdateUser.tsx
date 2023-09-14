@@ -16,6 +16,7 @@ import {
 } from "api/supabase/auth";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
 import { PasswordVisibleButton, InvalidText, Title, passwordValid, nameValid, useDialog } from "components";
@@ -150,7 +151,7 @@ const UpdateUser = () => {
       await logout();
       navigate("/");
       toast("정상적으로 탈퇴되었습니다.", { theme: "plain", zIndex: 9999 });
-      if (prevProfileImageId !== "defaultImg") {
+      if (prevProfileImageId !== "") {
         void deleteImage(prevProfileImageId);
       }
     }
@@ -163,11 +164,14 @@ const UpdateUser = () => {
         {/* 프로필 이미지 */}
         <div className="flex-column items-center w-[328px] gap-9">
           <div className="relative w-[120px]">
-            {currentProfileImg === "" ? (
-              <img src={defaultImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
-            ) : (
-              <img src={currentProfileImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
-            )}
+            <picture>
+              <source srcSet={defaultImgWebp} type="image/webp" />
+              <img
+                src={currentProfileImg === "" ? defaultImg : currentProfileImg}
+                alt="프로필이미지"
+                className="w-32 h-32 rounded-full"
+              />
+            </picture>
             <div className="absolute bottom-0 flex items-center justify-center w-20 h-8 gap-2 -translate-x-1/2 bg-white border rounded-lg left-1/2 translate-y-1/4">
               <label htmlFor="profileImgButton">
                 <img src={photoCamera} className="w-4 h-4 cursor-pointer" />
