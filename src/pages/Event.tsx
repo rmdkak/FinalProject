@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+// import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor } from "components";
 import { useAdminQuery } from "hooks/useAdminQuery";
 export const Event = () => {
@@ -32,11 +33,17 @@ export const Event = () => {
         <div className="gap-4 flex-column my-9 sm:my-4 sm:mx-3">
           <h2 className="text-[18px] font-semibold sm:text-base">{eventDetailData?.title}</h2>
           <div className="flex items-center gap-2 text-gray02 text-[14px] sm:text-xs">
-            <img
-              src={eventDetailData?.USERS?.avatar_url === "" ? defaultImg : eventDetailData?.USERS?.avatar_url}
-              alt="userImg"
-              className="w-8 h-8 border rounded-full border-gray05 sm:w-6 sm:h-6"
-            />
+            <picture>
+              <source
+                // srcSet={eventDetailData?.USERS?.avatar_url === "" ? defaultImgWebp : eventDetailData?.USERS?.avatar_url}
+                type="image/webp"
+              />
+              <img
+                src={eventDetailData?.USERS?.avatar_url === "" ? defaultImg : eventDetailData?.USERS?.avatar_url}
+                alt="userImg"
+                className="w-8 h-8 border rounded-full border-gray05 sm:w-6 sm:h-6"
+              />
+            </picture>
             <p>{eventDetailData?.USERS?.name}</p>
             {eventDetailData?.minDate !== null && eventDetailData?.maxDate !== null && (
               <>

@@ -3,6 +3,7 @@ import { AiOutlineCamera } from "react-icons/ai";
 import { ADMIN_ID, STORAGE_URL } from "api/supabase/supabaseClient";
 import comment_no_img from "assets/comment_no_img.png";
 import defaultImg from "assets/defaultImg.jpg";
+// import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor, type PostDataChain, ReComments } from "components";
 import { useComments } from "hooks/useComments";
 import { useCommentsQuery } from "hooks/useCommentsQuery";
@@ -57,15 +58,17 @@ export const Comments = ({ postData }: CommentProps) => {
             return (
               <div key={comment.id}>
                 <div className="flex py-5 border-b border-gray06 ">
-                  {comment.USERS?.avatar_url === "" ? (
-                    <img src={defaultImg} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
-                  ) : (
+                  <picture>
+                    <source
+                      // srcSet={comment.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                      type="image/webp"
+                    />
                     <img
-                      src={comment.USERS?.avatar_url}
+                      src={comment.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
                       alt="프로필이미지"
                       className="w-[40px] h-[40px] rounded-full"
                     />
-                  )}
+                  </picture>
 
                   <div className="flex flex-col justify-between w-full gap-2 ml-3">
                     <div className="flex items-center gap-2">

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+// import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useAuthStore, useModalStore } from "store";
@@ -65,11 +66,17 @@ export const PostData = ({ postData }: Props) => {
             {postData?.title}
           </label>
           <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px] xs:text-[12px]">
-            <img
-              src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
-              alt="userImg"
-              className="w-8 h-8 border rounded-full xs:w-6 xs:h-6 border-gray05 object"
-            />
+            <picture>
+              <source
+                // srcSet={postData?.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                type="image/webp"
+              />
+              <img
+                src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
+                alt="userImg"
+                className="w-8 h-8 border rounded-full xs:w-6 xs:h-6 border-gray05 object"
+              />
+            </picture>
             <p>{postData?.USERS !== null ? postData?.USERS.name : null}</p>
             <DateConvertor datetime={postData?.created_at} type="dotDate" />
             <div className="flex items-center gap-1">
