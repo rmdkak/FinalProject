@@ -6,7 +6,7 @@ import { type Tables } from "types/supabase";
 
 type PickImg = Pick<Tables<"WALLPAPER", "Row">, "image">;
 
-export const Error = () => {
+const Error = () => {
   const [randomImg, setRandomImg] = useState<PickImg[]>();
   const [currentIdx, setCurrentIdx] = useState<number>(0);
   const [errorImg, setErrorImg] = useState<string>("/wallpaper/003b3abe-d70a-49e5-98b6-059bf055d32b");
@@ -67,3 +67,4 @@ export const Error = () => {
     </div>
   );
 };
+export default Error;

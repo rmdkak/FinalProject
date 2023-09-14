@@ -8,7 +8,7 @@ import { useModalStore } from "store";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
-export const MyBookmark = () => {
+const MyBookmark = () => {
   const [bookmarkIdsToDelete, setBookmarkIdsToDelete] = useState<string[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const { targetModal, setTargetModal, onOpenModal } = useModalStore();
@@ -43,7 +43,7 @@ export const MyBookmark = () => {
 
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
-      <Title title="마이페이지" isBorder={false} />
+      <Title title="마이페이지" isBorder={false} pathName="mypage" />
       <SubTitle type="myBookmark" />
       {pageData.length === 0 ? (
         <EmptyData type="myBookmark" />
@@ -134,3 +134,5 @@ export const MyBookmark = () => {
     </div>
   );
 };
+
+export default MyBookmark;

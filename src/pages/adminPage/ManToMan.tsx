@@ -16,7 +16,7 @@ interface Input {
 
 export const manToManCategory = ["문의", "칭찬", "제안", "불만"];
 
-export const ManToMan = ({ setLength }: Props) => {
+const ManToMan = ({ setLength }: Props) => {
   const { fetchManToManMutation, deleteManToManMutation, patchManToManMutation } = useAdminQuery();
   const { data: manToManData } = fetchManToManMutation;
 
@@ -147,3 +147,5 @@ export const ManToMan = ({ setLength }: Props) => {
     </div>
   );
 };
+
+export default ManToMan;

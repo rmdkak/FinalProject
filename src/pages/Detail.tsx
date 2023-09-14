@@ -6,7 +6,7 @@ import { useMovePage } from "hooks/useMovePage";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { useLikeStore } from "store";
 
-export const Detail = () => {
+const Detail = () => {
   const [openShareModal, setOpenShareModal] = useState<boolean>(false);
   const { setCurrentPathname } = useMovePage();
   setCurrentPathname();
@@ -37,3 +37,5 @@ export const Detail = () => {
     </div>
   );
 };
+
+export default Detail;

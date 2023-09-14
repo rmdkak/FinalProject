@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 
 import { ADMIN_ID } from "api/supabase/supabaseClient";
-import { type MypageInfo } from "pages";
+import { useDynamicImport } from "hooks/useDynamicImport";
+import { type MypageInfo } from "pages/mypage/Mypage";
 
 interface Props {
   mypageInfoArray: MypageInfo[];
@@ -11,13 +12,18 @@ interface Props {
 const BR_STYLE = "absolute w-px h-10 bg-gray06 -left-px top-1/2 -translate-y-1/2";
 
 export const MyActiveCountBox = ({ mypageInfoArray, adminCheck }: Props) => {
+  const { preFetchPageBeforeEnter } = useDynamicImport();
+
   return (
     <div className="flex w-[80%] sm:w-[88%] h-[200px] items-start py-3 border border-gray05 rounded-xl sm:h-full">
       {mypageInfoArray.map((mypageInfo) => {
         if (mypageInfo.title === "문의&신고" && adminCheck === ADMIN_ID) {
           return (
             <Link
-              to={"/adminpage"}
+              to="/adminpage"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("adminpage");
+              }}
               key={mypageInfo.title}
               className="relative w-[206px] h-full gap-6 flex-column contents-center"
             >
@@ -35,6 +41,9 @@ export const MyActiveCountBox = ({ mypageInfoArray, adminCheck }: Props) => {
           <Link
             to={mypageInfo.link}
             key={mypageInfo.title}
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter(mypageInfo.link);
+            }}
             className="relative w-[206px] h-full gap-6 flex-column contents-center"
           >
             <div className="gap-3 flex-column contents-center">

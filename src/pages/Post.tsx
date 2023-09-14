@@ -7,10 +7,10 @@ import uuid from "react-uuid";
 import { savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { Button, InteriorSection, Modal, SubTitle } from "components";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
-
 interface Inputs {
   title: string;
   textarea: string;
@@ -28,11 +28,12 @@ interface SelectedData {
   tile: WallorTile | null;
 }
 
-export const Post = () => {
+const Post = () => {
   const { currentSession, currentUserId } = useAuthStore();
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   const { createPostMutation } = usePostsQuery();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const {
     register,
@@ -138,6 +139,10 @@ export const Post = () => {
       navigate("/login");
     }
   }, [currentSession]);
+
+  useEffect(() => {
+    void preFetchPageBeforeEnter("community");
+  }, []);
 
   const movePageHandler = (moveEvent: string) => {
     switch (moveEvent) {
@@ -304,3 +309,5 @@ export const Post = () => {
     </div>
   );
 };
+
+export default Post;

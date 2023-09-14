@@ -8,6 +8,7 @@ import { deletePostImage, savePostImageHandler } from "api/supabase/postData";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { InteriorCombination, InteriorSection, InvalidText } from "components";
 import { Button, Modal, SubTitle, Title } from "components/common";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { useModalStore, useServiceStore } from "store";
 
@@ -17,7 +18,7 @@ interface Inputs {
   file: FileList;
 }
 
-export const UpdatePost = () => {
+const UpdatePost = () => {
   const navigate = useNavigate();
   const { fetchDetailMutation, updatePostMutation } = usePostsQuery();
   const { data: postData } = fetchDetailMutation;
@@ -35,6 +36,7 @@ export const UpdatePost = () => {
   const contentValue = watch("content") ?? 0;
   const { onOpenModal, onCloseModal } = useModalStore();
   const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (postData === undefined) return;
@@ -136,6 +138,7 @@ export const UpdatePost = () => {
   };
 
   useEffect(() => {
+    void preFetchPageBeforeEnter("community");
     if (postData === undefined) return;
     setValue("title", postData.title);
     setValue("content", postData.content);
@@ -145,7 +148,7 @@ export const UpdatePost = () => {
 
   return (
     <div className="max-w-[1280px] w-full min-w-[360px] mx-auto px-6 xs:text-[12px] pt-6">
-      <Title title="커뮤니티" isBorder={true} />
+      <Title title="커뮤니티" isBorder={true} pathName="community" />
       <SubTitle type="post" />
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b border-gray06 h-[72px] items-center">
@@ -271,3 +274,5 @@ export const UpdatePost = () => {
     </div>
   );
 };
+
+export default UpdatePost;

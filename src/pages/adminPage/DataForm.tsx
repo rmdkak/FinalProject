@@ -5,7 +5,7 @@ import uuid from "react-uuid";
 import { addTileData, addWallpaperData, uploadTileImageHandler, uploadWallpaperImageHandler } from "api/supabase/admin";
 import { Select } from "components";
 
-export const DataForm = () => {
+const DataForm = () => {
   const [newImg, setNewImg] = useState<Blob | null>();
   const [selectType, setSelectType] = useState<string | undefined>();
   const [selectTexture, setSelectTexture] = useState<string | undefined>();
@@ -99,3 +99,4 @@ export const DataForm = () => {
     </>
   );
 };
+export default DataForm;

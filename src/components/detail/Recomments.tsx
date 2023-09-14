@@ -2,6 +2,7 @@ import { PiArrowBendDownRightThin } from "react-icons/pi";
 
 import { ADMIN_ID } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor } from "components/common";
 import { useComments } from "hooks/useComments";
 import { type Tables } from "types/supabase";
@@ -50,12 +51,14 @@ export const ReComments = ({ comment, detailData, currentUserId, openReply, setO
         <div key={reply.id} className="border-b border-[#E5E5E5]">
           <div className="flex py-[15px]">
             <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
-
-            {reply.USERS?.avatar_url === "" ? (
-              <img src={defaultImg} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
-            ) : (
-              <img src={reply.USERS?.avatar_url} alt="프로필이미지" className="w-[40px] h-[40px] rounded-full" />
-            )}
+            <picture>
+              <source srcSet={defaultImgWebp} type="image/webp" />
+              <img
+                src={reply.USERS?.avatar_url === "" ? defaultImg : reply.USERS?.avatar_url}
+                alt="프로필이미지"
+                className="w-[40px] h-[40px] rounded-full"
+              />
+            </picture>
 
             <div className="flex flex-col w-full gap-1 ml-3">
               <div className="flex gap-2">

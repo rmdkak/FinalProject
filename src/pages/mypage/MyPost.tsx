@@ -2,14 +2,17 @@ import { type ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { CheckBoxIcon, DateConvertor, EmptyData, SubTitle, Title } from "components";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
 import { useSearchBar } from "hooks/useSearchBar";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
-export const MyPost = () => {
+const MyPost = () => {
   const [postIdsToDelete, setPostIdsToDelete] = useState<string[]>([]);
+
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const filteredPostIdsHandler = (selectId: string) => {
     return postIdsToDelete.filter((id) => id !== selectId);
@@ -44,7 +47,7 @@ export const MyPost = () => {
 
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
-      <Title title="마이페이지" isBorder={false} />
+      <Title title="마이페이지" isBorder={false} pathName="mypage" />
       <SubTitle type="myPost" />
 
       {pageData.length === 0 ? (
@@ -76,6 +79,9 @@ export const MyPost = () => {
                   <Link
                     to={`/detail/${post.id as string}`}
                     className="w-[87%] body-3 h-full flex items-center sm:w-full sm:justify-start"
+                    onMouseEnter={async () => {
+                      await preFetchPageBeforeEnter("detail");
+                    }}
                   >
                     {post.title}
                   </Link>
@@ -88,6 +94,9 @@ export const MyPost = () => {
                 <Link
                   to={`/updatepost/${post.id as string}`}
                   className="flex w-20 h-8 rounded-lg contents-center gray-outline-button sm:hidden"
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("detail");
+                  }}
                 >
                   이동하기
                 </Link>
@@ -107,3 +116,5 @@ export const MyPost = () => {
     </div>
   );
 };
+
+export default MyPost;

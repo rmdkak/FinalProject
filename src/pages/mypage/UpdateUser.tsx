@@ -16,10 +16,12 @@ import {
 } from "api/supabase/auth";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
 import { PasswordVisibleButton, InvalidText, Title, passwordValid, nameValid, useDialog } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
+import Error from "pages/Error";
 import { useAuthStore } from "store";
 
 import type { PasswordVisible } from "components";
@@ -32,7 +34,7 @@ interface UpdateInput {
 
 const LABEL_STYLE = "self-center w-[136px] px-[24px] text-[14px] font-normal leading-[130%]";
 
-export const UpdateUser = () => {
+const UpdateUser = () => {
   const navigate = useNavigate();
   const { Confirm } = useDialog();
 
@@ -46,7 +48,7 @@ export const UpdateUser = () => {
 
   if (currentUser === undefined || currentUserId === undefined) {
     navigate("/");
-    return <></>;
+    return <Error />;
   }
 
   const { name: currentName, avatar_url: currentProfileImg } = currentUser;
@@ -149,29 +151,27 @@ export const UpdateUser = () => {
       await logout();
       navigate("/");
       toast("정상적으로 탈퇴되었습니다.", { theme: "plain", zIndex: 9999 });
-      if (prevProfileImageId !== "defaultImg") {
+      if (prevProfileImageId !== "") {
         void deleteImage(prevProfileImageId);
       }
     }
   };
 
-  if (currentUser === undefined) {
-    navigate("/");
-    return <p>에러페이지</p>;
-  }
-
   return (
     <div className="flex-column m-[60px] w-[1280px] mx-auto">
-      <Title title="회원정보수정" isBorder={true} />
+      <Title title="회원정보수정" isBorder={true} pathName="/mypage/update" />
       <div className="flex w-full mt-10">
         {/* 프로필 이미지 */}
         <div className="flex-column items-center w-[328px] gap-9">
           <div className="relative w-[120px]">
-            {currentProfileImg === "" ? (
-              <img src={defaultImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
-            ) : (
-              <img src={currentProfileImg} alt="프로필 이미지" className="w-32 h-32 rounded-full" />
-            )}
+            <picture>
+              <source srcSet={defaultImgWebp} type="image/webp" />
+              <img
+                src={currentProfileImg === "" ? defaultImg : currentProfileImg}
+                alt="프로필이미지"
+                className="w-32 h-32 rounded-full"
+              />
+            </picture>
             <div className="absolute bottom-0 flex items-center justify-center w-20 h-8 gap-2 -translate-x-1/2 bg-white border rounded-lg left-1/2 translate-y-1/4">
               <label htmlFor="profileImgButton">
                 <img src={photoCamera} className="w-4 h-4 cursor-pointer" />
@@ -351,3 +351,5 @@ export const UpdateUser = () => {
     </div>
   );
 };
+
+export default UpdateUser;

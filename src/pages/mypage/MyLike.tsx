@@ -2,18 +2,21 @@ import { useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
 import { CheckBoxIcon, DateConvertor, EmptyData, SubTitle, Title } from "components";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useMypageQuery } from "hooks/useMypageQuery";
 import { usePagination } from "hooks/usePagination";
 import { useSearchBar } from "hooks/useSearchBar";
 
 import { MYPAGE_LAYOUT_STYLE } from "./Mypage";
 
-export const MyLike = () => {
+const MyLike = () => {
   const [likeIdsToDelete, setLikeIdsToDelete] = useState<string[]>([]);
 
   const filteredLikeIdsHandler = (selectId: string) => {
     return likeIdsToDelete.filter((id) => id !== selectId);
   };
+
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const { userLikesResponse, deleteUserLikeMutation } = useMypageQuery();
   const { data: userLikeData } = userLikesResponse;
@@ -43,7 +46,7 @@ export const MyLike = () => {
 
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
-      <Title title="마이페이지" isBorder={false} />
+      <Title title="마이페이지" isBorder={false} pathName="mypage" />
       <SubTitle type="myLike" />
       {pageData.length === 0 ? (
         <EmptyData type="myLike" />
@@ -75,6 +78,9 @@ export const MyLike = () => {
                   <Link
                     to={`/detail/${post.id as string}`}
                     className="w-[87%] body-3 h-full flex items-center sm:w-full sm:justify-start"
+                    onMouseEnter={async () => {
+                      await preFetchPageBeforeEnter("detail");
+                    }}
                   >
                     {post.title}
                   </Link>
@@ -87,6 +93,9 @@ export const MyLike = () => {
                 <Link
                   to={`/detail/${post.id as string}`}
                   className="flex w-20 h-8 rounded-lg contents-center gray-outline-button sm:hidden"
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("detail");
+                  }}
                 >
                   이동하기
                 </Link>
@@ -106,3 +115,5 @@ export const MyLike = () => {
     </div>
   );
 };
+
+export default MyLike;

@@ -28,7 +28,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
 
   return (
     <div className="items-center max-w-[560px] mx-auto flex-column my-14 sm:my-6">
-      <Title title="회원가입" isBorder={true} />
+      <Title title="회원가입" isBorder={true} pathName="signup" />
       <SignupStep step={0} />
       <ul className="w-[85%]">
         <li className="flex items-center w-full pt-4 border-b border-black pb-7">

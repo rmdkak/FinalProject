@@ -4,6 +4,7 @@ import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import { useNavigate } from "react-router-dom";
 
 import { useDialog } from "components/common";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore } from "store";
 
 export const Toolbar = () => {
@@ -11,9 +12,11 @@ export const Toolbar = () => {
   const navigate = useNavigate();
   const { Confirm } = useDialog();
   const [scrollPercent, setScrollPercent] = useState<number>(0);
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const movePostPageHandler = async () => {
     if (currentSession === null) {
+      await preFetchPageBeforeEnter("login");
       const confirmCheck = await Confirm(
         <div>
           <div className="flex text-[18px] justify-center mb-2.5">

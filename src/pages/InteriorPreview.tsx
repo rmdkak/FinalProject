@@ -5,16 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import share from "assets/svgs/icon_share.svg";
-import { GetColor, InteriorSection, ResourcesCalculator, Modal, Preview, Share } from "components";
+import { GetColor, InteriorSection, Modal, Preview, Share } from "components";
+import ResourcesCalculator from "components/service/ResourcesCalculator";
 import { useBookmark } from "hooks/useBookmark";
 import { useBookmarkQuery } from "hooks/useBookmarkQuery";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { useMovePage } from "hooks/useMovePage";
 import { useModalStore, useServiceStore } from "store";
 import { useFurniture } from "store/useFurniture";
 import { type FetchItemBookmark } from "types/service";
 
-export const InteriorPreview = () => {
+const InteriorPreview = () => {
   const { setCurrentPathname } = useMovePage();
   const navigate = useNavigate();
   setCurrentPathname();
@@ -32,6 +34,7 @@ export const InteriorPreview = () => {
   const { addBookmark, deleteBookmark, recommendDesign } = useBookmark();
   const { resetFurnitureState } = useFurniture();
   const { data: currentBookmarkData } = bookmarkResponse;
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const resetState = useCallback(() => {
     resetWallPaper();
@@ -97,7 +100,14 @@ export const InteriorPreview = () => {
                 <BsCalculator className="mr-1 translate-y-1 fill-gray02" />
                 <span>자재 소모량 계산기</span>
               </label>
-              <button className="h-6 ml-2" id="calc" onClick={handleViewportWidth}>
+              <button
+                className="h-6 ml-2"
+                onMouseEnter={async () => {
+                  await preFetchPageBeforeEnter("resourcesCalculator");
+                }}
+                id="calc"
+                onClick={handleViewportWidth}
+              >
                 <img src={calcArrow} alt="오른쪽 화살표 이미지" />
               </button>
               <Modal title="자재 소모량 계산기">
@@ -142,3 +152,5 @@ export const InteriorPreview = () => {
     </div>
   );
 };
+
+export default InteriorPreview;

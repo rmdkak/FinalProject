@@ -1,8 +1,6 @@
 import { AutoPlay, Pagination } from "@egjs/flicking-plugins";
 import Flicking, { ViewportSlot } from "@egjs/react-flicking";
 import { Toolbar } from "components/sidebar";
-import "@egjs/react-flicking/dist/flicking.css";
-import "@egjs/flicking-plugins/dist/pagination.css";
 import { useMovePage } from "hooks/useMovePage";
 import { usePostsData } from "hooks/usePostsData";
 
@@ -11,7 +9,7 @@ const plugins = [
   new Pagination({ type: "bullet" }),
 ];
 
-export const Community = () => {
+const Community = () => {
   const { setCurrentPathname } = useMovePage();
   setCurrentPathname();
   const { CommunityPostsForm, ShowBestPostElements, showPageComponent, SearchBar } = usePostsData();
@@ -49,3 +47,5 @@ export const Community = () => {
     </>
   );
 };
+
+export default Community;

@@ -6,7 +6,7 @@ import { EventCardForm, HomeContentsTitle, HomeKvBanner } from "components/home"
 import { useMovePage } from "hooks/useMovePage";
 import { usePostsData } from "hooks/usePostsData";
 
-export const Home = () => {
+const Home = () => {
   const { setCurrentPathname } = useMovePage();
   setCurrentPathname();
   const { ShowBestPostElements, ShowBestRankingElements, ShowBestRankingPreview } = usePostsData();
@@ -123,3 +123,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;
