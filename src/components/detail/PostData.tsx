@@ -72,7 +72,10 @@ export const PostData = ({ postData }: Props) => {
           </label>
           <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px] xs:text-[12px]">
             <picture>
-              <source srcSet={defaultImgWebp} type="image/webp" />
+              <source
+                srcSet={postData?.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                type="image/webp"
+              />
               <img
                 src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
                 alt="userImg"

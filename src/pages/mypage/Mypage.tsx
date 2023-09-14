@@ -71,7 +71,7 @@ const Mypage = () => {
       <div className="flex w-full gap-[2.5%] mt-8 contents-center sm:flex-col sm:gap-6">
         <div className="relative flex-column contents-center gap-4 w-[17.5%] sm:w-[88%] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           <picture>
-            <source srcSet={defaultImgWebp} type="image/webp" />
+            <source srcSet={profileImg === "" ? defaultImgWebp : profileImg} type="image/webp" />
             <img
               src={profileImg === "" ? defaultImg : profileImg}
               alt="프로필이미지"

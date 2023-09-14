@@ -37,7 +37,10 @@ const Event = () => {
           <h2 className="text-[18px] font-semibold sm:text-base">{eventDetailData?.title}</h2>
           <div className="flex items-center gap-2 text-gray02 text-[14px] sm:text-xs">
             <picture>
-              <source srcSet={defaultImgWebp} type="image/webp" />
+              <source
+                srcSet={eventDetailData?.USERS?.avatar_url === "" ? defaultImgWebp : eventDetailData?.USERS?.avatar_url}
+                type="image/webp"
+              />
               <img
                 src={eventDetailData?.USERS?.avatar_url === "" ? defaultImg : eventDetailData?.USERS?.avatar_url}
                 alt="userImg"

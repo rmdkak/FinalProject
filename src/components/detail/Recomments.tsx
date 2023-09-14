@@ -52,7 +52,10 @@ export const ReComments = ({ comment, detailData, currentUserId, openReply, setO
           <div className="flex py-[15px]">
             <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
             <picture>
-              <source srcSet={defaultImgWebp} type="image/webp" />
+              <source
+                srcSet={reply.USERS?.avatar_url === "" ? defaultImgWebp : reply.USERS?.avatar_url}
+                type="image/webp"
+              />
               <img
                 src={reply.USERS?.avatar_url === "" ? defaultImg : reply.USERS?.avatar_url}
                 alt="프로필이미지"

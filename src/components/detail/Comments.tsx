@@ -60,7 +60,10 @@ export const Comments = ({ postData }: CommentProps) => {
               <div key={comment.id}>
                 <div className="flex py-5 border-b border-gray06 ">
                   <picture>
-                    <source srcSet={defaultImgWebp} type="image/webp" />
+                    <source
+                      srcSet={comment.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                      type="image/webp"
+                    />
                     <img
                       src={comment.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
                       alt="프로필이미지"
