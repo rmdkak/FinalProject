@@ -341,7 +341,7 @@ export const usePostsData = () => {
                 post.leftWallpaperId !== null &&
                 post.rightWallpaperId !== null &&
                 post.tileId !== null && (
-                  <div className="cube">
+                  <div className="home-preview-cube">
                     <div
                       style={{
                         backgroundImage: `url(${createUrl("wallpaper", post.leftWallpaperId)})`,
@@ -369,7 +369,7 @@ export const usePostsData = () => {
                 post.leftColorCode !== null &&
                 post.rightColorCode !== null &&
                 post.tileId !== null && (
-                  <div className="cube">
+                  <div className="home-preview-cube">
                     <div style={{ backgroundColor: `${post.leftColorCode}` }} className="home-preview-left-wall"></div>
                     <div
                       style={{ backgroundColor: `${post.rightColorCode}` }}

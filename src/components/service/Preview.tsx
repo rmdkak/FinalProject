@@ -22,6 +22,7 @@ export const Preview = ({ leftWallPaperBg, RightWallPaperBg, tileBg }: Props) =>
   return (
     <div
       className="flex flex-none z-[5000] contents-center sticky top-[20%] bg-gray03 w-[600px] h-[400px] overflow-hidden rounded-xl
+    xs:!h-[200px]
     sm:w-full sm:top-[64px] sm:h-[350px] sm:rounded-none 
     md:w-full md:top-[80px] md:h-[350px] md:rounded-none
     lg:w-full lg:top-[80px] lg:h-[350px] lg:rounded-none

@@ -21,8 +21,8 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
       return (
         <div className="flex items-center sm:px-6 contents-between">
           <h2 className="section-title">{title}</h2>
-          <div className="sm:hidden">
-            <label htmlFor={page} className="mr-[10px] text-[14px] text-gray02 hover:cursor-pointer">
+          <div>
+            <label htmlFor={page} className="mr-[10px] text-[14px] text-gray02 hover:cursor-pointer sm:hidden">
               VIEW MORE
             </label>
             <button
@@ -34,10 +34,10 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
                 navigate(`/${page as string}`);
               }}
             >
-              <img src={calcArrow} className="view-more-icon" />
+              <img src={calcArrow} className="view-more-icon sm:hidden" alt="view more" />
+              <img src={smViewMore} alt="view more" className="hidden sm:block" />
             </button>
           </div>
-          <img src={smViewMore} alt="view more" className="hidden sm:block" />
         </div>
       );
 
@@ -60,8 +60,8 @@ export const HomeContentsTitle = ({ title, page, type }: Props) => {
               navigate("/interior-preview");
             }}
           >
-            <img src={calcArrow} className="view-more-icon sm:hidden" />
-            <img src={smcalcArrow} className="hidden view-more-icon sm:block" />
+            <img src={calcArrow} className="view-more-icon sm:hidden" alt="view more" />
+            <img src={smcalcArrow} className="hidden view-more-icon sm:block" alt="view more" />
           </button>
         </div>
       );

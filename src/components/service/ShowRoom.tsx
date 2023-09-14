@@ -21,7 +21,7 @@ export const ShowRoom = (Props: Props) => {
 
   const size =
     page === "detail"
-      ? "w-[500px] h-[400px]"
+      ? "w-[500px] h-[400px] sm:w-[300px] sm:h-[200px]"
       : "w-[860px] h-[603px] lg:w-[600px] lg:h-[500px] md:w-[60vw] md:h-[50vh] sm:w-[60vw] sm:h-[50vh]";
 
   if (
@@ -36,7 +36,7 @@ export const ShowRoom = (Props: Props) => {
       <div
         className={`md:max flex flex-none contents-center sticky top-[20%] bg-gray03 overflow-hidden rounded-xl ${size}`}
       >
-        <div className="cube">
+        <div className="show-room-cube">
           <div
             style={{
               backgroundImage: `url(${createUrl("wallpaper", leftWallpaperBg)})`,

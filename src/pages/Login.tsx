@@ -102,6 +102,7 @@ const Login = () => {
             })}
             id="password"
             type={showPassword.password ? "text" : "password"}
+            autoComplete="off"
             placeholder="비밀번호"
             className={`auth-input ${errors.password?.message === undefined ? "" : "border-error"} pr-12`}
           />

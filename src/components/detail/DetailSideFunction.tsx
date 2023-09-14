@@ -124,7 +124,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
       <div className="my-20 border-t flex-column border-gray06 ">
         {prevPage !== undefined && (
           <div
-            className="flex gap-[10px] items-center py-6 border-b border-gray06 hover:cursor-pointer"
+            className="flex gap-[10px] items-center py-6 px-3 border-b border-gray06 hover:cursor-pointer"
             onMouseEnter={async () => {
               await preFetchPageBeforeEnter("detail");
             }}
@@ -142,7 +142,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
         )}
         {nextPage !== undefined && (
           <div
-            className="flex gap-[10px] items-center py-6 border-b border-gray06 hover:cursor-pointer "
+            className="flex gap-[10px] items-center py-6 px-3 border-b border-gray06 hover:cursor-pointer "
             onMouseEnter={async () => {
               await preFetchPageBeforeEnter("detail");
             }}
