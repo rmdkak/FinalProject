@@ -7,6 +7,7 @@ import toast from "react-simple-toasts";
 
 import { login } from "api/supabase/auth";
 import { PasswordVisibleButton, InvalidText, useDialog, SocialLogin, CheckBoxIcon } from "components";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { useMovePage } from "hooks/useMovePage";
 import { useAuthStore } from "store";
 
@@ -15,12 +16,16 @@ export interface LoginInputs {
   password: string;
 }
 
-export const Login = () => {
+const Login = () => {
   const navigate = useNavigate();
   const { Alert } = useDialog();
-  const { currentSession, stayLoggedInStatus, setStayLoggedInStatus } = useAuthStore();
-  const [showPassword, setShowPassword] = useState({ password: false });
   const { getCurrentPathname } = useMovePage();
+
+  const { currentSession, stayLoggedInStatus, setStayLoggedInStatus } = useAuthStore();
+
+  const [showPassword, setShowPassword] = useState({ password: false });
+
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const {
     register,
@@ -127,13 +132,25 @@ export const Login = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link to="/find-auth/email" className="text-[12px] leading-[110%] font-normal hover:text-black">
+            <Link
+              to="/find-auth/email"
+              className="text-[12px] leading-[110%] font-normal hover:text-black"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("find-auth");
+              }}
+            >
               이메일 찾기
             </Link>
 
             <div className="w-[1px] h-2 bg-gray06"></div>
 
-            <Link to="/find-auth/password" className="text-[12px] leading-[110%] font-normal hover:text-black">
+            <Link
+              to="/find-auth/password"
+              className="text-[12px] leading-[110%] font-normal hover:text-black"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("find-auth");
+              }}
+            >
               비밀번호 찾기
             </Link>
           </div>
@@ -157,6 +174,9 @@ export const Login = () => {
           <Link
             to={"/signup"}
             className="flex w-full h-12 rounded-lg auth-button-text contents-center white-outline-button"
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("signup");
+            }}
           >
             회원가입
           </Link>
@@ -165,3 +185,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

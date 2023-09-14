@@ -3,15 +3,18 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
-// import defaultImgWebp from "assets/defaultImgWebp.webp";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor } from "components";
 import { useAdminQuery } from "hooks/useAdminQuery";
-export const Event = () => {
+import { useDynamicImport } from "hooks/useDynamicImport";
+
+const Event = () => {
   const { id: paramsId } = useParams();
   const navigate = useNavigate();
   const { fetchEventDetailMutation, fetchEventMutation } = useAdminQuery();
   const { data: eventDetailData } = fetchEventDetailMutation;
   const { data: eventAllData } = fetchEventMutation;
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   if (eventDetailData === undefined) return <></>;
 
@@ -35,7 +38,7 @@ export const Event = () => {
           <div className="flex items-center gap-2 text-gray02 text-[14px] sm:text-xs">
             <picture>
               <source
-                // srcSet={eventDetailData?.USERS?.avatar_url === "" ? defaultImgWebp : eventDetailData?.USERS?.avatar_url}
+                srcSet={eventDetailData?.USERS?.avatar_url === "" ? defaultImgWebp : eventDetailData?.USERS?.avatar_url}
                 type="image/webp"
               />
               <img
@@ -72,6 +75,9 @@ export const Event = () => {
           이전으로
         </button>
         <button
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter("eventlist");
+          }}
           className="w-40 h-12 text-sm border rounded-lg border-gray05 sm:w-full"
           onClick={() => {
             navigate("/eventlist");
@@ -115,3 +121,4 @@ export const Event = () => {
     </div>
   );
 };
+export default Event;

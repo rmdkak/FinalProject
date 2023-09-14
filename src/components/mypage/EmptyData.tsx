@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 
+import { type PathName, useDynamicImport } from "hooks/useDynamicImport";
+
 import type { DataType } from "./mypage.type";
 
 interface Props {
@@ -7,6 +9,8 @@ interface Props {
 }
 
 export const EmptyData = ({ type }: Props) => {
+  const { preFetchPageBeforeEnter } = useDynamicImport();
+
   const infoText = (type: Omit<DataType, "post">) => {
     switch (type) {
       case "myPost":
@@ -22,18 +26,18 @@ export const EmptyData = ({ type }: Props) => {
     }
   };
 
-  const linkSwitch = (type: Omit<DataType, "post">) => {
+  const linkSwitch = (type: Omit<DataType, "post">): PathName => {
     switch (type) {
       case "myPost":
-        return "/post";
+        return "post";
       case "myComment":
-        return "/community";
+        return "community";
       case "myBookmark":
-        return "/interior-preview";
+        return "interior-preview";
       case "myLike":
-        return "/community";
+        return "community";
       default:
-        return "/inquire";
+        return "inquire";
     }
   };
 
@@ -56,10 +60,22 @@ export const EmptyData = ({ type }: Props) => {
     <>
       <p className="title-4 my-[30px]">{infoText(type)}</p>
       <div className="flex gap-6 sm:flex-col sm:w-full">
-        <Link to={linkSwitch(type)} className="flex contents-center w-[130px] h-12 rounded-full bg-point sm:w-full">
+        <Link
+          to={`/${linkSwitch(type)}`}
+          className="flex contents-center w-[130px] h-12 rounded-full bg-point sm:w-full"
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter(linkSwitch(type));
+          }}
+        >
           {buttonText(type)}
         </Link>
-        <Link to="/mypage" className="flex contents-center w-[130px] h-12 rounded-full bg-gray07 border sm:w-full">
+        <Link
+          to="/mypage"
+          className="flex contents-center w-[130px] h-12 rounded-full bg-gray07 border sm:w-full"
+          onMouseEnter={async () => {
+            await preFetchPageBeforeEnter("mypage");
+          }}
+        >
           마이페이지
         </Link>
       </div>

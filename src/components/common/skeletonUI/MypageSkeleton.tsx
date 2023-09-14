@@ -6,7 +6,7 @@ import { RxBookmark, RxPencil2 } from "react-icons/rx";
 
 import viewMore from "assets/svgs/viewMore.svg";
 import { Title } from "components";
-import { MYPAGE_LAYOUT_STYLE } from "pages";
+import { MYPAGE_LAYOUT_STYLE } from "pages/mypage/Mypage";
 
 const BR_STYLE = "absolute w-px h-10 bg-gray06 -left-px top-1/2 -translate-y-1/2";
 const ICON_SIZE = "w-6 h-6";
@@ -22,7 +22,7 @@ export const MypageSkeleton = () => {
 
   return (
     <div className={MYPAGE_LAYOUT_STYLE}>
-      <Title title="마이페이지" isBorder={true} />
+      <Title title="마이페이지" isBorder={true} pathName="mypage" />
       <div className="flex w-full gap-[2.5%] mt-8 contents-center sm:flex-col sm:gap-6">
         <div className="relative flex-column contents-center gap-4 w-[17.5%] sm:w-[88%] h-[200px] px-6 bg-gray08 rounded-xl border border-gray05">
           <div className="w-[60px] h-[60px] rounded-full text-center justify-center skeleton-effect" />

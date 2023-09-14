@@ -9,7 +9,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-export const Layout = ({ children }: Props) => {
+const Layout = ({ children }: Props) => {
   return (
     <div className="w-full">
       <Header />
@@ -19,3 +19,4 @@ export const Layout = ({ children }: Props) => {
     </div>
   );
 };
+export default Layout;

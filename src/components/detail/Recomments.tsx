@@ -2,7 +2,7 @@ import { PiArrowBendDownRightThin } from "react-icons/pi";
 
 import { ADMIN_ID } from "api/supabase/supabaseClient";
 import defaultImg from "assets/defaultImg.jpg";
-// import defaultImgWebp from "assets/defaultImgWebp.webp";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor } from "components/common";
 import { useComments } from "hooks/useComments";
 import { type Tables } from "types/supabase";
@@ -53,7 +53,7 @@ export const ReComments = ({ comment, detailData, currentUserId, openReply, setO
             <PiArrowBendDownRightThin className="text-[30px] mx-[10px]" />
             <picture>
               <source
-                // srcSet={reply.USERS?.avatar_url === "" ? defaultImgWebp : reply.USERS?.avatar_url}
+                srcSet={reply.USERS?.avatar_url === "" ? defaultImgWebp : reply.USERS?.avatar_url}
                 type="image/webp"
               />
               <img

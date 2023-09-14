@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { ADMIN_ID } from "api/supabase/supabaseClient";
 import { useAuthStore } from "store";
 
-import { DataForm } from "./DataForm";
-import { EventForm } from "./EventForm";
-import { ManToMan } from "./ManToMan";
-import { Report } from "./Report";
+import DataForm from "./DataForm";
+import EventForm from "./EventForm";
+import ManToMan from "./ManToMan";
+import Report from "./Report";
 
-export const AdminPage = () => {
+const AdminPage = () => {
   const navigate = useNavigate();
 
   const [currentTab, setCurrentTab] = useState<string>("문의");
@@ -85,3 +85,5 @@ export const AdminPage = () => {
     </div>
   );
 };
+
+export default AdminPage;

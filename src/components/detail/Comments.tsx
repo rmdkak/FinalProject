@@ -1,9 +1,10 @@
 import { AiOutlineCamera } from "react-icons/ai";
 
 import { ADMIN_ID, STORAGE_URL } from "api/supabase/supabaseClient";
-import comment_no_img from "assets/comment_no_img.png";
+import comment_no_img from "assets/comment_no_img.jpg";
+import comment_no_img_webp from "assets/comment_no_img_webp.webp";
 import defaultImg from "assets/defaultImg.jpg";
-// import defaultImgWebp from "assets/defaultImgWebp.webp";
+import defaultImgWebp from "assets/defaultImgWebp.webp";
 import { DateConvertor, type PostDataChain, ReComments } from "components";
 import { useComments } from "hooks/useComments";
 import { useCommentsQuery } from "hooks/useCommentsQuery";
@@ -43,7 +44,7 @@ export const Comments = ({ postData }: CommentProps) => {
     movePageHandler,
   } = useComments();
 
-  if (detailData === undefined) return;
+  if (detailData === undefined) return <></>;
 
   return (
     <>
@@ -60,7 +61,7 @@ export const Comments = ({ postData }: CommentProps) => {
                 <div className="flex py-5 border-b border-gray06 ">
                   <picture>
                     <source
-                      // srcSet={comment.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                      srcSet={comment.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
                       type="image/webp"
                     />
                     <img
@@ -114,15 +115,18 @@ export const Comments = ({ postData }: CommentProps) => {
                     )}
                     {comment.commentImg === null ? (
                       selectedId === comment.id ? (
-                        <img
-                          src={
-                            selectedCommentImgFile === null
-                              ? comment_no_img
-                              : URL.createObjectURL(selectedCommentImgFile)
-                          }
-                          alt="미리보기"
-                          className="my-[20px] w-[300px] h-[250px]"
-                        />
+                        <picture>
+                          <source srcSet={comment_no_img_webp} type="image/webp" />
+                          <img
+                            src={
+                              selectedCommentImgFile === null
+                                ? comment_no_img
+                                : URL.createObjectURL(selectedCommentImgFile)
+                            }
+                            alt="미리보기"
+                            className="my-[20px] w-[300px] h-[250px]"
+                          />
+                        </picture>
                       ) : (
                         <></>
                       )

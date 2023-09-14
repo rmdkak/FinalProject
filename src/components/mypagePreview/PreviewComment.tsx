@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ArrowButton, DateConvertor } from "components/common";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { type Tables } from "types/supabase";
 
 import { dateStyle, linkStyle, OUTER_BOX_STYLE } from "./preview.style";
@@ -13,10 +14,14 @@ interface Props {
 
 export const PreviewComment = ({ commentData }: Props) => {
   if (commentData === undefined) return <PreviewEmpty />;
+
   const [isOpenComment, setIsOpenComment] = useState<string>();
+  const { preFetchPageBeforeEnter } = useDynamicImport();
+
   const openCommentHandler = (commentId: string) => {
     setIsOpenComment(commentId);
   };
+
   return (
     <ul className={OUTER_BOX_STYLE}>
       {commentData.length === 0 ? <PreviewEmpty /> : null}
@@ -33,7 +38,13 @@ export const PreviewComment = ({ commentData }: Props) => {
                       isOpenComment === comment.id ? openCommentHandler("") : openCommentHandler(comment.id);
                     }}
                   >
-                    <Link to={`/detail/${post.id}`} className={linkStyle}>
+                    <Link
+                      to={`/detail/${post.id}`}
+                      className={linkStyle}
+                      onMouseEnter={async () => {
+                        await preFetchPageBeforeEnter("detail");
+                      }}
+                    >
                       {post.title}
                     </Link>
                     <div className="flex">

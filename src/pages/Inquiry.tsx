@@ -15,7 +15,7 @@ interface Input {
   imgFile: FileList;
 }
 
-export const Inquiry = () => {
+const Inquiry = () => {
   const navigate = useNavigate();
   const { register, handleSubmit, setValue, reset } = useForm<Input>();
   const { getCurrentPathname } = useMovePage();
@@ -56,7 +56,7 @@ export const Inquiry = () => {
   const categoryRadio = (value: string, id: string) => ({ name: "category", type: "radio", value, id });
   return (
     <div className="max-w-[1280px] mx-auto my-10 pb-10 ">
-      <Title title="1 : 1 문의하기" isBorder={true} />
+      <Title title="1 : 1 문의하기" isBorder={true} pathName="inquire" />
       <form onSubmit={handleSubmit(onSubmit)} className="gap-5 px-5 flex-column contents-center">
         <div className="flex w-full gap-4 pb-3 mt-5 border-b-2 border-gray03">
           <label className="flex gap-2" htmlFor="inquire">
@@ -96,3 +96,4 @@ export const Inquiry = () => {
     </div>
   );
 };
+export default Inquiry;

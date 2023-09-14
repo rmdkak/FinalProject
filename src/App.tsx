@@ -9,6 +9,8 @@ import { useAuthStore } from "store";
 import "react-simple-toasts/dist/theme/warning.css";
 import "react-simple-toasts/dist/theme/failure.css";
 import "react-simple-toasts/dist/theme/plain.css";
+import "@egjs/react-flicking/dist/flicking.css";
+import "@egjs/flicking-plugins/dist/pagination.css";
 
 const App = () => {
   const { setCurrentSession, stayLoggedInStatus, setCurrentUserId } = useAuthStore();

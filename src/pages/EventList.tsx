@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { DateConvertor } from "components";
 import { useAdminQuery } from "hooks/useAdminQuery";
+import { useDynamicImport } from "hooks/useDynamicImport";
 import { usePagination } from "hooks/usePagination";
-export const EventList = () => {
+
+const EventList = () => {
   const navigate = useNavigate();
   const { fetchEventMutation } = useAdminQuery();
   const { data: eventAllData } = fetchEventMutation;
+  const { preFetchPageBeforeEnter } = useDynamicImport();
 
   const { pageData, showPageComponent } = usePagination({
     data: eventAllData,
@@ -24,6 +27,9 @@ export const EventList = () => {
         {pageData?.map((eventData) => (
           <div
             key={eventData.id}
+            onMouseEnter={async () => {
+              await preFetchPageBeforeEnter("event");
+            }}
             className="mx-w-[600px] gap-6 flex-column sm:min-w-[312px] sm:gap-4"
             onClick={() => {
               navigate(`/event/${eventData.id as string}`);
@@ -59,3 +65,5 @@ export const EventList = () => {
     </div>
   );
 };
+
+export default EventList;

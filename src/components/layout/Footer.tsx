@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import blog from "assets/footerIcon/blogIcon.svg";
 import github from "assets/footerIcon/githubIcon.svg";
 import notion from "assets/footerIcon/notionIcon.svg";
+import { useDynamicImport } from "hooks/useDynamicImport";
 
 export const Footer = () => {
+  const { preFetchPageBeforeEnter } = useDynamicImport();
   return (
     <>
       <footer className="box-border px-6 mt-10 bg-gray08 flex-column">
@@ -56,6 +58,9 @@ export const Footer = () => {
                 <Link
                   to="/inquire"
                   className="sm:absolute sm:top-0 px-6 py-2 text-xs text-[#888] border rounded-lg border-gray05"
+                  onMouseEnter={async () => {
+                    await preFetchPageBeforeEnter("inquire");
+                  }}
                 >
                   1:1문의하기
                 </Link>
