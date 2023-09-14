@@ -19,7 +19,15 @@ import defaultImg from "assets/defaultImg.jpg";
 import defaultImgWebp from "assets/defaultImgWebp.webp";
 import photoCamera from "assets/svgs/photoCamera.svg";
 import xmark from "assets/svgs/xmark.svg";
-import { PasswordVisibleButton, InvalidText, Title, passwordValid, nameValid, useDialog } from "components";
+import {
+  PasswordVisibleButton,
+  InvalidText,
+  Title,
+  passwordValid,
+  nameValid,
+  useDialog,
+  DeleteConfirmText,
+} from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
 import Error from "pages/Error";
 import { useAuthStore } from "store";
@@ -136,16 +144,7 @@ const UpdateUser = () => {
 
   const deleteAuth = async () => {
     const inputValue = { name: "탈퇴한 유저입니다.", avatar_url: "" };
-    if (
-      await Confirm(
-        <>
-          <p className="w-[400px] pb-6 border-b border-black title-4 font-medium">회원탈퇴</p>
-          <p className="mt-4 text-black body-2">그동안 Stile을 이용해주셔서 감사합니다.</p>
-          <p className="mt-3 body-3 text-gray02">게시글 및 댓글은 탈퇴시 자동삭제 되지 않고 남아있습니다.</p>
-          <p className="body-3 text-gray02">삭제를 원하시는 게시글이 있다면 탈퇴전에 삭제하시기 바랍니다.</p>
-        </>,
-      )
-    ) {
+    if (await Confirm(<DeleteConfirmText />)) {
       await deleteUser(userId);
       patchUserMutation.mutate({ inputValue, userId });
       await logout();
@@ -158,10 +157,9 @@ const UpdateUser = () => {
   };
 
   return (
-    <div className="flex-column m-[60px] w-[1280px] mx-auto">
+    <div className="relative mx-auto flex-column m-[60px] max-w-[1280px] w-[90%] sm:my-6">
       <Title title="회원정보수정" isBorder={true} pathName="/mypage/update" />
-      <div className="flex w-full mt-10">
-        {/* 프로필 이미지 */}
+      <div className="flex w-full mt-10 sm:flex-col sm:gap-10 sm:contents-center">
         <div className="flex-column items-center w-[328px] gap-9">
           <div className="relative w-[120px]">
             <picture>
@@ -189,10 +187,9 @@ const UpdateUser = () => {
           </div>
           <p className="title-4">{`${currentName} 님`}</p>
         </div>
-        <div className="flex contents-center w-[624px]">
-          <div className="w-full gap-6 flex-column">
-            {/* 닉네임 form */}
-            <div className="gap-2 border-b pb-7 flex-column border-b-gray06">
+        <div className="flex-column contents-center w-[624px] sm:w-full lg:w-full md:w-full">
+          <div className="w-full gap-6 flex-column sm:w-full">
+            <div className="gap-2 border-b pb-7 flex-column border-b-gray06 md:contents-center sm:contents-center sm:w-full">
               <div className="flex gap-6">
                 <label htmlFor="nickname" className={LABEL_STYLE}>
                   닉네임
@@ -209,15 +206,14 @@ const UpdateUser = () => {
                 </button>
               </div>
 
-              {/* 토글 이름 변경 폼 */}
               {isOpenToggle.name && (
                 <form onSubmit={handleSubmit(changeNameHandler)} className="flex-column">
-                  <div className="flex gap-6 mt-10">
+                  <div className="flex gap-6 w-[300px] mt-10 sm:flex-col sm:w-full">
                     <input
                       id={"name"}
                       placeholder={"닉네임"}
                       defaultValue={currentName}
-                      className="auth-input w-[300px]"
+                      className="auth-input sm:w-full"
                       {...register("name", {
                         ...nameValid,
                         onChange: () => {
@@ -228,7 +224,7 @@ const UpdateUser = () => {
                     <button
                       type="button"
                       onClick={duplicateCheck}
-                      className="w-32 h-12 rounded-lg gray-outline-button body-3"
+                      className="w-32 h-12 rounded-lg gray-outline-button body-3 sm:w-full"
                     >
                       중복체크
                     </button>
@@ -240,25 +236,24 @@ const UpdateUser = () => {
                   ) : (
                     <InvalidText className="justify-center" errorsMessage={errors.name?.message} size={40} />
                   )}
-                  <div className="flex gap-3">
-                    <button className="w-32 h-12 rounded-lg point-button body-3">수정</button>
+                  <div className="flex items-center justify-start gap-3 sm:justify-center">
                     <button
                       type="button"
-                      className="w-32 h-12 rounded-lg gray-outline-button body-3"
+                      className="w-32 h-12 rounded-lg gray-outline-button body-3 sm:w-full"
                       onClick={() => {
                         toggleChangeHandler("name");
                       }}
                     >
                       취소
                     </button>
+                    <button className="w-32 h-12 rounded-lg point-button body-3 sm:w-full">수정</button>
                   </div>
                 </form>
               )}
             </div>
 
-            {/* 패스워드 */}
-            <div className="gap-2 border-b flex-column border-b-gray06 pb-7">
-              <div className="flex gap-6">
+            <div className="gap-2 border-b pb-7 flex-column border-b-gray06 md:contents-center sm:contents-center sm:w-full">
+              <div className="flex gap-6 ">
                 <label htmlFor="password" className={LABEL_STYLE}>
                   비밀번호
                 </label>
@@ -274,8 +269,8 @@ const UpdateUser = () => {
                 </button>
               </div>
               {isOpenToggle.password && (
-                <form onSubmit={handleSubmit(changePasswordHandler)}>
-                  <div className="flex-column gap-2 w-[300px]">
+                <form onSubmit={handleSubmit(changePasswordHandler)} className="sm:w-full">
+                  <div className="flex-column gap-2 w-[300px] sm:w-full mt-10">
                     <div className="relative">
                       <input
                         placeholder="새 비밀번호"
@@ -308,42 +303,54 @@ const UpdateUser = () => {
                     </div>
                   </div>
                   <InvalidText className={"justify-center"} errorsMessage={errors.password?.message} size={40} />
-                  <div className="flex gap-3">
-                    <button className="w-32 h-12 rounded-lg point-button body-3">수정</button>
+                  <div className="flex items-center justify-start gap-3 sm:justify-center">
                     <button
                       type="button"
-                      className="w-32 h-12 rounded-lg gray-outline-button body-3"
+                      className="w-32 h-12 rounded-lg gray-outline-button body-3 sm:w-full md:w-full"
                       onClick={() => {
                         toggleChangeHandler("password");
                       }}
                     >
                       취소
                     </button>
+                    <button className="w-32 h-12 rounded-lg point-button body-3 sm:w-full md:w-full">수정</button>
                   </div>
                 </form>
               )}
             </div>
-
-            <div className="relative flex items-center justify-center gap-4">
+          </div>
+          <div
+            className={`flex w-full py-6
+          lg:flex-column lg:gap-6 
+          md:w-full md:flex-col md:gap-6 
+          sm:w-full sm:flex-col sm:gap-6`}
+          >
+            <div className="flex items-center justify-center w-full gap-4 sm:w-full md:w-full">
               <button
                 type="button"
-                className="flex contents-center w-[192px] h-12 rounded-lg bg-white gray-outline-button body-3"
+                className="flex w-[192px] h-12 bg-white rounded-lg contents-center gray-outline-button body-3 lg:w-60 sm:w-full md:w-full"
                 onClick={() => {
                   navigate(-1);
                 }}
               >
                 이전
               </button>
-              <div className="-right-[33px] translate-x-full absolute flex items-center gap-3">
-                <p className="body-3 text-gray02">더 이상 이용하지 않으시나요?</p>
-                <button
-                  onClick={deleteAuth}
-                  type="button"
-                  className="w-[120px] h-12 border body-3 border-gray05 text-gray02 rounded-lg"
-                >
-                  회원탈퇴
-                </button>
-              </div>
+            </div>
+
+            <div
+              className={`absolute bottom-0 right-0 flex items-center gap-3 
+            lg:flex-col lg:static lg:contents-center
+            md:flex-col md:static md:contents-center
+            sm:flex-col sm:static sm:contents-center`}
+            >
+              <p className="body-3 text-gray02">더 이상 이용하지 않으시나요?</p>
+              <button
+                onClick={deleteAuth}
+                type="button"
+                className="w-[120px] h-12 border body-3 border-gray05 text-gray02 rounded-lg lg:w-60 md:w-full sm:w-full"
+              >
+                회원탈퇴
+              </button>
             </div>
           </div>
         </div>
