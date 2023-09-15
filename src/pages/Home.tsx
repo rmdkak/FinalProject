@@ -112,7 +112,7 @@ const Home = () => {
         </div>
       </div>
       <div className="mb-[120px] home-section sm:w-full sm:mb-5 md:w-full md:px-6 lg:w-full lg:px-6">
-        <HomeContentsTitle title={"COMMUNITY"} page={"community"} type={"useAll"} />
+        <HomeContentsTitle title={"커뮤니티"} page={"community"} type={"useAll"} />
         <div className="flex w-full sm:hidden">
           <ShowBestPostElements dataLength={3} />
         </div>
