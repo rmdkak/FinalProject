@@ -39,7 +39,7 @@ const UpdatePost = () => {
   const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
   const { preFetchPageBeforeEnter } = useDynamicImport();
 
-  if (postData === undefined) return;
+  if (postData === undefined) return <></>;
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const imageFile = data.file[0];
