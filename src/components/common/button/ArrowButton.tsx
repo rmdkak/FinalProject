@@ -14,7 +14,7 @@ export const ArrowButton = ({ isOpen, openHandler, statusToOpen, statusToClose, 
   };
   return (
     <div onClick={changeOpen} className={className}>
-      {isOpen ? <img className="rotate-180" src={arrowIcon} /> : <img src={arrowIcon} />}
+      {isOpen ? <img className="rotate-180" alt="닫기" src={arrowIcon} /> : <img src={arrowIcon} alt="열기" />}
     </div>
   );
 };

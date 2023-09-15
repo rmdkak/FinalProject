@@ -170,11 +170,11 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
         </button>
         {isHaveBookmark ? (
           <button onClick={deleteLike} className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8">
-            <img src={fillHeart} className="mx-auto text-point sm:w-4 sm:h-4" />
+            <img src={fillHeart} alt="좋아요 취소" className="mx-auto text-point sm:w-4 sm:h-4" />
           </button>
         ) : (
           <button onClick={addLike} className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8">
-            <img src={lineHeart} className="mx-auto text-gray01 sm:w-4 sm:h-4" />
+            <img src={lineHeart} alt="좋아요" className="mx-auto text-gray01 sm:w-4 sm:h-4" />
           </button>
         )}
         <button
@@ -183,7 +183,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
           }}
           className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8"
         >
-          <img src={share} className="mx-auto fill-gray01 sm:w-4 sm:h-4" />
+          <img src={share} alt="공유하기" className="mx-auto fill-gray01 sm:w-4 sm:h-4" />
         </button>
       </div>
     );

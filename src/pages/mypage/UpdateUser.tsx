@@ -180,7 +180,7 @@ const UpdateUser = () => {
             </picture>
             <div className="absolute bottom-0 flex items-center justify-center w-20 h-8 gap-2 -translate-x-1/2 bg-white border rounded-lg left-1/2 translate-y-1/4">
               <label htmlFor="profileImgButton">
-                <img src={photoCamera} className="w-4 h-4 cursor-pointer" />
+                <img src={photoCamera} alt="이미지 등록" className="w-4 h-4 cursor-pointer" />
               </label>
               <input
                 id="profileImgButton"
@@ -192,7 +192,7 @@ const UpdateUser = () => {
                 className="hidden"
               />
               <div className="h-2 border bg-gray06" />
-              <img src={xmark} onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
+              <img src={xmark} alt="닫기" onClick={resetImgFile} className="w-4 h-4 cursor-pointer" />
             </div>
           </div>
           <p className="title-4">{`${currentName} 님`}</p>

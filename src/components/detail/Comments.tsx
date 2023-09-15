@@ -145,6 +145,7 @@ export const Comments = ({ postData }: CommentProps) => {
                     ) : (
                       <img
                         src={`${STORAGE_URL}${comment.commentImg}`}
+                        alt="미리보기"
                         className="my-[20px] w-[300px] h-[250px] border border-gray07"
                       />
                     )}
