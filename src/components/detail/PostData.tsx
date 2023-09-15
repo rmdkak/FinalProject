@@ -65,12 +65,12 @@ export const PostData = ({ postData }: Props) => {
           커뮤니티
         </p>
       </div>
-      <div className="items-center px-3 py-10 border-b xs:flex-column xs:items-start xs:gap-8 contents-between border-gray06">
-        <div>
-          <label htmlFor="title" className="text-[18px] font-semibold xs:text-[16px]">
+      <div className="items-center px-3 py-10 border-b sm:flex-column sm:items-start sm:gap-8 contents-between border-gray06">
+        <div className="w-[70%] sm:w-full">
+          <label htmlFor="title" className="text-[18px] font-semibold sm:text-[14px]">
             {postData?.title}
           </label>
-          <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px] xs:text-[12px]">
+          <div className="flex items-center mt-[14px] gap-2 text-gray02 text-[14px] sm:text-[12px]">
             <picture>
               <source
                 srcSet={postData?.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
@@ -79,7 +79,7 @@ export const PostData = ({ postData }: Props) => {
               <img
                 src={postData?.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
                 alt="userImg"
-                className="w-8 h-8 border rounded-full xs:w-6 xs:h-6 border-gray05 object"
+                className="w-8 h-8 border rounded-full sm:h-6 sm:w-6 border-gray05 object"
               />
             </picture>
             <p>{postData?.USERS !== null ? postData?.USERS.name : null}</p>
@@ -99,52 +99,8 @@ export const PostData = ({ postData }: Props) => {
             </Modal>
           </div>
         </div>
-        {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
-          <div
-            className="flex gap-3"
-            onTouchStart={() => {
-              setPreviewModal(true);
-            }}
-            onMouseEnter={() => {
-              setPreviewModal(true);
-            }}
-            onTouchEnd={() => {
-              setPreviewModal(false);
-            }}
-            onMouseLeave={() => {
-              setPreviewModal(false);
-            }}
-          >
-            <div className="items-center gap-2 flex-column">
-              <img
-                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
-                src={`${STORAGE_URL}/wallpaper/${postData?.leftWallpaperId}`}
-                alt="왼쪽 벽지"
-              />
-              <p className="sm:text-[12px] text-[14px] text-center">좌측벽지</p>
-            </div>
-            <div className="items-center gap-2 flex-column">
-              <img
-                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
-                src={`${STORAGE_URL}/wallpaper/${postData.rightWallpaperId as string}`}
-                alt="오른쪽 벽지"
-              />
-              <p className="sm:text-[12px] text-[14px] text-center">우측벽지</p>
-            </div>
-            <div className="items-center gap-2 flex-column">
-              <img
-                className="w-16 h-16 border rounded-full sm:w-8 sm:h-8 border-gray05"
-                src={`${STORAGE_URL}/tile/${postData.tileId as string}`}
-                alt="바닥재"
-              />
-              <p className="sm:text-[12px] text-[14px] text-center">바닥재</p>
-            </div>
-          </div>
-        )}
-        {postData?.leftColorCode !== null &&
-          postData?.leftColorCode !== undefined &&
-          postData?.rightColorCode !== null &&
-          postData?.rightColorCode !== undefined && (
+        <div className="relative">
+          {postData?.leftWallpaperId !== null && postData?.leftWallpaperId !== undefined && (
             <div
               className="flex gap-3"
               onTouchStart={() => {
@@ -161,26 +117,24 @@ export const PostData = ({ postData }: Props) => {
               }}
             >
               <div className="items-center gap-2 flex-column">
-                <div
-                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
-                  style={{
-                    backgroundColor: postData.leftColorCode,
-                  }}
+                <img
+                  className="w-16 h-16 border rounded-full sm:w-12 sm:h-12 border-gray05"
+                  src={`${STORAGE_URL}/wallpaper/${postData?.leftWallpaperId}`}
+                  alt="왼쪽 벽지"
                 />
                 <p className="sm:text-[12px] text-[14px] text-center">좌측벽지</p>
               </div>
               <div className="items-center gap-2 flex-column">
-                <div
-                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
-                  style={{
-                    backgroundColor: postData.rightColorCode,
-                  }}
+                <img
+                  className="w-16 h-16 border rounded-full sm:w-12 sm:h-12 border-gray05"
+                  src={`${STORAGE_URL}/wallpaper/${postData.rightWallpaperId as string}`}
+                  alt="오른쪽 벽지"
                 />
                 <p className="sm:text-[12px] text-[14px] text-center">우측벽지</p>
               </div>
               <div className="items-center gap-2 flex-column">
                 <img
-                  className="w-16 h-16 border rounded-full border-gray05 sm:w-8 sm:h-8"
+                  className="w-16 h-16 border rounded-full sm:w-12 sm:h-12 border-gray05"
                   src={`${STORAGE_URL}/tile/${postData.tileId as string}`}
                   alt="바닥재"
                 />
@@ -188,19 +142,68 @@ export const PostData = ({ postData }: Props) => {
               </div>
             </div>
           )}
-      </div>
-      {previewModal && (
-        <div className="absolute top-[322px] translate-x-[770px] lg:translate lg:right-[805px] md:right-[805px] sm:right-[805px] sm:top-[217px] xs:left-[-734px] xs:!top-[280px]">
-          <ShowRoom
-            leftWallpaperBg={postData.leftWallpaperId}
-            rightWallpaperBg={postData.rightWallpaperId}
-            leftWallpaperPaintBg={postData.leftColorCode}
-            rightWallpaperPaintBg={postData.rightColorCode}
-            tileBg={postData.tileId}
-            page={"detail"}
-          />
+          {postData?.leftColorCode !== null &&
+            postData?.leftColorCode !== undefined &&
+            postData?.rightColorCode !== null &&
+            postData?.rightColorCode !== undefined && (
+              <div
+                className="flex gap-3"
+                onTouchStart={() => {
+                  setPreviewModal(true);
+                }}
+                onMouseEnter={() => {
+                  setPreviewModal(true);
+                }}
+                onTouchEnd={() => {
+                  setPreviewModal(false);
+                }}
+                onMouseLeave={() => {
+                  setPreviewModal(false);
+                }}
+              >
+                <div className="items-center gap-2 flex-column">
+                  <div
+                    className="w-16 h-16 border rounded-full border-gray05 sm:w-12 sm:h-12"
+                    style={{
+                      backgroundColor: postData.leftColorCode,
+                    }}
+                  />
+                  <p className="sm:text-[12px] text-[14px] text-center">좌측벽지</p>
+                </div>
+                <div className="items-center gap-2 flex-column">
+                  <div
+                    className="w-16 h-16 border rounded-full border-gray05 sm:w-12 sm:h-12"
+                    style={{
+                      backgroundColor: postData.rightColorCode,
+                    }}
+                  />
+                  <p className="sm:text-[12px] text-[14px] text-center">우측벽지</p>
+                </div>
+                <div className="items-center gap-2 flex-column">
+                  <img
+                    className="w-16 h-16 border rounded-full border-gray05 sm:w-12 sm:h-12"
+                    src={`${STORAGE_URL}/tile/${postData.tileId as string}`}
+                    alt="바닥재"
+                  />
+                  <p className="sm:text-[12px] text-[14px] text-center">바닥재</p>
+                </div>
+              </div>
+            )}
+          {previewModal && (
+            <div className="absolute top-[110px] right-[-15px] sm:top-[80px] sm:left-[-10px]">
+              {/* <div className="absolute top-[322px] translate-x-[770px] lg:translate lg:right-[805px] md:right-[805px] sm:right-[805px] sm:top-[217px] xs:left-[-734px] xs:!top-[280px]"> */}
+              <ShowRoom
+                leftWallpaperBg={postData.leftWallpaperId}
+                rightWallpaperBg={postData.rightWallpaperId}
+                leftWallpaperPaintBg={postData.leftColorCode}
+                rightWallpaperPaintBg={postData.rightColorCode}
+                tileBg={postData.tileId}
+                page={"detail"}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
       <div className="flex-column gap-5 mt-[15px] mb-[50px] px-3">
         {postData?.postImage !== null && postData?.postImage !== undefined && (
           <img src={`${STORAGE_URL}${postData?.postImage}`} alt="postImg" className="w-[500px]" />

@@ -196,10 +196,10 @@ export const usePostsData = () => {
                   navigate(`/detail/${post.id as string}`);
                 }}
               >
-                <div className="max-w-[550px] min-w-0 w-full flex-column justify-between whitespace-nowrap">
-                  <div className="gap-4 flex-column">
-                    <p className="sm:w-[80%] text-[18px] font-semibold truncate">{post.title}</p>
-                    <p className="sm:w-[80%] text-[16px] h-[52px] truncate text-gray02">{post.content}</p>
+                <div className="justify-between w-3/4 min-w-0 gap-2 flex-column">
+                  <div className="gap-2 flex-column">
+                    <p className="sm:w-full text-[18px] font-semibold line-clamp-1">{post.title}</p>
+                    <p className="sm:w-full text-[16px] h-[70px] line-clamp-3 text-gray02">{post.content}</p>
                   </div>
                   <div className="flex text-gray02 text-[12px] gap-2">
                     <p className="truncate">{post.USERS?.name}</p>
@@ -207,7 +207,7 @@ export const usePostsData = () => {
                     <p>좋아요 {post.POSTLIKES[0]?.userId?.length}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 sm:flex-col md:flex-col">
+                <div className="flex items-center gap-4 sm:flex-col">
                   {post.postImage !== null && (
                     <img
                       src={`${STORAGE_URL}${post.postImage as string}`}
