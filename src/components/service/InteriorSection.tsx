@@ -92,6 +92,8 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
             interiorSelecteIndex === SELECT_PAINT_INDEX && checkType === "wallPaper" ? "" : "h-[176px]"
           } overflow-y-auto
           sm:px-6
+          md:px-6
+          lg:px-6
           `}
         >
           {checkType === "wallPaper" &&

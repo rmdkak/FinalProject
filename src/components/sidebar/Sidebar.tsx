@@ -98,11 +98,6 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
                 인테리어 조합
               </Link>
             </li>
-            <li className="duration-500 text-gray03 hover:text-black" onMouseEnter={prefetchCommunity}>
-              <Link onClick={closeSideBarHandler} to="/community">
-                커뮤니티
-              </Link>
-            </li>
             <li
               className="duration-500 text-gray03 hover:text-black"
               onMouseEnter={async () => {
@@ -113,6 +108,12 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
                 이벤트
               </Link>
             </li>
+            <li className="duration-500 text-gray03 hover:text-black" onMouseEnter={prefetchCommunity}>
+              <Link onClick={closeSideBarHandler} to="/community">
+                커뮤니티
+              </Link>
+            </li>
+
             <li
               className="duration-500 text-gray03 hover:text-black"
               onMouseEnter={async () => {

@@ -61,13 +61,13 @@ export const Comments = ({ postData }: CommentProps) => {
                 <div className="flex py-5 border-b border-gray06 ">
                   <picture>
                     <source
-                      srcSet={comment.USERS?.avatar_url === "" ? defaultImgWebp : postData?.USERS?.avatar_url}
+                      srcSet={comment.USERS?.avatar_url === "" ? defaultImgWebp : comment?.USERS?.avatar_url}
                       type="image/webp"
                     />
                     <img
-                      src={comment.USERS?.avatar_url === "" ? defaultImg : postData?.USERS?.avatar_url}
+                      src={comment.USERS?.avatar_url === "" ? defaultImg : comment?.USERS?.avatar_url}
                       alt="프로필이미지"
-                      className="w-[40px] h-[40px] rounded-full"
+                      className="w-10 h-10 rounded-full"
                     />
                   </picture>
 
@@ -254,7 +254,7 @@ export const Comments = ({ postData }: CommentProps) => {
               onClick={async () => {
                 await deletePostHandler(postData.id);
               }}
-              className="w-[160px] sm:text-[14px] sm:w-full h-[48px] border border-gray-300 mr-5 rounded-[8px]"
+              className="w-[160px] sm:text-[14px] sm:w-full h-[48px] border border-gray-300 rounded-[8px]"
             >
               삭제
             </button>
@@ -264,7 +264,7 @@ export const Comments = ({ postData }: CommentProps) => {
                   movePageHandler("update", postData.id);
                 }}
                 type="button"
-                className="mr-2 bg-point sm:text-[14px] sm:w-full w-[160px] h-[48px] rounded-[8px]"
+                className=" bg-point sm:text-[14px] sm:w-full w-[160px] ml-5 h-[48px] rounded-[8px]"
               >
                 수정
               </button>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { STORAGE_URL } from "api/supabase/supabaseClient";
 import { useAdminQuery } from "hooks/useAdminQuery";
 import { useDynamicImport } from "hooks/useDynamicImport";
+import { preloadImgs } from "utils/imgPreload";
 
 export const EventCardForm = () => {
   const navigate = useNavigate();
@@ -11,6 +12,9 @@ export const EventCardForm = () => {
   const { data: eventData } = fetchEventMutation;
   const { preFetchPageBeforeEnter } = useDynamicImport();
   const filterEventData = eventData?.slice(0, 2);
+  const imgArray = filterEventData?.map((el) => `${STORAGE_URL}${el.eventImg}`);
+
+  if (imgArray !== undefined) preloadImgs(imgArray);
 
   if (filterEventData?.length === 0) {
     return <div className="w-full h-[488px] text-center sm:h-[295px]">현재 진행중인 이벤트가 없습니다.</div>;

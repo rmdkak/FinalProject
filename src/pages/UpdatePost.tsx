@@ -165,7 +165,9 @@ const UpdatePost = () => {
           </div>
         </div>
         <div className="flex items-center justify-between my-3">
-          <InvalidText className={"text-base"} errorsMessage={errors.title?.message} />
+          <div className="xs:w-[130px]">
+            <InvalidText className={"text-base"} errorsMessage={errors.title?.message} />
+          </div>
           <div className="flex">
             <InteriorCombination
               interiorItemId={{
