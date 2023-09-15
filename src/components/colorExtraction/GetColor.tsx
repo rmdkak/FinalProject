@@ -3,7 +3,9 @@ import toast from "react-simple-toasts";
 
 import { useColor } from "color-thief-react";
 import { type ReducerState, type ColorFormats } from "color-thief-react/lib/types";
+import { CoachStepThree } from "components/service/coachMark";
 import { useServiceStore } from "store";
+import { useCoachMarkStore } from "store/useCoachMarkStore";
 
 import { ColorItem } from "./ColorItem";
 import { GetColorForm } from "./GetColorForm";
@@ -15,11 +17,13 @@ interface props {
 
 export const GetColor = ({ leftWall, rightWall }: props) => {
   const [color, setColor] = useState<string>(leftWall);
-
+  const { activeNumber, isTutorialPass } = useCoachMarkStore();
   const { wallpaperPaint, interiorSelectX } = useServiceStore((state) => state);
 
   const isPaintSelected = wallpaperPaint.left !== null || wallpaperPaint.right !== null;
   const changeSidePaint = interiorSelectX ? wallpaperPaint.left : wallpaperPaint.right;
+
+  const isStepThree = !isTutorialPass && activeNumber === 3;
 
   useEffect(() => {
     interiorSelectX ? setColor(leftWall) : setColor(rightWall);
@@ -88,13 +92,14 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
       return (
         // 데이터가 뽑혔을 때
         <GetColorForm wallpaperColor={data}>
-          <ul className="flex flex-wrap gap-4">
+          <ul className={`flex flex-wrap gap-4 ${isStepThree ? "relative z-[9400]" : ""}`}>
             <li
               onClick={() => {
                 void handleCopyColorClipBoard(data);
               }}
-              className="flex"
+              className={`flex ${isStepThree ? "relative" : ""}`}
             >
+              {isStepThree && <CoachStepThree />}
               <ColorItem color={data} />
             </li>
           </ul>

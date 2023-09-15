@@ -73,7 +73,7 @@ export const useServiceStore = create<Store>()((set) => ({
     set(() => ({ interiorSelectX: false }));
   },
 
-  //  벽지
+  // 벽지
   wallPaper: { left: { image: null, id: null }, right: { image: null, id: null } },
   setWallPaper: (selectWallpaper, type) => {
     if (type === "left") {
