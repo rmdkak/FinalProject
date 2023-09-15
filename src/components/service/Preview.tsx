@@ -1,5 +1,6 @@
-import { SELECT_CUSTOM_INDEX, InteriorBgSizeController, BG_DEFAULT_SIZE, BG_MAGNIFICATION } from "components";
+import { SELECT_CUSTOM_INDEX, BG_DEFAULT_SIZE, BG_MAGNIFICATION, InteriorBgSizeController } from "components";
 import { useServiceStore } from "store";
+import { useCoachMarkStore } from "store/useCoachMarkStore";
 import { useFurniture } from "store/useFurniture";
 
 interface Props {
@@ -19,14 +20,17 @@ export const Preview = ({ leftWallPaperBg, RightWallPaperBg, tileBg }: Props) =>
 
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
 
+  const { isTutorialPass } = useCoachMarkStore();
+
   return (
     <div
-      className="flex flex-none z-[5000] contents-center sticky top-[20%] bg-gray03 w-[600px] h-[400px] overflow-hidden rounded-xl
-    xs:!h-[200px]
-    sm:w-full sm:top-[64px] sm:h-[350px] sm:rounded-none 
-    md:w-full md:top-[80px] md:h-[350px] md:rounded-none
-    lg:w-full lg:top-[80px] lg:h-[350px] lg:rounded-none
-    "
+      className={`flex flex-none contents-center bg-gray03 w-[600px] h-[400px] overflow-hidden rounded-xl 
+      xs:!h-[200px] 
+      sm:w-full sm:h-[350px] sm:rounded-none 
+      md:w-full md:h-[350px] md:rounded-none 
+      lg:w-full lg:h-[350px] lg:rounded-none ${
+        !isTutorialPass ? "relative" : "sticky top-[20%] sm:top-[64px] md:top-[80px] lg:top-[80px] z-[5000]"
+      }`}
     >
       {/* 배경크기 컨트롤 박스 */}
       <InteriorBgSizeController />

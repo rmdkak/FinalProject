@@ -5,18 +5,17 @@ import pointChecked from "assets/svgs/pointChecked.svg";
 
 interface Props {
   isCheck: boolean;
-  size?: number;
   type: "pointColor" | "black";
 }
 
-export const CheckBoxIcon = ({ isCheck, size = 20, type }: Props) => {
+export const CheckBoxIcon = ({ isCheck, type }: Props) => {
   if (type === "pointColor") {
     return (
       <>
         {isCheck ? (
-          <img src={pointChecked} alt="체크완료" className={`w-[${size}px] h-[${size}px] text-black cursor-pointer`} />
+          <img src={pointChecked} alt="체크완료" className="w-5 h-5 text-black cursor-pointer" />
         ) : (
-          <img src={pointCheck} alt="체크안됨" className={`w-[${size}px] h-[${size}px] text-gray05 cursor-pointer`} />
+          <img src={pointCheck} alt="체크안됨" className="w-5 h-5 cursor-pointer text-gray05" />
         )}
       </>
     );
@@ -25,9 +24,9 @@ export const CheckBoxIcon = ({ isCheck, size = 20, type }: Props) => {
   return (
     <>
       {isCheck ? (
-        <img src={checkboxtrue} alt="체크완료" className={`w-[${size}px] h-[${size}px] text-black cursor-pointer`} />
+        <img src={checkboxtrue} alt="체크완료" className="w-5 h-5 text-black cursor-pointer" />
       ) : (
-        <img src={ckeckboxfalse} alt="체크안됨" className={`w-[${size}px] h-[${size}px] text-gray05 cursor-pointer`} />
+        <img src={ckeckboxfalse} alt="체크안됨" className="w-5 h-5 cursor-pointer text-gray05" />
       )}
     </>
   );

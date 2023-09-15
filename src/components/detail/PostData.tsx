@@ -92,7 +92,7 @@ export const PostData = ({ postData }: Props) => {
               <p>좋아요 {postData?.POSTLIKES[0]?.userId?.length}</p>
             </div>
             {currentUserId !== undefined && (
-              <button onClick={onOpenModal} className="leading-[1px] hover:border-b border-gray02">
+              <button onClick={onOpenModal} className="leading-[14px] hover:border-b border-gray02">
                 신고하기
               </button>
             )}

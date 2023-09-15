@@ -13,7 +13,7 @@ export const usePostsQuery = () => {
   const { id: postId } = useParams();
   const queryClient = useQueryClient();
 
-  // get
+  // fetch detail
   const fetchDetailMutation = useQuery({
     queryKey: ["POSTS", postId],
     queryFn: async () => {
@@ -22,13 +22,21 @@ export const usePostsQuery = () => {
     enabled: postId !== undefined,
   });
 
-  // get
+  // fetch post
   const fetchPostsMutation = useQuery({
     queryKey: ["POSTS"],
     queryFn: async () => {
       return await fetchPostData();
     },
   });
+
+  // prefetch post
+  const prefetchPostsMutation = async () => {
+    await queryClient.prefetchQuery({
+      queryKey: ["POSTS"],
+      queryFn: fetchPostData,
+    });
+  };
 
   // post
   const createPostMutation = useMutation({
@@ -55,10 +63,11 @@ export const usePostsQuery = () => {
   });
 
   return {
+    fetchDetailMutation,
     fetchPostsMutation,
+    prefetchPostsMutation,
     createPostMutation,
     updatePostMutation,
     deletePostMutation,
-    fetchDetailMutation,
   };
 };

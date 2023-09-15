@@ -148,7 +148,7 @@ const FindAuth = () => {
               className="auth-input body-3"
             />
           </div>
-          <InvalidText errorsMessage={emailErrors.nicknameForEmail?.message} size={20} />
+          <InvalidText errorsMessage={emailErrors.nicknameForEmail?.message} />
 
           <div className="w-full gap-2 flex-column sm:mt-1">
             <label htmlFor="idAnswerForEmail">본인확인질문</label>
@@ -166,7 +166,7 @@ const FindAuth = () => {
               className="auth-input body-3"
             />
           </div>
-          <InvalidText errorsMessage={emailErrors.idAnswerForEmail?.message} size={20} />
+          <InvalidText errorsMessage={emailErrors.idAnswerForEmail?.message} />
 
           <button className="text-center auth-button body-3 point-button">아이디 찾기</button>
           <div className="text-gray03 body-4">
@@ -223,7 +223,7 @@ const FindAuth = () => {
               className="auth-input body-3"
             />
           </div>
-          <InvalidText errorsMessage={passwordErrors.emailForPassword?.message} size={20} />
+          <InvalidText errorsMessage={passwordErrors.emailForPassword?.message} />
 
           <div className="w-full gap-2 flex-column sm:mt-1">
             <label htmlFor="nicknameForPassword">닉네임</label>
@@ -234,7 +234,7 @@ const FindAuth = () => {
               className="auth-input body-3"
             />
           </div>
-          <InvalidText errorsMessage={passwordErrors.nicknameForPassword?.message} size={20} />
+          <InvalidText errorsMessage={passwordErrors.nicknameForPassword?.message} />
 
           <div className="w-full gap-2 flex-column sm:mt-1">
             <label htmlFor="idAnswerForPassword">본인확인질문</label>
@@ -252,7 +252,7 @@ const FindAuth = () => {
               className="auth-input body-3"
             />
           </div>
-          <InvalidText errorsMessage={passwordErrors.idAnswerForPassword?.message} size={20} />
+          <InvalidText errorsMessage={passwordErrors.idAnswerForPassword?.message} />
 
           <button className="text-center auth-button body-3 point-button">메일로 새 비밀번호 받기</button>
           <div className="text-gray03 body-4">

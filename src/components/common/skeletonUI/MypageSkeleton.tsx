@@ -53,7 +53,7 @@ export const MypageSkeleton = () => {
                   <p className="body-1">{el.title}</p>
                   <button className="flex gap-3 contents-center body-4 text-gray02">
                     VIEW MORE
-                    <img src={viewMore} className="w-6 h-6" />
+                    <img src={viewMore} alt="자세히 보기" className="w-6 h-6" />
                   </button>
                 </div>
                 <ul className="flex-column h-60">

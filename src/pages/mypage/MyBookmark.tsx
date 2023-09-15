@@ -48,7 +48,7 @@ const MyBookmark = () => {
       {pageData.length === 0 ? (
         <EmptyData type="myBookmark" />
       ) : (
-        <ul className="flex flex-wrap justify-center w-full mt-10 gap-y-16 gap-x-10 sm:gap-0">
+        <ul className="flex flex-wrap w-full mt-10 sm:justify-around gap-y-16 gap-x-10 sm:gap-x-1">
           {pageData.map((bookmark) => {
             const { leftWallpaperId, rightWallpaperId, tileId } = bookmark;
             const isSelectBookmark = bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined;

@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import arrowIcon from "assets/svgs/arrowIcon.svg";
 import { CheckBoxIcon, ArrowButton, Title } from "components";
 
 import { TERMS_1, TERMS_2 } from "./constant";
@@ -66,7 +65,7 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               openHandler={termsOpenHandler}
               statusToClose={"terms1"}
               statusToOpen={"terms1"}
-              className="flex w-4 h-4 contents-center"
+              className="flex w-4 h-4 cursor-pointer contents-center"
             />
           </div>
           {termsToggleIsOpen.terms1 && <textarea className={TEXTAREA_STYLE} value={TERMS_1} disabled />}
@@ -86,12 +85,12 @@ export const TermsOfUse = ({ nextStep }: Props) => {
               <CheckBoxIcon type="black" isCheck={termsInputIsCheck.terms2} />
               [필수] <span className="text-gray02">개인정보 수집 및 이용 동의</span>
             </label>
-            <img
-              src={arrowIcon}
-              className="cursor-pointer"
-              onClick={() => {
-                termsOpenHandler("terms2");
-              }}
+            <ArrowButton
+              isOpen={termsToggleIsOpen.terms2}
+              openHandler={termsOpenHandler}
+              statusToClose={"terms2"}
+              statusToOpen={"terms2"}
+              className="flex w-4 h-4 cursor-pointer contents-center"
             />
           </div>
           {termsToggleIsOpen.terms2 && <textarea className={TEXTAREA_STYLE} value={TERMS_2} disabled />}

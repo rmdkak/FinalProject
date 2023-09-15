@@ -6,6 +6,7 @@ import { STORAGE_URL } from "api/supabase/supabaseClient";
 import calcArrow from "assets/svgs/calcArrow.svg";
 import share from "assets/svgs/icon_share.svg";
 import { GetColor, InteriorSection, Modal, Preview, Share } from "components";
+import { CoachMark } from "components/service/coachMark/CoachMark";
 import ResourcesCalculator from "components/service/ResourcesCalculator";
 import { useBookmark } from "hooks/useBookmark";
 import { useBookmarkQuery } from "hooks/useBookmarkQuery";
@@ -13,6 +14,7 @@ import { useDynamicImport } from "hooks/useDynamicImport";
 import { useInteriorPreview } from "hooks/useInteriorPreview";
 import { useMovePage } from "hooks/useMovePage";
 import { useModalStore, useServiceStore } from "store";
+import { useCoachMarkStore } from "store/useCoachMarkStore";
 import { useFurniture } from "store/useFurniture";
 import { type FetchItemBookmark } from "types/service";
 
@@ -35,6 +37,8 @@ const InteriorPreview = () => {
   const { resetFurnitureState } = useFurniture();
   const { data: currentBookmarkData } = bookmarkResponse;
   const { preFetchPageBeforeEnter } = useDynamicImport();
+  const { isTutorialPass, activeNumber } = useCoachMarkStore();
+  const isStepFour = !isTutorialPass && activeNumber === 4;
 
   const resetState = useCallback(() => {
     resetWallPaper();
@@ -83,18 +87,23 @@ const InteriorPreview = () => {
 
   return (
     <div className="mx-auto flex-column max-w-[1280px] min-w-[360px] gap-10 sm:gap-6 sm:w-full">
-      <h1
-        className="mt-20 text-3xl font-medium 
-      sm:pl-6 sm:mt-6 sm:text-[20px]"
-      >
-        인테리어 조합
-      </h1>
+      {!isTutorialPass && <CoachMark />}
+      <h1 className="mt-20 text-3xl font-medium sm:pl-6 sm:mt-6 sm:text-[20px]">인테리어 조합</h1>
       <div className="flex-wrap gap-40 flex-column">
         {/* 벽지/ 타일 비교 박스 */}
         <div className="flex w-full gap-20 mb-20 sm:flex-wrap md:flex-wrap lg:flex-wrap">
           {/* 왼쪽 인터렉션 박스 */}
           <Preview leftWallPaperBg={leftWallPaperBg} RightWallPaperBg={RightWallPaperBg} tileBg={tileBg} />
-          <div className="flex-column w-[600px] gap-10 sm:w-full md:w-full lg:w-full">
+          <div
+            className={`flex-column w-[600px] gap-10 sm:w-full md:w-full lg:w-full ${
+              !isTutorialPass ? "relative" : ""
+            }`}
+          >
+            {!isTutorialPass && !isStepFour && (
+              <div className="absolute -inset-6 outline-dashed outline-point outline-2 rounded-xl z-[9300]">
+                <div className="w-full h-full bg-white opacity-20" />
+              </div>
+            )}
             {/* 인테리어 섹션 */}
             <InteriorSection onCheckCustom={true} />
             {/* 컬러 추출 */}

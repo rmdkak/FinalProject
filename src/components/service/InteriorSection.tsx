@@ -3,8 +3,10 @@ import React, { useState, useCallback, useEffect } from "react";
 import { supabase } from "api/supabase/supabaseClient";
 import { ServiceItemSkeleton } from "components/common";
 import { useServiceStore } from "store";
+import { useCoachMarkStore } from "store/useCoachMarkStore";
 import { type Tables } from "types/supabase";
 
+import { CoachStepOne, CoachStepTwo } from "./coachMark";
 import { FURNITURE_LIST, SELECT_PAINT_INDEX, TILE_TEXTURE_LIST, WALLPAPER_TEXTURE_LIST } from "./data";
 import { InteriorTitle } from "./InteriorTitle";
 import { ServiceItem } from "./ServiceItem";
@@ -20,6 +22,10 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   const [tileData, setTileData] = useState<Array<Tables<"TILE", "Row">>>([]);
   const [furnitureData, setFurnitureData] = useState<Array<Tables<"FURNITURE", "Row">>>([]);
   const { checkType, interiorSelecteIndex } = useServiceStore((state) => state);
+  const { isTutorialPass, activeNumber } = useCoachMarkStore();
+
+  const isStepOne = !isTutorialPass && activeNumber === 1;
+  const isStepTwo = !isTutorialPass && activeNumber === 2;
 
   const fetchData = useCallback(async () => {
     try {
@@ -39,11 +45,13 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   useEffect(() => {
     void fetchData();
   }, []);
+
   return (
     <>
       {/* 인테리어 헤더 */}
       <div className="box-border gap-8 text-gray-300 flex-column sm:gap-6 sm:box-border sm:pl-6 lg:box-border lg:px-6 md:box-border md:px-6 ">
-        <div className="flex gap-6">
+        <div className={`flex gap-6 ${isStepOne ? "relative z-[9400]" : ""}`}>
+          {isStepOne && <CoachStepOne />}
           <InteriorTitle type="wallPaper">벽지</InteriorTitle>
           <InteriorTitle type="tile">바닥재</InteriorTitle>
           <InteriorTitle type="furniture">가구</InteriorTitle>
@@ -51,20 +59,21 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
 
         {checkType === "wallPaper" ? (
           <div className="gap-8 flex-column">
-            {/* 벽지 종류 목록 */}
             <TextureTitle
               data={(onCheckCustom as boolean) ? WALLPAPER_TEXTURE_LIST : WALLPAPER_TEXTURE_LIST.slice(0, -1)}
             />
-            <div className="flex gap-4">
+            <div
+              className={`flex gap-4 ${
+                isStepTwo ? "relative z-[9400] text-black bg-point rounded-lg px-5 w-[170px]" : ""
+              }`}
+            >
+              {isStepTwo && <CoachStepTwo />}
               <WallpaperLeftRightTitle type="left" />
               <WallpaperLeftRightTitle type="right" />
             </div>
           </div>
         ) : checkType === "tile" ? (
-          <>
-            {/* 타일 종류 목록 */}
-            <TextureTitle data={(onCheckCustom as boolean) ? TILE_TEXTURE_LIST : TILE_TEXTURE_LIST.slice(0, -1)} />
-          </>
+          <TextureTitle data={(onCheckCustom as boolean) ? TILE_TEXTURE_LIST : TILE_TEXTURE_LIST.slice(0, -1)} />
         ) : (
           <>
             <TextureTitle data={(onCheckCustom as boolean) ? FURNITURE_LIST : FURNITURE_LIST.slice(0, -1)} />
