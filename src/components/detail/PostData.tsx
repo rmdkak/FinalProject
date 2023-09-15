@@ -9,6 +9,7 @@ import { DateConvertor, Modal, ReportForm } from "components";
 import { ShowRoom } from "components/service/ShowRoom";
 import { useDynamicImport } from "hooks/useDynamicImport";
 import { useAuthStore, useModalStore } from "store";
+import { preloadImg } from "utils/preloadImg";
 
 export interface PostDataChain {
   content: string;
@@ -50,6 +51,8 @@ export const PostData = ({ postData }: Props) => {
   const { currentUserId } = useAuthStore();
   const { preFetchPageBeforeEnter } = useDynamicImport();
 
+  const imgSrc: string = `${STORAGE_URL}${postData?.postImage as string}`;
+  preloadImg(imgSrc);
   return (
     <>
       <div className="items-center border-b border-black flex-column sm:hidden">
