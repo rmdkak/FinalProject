@@ -145,7 +145,10 @@ const HeaderMemoization = () => {
         } transition-colors duration-500 ease-in-out`}
       >
         <div className="w-[1280px] contents-between items-center">
-          <Link to="/" className="flex items-center text-[32px] font-title gap-4 py-4 font-medium">
+          <Link
+            to={(windowWidth as number) >= 767 ? "/" : pathname}
+            className="flex items-center text-[32px] font-title gap-4 my-4 font-medium"
+          >
             {(windowWidth as number) >= 767 ? (
               "STILE"
             ) : (
