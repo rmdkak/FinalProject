@@ -191,7 +191,6 @@ export const PostData = ({ postData }: Props) => {
             )}
           {previewModal && (
             <div className="absolute top-[110px] right-[-15px] sm:top-[80px] sm:left-[-10px]">
-              {/* <div className="absolute top-[322px] translate-x-[770px] lg:translate lg:right-[805px] md:right-[805px] sm:right-[805px] sm:top-[217px] xs:left-[-734px] xs:!top-[280px]"> */}
               <ShowRoom
                 leftWallpaperBg={postData.leftWallpaperId}
                 rightWallpaperBg={postData.rightWallpaperId}
