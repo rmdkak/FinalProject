@@ -94,16 +94,6 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
             <li
               className="duration-500 text-gray03 hover:text-black"
               onMouseEnter={async () => {
-                await preFetchPageBeforeEnter("community");
-              }}
-            >
-              <Link onClick={closeSideBarHandler} to="/community">
-                커뮤니티
-              </Link>
-            </li>
-            <li
-              className="duration-500 text-gray03 hover:text-black"
-              onMouseEnter={async () => {
                 await preFetchPageBeforeEnter("eventlist");
               }}
             >
@@ -111,6 +101,17 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
                 이벤트
               </Link>
             </li>
+            <li
+              className="duration-500 text-gray03 hover:text-black"
+              onMouseEnter={async () => {
+                await preFetchPageBeforeEnter("community");
+              }}
+            >
+              <Link onClick={closeSideBarHandler} to="/community">
+                커뮤니티
+              </Link>
+            </li>
+
             <li
               className="duration-500 text-gray03 hover:text-black"
               onMouseEnter={async () => {
