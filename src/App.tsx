@@ -13,7 +13,7 @@ import "@egjs/react-flicking/dist/flicking.css";
 import "@egjs/flicking-plugins/dist/pagination.css";
 
 const App = () => {
-  const { setCurrentSession, stayLoggedInStatus, setCurrentUserId } = useAuthStore();
+  const { setCurrentSession, setCurrentUserId } = useAuthStore();
   const { currentUserResponse } = useAuthQuery();
   const { data: currentUser } = currentUserResponse;
 
@@ -30,14 +30,13 @@ const App = () => {
       }
     };
 
-    if (stayLoggedInStatus) {
-      void getAuthSession();
-    }
+    void getAuthSession();
 
     auth.onAuthStateChange(async (event, session) => {
       const provider = session?.user.app_metadata.provider;
       const isProvider = provider === "kakao" || provider === "google" || provider === "github";
-      if (currentUser !== undefined && isProvider && session !== null) {
+
+      if (currentUser === undefined && isProvider && session !== null) {
         try {
           await addUser({
             id: session.user.id,

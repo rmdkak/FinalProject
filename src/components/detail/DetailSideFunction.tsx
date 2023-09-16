@@ -57,11 +57,11 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
     }
   }, [currentUserId, currentBookmarkData]);
 
-  const addBookmark = throttle(async () => {
+  const addLike = throttle(async () => {
     if (currentUserId === undefined) {
       const goToLogin = await Confirm(
         <>
-          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>좋아요 기능은 로그인 후 이용가능합니다.</p>
           <p>로그인 하시겠습니까?</p>
         </>,
       );
@@ -78,11 +78,11 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
     addLikeMutation.mutate({ postId: paramsId, userId: addIds });
   }, 500);
 
-  const deleteBookmark = throttle(async () => {
+  const deleteLike = throttle(async () => {
     if (currentUserId === undefined) {
       const goToLogin = await Confirm(
         <>
-          <p>북마크 기능은 로그인 후 이용가능합니다.</p>
+          <p>좋아요 기능은 로그인 후 이용가능합니다.</p>
           <p>로그인 하시겠습니까?</p>
         </>,
       );
@@ -169,15 +169,12 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
           <BsPencilSquare className="w-5 h-5 mx-auto fill-gray01 sm:w-4 sm:h-4" />
         </button>
         {isHaveBookmark ? (
-          <button
-            onClick={deleteBookmark}
-            className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8"
-          >
-            <img src={fillHeart} className="mx-auto text-point sm:w-4 sm:h-4" />
+          <button onClick={deleteLike} className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8">
+            <img src={fillHeart} alt="좋아요 취소" className="mx-auto text-point sm:w-4 sm:h-4" />
           </button>
         ) : (
-          <button onClick={addBookmark} className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8">
-            <img src={lineHeart} className="mx-auto text-gray01 sm:w-4 sm:h-4" />
+          <button onClick={addLike} className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8">
+            <img src={lineHeart} alt="좋아요" className="mx-auto text-gray01 sm:w-4 sm:h-4" />
           </button>
         )}
         <button
@@ -186,7 +183,7 @@ export const DetailSideFunction = ({ paramsId, postData }: Props) => {
           }}
           className="w-12 h-12 bg-white border rounded-full border-gray06 sm:w-8 sm:h-8"
         >
-          <img src={share} className="mx-auto fill-gray01 sm:w-4 sm:h-4" />
+          <img src={share} alt="공유하기" className="mx-auto fill-gray01 sm:w-4 sm:h-4" />
         </button>
       </div>
     );

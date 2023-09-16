@@ -57,7 +57,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
     void getUsers();
   }, []);
 
-  // 중복체크
   const duplicateCheck = (target: "email" | "name") => {
     const inputIdValue = getValues("id");
     const inputNameValue = getValues("name");

@@ -7,6 +7,7 @@ import img02_webp from "assets/kv_img02_webp.webp";
 import img03 from "assets/kv_img03.jpg";
 import img03_webp from "assets/kv_img03_webp.webp";
 import { useInteriorPreview } from "hooks/useInteriorPreview";
+import { preloadImgs } from "utils/imgPreload";
 
 export const HomeKvBanner = () => {
   const { windowWidth } = useInteriorPreview();
@@ -45,8 +46,11 @@ export const HomeKvBanner = () => {
     isWindowWidthChange ? setWidths(["w-full", "w-0", "w-0"]) : setWidths(["w-[70%]", "w-[10%]", "w-[10%]"]);
   }, [isWindowWidthChange]);
 
-  const bannerWebpArr = [img01_webp, img02_webp, img03_webp];
-  const bannerImgArr = [img01, img02, img03];
+  const bannerWebpArr: string[] = [img01_webp, img02_webp, img03_webp];
+  const bannerImgArr: string[] = [img01, img02, img03];
+  const imgArray: string[] = [...bannerWebpArr, ...bannerImgArr];
+
+  preloadImgs(imgArray);
   return (
     <>
       {widths.map((widths, idx) => (
