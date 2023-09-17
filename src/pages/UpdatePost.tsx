@@ -36,7 +36,8 @@ const UpdatePost = () => {
   const contentValue = watch("content") ?? 0;
   const { onOpenModal, onCloseModal } = useModalStore();
   const { resizePixelHandler, resizeFile, imageSizeSaveHandler, imageFile, setImageFile } = useImageResize();
-  const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile } = useServiceStore();
+  const { wallPaper, tile, wallpaperPaint, resetWallPaper, resetWallpaperPaint, resetTile, resetClickItemBorder } =
+    useServiceStore();
   const { preFetchPageBeforeEnter } = useDynamicImport();
 
   if (postData === undefined) return <></>;
@@ -138,6 +139,7 @@ const UpdatePost = () => {
     resetWallPaper();
     resetWallpaperPaint();
     resetTile();
+    resetClickItemBorder();
   };
 
   if (postData === undefined) return <p>데이터를 불러올 수 없습니다.</p>;

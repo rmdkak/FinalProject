@@ -56,6 +56,7 @@ const Post = () => {
     setWallPaper,
     setWallpaperPaint,
     setTile,
+    resetClickItemBorder,
   } = useServiceStore();
 
   useEffect(() => {
@@ -161,6 +162,7 @@ const Post = () => {
     resetWallPaper();
     resetWallpaperPaint();
     resetTile();
+    resetClickItemBorder();
   };
 
   return (
