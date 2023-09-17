@@ -56,7 +56,7 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
           {isStepOne && locate.pathname === "/interior-preview" && <CoachStepOne />}
           <InteriorTitle type="wallPaper">벽지</InteriorTitle>
           <InteriorTitle type="tile">바닥재</InteriorTitle>
-          <InteriorTitle type="furniture">가구</InteriorTitle>
+          {onCheckCustom === true && <InteriorTitle type="furniture">가구</InteriorTitle>}
         </div>
 
         {checkType === "wallPaper" ? (
