@@ -173,7 +173,7 @@ export const usePostsData = () => {
             <select
               value={selectedOption}
               onChange={handleOptionChange}
-              className="p-1 w-[130px] text-[#888888] border shadow focus:outline-none"
+              className="p-1 w-[135px] text-[#888888] border shadow focus:outline-none"
             >
               <option value="whole">전체 게시글</option>
               <option value="normal">일반 게시글</option>
@@ -207,7 +207,7 @@ export const usePostsData = () => {
                     <p>좋아요 {post.POSTLIKES[0]?.userId?.length}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4 sm:flex-col">
+                <div className="flex items-center gap-4 ml-3 sm:flex-col">
                   {post.postImage !== null && (
                     <img
                       src={`${STORAGE_URL}${post.postImage as string}`}
