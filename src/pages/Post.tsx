@@ -12,6 +12,7 @@ import { useImageResize } from "hooks/useImageResize";
 import { usePostsQuery } from "hooks/usePostsQuery";
 import { debounce } from "lodash";
 import { useAuthStore, useModalStore, useServiceStore } from "store";
+
 interface Inputs {
   title: string;
   textarea: string;
@@ -34,7 +35,8 @@ const Post = () => {
   const navigate = useNavigate();
   const { onOpenModal, onCloseModal } = useModalStore((state) => state);
   const { createPostMutation } = usePostsQuery();
-  const { resizePixelHandler, imageSizeSaveHandler, imagePixel, resizeFile } = useImageResize();
+  const { resizePixelHandler, imageSizeSaveHandler, imagePixel, resizeFile, imageFile, setImageFile } =
+    useImageResize();
   const { preFetchPageBeforeEnter } = useDynamicImport();
   const {
     register,
@@ -54,6 +56,7 @@ const Post = () => {
     setWallPaper,
     setWallpaperPaint,
     setTile,
+    resetClickItemBorder,
   } = useServiceStore();
 
   useEffect(() => {
@@ -77,11 +80,16 @@ const Post = () => {
 
   const titleValidationColor = title.length > 100 ? "text-red-600" : "text-gray03";
 
-  const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null;
-  const isNotColorCodeSeleted = wallpaperPaint.left === null && wallpaperPaint.right === null;
+  const isInteriorSelected = wallPaper.left.id !== null && wallPaper.right.id !== null && tile.id !== null;
 
-  const isNotInteriorSelected = wallPaper.left.id === null && wallPaper.right.id === null;
-  const isColorCodeSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null;
+  const isPaintSeleted = wallpaperPaint.left !== null && wallpaperPaint.right !== null && tile.id !== null;
+
+  const isAllNotSelected =
+    wallpaperPaint.left === null &&
+    wallpaperPaint.right === null &&
+    wallPaper.left.id === null &&
+    wallPaper.right.id === null &&
+    tile.id === null;
 
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     debounce(async (data) => {
@@ -89,11 +97,7 @@ const Post = () => {
       const imageFile = data.file[0];
       const postImage = imageFile === undefined ? null : `/postImg/${UUID}`;
 
-      if (
-        (tile.id !== null && isInteriorSelected && isNotColorCodeSeleted) ||
-        (tile.id !== null && isNotInteriorSelected && isColorCodeSeleted) ||
-        (tile.id === null && isNotInteriorSelected && isNotColorCodeSeleted)
-      ) {
+      if (isInteriorSelected || isPaintSeleted || isAllNotSelected) {
         const postData = {
           id: UUID,
           title: data.title,
@@ -120,22 +124,26 @@ const Post = () => {
         }
       } else {
         if (tile.id === null) {
-          toast("타일이 선택되지 않았습니다.", { theme: "failure", zIndex: 9999 });
+          toast("타일이 선택되지 않았습니다. 타일을 선택하거나 리셋 하십시요.", { theme: "failure", zIndex: 9999 });
           return;
-        } else if (wallPaper.left.id === null && wallpaperPaint.left === "") {
-          toast("왼쪽 벽이 선택되지 않았습니다.", { theme: "failure", zIndex: 9999 });
+        } else if (wallPaper.left.id === null && wallpaperPaint.left === null) {
+          toast("좌측 벽이 선택되지 않았습니다. 좌측 벽을 선택하거나 리셋 하십시요.", {
+            theme: "failure",
+            zIndex: 9999,
+          });
           return;
-        } else if (wallPaper.right.id === null && wallpaperPaint.right === "") {
-          toast("오른쪽 벽이 선택되지 않았습니다.", { theme: "failure", zIndex: 9999 });
+        } else if (wallPaper.right.id === null && wallpaperPaint.right === null) {
+          toast("우측 벽이 선택되지 않았습니다. 우측 벽을 선택하거나 리셋 하십시요.", {
+            theme: "failure",
+            zIndex: 9999,
+          });
           return;
         }
         return;
       }
-      resetWallPaper();
-      resetWallpaperPaint();
-      resetTile();
-      localStorage.removeItem("selectedData");
+      resetHandler();
       navigate("/community");
+      localStorage.removeItem("selectedData");
     }, 500),
     [tile.id, wallPaper.left.id, wallPaper.right.id, wallpaperPaint.left, wallpaperPaint.right, imagePixel],
   );
@@ -150,15 +158,11 @@ const Post = () => {
     void preFetchPageBeforeEnter("community");
   }, []);
 
-  const movePageHandler = (moveEvent: string) => {
-    switch (moveEvent) {
-      case "back":
-        navigate(-1);
-        break;
-      case "community":
-        navigate("/community");
-        break;
-    }
+  const resetHandler = () => {
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
+    resetClickItemBorder();
   };
 
   return (
@@ -169,7 +173,7 @@ const Post = () => {
       <SubTitle type="post" />
       <form className="flex-column" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full border-b border-gray06 h-[72px] items-center">
-          <label htmlFor="title" className="w-[40px] text-[18px] font-normal">
+          <label htmlFor="title" className="w-[40px] text-[18px] font-normal xs:text-[14px]">
             제목
           </label>
           <div className="flex items-center w-full border border-gray05">
@@ -243,8 +247,13 @@ const Post = () => {
         <Modal title="인테리어 조합" type="mobile">
           <div className="gap-10 flex-column w-[528px] sm:w-[90%] scale sm:mb-10 sm:min-w-[322px]">
             <InteriorSection />
-            <div className="flex justify-end sm:hidden">
-              <Button onClick={onCloseModal}>확인</Button>
+            <div className="flex justify-between sm:hidden">
+              <Button type="button" onClick={resetHandler}>
+                리셋
+              </Button>
+              <Button type="button" onClick={onCloseModal}>
+                확인
+              </Button>
             </div>
           </div>
         </Modal>
@@ -265,7 +274,10 @@ const Post = () => {
             내용 글자 수: {textarea.length} / 1000
           </p>
         </div>
-        <div className="flex w-full border-y border-gray06 h-[72px] items-center">
+        {imageFile !== null && (
+          <img src={URL.createObjectURL(imageFile)} alt="미리보기 이미지" className="object-contain w-80" />
+        )}
+        <div className="flex w-full border-y border-gray06 h-[72px] items-center mt-5">
           <label htmlFor="img" className="min-w-[60px] text-[14px] xs:text-[14px] font-normal">
             첨부파일
           </label>
@@ -283,11 +295,12 @@ const Post = () => {
             <button
               type="button"
               onClick={() => {
+                setImageFile(null);
                 resetField("file");
               }}
               className="w-[160px] h-12 xs:w-[80px] border border-gray-300 rounded-lg"
             >
-              선택해제
+              파일취소
             </button>
           </div>
         </div>
@@ -296,7 +309,7 @@ const Post = () => {
             type="button"
             className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
             onClick={() => {
-              movePageHandler("community");
+              navigate("/community");
             }}
           >
             커뮤니티 이동
@@ -306,7 +319,7 @@ const Post = () => {
               type="button"
               className="w-[160px] sm:w-full h-12 border border-gray-300 mr-5 rounded-lg"
               onClick={() => {
-                movePageHandler("back");
+                navigate(-1);
               }}
             >
               이전으로

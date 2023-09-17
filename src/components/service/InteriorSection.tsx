@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import { supabase } from "api/supabase/supabaseClient";
 import { ServiceItemSkeleton } from "components/common";
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
+  const locate = useLocation();
   const [wallData, setWallData] = useState<Array<Tables<"WALLPAPER", "Row">>>([]);
   const [tileData, setTileData] = useState<Array<Tables<"TILE", "Row">>>([]);
   const [furnitureData, setFurnitureData] = useState<Array<Tables<"FURNITURE", "Row">>>([]);
@@ -51,10 +53,10 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
       {/* 인테리어 헤더 */}
       <div className="box-border gap-8 text-gray-300 flex-column sm:gap-6 sm:box-border sm:pl-6 lg:box-border lg:px-6 md:box-border md:px-6 ">
         <div className={`flex gap-6 ${isStepOne ? "relative z-[9400]" : ""}`}>
-          {isStepOne && <CoachStepOne />}
+          {isStepOne && locate.pathname === "/interior-preview" && <CoachStepOne />}
           <InteriorTitle type="wallPaper">벽지</InteriorTitle>
           <InteriorTitle type="tile">바닥재</InteriorTitle>
-          <InteriorTitle type="furniture">가구</InteriorTitle>
+          {onCheckCustom === true && <InteriorTitle type="furniture">가구</InteriorTitle>}
         </div>
 
         {checkType === "wallPaper" ? (
