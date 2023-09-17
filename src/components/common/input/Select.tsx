@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { MouseEvent, ChangeEvent, Dispatch } from "react";
 
-import { ArrowButton } from "../button";
+import { ArrowButton } from "components/common";
 
 interface Props {
   option: string[];

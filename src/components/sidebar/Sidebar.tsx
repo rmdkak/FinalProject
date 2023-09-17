@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import close from "assets/svgs/close.svg";
 import { useAuth } from "hooks/useAuth";
 import { useDynamicImport } from "hooks/useDynamicImport";
+import { usePostsQuery } from "hooks/usePostsQuery";
 import { useAuthStore } from "store";
 
 interface Props {
@@ -15,6 +16,7 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
   const { currentUserId } = useAuthStore();
   const { logoutWithMessage } = useAuth();
   const { preFetchPageBeforeEnter } = useDynamicImport();
+  const { prefetchPostsMutation } = usePostsQuery();
 
   const logoutHandler = useCallback(async () => {
     closeSideBarHandler();
@@ -24,6 +26,11 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
   const closeSideBarHandler = useCallback((): void => {
     setIsOpen(false);
   }, []);
+
+  const prefetchCommunity = () => {
+    void preFetchPageBeforeEnter("community");
+    void prefetchPostsMutation();
+  };
 
   return (
     <>
@@ -94,16 +101,6 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
             <li
               className="duration-500 text-gray03 hover:text-black"
               onMouseEnter={async () => {
-                await preFetchPageBeforeEnter("community");
-              }}
-            >
-              <Link onClick={closeSideBarHandler} to="/community">
-                커뮤니티
-              </Link>
-            </li>
-            <li
-              className="duration-500 text-gray03 hover:text-black"
-              onMouseEnter={async () => {
                 await preFetchPageBeforeEnter("eventlist");
               }}
             >
@@ -111,6 +108,12 @@ const SidebarMemoization = ({ isOpen, setIsOpen }: Props): JSX.Element => {
                 이벤트
               </Link>
             </li>
+            <li className="duration-500 text-gray03 hover:text-black" onMouseEnter={prefetchCommunity}>
+              <Link onClick={closeSideBarHandler} to="/community">
+                커뮤니티
+              </Link>
+            </li>
+
             <li
               className="duration-500 text-gray03 hover:text-black"
               onMouseEnter={async () => {

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { useServiceStore } from "store";
+import { useCoachMarkStore } from "store/useCoachMarkStore";
 import { useFurniture } from "store/useFurniture";
 import { type WallOrTileOrFurniture } from "types/service";
 import { handleCheckTypeItemBorder } from "utils/servise/interiorSection";
@@ -23,6 +24,8 @@ export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): J
   } = useServiceStore((state) => state);
   const { setFurnitureState } = useFurniture((state) => state);
   const STORAGE_URL = process.env.REACT_APP_SUPABASE_STORAGE_URL as string;
+  const { activeNumber, isTutorialPass } = useCoachMarkStore();
+  const isStepTwo = !isTutorialPass && activeNumber === 2;
 
   const getItemData = (selectItem: { id: string; image: string }): void => {
     if (checkType === "wallPaper") {
@@ -58,6 +61,7 @@ export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): J
       setClickItemBorder(_id, interiorSelectX, checkType);
     }
   };
+
   return (
     <>
       <li
@@ -66,7 +70,7 @@ export const ServiceSelectItemMemoization = ({ image, id, furniture }: Props): J
         }}
         key={id}
         style={borderSelectStyle}
-        className="overflow-hidden rounded-full interior-item"
+        className={`overflow-hidden rounded-full interior-item ${isStepTwo ? "z-[9400]" : ""}`}
       >
         <picture className={`box-border block h-full cursor-pointer drag-none`}>
           <source srcSet={`${STORAGE_URL}${image}`} type="image/webp"></source>

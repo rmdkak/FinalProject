@@ -22,7 +22,7 @@ export const ShowRoom = (Props: Props) => {
   const size =
     page === "detail"
       ? "w-[500px] h-[400px] sm:w-[300px] sm:h-[200px]"
-      : "w-[860px] h-[603px] lg:w-[600px] lg:h-[500px] md:w-[60vw] md:h-[50vh] sm:w-[60vw] sm:h-[50vh]";
+      : "w-[860px] h-[603px] lg:w-[600px] lg:h-[500px] md:w-[60vw] md:h-[50vh] sm:w-[60vw] sm:h-[20vh]";
 
   if (
     leftWallpaperBg !== null &&

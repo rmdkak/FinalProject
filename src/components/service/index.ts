@@ -2,7 +2,6 @@ export * from "./CalculatorArticle";
 export * from "./CalculatorResult";
 export * from "./data";
 export * from "./InteriorSection";
-// export * from "./ResourcesCalculator";
 export * from "./ServiceItem";
 export * from "./TextureTitle";
 export * from "./SelfPattern";

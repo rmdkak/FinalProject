@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import backImg from "assets/headersvg/back_page.svg";
 import hambergerMenu from "assets/headersvg/cate.svg";
@@ -145,20 +145,21 @@ const HeaderMemoization = () => {
         } transition-colors duration-500 ease-in-out`}
       >
         <div className="w-[1280px] contents-between items-center">
-          <Link to="/" className="flex items-center text-[32px] font-title gap-4 py-4 font-medium">
+          <button
+            className="flex items-center text-[32px] font-title gap-4 my-4 font-medium"
+            onClick={() => {
+              (windowWidth as number) >= 767 ? navigate("/") : goToBackPage();
+            }}
+          >
             {(windowWidth as number) >= 767 ? (
               "STILE"
             ) : (
               <>
-                {isBack && (
-                  <button onClick={goToBackPage} className="flex contents-center">
-                    <img width={32} height={32} src={backImg} alt="뒤로가기 이미지" />
-                  </button>
-                )}
+                {isBack && <img width={32} height={32} src={backImg} alt="뒤로가기 이미지" />}
                 <span className={`flex contents-center text-[18px] ${headerTitleRegCheck}`}>{headerTitle}</span>
               </>
             )}
-          </Link>
+          </button>
 
           {currentUserId === undefined ? (
             <>

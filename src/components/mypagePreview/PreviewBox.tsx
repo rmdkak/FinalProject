@@ -81,7 +81,7 @@ export const PreviewBox = ({ mypageInfoArray, userId }: Props) => {
                     }}
                   >
                     VIEW MORE
-                    <img src={viewMore} className="w-6 h-6" />
+                    <img src={viewMore} alt="더보기" className="w-6 h-6" />
                   </Link>
                   <Link
                     to={mypageInfo.link}
@@ -90,7 +90,7 @@ export const PreviewBox = ({ mypageInfoArray, userId }: Props) => {
                       await preFetchPageBeforeEnter(mypageInfo.link);
                     }}
                   >
-                    <img src={xmark} className="w-6 h-6 rotate-45" />
+                    <img src={xmark} alt="더보기" className="w-6 h-6 rotate-45" />
                   </Link>
                 </div>
                 {mypageInfo.title === "내가 쓴 글" && <PreviewPost postData={filteredPost} />}
