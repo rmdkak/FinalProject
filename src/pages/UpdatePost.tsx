@@ -124,9 +124,7 @@ const UpdatePost = () => {
       console.error("error :", error);
     }
 
-    resetWallPaper();
-    resetWallpaperPaint();
-    resetTile();
+    resetHandler();
   };
 
   useEffect(() => {
@@ -135,6 +133,12 @@ const UpdatePost = () => {
     setValue("title", postData.title);
     setValue("content", postData.content);
   }, []);
+
+  const resetHandler = () => {
+    resetWallPaper();
+    resetWallpaperPaint();
+    resetTile();
+  };
 
   if (postData === undefined) return <p>데이터를 불러올 수 없습니다.</p>;
 
@@ -194,8 +198,13 @@ const UpdatePost = () => {
         <Modal title="인테리어 조합" type="mobile">
           <div className="gap-10 flex-column w-[528px] sm:w-[90%] scale sm:mb-10 sm:min-w-[322px]">
             <InteriorSection />
-            <div className="flex justify-end sm:hidden">
-              <Button onClick={onCloseModal}>확인</Button>
+            <div className="flex justify-between sm:hidden">
+              <Button type="button" onClick={resetHandler}>
+                리셋
+              </Button>
+              <Button type="button" onClick={onCloseModal}>
+                확인
+              </Button>
             </div>
           </div>
         </Modal>
@@ -238,15 +247,16 @@ const UpdatePost = () => {
               },
             })}
           />
+
           <button
             type="button"
             onClick={() => {
-              resetField("file");
               setImageFile(null);
+              resetField("file");
             }}
-            className="w-[160px] h-12 xs:w-[100px] border border-gray-300 rounded-[8px]"
+            className="w-[160px] h-12 xs:w-[80px] border border-gray-300 rounded-lg"
           >
-            선택해제
+            파일취소
           </button>
         </div>
         <div className="my-10 contents-between sm:flex-column">

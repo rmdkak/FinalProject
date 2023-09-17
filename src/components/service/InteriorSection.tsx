@@ -46,12 +46,15 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
     void fetchData();
   }, []);
 
+  const storedData = localStorage.getItem("currentPage");
+  console.log("storedData :", storedData);
+
   return (
     <>
       {/* 인테리어 헤더 */}
       <div className="box-border gap-8 text-gray-300 flex-column sm:gap-6 sm:box-border sm:pl-6 lg:box-border lg:px-6 md:box-border md:px-6 ">
         <div className={`flex gap-6 ${isStepOne ? "relative z-[9400]" : ""}`}>
-          {isStepOne && <CoachStepOne />}
+          {isStepOne && storedData === "/interior-preview" && <CoachStepOne />}
           <InteriorTitle type="wallPaper">벽지</InteriorTitle>
           <InteriorTitle type="tile">바닥재</InteriorTitle>
           <InteriorTitle type="furniture">가구</InteriorTitle>
