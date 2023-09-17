@@ -47,7 +47,6 @@ export const InteriorSection = ({ onCheckCustom }: Props): JSX.Element => {
   }, []);
 
   const storedData = localStorage.getItem("currentPage");
-  console.log("storedData :", storedData);
 
   return (
     <>
