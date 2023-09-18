@@ -37,7 +37,6 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
       console.error("복사 실패", error);
     }
   };
-
   const { data, loading, error } = useColor<ColorFormats, ReducerState<string>>(color, "hex", {
     crossOrigin: "anonymous",
   });
@@ -58,11 +57,11 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         </ul>
       </GetColorForm>
     );
-  } else if (!isPaintSelected && data !== null) {
+  } else if (!isPaintSelected && color !== "") {
     if (loading) {
       return (
         // 이미지 클릭시 로딩
-        <GetColorForm>
+        <GetColorForm loading={loading}>
           <ul className="flex flex-wrap gap-4">
             <li className="text-gray02">
               <div className="interior-item skeleton-effect" />
@@ -70,16 +69,8 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           </ul>
         </GetColorForm>
       );
-    } else if (data === undefined) {
-      return (
-        // 선택된 데이터가 없을 경우
-        <GetColorForm>
-          <ul className="flex flex-wrap gap-4">
-            <li className="text-gray02">벽지를 선택해주세요.</li>
-          </ul>
-        </GetColorForm>
-      );
-    } else if (error !== undefined) {
+    }
+    if (error !== undefined) {
       return (
         // 이미지 클릭시 에러의 경우
         <GetColorForm>
@@ -88,7 +79,9 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
           </ul>
         </GetColorForm>
       );
-    } else {
+    }
+
+    if (data !== undefined) {
       return (
         // 데이터가 뽑혔을 때
         <GetColorForm wallpaperColor={data}>
@@ -106,5 +99,12 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
         </GetColorForm>
       );
     }
-  } else return <></>;
+  } else
+    return (
+      <GetColorForm>
+        <ul className="flex flex-wrap gap-4">
+          <li className="text-gray02">벽지를 선택해주세요.</li>
+        </ul>
+      </GetColorForm>
+    );
 };

@@ -131,6 +131,7 @@ export const useServiceStore = create<Store>()((set) => ({
   delCustomSelfTile: (id: string) => {
     set((state) => ({ customSelfTile: state.customSelfTile.filter((item) => item.id !== id) }));
   },
+
   // 아이템클릭 보더
   onClickItemBorder: { left: "", right: "", tile: "" },
   setClickItemBorder: (id, type, headerTitle) => {

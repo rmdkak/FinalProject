@@ -29,27 +29,34 @@ export const useBookmark = () => {
       }
       return;
     }
-    if (tile.id === null || wallPaper.left.id === null || wallPaper.right.id === null) {
-      await Alert("벽지와 타일 3가지 모두 선택해주세요.");
-      return;
-    }
-    addBookmarkMutation.mutate({
-      userId: currentUserId,
-      tileId: tile.id,
-      leftWallpaperId: wallPaper.left.id,
-      rightWallpaperId: wallPaper.right.id,
-    });
-    toast("조합이 저장되었습니다.", { theme: "warning", zIndex: 9999 });
+    if (tile.id !== null && wallPaper.left.id !== null && wallPaper.right.id !== null) {
+      addBookmarkMutation.mutate({
+        userId: currentUserId,
+        tileId: tile.id,
+        leftWallpaperId: wallPaper.left.id,
+        rightWallpaperId: wallPaper.right.id,
+      });
+      toast("조합이 저장되었습니다.", { theme: "warning", zIndex: 9999 });
+    } else if (tile.id !== null && wallpaperPaint.left !== null && wallpaperPaint.right !== null) {
+      addBookmarkMutation.mutate({
+        userId: currentUserId,
+        tileId: tile.id,
+        leftColorCode: wallpaperPaint.left,
+        rightColorCode: wallpaperPaint.right,
+      });
+      toast("조합이 저장되었습니다.", { theme: "warning", zIndex: 9999 });
+    } else await Alert("조합을 모두 선택하신 후 이용해주세요.");
   };
 
   const deleteBookmark = async () => {
-    if (currentUserId === undefined || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null)
-      return;
+    if (currentUserId === undefined || tile.id === null) return;
     deleteBookmarkMutation.mutate({
       userId: currentUserId,
       tileId: tile.id,
       leftWallpaperId: wallPaper.left.id,
       rightWallpaperId: wallPaper.right.id,
+      leftColorCode: wallpaperPaint.left,
+      rightColorCode: wallpaperPaint.right,
     });
     toast("조합이 삭제되었습니다.", { theme: "warning", zIndex: 9999 });
   };
