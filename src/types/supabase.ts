@@ -7,24 +7,30 @@ export interface Database {
         Row: {
           created_at: string;
           id: string;
-          leftWallpaperId: string;
-          rightWallpaperId: string;
+          leftColorCode: string | null;
+          leftWallpaperId: string | null;
+          rightColorCode: string | null;
+          rightWallpaperId: string | null;
           tileId: string;
           userId: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
-          leftWallpaperId: string;
-          rightWallpaperId: string;
+          leftColorCode?: string | null;
+          leftWallpaperId?: string | null;
+          rightColorCode?: string | null;
+          rightWallpaperId?: string | null;
           tileId: string;
           userId: string;
         };
         Update: {
           created_at?: string;
           id?: string;
-          leftWallpaperId?: string;
-          rightWallpaperId?: string;
+          leftColorCode?: string | null;
+          leftWallpaperId?: string | null;
+          rightColorCode?: string | null;
+          rightWallpaperId?: string | null;
           tileId?: string;
           userId?: string;
         };
@@ -467,7 +473,6 @@ export interface Database {
     };
   };
 }
-
 export type Tables<
   T extends keyof Database["public"]["Tables"],
   A extends keyof Database["public"]["Tables"][T],

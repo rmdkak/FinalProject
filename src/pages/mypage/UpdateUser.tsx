@@ -30,7 +30,6 @@ import {
 } from "components";
 import { useAuthQuery } from "hooks/useAuthQuery";
 import { useImageResize } from "hooks/useImageResize";
-import Error from "pages/Error";
 import { useAuthStore } from "store";
 
 import type { PasswordVisible } from "components";
@@ -56,17 +55,6 @@ const UpdateUser = () => {
   const { data: currentUser } = currentUserResponse;
   const { currentUserId } = useAuthStore();
 
-  if (currentUser === undefined || currentUserId === undefined) {
-    navigate("/");
-    return <Error />;
-  }
-
-  const { name: currentName, avatar_url: currentProfileImg } = currentUser;
-  const userId = currentUserId;
-
-  const prevProfileImageId =
-    currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
-
   const {
     register,
     handleSubmit,
@@ -75,6 +63,17 @@ const UpdateUser = () => {
     resetField,
     formState: { errors },
   } = useForm<UpdateInput>();
+
+  if (currentUser === undefined || currentUserId === undefined) {
+    navigate("/");
+    return;
+  }
+
+  const userId = currentUserId;
+  const { name: currentName, avatar_url: currentProfileImg } = currentUser;
+
+  const prevProfileImageId =
+    currentProfileImg === "" ? "" : currentProfileImg.replace(`${STORAGE_URL}/profileImg/`, "");
 
   const submitProfileImgHandler: SubmitHandler<UpdateInput> = async () => {
     const uid = uuid();
@@ -93,13 +92,16 @@ const UpdateUser = () => {
   };
 
   const resetImgFile = async () => {
-    if (imageFile !== null) {
-      setImageFile(null);
-    }
-    if (currentProfileImg !== "") {
-      await deleteImage(prevProfileImageId);
-      await changeMetaAvatar("");
-      patchUserMutation.mutate({ inputValue: { name: currentName, avatar_url: "" }, userId });
+    const imageDeleteCheck = await Confirm("프로필 이미지를 삭제하시겠습니까?");
+    if (imageDeleteCheck) {
+      if (imageFile !== null) {
+        setImageFile(null);
+      }
+      if (currentProfileImg !== "") {
+        await deleteImage(prevProfileImageId);
+        await changeMetaAvatar("");
+        patchUserMutation.mutate({ inputValue: { name: currentName, avatar_url: "" }, userId });
+      }
     }
   };
 
@@ -168,16 +170,20 @@ const UpdateUser = () => {
     <div className="relative mx-auto flex-column m-[60px] max-w-[1280px] w-[90%] sm:my-6">
       <Title title="회원정보수정" isBorder={true} pathName="/mypage/update" />
       <div className="flex w-full mt-10 sm:flex-col sm:gap-10 sm:contents-center">
-        <form onSubmit={handleSubmit(submitProfileImgHandler)} className="flex-column items-center w-[328px] gap-9">
+        <form onSubmit={handleSubmit(submitProfileImgHandler)} className="flex-column items-center w-[328px] gap-5">
           <div className="relative w-[120px]">
-            <picture>
-              <source srcSet={currentProfileImg === "" ? defaultImgWebp : currentProfileImg} type="image/webp" />
-              <img
-                src={currentProfileImg === "" ? defaultImg : currentProfileImg}
-                alt="프로필이미지"
-                className="w-32 h-32 rounded-full"
-              />
-            </picture>
+            {imageFile !== null ? (
+              <img src={URL.createObjectURL(imageFile)} alt="미리보기 이미지" className="w-32 h-32 rounded-full" />
+            ) : (
+              <picture>
+                <source srcSet={currentProfileImg === "" ? defaultImgWebp : currentProfileImg} type="image/webp" />
+                <img
+                  src={currentProfileImg === "" ? defaultImg : currentProfileImg}
+                  alt="프로필이미지"
+                  className="w-32 h-32 rounded-full"
+                />
+              </picture>
+            )}
             <div className="absolute bottom-0 flex items-center justify-center w-20 h-8 gap-2 -translate-x-1/2 bg-white border rounded-lg left-1/2 translate-y-1/4">
               <label htmlFor="profileImgButton">
                 <img src={photoCamera} alt="이미지 등록" className="w-4 h-4 cursor-pointer" />
@@ -196,7 +202,20 @@ const UpdateUser = () => {
             </div>
           </div>
           <p className="title-4">{`${currentName} 님`}</p>
-          {imageFile !== null && <button className="w-32 h-12 rounded-lg point-button body-3">이미지 변경하기</button>}
+          {imageFile !== null && (
+            <div className="flex gap-3">
+              <button className="w-32 h-12 rounded-lg point-button body-3">이미지 변경</button>
+              <button
+                type="button"
+                className="w-32 h-12 mr-3 bg-white border rounded-lg border-gray05 body-3"
+                onClick={() => {
+                  setImageFile(null);
+                }}
+              >
+                취소
+              </button>
+            </div>
+          )}
         </form>
         <div className="flex-column contents-center w-[624px] sm:w-full lg:w-full md:w-full">
           <div className="w-full gap-6 flex-column sm:w-full">

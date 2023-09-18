@@ -56,7 +56,7 @@ export const OverlayProvider = ({ children }: PropsWithChildren) => {
 export const useOverlayContext = () => {
   const overlayContext = useContext(OverlayContext);
 
-  if (overlayContext == null) {
+  if (overlayContext === null) {
     throw new Error("useOverlayContext is only available within OverlayProvider");
   }
 

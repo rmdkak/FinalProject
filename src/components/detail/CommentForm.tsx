@@ -54,7 +54,7 @@ export const CommentForm = ({ kind, commentId, setOpenReply }: CommentFormProps)
     const id = uuid();
     const commentImg = imageFile === null ? null : `/commentImg/${id}`;
 
-    if (postId == null) return;
+    if (postId === undefined) return;
     if (userId === undefined) return;
 
     try {

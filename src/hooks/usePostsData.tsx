@@ -265,7 +265,8 @@ export const usePostsData = () => {
 
   const rankingList = newPostList
     ?.sort((a, b) => b.POSTLIKES[0]?.userId?.length - a.POSTLIKES[0]?.userId?.length)
-    .filter((post, idx) => isExistCombination(post, "all") && idx < 10);
+    .filter((post) => isExistCombination(post, "all"))
+    .slice(0, 10);
   /**
    * flicking 라이브러리에 적용할 수 있도록, 반복되는 element 컴포넌트를 대신합니다.
    * @returns Home화면에 보여지는 베스트 조합 랭킹 요소들을 반환합니다.
