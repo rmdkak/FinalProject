@@ -20,9 +20,8 @@ const App = () => {
   useEffect(() => {
     const getAuthSession = async () => {
       try {
-        const {
-          data: { session },
-        } = await auth.getSession();
+        const { data } = await auth.getSession();
+        const session = data.session;
         setCurrentSession(session);
         setCurrentUserId(session?.user.id);
       } catch (error) {
@@ -31,7 +30,9 @@ const App = () => {
     };
 
     void getAuthSession();
+  }, [setCurrentSession, setCurrentUserId]);
 
+  useEffect(() => {
     auth.onAuthStateChange(async (event, session) => {
       const provider = session?.user.app_metadata.provider;
       const isProvider = provider === "kakao" || provider === "google" || provider === "github";

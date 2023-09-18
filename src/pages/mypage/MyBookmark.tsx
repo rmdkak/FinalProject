@@ -50,7 +50,8 @@ const MyBookmark = () => {
       ) : (
         <ul className="flex flex-wrap w-full mt-10 sm:justify-around gap-y-16 gap-x-10 sm:gap-x-1">
           {pageData.map((bookmark) => {
-            const { leftWallpaperId, rightWallpaperId, tileId } = bookmark;
+            const { leftColorCode, rightColorCode, leftWallpaperId, rightWallpaperId, tileId } = bookmark;
+            const wallpaperPaint = { left: leftColorCode, right: rightColorCode };
             const isSelectBookmark = bookmarkIdsToDelete.find((id) => id === bookmark.id) !== undefined;
             return (
               <li key={bookmark.id} className="relative w-56 h-40 gap-4 sm:w-1/3 sm:h-20">
@@ -84,7 +85,10 @@ const MyBookmark = () => {
                   }}
                   className={`absolute top-0 flex w-full h-full mx-auto contents-center ${isDeleteMode ? "z-0" : ""}`}
                 >
-                  <InteriorCombination type="mypage" interiorItemId={{ leftWallpaperId, rightWallpaperId, tileId }} />
+                  <InteriorCombination
+                    type="mypage"
+                    interiorItemId={{ leftWallpaperId, rightWallpaperId, tileId, wallpaperPaint }}
+                  />
                 </button>
 
                 {targetModal === bookmark.id && (
@@ -92,6 +96,8 @@ const MyBookmark = () => {
                     <ShowRoom
                       leftWallpaperBg={bookmark.leftWallpaperId}
                       rightWallpaperBg={bookmark.rightWallpaperId}
+                      leftWallpaperPaintBg={bookmark.leftColorCode}
+                      rightWallpaperPaintBg={bookmark.rightColorCode}
                       tileBg={bookmark.tileId}
                       page={"mypage"}
                     />

@@ -8,20 +8,26 @@ export const useBookmarkQuery = () => {
   const queryClient = useQueryClient();
 
   const { currentUserId: userId } = useAuthStore();
-  const { wallPaper, tile } = useServiceStore();
+  const { wallPaper, tile, wallpaperPaint } = useServiceStore();
 
   const bookmarkResponse = useQuery({
     queryKey: [queryKey[0], userId, tile.id, wallPaper.left.id, wallPaper.right.id],
     queryFn: async () => {
-      if (userId === undefined || tile.id == null || wallPaper.left.id == null || wallPaper.right.id == null) return;
+      if (userId === undefined || tile.id === null) return;
       return await fetchBookmark({
         userId,
         tileId: tile.id,
         leftWallpaperId: wallPaper.left.id,
         rightWallpaperId: wallPaper.right.id,
+        leftColorCode: wallpaperPaint.left,
+        rightColorCode: wallpaperPaint.right,
       });
     },
-    enabled: userId !== null && tile.id !== null && wallPaper.left.id !== null && wallPaper.right.id !== null,
+    enabled:
+      userId !== null &&
+      tile.id !== null &&
+      ((wallPaper.left.id !== null && wallPaper.right.id !== null) ||
+        (wallpaperPaint.left !== null && wallpaperPaint.right !== null)),
   });
 
   const addBookmarkMutation = useMutation({

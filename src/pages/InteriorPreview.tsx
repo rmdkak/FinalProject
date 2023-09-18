@@ -20,8 +20,8 @@ import { type FetchItemBookmark } from "types/service";
 
 const InteriorPreview = () => {
   const { setCurrentPathname } = useMovePage();
-  const navigate = useNavigate();
   setCurrentPathname();
+  const navigate = useNavigate();
   const [leftWallPaperBg, setLeftWallPaperBg] = useState<string>("");
   const [RightWallPaperBg, setRightWallPaperBg] = useState<string>("");
   const [openShareModal, setOpenShareModal] = useState<boolean>(false);
@@ -36,6 +36,7 @@ const InteriorPreview = () => {
   const { addBookmark, deleteBookmark, recommendDesign } = useBookmark();
   const { resetFurnitureState } = useFurniture();
   const { data: currentBookmarkData } = bookmarkResponse;
+
   const { preFetchPageBeforeEnter } = useDynamicImport();
   const { isTutorialPass, activeNumber } = useCoachMarkStore();
   const isStepFour = !isTutorialPass && activeNumber === 4;
@@ -58,12 +59,19 @@ const InteriorPreview = () => {
     }
   }, [windowWidth]);
 
+  const bookmarkDeleteHandler = async () => {
+    await deleteBookmark();
+    setIsItemBookmarkedData(undefined);
+  };
+
   useEffect(() => {
     tile.image !== null ? setTileBg(`${STORAGE_URL}${tile.image}`) : setTileBg("");
     if (isWallPaperPaintSelected) {
+      setIsItemBookmarkedData(undefined);
       setRightWallPaperBg(wallpaperPaint.right as string);
       setLeftWallPaperBg(wallpaperPaint.left as string);
     } else {
+      setIsItemBookmarkedData(undefined);
       wallPaper.right.image !== null
         ? setRightWallPaperBg(`${STORAGE_URL}${wallPaper.right.image}`)
         : setRightWallPaperBg("");
@@ -74,9 +82,9 @@ const InteriorPreview = () => {
   }, [wallPaper, tile, wallpaperPaint]);
 
   useEffect(() => {
-    if (currentBookmarkData == null) return;
+    if (currentBookmarkData === undefined && currentBookmarkData === undefined) return;
     setIsItemBookmarkedData(currentBookmarkData[0]);
-  }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id]);
+  }, [currentBookmarkData, wallPaper.left.id, wallPaper.right.id, tile.id, wallpaperPaint.left, wallpaperPaint.right]);
 
   useEffect(() => {
     resetState();
@@ -129,9 +137,9 @@ const InteriorPreview = () => {
               </Modal>
             </div>
             <div className="box-border flex gap-4 mt-6 sm:px-6">
-              {isItemBookmarkedData != null ? (
+              {isItemBookmarkedData !== undefined ? (
                 <button
-                  onClick={deleteBookmark}
+                  onClick={bookmarkDeleteHandler}
                   className="flex flex-auto px-6 py-[18px] contents-center rounded-xl gray-outline-button active:bg-yellow-200"
                 >
                   삭제하기

@@ -30,8 +30,8 @@ export const PreviewComment = ({ commentData }: Props) => {
         return (
           <Fragment key={comment.id}>
             {post !== null && (
-              <li key={comment.id} className="flex-column contents-center border-y border-gray06">
-                <div className="flex w-full h-16 gap-6 px-6 contents-center border-y border-gray06">
+              <li key={comment.id} className="border-b-2 flex-column contents-center border-gray06">
+                <div className="flex w-full h-16 gap-6 px-6 contents-center">
                   <div
                     className="flex items-center justify-between w-full h-full gap-6 cursor-pointer"
                     onClick={() => {
@@ -63,7 +63,7 @@ export const PreviewComment = ({ commentData }: Props) => {
                 </div>
 
                 {isOpenComment === comment.id && (
-                  <div className="flex items-center justify-between w-full h-[120px] p-6">
+                  <div className="flex items-center justify-between w-full h-[120px] p-6 border-t border-gray06">
                     <p className="flex self-start">{comment.content}</p>
                     <div className="flex gap-3 contents-center">
                       <DateConvertor datetime={comment.created_at} type={"dotDate"} />

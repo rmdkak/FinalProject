@@ -6,10 +6,11 @@ import tinycolor from "tinycolor2";
 import { ColorItem } from "./ColorItem";
 
 interface props {
-  color: string | ArrayRGB;
+  color?: string | ArrayRGB;
+  loading?: boolean;
 }
 
-export const ColorPallet = ({ color }: props) => {
+export const ColorPallet = ({ color, loading }: props) => {
   const toneInTone: string[] = [];
   const toneOnTone: string[] = [];
   const tetradColors: tinycolor.Instance[] = tinycolor(color as string).tetrad();
@@ -43,40 +44,69 @@ export const ColorPallet = ({ color }: props) => {
     }
   };
 
-  return (
-    <>
-      <h3>TONE IN TONE</h3>
-      <ul className="flex flex-wrap gap-4">
-        {colors.map((color, idx) => {
-          return (
-            <li
-              onClick={() => {
-                void handleCopyColorClipBoard(color);
-              }}
-              key={idx}
-              className="flex"
-            >
-              <ColorItem color={color} />
-            </li>
-          );
-        })}
-      </ul>
-      <h3>TONE ON TONE</h3>
-      <ul className="flex flex-wrap gap-4">
-        {toneOnTone.map((color, idx) => {
-          return (
-            <li
-              onClick={() => {
-                void handleCopyColorClipBoard(color);
-              }}
-              key={idx}
-              className="flex"
-            >
-              <ColorItem color={color} />
-            </li>
-          );
-        })}
-      </ul>
-    </>
-  );
+  const fakeArr = Array.from({ length: 6 });
+
+  if (loading !== undefined && loading) {
+    return (
+      <>
+        <h3>TONE IN TONE</h3>
+        <ul className="flex flex-wrap gap-4">
+          {fakeArr.map((_, idx) => {
+            return (
+              <li key={idx} className="flex">
+                <div className="relative flex items-center justify-center cursor-pointer interior-item skeleton-effect" />
+              </li>
+            );
+          })}
+        </ul>
+        <h3>TONE ON TONE</h3>
+        <ul className="flex flex-wrap gap-4">
+          {fakeArr.map((_, idx) => {
+            return (
+              <li key={idx} className="flex">
+                <div className="relative flex items-center justify-center cursor-pointer interior-item skeleton-effect" />
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    );
+  } else if (color !== undefined) {
+    return (
+      <>
+        <h3>TONE IN TONE</h3>
+        <ul className="flex flex-wrap gap-4">
+          {colors.map((color, idx) => {
+            return (
+              <li
+                onClick={() => {
+                  void handleCopyColorClipBoard(color);
+                }}
+                key={idx}
+                className="flex"
+              >
+                <ColorItem color={color} />
+              </li>
+            );
+          })}
+        </ul>
+        <h3>TONE ON TONE</h3>
+        <ul className="flex flex-wrap gap-4">
+          {toneOnTone.map((color, idx) => {
+            return (
+              <li
+                onClick={() => {
+                  void handleCopyColorClipBoard(color);
+                }}
+                key={idx}
+                className="flex"
+              >
+                <ColorItem color={color} />
+              </li>
+            );
+          })}
+        </ul>
+      </>
+    );
+  } else return <></>;
 };

@@ -15,12 +15,13 @@ export const PreviewBookmark = ({ bookmarkData }: Props) => {
     <ul className="flex w-full h-20 gap-5 mt-6 contents-center sm:h-10 sm:gap-6">
       {bookmarkData.length === 0 ? <PreviewEmpty /> : null}
       {bookmarkData.map((bookmark) => {
-        const { leftWallpaperId, rightWallpaperId, tileId } = bookmark;
+        const { leftColorCode, rightColorCode, leftWallpaperId, rightWallpaperId, tileId } = bookmark;
+        const wallpaperPaint = { left: leftColorCode, right: rightColorCode };
         return (
           <InteriorCombination
             key={bookmark.id}
             type="mypage"
-            interiorItemId={{ leftWallpaperId, rightWallpaperId, tileId }}
+            interiorItemId={{ leftWallpaperId, rightWallpaperId, tileId, wallpaperPaint }}
           />
         );
       })}
