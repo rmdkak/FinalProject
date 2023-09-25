@@ -78,7 +78,7 @@ const Inquiry = () => {
         </div>
         <div className="w-full">
           <label htmlFor="content">내용</label>
-          <textarea {...register("content")} id="content" className="resize-none auth-input h-28" />
+          <textarea {...register("content")} id="content" className="resize-none auth-input h-[300px] pt-4" />
         </div>
         <div className="flex items-center justify-center w-full h-16 border-y border-gray06">
           <label htmlFor="img" className="w-32 font-normal body-3">
@@ -91,7 +91,9 @@ const Inquiry = () => {
             {...register("imgFile")}
           />
         </div>
-        <button className="point-button auth-button">작성하기</button>
+        <div className="ml-auto">
+          <button className="point-button auth-button w-[130px]">작성하기</button>
+        </div>
       </form>
     </div>
   );
