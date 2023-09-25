@@ -12,8 +12,10 @@ interface PaginationProps {
   postPerPage: number;
 }
 
-/**
- * @param
+/*
+ * dataLength: 전체 데이터 배열의 길이
+ * data: 전체 데이터 배열
+ * postPerPage: 한 페이지의 보여줄 데이터 길이(number)
  */
 export const usePagination = ({ dataLength, data, postPerPage }: PaginationProps) => {
   const [currentPage, setCurrentPage] = useState(1);
