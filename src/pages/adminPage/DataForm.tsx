@@ -64,7 +64,7 @@ const DataForm = () => {
 
   return (
     <>
-      <form className="items-start w-full flex-column">
+      <form onSubmit={uploadImgHandler} className="items-start w-full flex-column">
         <div className="flex w-full py-[17px] gap-10 border-y border-gray06">
           <label htmlFor="uploadImg" className="text-sm text-black w-[70px]">
             사진 업로드
@@ -102,13 +102,7 @@ const DataForm = () => {
             ></Select>
           </div>
         </div>
-        <button
-          type="button"
-          className="bg-point w-[160px] h-[48px] rounded-[8px] ml-auto mt-5"
-          onClick={uploadImgHandler}
-        >
-          업로드
-        </button>
+        <button className="bg-point w-[160px] h-[48px] rounded-[8px] ml-auto mt-5">업로드</button>
       </form>
     </>
   );

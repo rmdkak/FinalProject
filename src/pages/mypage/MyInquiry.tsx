@@ -48,7 +48,7 @@ const MyInquiry = () => {
         <ul className="w-full">
           {userInquiryData?.map((post, index) => {
             return (
-              <li key={post.id} className="flex-column contents-center border-y border-gray06 ">
+              <li key={post.id} className="border-b border-gray04 flex-column contents-center ">
                 <div className="flex w-full gap-6 px-6 py-2 sm:px-2 sm:gap-3 contents-center">
                   <input
                     id={post.id}
@@ -78,7 +78,7 @@ const MyInquiry = () => {
                     <div className="flex items-center justify-between w-1/4 gap-3 sm:w-full">
                       {post.isCheck ? (
                         <button
-                          className="px-3 py-1 text-black bg-green-300rounded-2xl"
+                          className="px-3 py-1 text-black bg-green-300 rounded-2xl"
                           type="button"
                           onClick={() => {
                             openCommentHandler(post.id);
@@ -98,7 +98,7 @@ const MyInquiry = () => {
                   </div>
                 </div>
                 {post.isCheck && isOpenInquiry === post.id && (
-                  <pre className="flex p-6 m-1 border-t contents-center border-gray05 ">{post.adminAnswer}</pre>
+                  <pre className="flex w-full p-6 m-1 border-t contents-center border-gray06">{post.adminAnswer}</pre>
                 )}
               </li>
             );

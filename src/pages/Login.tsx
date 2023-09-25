@@ -5,10 +5,12 @@ import { IoMdCloseCircle } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-simple-toasts";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import { login } from "api/supabase/auth";
 import { PasswordVisibleButton, InvalidText, useDialog, SocialLogin, CheckBoxIcon } from "components";
 import { useDynamicImport } from "hooks/useDynamicImport";
 import { useMovePage } from "hooks/useMovePage";
+import { loginSchema } from "schema/formSchema";
 import { useAuthStore } from "store";
 
 export interface LoginInputs {
@@ -27,13 +29,9 @@ const Login = () => {
 
   const { preFetchPageBeforeEnter } = useDynamicImport();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    resetField,
-    setError,
-  } = useForm<LoginInputs>();
+  const resolver = yupResolver(loginSchema);
+  const { register, handleSubmit, resetField, setError, formState } = useForm<LoginInputs>({ resolver });
+  const { errors } = formState;
 
   const onSubmit: SubmitHandler<LoginInputs> = async (data) => {
     try {
@@ -70,10 +68,7 @@ const Login = () => {
         </label>
         <div className="relative flex w-full">
           <input
-            {...register("email", {
-              required: "이메일을 입력해주세요.",
-              minLength: { value: 8, message: "이메일이 너무 짧습니다." },
-            })}
+            {...register("email")}
             id="email"
             type="email"
             placeholder="이메일을 입력해주세요."
@@ -96,10 +91,7 @@ const Login = () => {
         </label>
         <div className="relative flex w-full">
           <input
-            {...register("password", {
-              required: "비밀번호를 입력해주세요.",
-              minLength: { value: 6, message: "비밀번호가 너무 짧습니다." },
-            })}
+            {...register("password")}
             id="password"
             type={showPassword.password ? "text" : "password"}
             autoComplete="off"

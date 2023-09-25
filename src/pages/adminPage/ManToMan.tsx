@@ -121,7 +121,7 @@ const ManToMan = ({ setLength }: Props) => {
                           className="gap-3 p-3 border flex-column border-gray03 rounded-xl"
                           onSubmit={handleSubmit(onSubmit)}
                         >
-                          <textarea {...register("adminAnswer")} className="resize-none auth-input h-60" />
+                          <textarea {...register("adminAnswer")} className="pt-4 resize-none auth-input h-60" />
                           <button className="auth-button point-button" type="submit">
                             보내기
                           </button>

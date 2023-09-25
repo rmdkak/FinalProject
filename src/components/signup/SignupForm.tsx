@@ -4,11 +4,13 @@ import type { SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-simple-toasts";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import { fetchUserCheckData, signup } from "api/supabase/auth";
 import { PasswordVisibleButton, Select, Title } from "components";
+import { signupSchema } from "schema/formSchema";
 import { useAuthStore } from "store";
 
-import { emailOptions, idQuestionOptions, idAnswerValid, idValid, nameValid, passwordValid } from "./constant";
+import { emailOptions, idQuestionOptions } from "./constant";
 import { InvalidText } from "./InvalidText";
 import { SignupStep } from "./SignupStep";
 
@@ -17,7 +19,7 @@ import type { PasswordVisible } from "components";
 export interface SignupInputs {
   id: string;
   password: string;
-  passwordCheck: string;
+  passwordConfirm: string;
   name: string;
   idAnswer: string;
 }
@@ -41,13 +43,9 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
   const [fetchUserData, setFetchUserData] = useState([{ email: "", name: "" }]);
   const [showPassword, setShowPassword] = useState<PasswordVisible>({ password: false, passwordConfirm: false });
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    getValues,
-    formState: { errors },
-  } = useForm<SignupInputs>({ mode: "all" });
+  const resolver = yupResolver(signupSchema);
+  const { register, handleSubmit, setError, getValues, formState } = useForm<SignupInputs>({ mode: "all", resolver });
+  const { errors } = formState;
 
   useEffect(() => {
     const getUsers = async () => {
@@ -158,7 +156,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
           <div className="flex items-center self-stretch contents-center">
             <input
               {...register("id", {
-                ...idValid,
                 onChange: () => {
                   setCheckedDuplicate({ ...checkedDuplicate, email: false });
                 },
@@ -211,7 +208,6 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
               placeholder="닉네임"
               className="w-full auth-input body-3"
               {...register("name", {
-                ...nameValid,
                 onChange: () => {
                   setCheckedDuplicate({ ...checkedDuplicate, name: false });
                 },
@@ -245,11 +241,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             autoComplete="off"
             placeholder="비밀번호"
             className="auth-input body-3"
-            {...register("password", {
-              ...passwordValid(),
-              validate: (_, formValue) =>
-                formValue.password === formValue.passwordCheck || "비밀번호가 일치하지 않습니다.",
-            })}
+            {...register("password")}
           />
           <PasswordVisibleButton
             passwordType={"password"}
@@ -265,7 +257,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             autoComplete="off"
             placeholder="비밀번호 확인"
             className="auth-input body-3"
-            {...register("passwordCheck")}
+            {...register("passwordConfirm")}
           />
           <PasswordVisibleButton
             passwordType={"passwordConfirm"}
@@ -289,11 +281,7 @@ export const SignupForm = ({ prevStep, nextStep }: Props) => {
             setSelectedValue={setSelectIdQuestion}
             selfEnterOption={false}
           />
-          <input
-            placeholder="본인확인 질문에 답변해주세요."
-            className="auth-input"
-            {...register("idAnswer", { ...idAnswerValid })}
-          />
+          <input placeholder="본인확인 질문에 답변해주세요." className="auth-input" {...register("idAnswer")} />
         </div>
         <InvalidText errorsMessage={errors.idAnswer?.message} size={30} />
 
