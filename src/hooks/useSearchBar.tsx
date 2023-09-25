@@ -9,8 +9,6 @@ interface Props {
 
 interface Input {
   searchKeyword?: string;
-  min: string | undefined;
-  max?: string | undefined;
 }
 
 export const useSearchBar = ({ dataList, type, isUseMypage = false }: Props) => {

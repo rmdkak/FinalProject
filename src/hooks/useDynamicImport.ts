@@ -41,7 +41,7 @@ export const useDynamicImport = () => {
       case "mypage":
         return await import("../pages/mypage/Mypage");
       case "/mypage/update":
-        return await import("../pages/mypage/UpdateUser");
+        return await import("../pages/mypage/updateUser/UpdateUser");
       case "/mypage/bookmark":
         return await import("../pages/mypage/MyBookmark");
       case "/mypage/comment":
@@ -53,7 +53,7 @@ export const useDynamicImport = () => {
       case "login":
         return await import("../pages/Login");
       case "find-auth":
-        return await import("../pages/FindAuth");
+        return await import("../pages/findAuth/FindAuth");
       case "update-password":
         return await import("../pages/UpdatePassword");
       case "adminpage":

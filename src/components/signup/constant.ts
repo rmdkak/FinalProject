@@ -95,29 +95,3 @@ export const idQuestionOptions = [
   "나의 어머니 성함은?",
   "나의 아버지 성함은?",
 ];
-
-export const passwordValid = () => ({
-  required: "비밀번호를 입력해주세요.",
-  pattern: {
-    value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-    message: "영문 대문자, 영문 소문자, 숫자, 특수문자가 하나 이상 포함되어야 합니다.",
-  },
-  minLength: { value: 8, message: "비밀번호가 너무 짧습니다." },
-});
-
-export const nameValid = {
-  required: "닉네임은 필수 입력 사항입니다.",
-  minLength: { value: 2, message: "닉네임이 너무 짧습니다." },
-  maxLength: { value: 8, message: "닉네임이 너무 깁니다." },
-};
-
-export const idValid = {
-  required: "이메일을 입력해주세요.",
-  minLength: { value: 4, message: "id가 너무 짧습니다." },
-  maxLength: { value: 20, message: "id가 너무 깁니다." },
-};
-
-export const idAnswerValid = {
-  require: "본인확인 질문에 답변해주세요.",
-  minLength: { value: 2, message: "답변이 너무 짧습니다." },
-};
