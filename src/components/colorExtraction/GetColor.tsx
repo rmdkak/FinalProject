@@ -31,9 +31,9 @@ export const GetColor = ({ leftWall, rightWall }: props) => {
   const handleCopyColorClipBoard = async (color: string) => {
     try {
       await navigator.clipboard.writeText(color);
-      toast("컬러가 복사되었습니다.", { theme: "warning", position: "top-center" });
+      toast("컬러가 복사되었습니다.", { theme: "warning", zIndex: 9999 });
     } catch (error) {
-      toast("복사에 실패했습니다.", { theme: "failure", position: "top-center" });
+      toast("복사에 실패했습니다.", { theme: "failure", zIndex: 9999 });
       console.error("복사 실패", error);
     }
   };

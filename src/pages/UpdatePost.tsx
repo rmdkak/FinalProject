@@ -24,14 +24,9 @@ const UpdatePost = () => {
   const { fetchDetailMutation, updatePostMutation } = usePostsQuery();
   const { data: postData } = fetchDetailMutation;
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    resetField,
-    formState: { errors },
-  } = useForm<Inputs>({ mode: "all" });
+  const { register, handleSubmit, setValue, watch, resetField, formState } = useForm<Inputs>({ mode: "all" });
+  const { errors } = formState;
+
   const titleValue = watch("title") ?? 0;
   const contentValue = watch("content") ?? 0;
   const { onOpenModal, onCloseModal } = useModalStore();
@@ -77,36 +72,32 @@ const UpdatePost = () => {
       return;
     }
 
+    const selectedPaper = (side: "left" | "right") => {
+      if (side === "left") {
+        return wallPaper.left.id === null ? postData?.leftWallpaperId : wallPaper.left.id;
+      } else {
+        return wallPaper.right.id === null ? postData?.rightWallpaperId : wallPaper.right.id;
+      }
+    };
+
+    const selectedPaint = (side: "left" | "right") => {
+      if (side === "left") {
+        return wallpaperPaint.left === null ? postData?.leftColorCode : wallpaperPaint.left;
+      } else {
+        return wallpaperPaint.right === null ? postData?.rightColorCode : wallpaperPaint.right;
+      }
+    };
+
     const updateData = {
       id: postData.id,
       title: data.title,
       content: data.content,
       postImage,
       tileId: tile.id === null ? postData?.tileId : tile.id,
-      leftWallpaperId:
-        wallpaperPaint.left !== null
-          ? null
-          : wallPaper.left.id === null
-          ? postData?.leftWallpaperId
-          : wallPaper.left.id,
-      rightWallpaperId:
-        wallpaperPaint.right !== null
-          ? null
-          : wallPaper.right.id === null
-          ? postData?.rightWallpaperId
-          : wallPaper.right.id,
-      leftColorCode:
-        wallPaper.left.id !== null
-          ? null
-          : wallpaperPaint.left === null
-          ? postData?.leftColorCode
-          : wallpaperPaint.left,
-      rightColorCode:
-        wallPaper.right.id !== null
-          ? null
-          : wallpaperPaint.right === null
-          ? postData?.rightColorCode
-          : wallpaperPaint.right,
+      leftWallpaperId: wallpaperPaint.left !== null ? null : selectedPaper("left"),
+      rightWallpaperId: wallpaperPaint.right !== null ? null : selectedPaper("right"),
+      leftColorCode: wallPaper.left.id !== null ? null : selectedPaint("left"),
+      rightColorCode: wallPaper.right.id !== null ? null : selectedPaint("right"),
     };
 
     try {
