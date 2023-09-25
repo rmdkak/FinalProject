@@ -25,8 +25,10 @@ interface FetchItemBookmark {
   id: string;
   userId: string;
   tileId: string;
-  leftWallpaperId: string;
-  rightWallpaperId: string;
+  leftWallpaperId: string | null;
+  rightWallpaperId: string | null;
+  leftColorCode: string | null;
+  rightColorCode: string | null;
 }
 
 interface FurnitureState {

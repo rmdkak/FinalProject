@@ -64,7 +64,7 @@ export const InteriorCombination = ({ interiorItemId, type }: Props) => {
   const [classObject, setClassObject] = useState<ClassObject>(initialClass);
 
   useEffect(() => {
-    const mypageCommon = "absolute w-20 h-20 border-2 border-white rounded-full";
+    const mypageCommon = "absolute w-20 h-20 border-2 border-gray06 rounded-full";
     const mypageResponsive = "xs:w-12 xs:h-12";
     switch (type) {
       case "mypage":

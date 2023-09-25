@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import blog from "assets/footerIcon/blogIcon.svg";
 import github from "assets/footerIcon/githubIcon.svg";
 import notion from "assets/footerIcon/notionIcon.svg";
 import { useDynamicImport } from "hooks/useDynamicImport";
@@ -11,7 +10,7 @@ export const Footer = () => {
   const { preFetchPageBeforeEnter } = useDynamicImport();
   return (
     <>
-      <footer className="box-border px-6 mt-10 bg-gray08 flex-column">
+      <footer className="box-border px-6 mt-10 bg-gray08 flex-column relative bottom-[-155px]">
         {/* footHead */}
         <div className="box-border relative max-w-[1280px] w-full mx-auto">
           <div className="contents-between mb-[34px] mt-10 border-b border-[#d9d9d9] pb-6">
@@ -30,11 +29,6 @@ export const Footer = () => {
                     target="_blink"
                   >
                     <img className="block w-6 h-6" src={github} alt="github ci" />
-                  </a>
-                </li>
-                <li>
-                  <a className="mr-[8px] block w-6 h-6" href="#외부경로" target="_blink">
-                    <img className="block w-6 h-6" src={blog} alt="blog ci" />
                   </a>
                 </li>
                 <li>

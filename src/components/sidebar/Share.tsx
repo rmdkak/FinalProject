@@ -25,7 +25,7 @@ export const Share = ({ setOpenShareModal }: Props) => {
         title: "Stile",
         description:
           "인테리어의 무드를 책임지는 벽과 바닥을 Stile에서 제공하는 서비스를 통해 온라인으로 미리 체험해보세요!",
-        imageUrl: "",
+        imageUrl: "https://aiqrtjdvdlzhtyadyqnh.supabase.co/storage/v1/object/public/Images/etc/ogImage.png",
         link: {
           webUrl: realUrl,
         },
