@@ -145,16 +145,30 @@
 >
 > - 유저가 작성한 게시물 삭제 시 POSTS TABLE과 COMMENTS TABLE 사이의 foreign key 제약 조건 위반관련 오류 발생
 > - 관계성 데이터베이스를 설계했기에 일관성을 해치는 동작을 시도해 오류를 발생시킴
->   ![1](https://github.com/rmdkak/Stile/assets/78424449/bccb6b69-f663-4076-8ab3-0f5e9d9a732c)
+>   > ![1](https://github.com/rmdkak/Stile/assets/78424449/bccb6b69-f663-4076-8ab3-0f5e9d9a732c)
 >
-> #### Try(CASCADE)
+> #### Try(CASCADE) & Solution
 >
 > - 오류를 해결하기 위해선 게시물 삭제 전 댓글, 대댓글 서로 엮여들어간 TABLE의 삭제가 우선적으로 되어야함
 > - 위와 같은 flow는 코드 복잡성이 늘어나고 효율성이 떨어진다고 판단
 >
 > - SQL DDL 문법인 CASCADE를 supabase측에서 편리하게 제공하여 해당 기능을 적용해 게시물 삭제 시
->   댓글 및 대 댓글도 자동으로 삭제가 되게끔 설정함
->   ![2](https://github.com/rmdkak/Stile/assets/78424449/94496a1d-ec01-45fa-890a-39031de518f3) >![3](https://github.com/rmdkak/Stile/assets/78424449/33eb9cac-231d-45f2-96b0-0f0f14d13456)
+>   댓글 및 대 댓글도 자동으로 삭제 되게끔 설정함
+>   > ![2](https://github.com/rmdkak/Stile/assets/78424449/94496a1d-ec01-45fa-890a-39031de518f3) > > ![3](https://github.com/rmdkak/Stile/assets/78424449/33eb9cac-231d-45f2-96b0-0f0f14d13456)
+
+> ### Trouble.4
+>
+> #### Import index hub 오류
+>
+> - 기능별 폴더 구조화를 위해 fetch 로직, API 로직들을 각각 받아올 데이터별로 파일 분리
+> - 해당 로직을 사용하기 위해 import 시 깔끔하게 정리하기 위해 API, Fetch 폴더별로 index.ts 허브를 만들어 export를 묶어서 처리
+> - 어느순간 mutation을 사용하는 API의 Parameters들이 아래와 같은 에러를 띄우기 시작
+> - 배포 환경에서 문제는 없었지만 개발 환경에서 저장만하면 해당 에러가 계속해서 발생 DX가 안좋아질것을 우려
+>   > ![Untitled](https://github.com/rmdkak/Stile/assets/124483981/c98433c4-ab59-4fda-8f2f-ddfa24d8d1eb)
+>
+> #### Try & Solution
+>
+> - 리서치를 통해 hub 자체가 오류를 발생시킬 수도 있는 내용을 확인, 사실상 이미 동일한 쿼리키를 사용한 것들 끼리 한데 묶어 파일로 처리했기때문에 그 파일들 마저 hub로 묶는 행동은 과하다고도 판단해 hub 삭제 후 import된 경로 처리를 수정. 이후 해당 에러 해결.
 
 ## 유저 피드백 및 개선 사항
 
@@ -163,7 +177,7 @@
 
 ---
 
-- FeedBack - 고객응대 서비스나 상담 챗봇을 만들면 좋을꺼 같습니다.
+- FeedBack - 고객응대 서비스나 상담 챗봇을 만들면 좋을 것 같습니다.
 
 - Solution - 확실히 커뮤니티 사이트이기에 유저의 소리를 듣지 못하고 닫혀있는 환경이면 안된다고 생각하고 기획 초기에 Admin의 고려를 하고있었습니다. 이에 대해 유저가 문의 혹은 게시글에 대한 신고를 통해 Admin에게 전달되어 관리될 수 있도록 추가적인 기능 구현하여 해결했습니다.
   ![Animation](https://github.com/rmdkak/Stile/assets/78424449/700e1c31-72d8-4987-b479-1710246d40e0)
