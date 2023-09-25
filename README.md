@@ -120,7 +120,7 @@
 >
 > - TailwindCss utility, plugin 사용만으론 구현이 힘들어 전역에서 vanilla css로 해당 style 작성 후 className에 할당하여 구현
 >
-> > ![preview](https://github.com/rmdkak/Stile/assets/131266433/1620fa15-0eea-4a64-905f-1f41165bb0ee)
+> ![preview](https://github.com/rmdkak/Stile/assets/131266433/1620fa15-0eea-4a64-905f-1f41165bb0ee)
 
 > ### Trouble.2
 >
@@ -128,7 +128,7 @@
 >
 > - TanStack useQuery에서 params가 필요한 GET 요청에 params가 없을 시 무분별한 GET 요청 발생
 >
-> > ![콘솔에러](https://github.com/rmdkak/Stile/assets/131266433/847f275d-ad5a-4f07-bef2-3ec5a7ba8979)
+> ![콘솔에러](https://github.com/rmdkak/Stile/assets/131266433/847f275d-ad5a-4f07-bef2-3ec5a7ba8979)
 >
 > #### Try(enabled)
 >
@@ -137,7 +137,7 @@
 >
 > #### Solution
 >
-> > ![트러블슈팅2쿼리](https://github.com/rmdkak/Stile/assets/131266433/386dd103-8048-4f3c-86e8-6173fe057972)
+> ![트러블슈팅2쿼리](https://github.com/rmdkak/Stile/assets/131266433/386dd103-8048-4f3c-86e8-6173fe057972)
 
 > ### Trouble.3
 >
@@ -153,7 +153,7 @@
 > - 위와 같은 flow는 코드 복잡성이 늘어나고 효율성이 떨어진다고 판단
 >
 > - SQL DDL 문법인 CASCADE를 supabase측에서 편리하게 제공하여 해당 기능을 적용해 게시물 삭제 시
->   댓글 및 대 댓글도 자동으로 삭제 되게끔 설정함
+>   댓글 및 대 댓글도 자동으로 삭제되게끔 설정함
 >   > ![2](https://github.com/rmdkak/Stile/assets/78424449/94496a1d-ec01-45fa-890a-39031de518f3) > > ![3](https://github.com/rmdkak/Stile/assets/78424449/33eb9cac-231d-45f2-96b0-0f0f14d13456)
 
 > ### Trouble.4
@@ -177,12 +177,16 @@
 
 ---
 
+### 1. 고객 응대 서비스
+
 - FeedBack - 고객응대 서비스나 상담 챗봇을 만들면 좋을 것 같습니다.
 
 - Solution - 확실히 커뮤니티 사이트이기에 유저의 소리를 듣지 못하고 닫혀있는 환경이면 안된다고 생각하고 기획 초기에 Admin의 고려를 하고있었습니다. 이에 대해 유저가 문의 혹은 게시글에 대한 신고를 통해 Admin에게 전달되어 관리될 수 있도록 추가적인 기능 구현하여 해결했습니다.
   ![Animation](https://github.com/rmdkak/Stile/assets/78424449/700e1c31-72d8-4987-b479-1710246d40e0)
 
 ---
+
+### 2. 로딩 최적화
 
 - FeedBack - 대체로 빨랐는데 인테리어 조합 페이지에서 원 모양의 색상들이 조금 늦게 뜹니다
 
@@ -196,6 +200,8 @@
 
 ---
 
+### 3. 가구 배치
+
 - FeedBack - 간단한 가구나 소품들을 추가하여 드래그로 위치해볼 수 있는 기능이 있으면 더 완벽할 것 같습니다.
 
 - Solution - 기획에서도 3면을 보여주는 공간은 핵심 서비스로서 유저에게 더욱 공간같다는 인상을 주기엔 무리인듯 싶었습니다. 다양한 방법을 고민해 해결을 위해 다음과 같은 방법을 시도했습니다.
@@ -204,6 +210,8 @@
     ![Animation2](https://github.com/rmdkak/Stile/assets/78424449/872f9f5d-b232-49fc-8100-964b436537b8)
 
 ---
+
+### 4. 인테리어 미리보기
 
 - FeedBack - 조합 추천 글에서 추천 받은 조합을 인테리어 조합 기능에서 볼 수 있는 방법이나 미리보기같은게 되면 좋을 것 같아요
 
