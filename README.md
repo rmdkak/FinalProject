@@ -26,7 +26,7 @@
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=white">
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
 <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
-<img src="https://img.shields.io/badge/Zustand-색상?style=for-the-badge&logo=기술스택아이콘&logoColor=white">
+<img src="https://img.shields.io/badge/Zustand-0ED145?style=for-the-badge&logo=zustand&logoColor=white">
 <img src="https://img.shields.io/badge/Supabase-FF4154?style=for-the-badge&logo=Supabase&logoColor=white">
 <img src="https://img.shields.io/badge/reactquery-3FCF8E?style=for-the-badge&logo=reactquery&logoColor=white">
 <img src="https://img.shields.io/badge/reactrouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
