@@ -120,7 +120,7 @@
 >
 > - TailwindCss utility, plugin 사용만으론 구현이 힘들어 전역에서 vanilla css로 해당 style 작성 후 className에 할당하여 구현
 >
-> > ![preview](https://github.com/rmdkak/Stile/assets/131266433/1620fa15-0eea-4a64-905f-1f41165bb0ee)
+> ![preview](https://github.com/rmdkak/Stile/assets/131266433/1620fa15-0eea-4a64-905f-1f41165bb0ee)
 
 > ### Trouble.2
 >
@@ -128,7 +128,7 @@
 >
 > - TanStack useQuery에서 params가 필요한 GET 요청에 params가 없을 시 무분별한 GET 요청 발생
 >
-> > ![콘솔에러](https://github.com/rmdkak/Stile/assets/131266433/847f275d-ad5a-4f07-bef2-3ec5a7ba8979)
+> ![콘솔에러](https://github.com/rmdkak/Stile/assets/131266433/847f275d-ad5a-4f07-bef2-3ec5a7ba8979)
 >
 > #### Try(enabled)
 >
@@ -137,7 +137,7 @@
 >
 > #### Solution
 >
-> > ![트러블슈팅2쿼리](https://github.com/rmdkak/Stile/assets/131266433/386dd103-8048-4f3c-86e8-6173fe057972)
+> ![트러블슈팅2쿼리](https://github.com/rmdkak/Stile/assets/131266433/386dd103-8048-4f3c-86e8-6173fe057972)
 
 > ### Trouble.3
 >
@@ -145,16 +145,30 @@
 >
 > - 유저가 작성한 게시물 삭제 시 POSTS TABLE과 COMMENTS TABLE 사이의 foreign key 제약 조건 위반관련 오류 발생
 > - 관계성 데이터베이스를 설계했기에 일관성을 해치는 동작을 시도해 오류를 발생시킴
->   ![1](https://github.com/rmdkak/Stile/assets/78424449/bccb6b69-f663-4076-8ab3-0f5e9d9a732c)
+>   > ![1](https://github.com/rmdkak/Stile/assets/78424449/bccb6b69-f663-4076-8ab3-0f5e9d9a732c)
 >
-> #### Try(CASCADE)
+> #### Try(CASCADE) & Solution
 >
 > - 오류를 해결하기 위해선 게시물 삭제 전 댓글, 대댓글 서로 엮여들어간 TABLE의 삭제가 우선적으로 되어야함
 > - 위와 같은 flow는 코드 복잡성이 늘어나고 효율성이 떨어진다고 판단
 >
 > - SQL DDL 문법인 CASCADE를 supabase측에서 편리하게 제공하여 해당 기능을 적용해 게시물 삭제 시
->   댓글 및 대 댓글도 자동으로 삭제가 되게끔 설정함
->   ![2](https://github.com/rmdkak/Stile/assets/78424449/94496a1d-ec01-45fa-890a-39031de518f3) >![3](https://github.com/rmdkak/Stile/assets/78424449/33eb9cac-231d-45f2-96b0-0f0f14d13456)
+>   댓글 및 대 댓글도 자동으로 삭제되게끔 설정함
+>   > ![2](https://github.com/rmdkak/Stile/assets/78424449/94496a1d-ec01-45fa-890a-39031de518f3) > > ![3](https://github.com/rmdkak/Stile/assets/78424449/33eb9cac-231d-45f2-96b0-0f0f14d13456)
+
+> ### Trouble.4
+>
+> #### Import index hub 오류
+>
+> - 기능별 폴더 구조화를 위해 fetch 로직, API 로직들을 각각 받아올 데이터별로 파일 분리
+> - 해당 로직을 사용하기 위해 import 시 깔끔하게 정리하기 위해 API, Fetch 폴더별로 index.ts 허브를 만들어 export를 묶어서 처리
+> - 어느순간 mutation을 사용하는 API의 Parameters들이 아래와 같은 에러를 띄우기 시작
+> - 배포 환경에서 문제는 없었지만 개발 환경에서 저장만하면 해당 에러가 계속해서 발생 DX가 안좋아질것을 우려
+>   > ![Untitled](https://github.com/rmdkak/Stile/assets/124483981/c98433c4-ab59-4fda-8f2f-ddfa24d8d1eb)
+>
+> #### Try & Solution
+>
+> - 리서치를 통해 hub 자체가 오류를 발생시킬 수도 있는 내용을 확인, 사실상 이미 동일한 쿼리키를 사용한 것들 끼리 한데 묶어 파일로 처리했기때문에 그 파일들 마저 hub로 묶는 행동은 과하다고도 판단해 hub 삭제 후 import된 경로 처리를 수정. 이후 해당 에러 해결.
 
 ## 유저 피드백 및 개선 사항
 
@@ -163,12 +177,16 @@
 
 ---
 
-- FeedBack - 고객응대 서비스나 상담 챗봇을 만들면 좋을꺼 같습니다.
+### 1. 고객 응대 서비스
+
+- FeedBack - 고객응대 서비스나 상담 챗봇을 만들면 좋을 것 같습니다.
 
 - Solution - 확실히 커뮤니티 사이트이기에 유저의 소리를 듣지 못하고 닫혀있는 환경이면 안된다고 생각하고 기획 초기에 Admin의 고려를 하고있었습니다. 이에 대해 유저가 문의 혹은 게시글에 대한 신고를 통해 Admin에게 전달되어 관리될 수 있도록 추가적인 기능 구현하여 해결했습니다.
   ![Animation](https://github.com/rmdkak/Stile/assets/78424449/700e1c31-72d8-4987-b479-1710246d40e0)
 
 ---
+
+### 2. 로딩 최적화
 
 - FeedBack - 대체로 빨랐는데 인테리어 조합 페이지에서 원 모양의 색상들이 조금 늦게 뜹니다
 
@@ -182,6 +200,8 @@
 
 ---
 
+### 3. 가구 배치
+
 - FeedBack - 간단한 가구나 소품들을 추가하여 드래그로 위치해볼 수 있는 기능이 있으면 더 완벽할 것 같습니다.
 
 - Solution - 기획에서도 3면을 보여주는 공간은 핵심 서비스로서 유저에게 더욱 공간같다는 인상을 주기엔 무리인듯 싶었습니다. 다양한 방법을 고민해 해결을 위해 다음과 같은 방법을 시도했습니다.
@@ -190,6 +210,8 @@
     ![Animation2](https://github.com/rmdkak/Stile/assets/78424449/872f9f5d-b232-49fc-8100-964b436537b8)
 
 ---
+
+### 4. 인테리어 미리보기
 
 - FeedBack - 조합 추천 글에서 추천 받은 조합을 인테리어 조합 기능에서 볼 수 있는 방법이나 미리보기같은게 되면 좋을 것 같아요
 
